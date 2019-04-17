@@ -29,10 +29,11 @@ Sequel.migration do
 
 		create_enum("agency_code_type", ["oclc", "local"], nil, true)
 
-		create_enum("xlink_actuate", ["onload", "onrequest", "other", "none"])
-
 		create_enum("maintenence_event_type", ["created", "cancelled", "deleted", "derived", "revised", "updated"])
 
 		create_enum("maintenence_agent_type", ["human", "machine"], "human")
+
+		create_enum("convention", ["aacr", "ccr", "da", "rda", "rad", "isaar"])
+
   end
 end
