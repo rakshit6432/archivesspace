@@ -6,11 +6,12 @@
     "type" => "object",
 
     "properties" => {
-      "maintenance_agency" => {"type" => "string", "maxLength" => 65000, "ifmissing" => "error"},
-      "agency_code_type" => 
-        {"dynamic_enum" => "agency_code_type", 
-         "ifmissing" => "error", 
-         "default" => ""},
-    },
-  },
+      "agency_code_type" => {
+        "dynamic_enum" => "agency_code_type",
+        "ifmissing" => "error", 
+        "default" => ""
+      },
+      "maintenance_agency" => {"type" => "string", "maxLength" => 65000, "ifmissing" => "error"}
+    }
+  }
 }
