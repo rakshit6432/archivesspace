@@ -9,14 +9,16 @@
       "event_type" => {
         "dynamic_enum" => "maintenence_event_type", 
         "ifmissing" => "error", 
-        "default" => ""},
-      "event_date" => {"type" => "JSONModel(:date) object", "ifmissing" => "error"},
-      "agent" => {"type" => "string", "maxLength" => 65000, "ifmissing" => "error"},
+        "default" => ""
+      },
       "agency_type" => {
         "dynamic_enum" => "maintenence_agent_type", 
         "ifmissing" => "error", 
-        "default" => "Human"},
-      "descriptive_note" => {"type" => "string", "maxLength" => 65000},
-    },
-  },
+        "default" => "Human"
+      },
+      "event_date" => {"type" => "JSONModel(:date) object", "ifmissing" => "error"},
+      "agent" => {"type" => "string", "maxLength" => 65000, "ifmissing" => "error"},
+      "descriptive_note" => {"type" => "string", "maxLength" => 65000}
+    }
+  }
 }

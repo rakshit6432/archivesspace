@@ -10,10 +10,12 @@
       "record_identifier" => {"type" => "string", "maxLength" => 65000, "ifmissing" => "error"},
       "source" => {
         "dynamic_enum" => "source", 
-        "ifmissing" => "error"},
+        "ifmissing" => "error"
+      },
       "identifier_type" => {
         "dynamic_enum" => "identifier_type", 
-        "default" => ""},
-    },
-  },
+        "default" => ""
+      }
+    }
+  }
 }

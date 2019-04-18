@@ -7,37 +7,40 @@
 
     "properties" => {
       "maintenance_status" => {
-        "dynamic_enum" => "maintenance_status"},
+        "dynamic_enum" => "maintenance_status",
         "default" => "",
         "ifmissing" => "error"
-       },
+      },
       "publication_status" => {
-        "dynamic_enum" => "publication_status"},
-        "default" => ""},
+        "dynamic_enum" => "publication_status",
+        "default" => ""
+      },
       "romanization" => {
-        "dynamic_enum" => "romanization"},
-        "default" => ""},
+        "dynamic_enum" => "romanization",
+        "default" => ""
+      },
       "government_agency_type" => {
-        "dynamic_enum" => "government_agency_type"},
-        "default" => ""},
+        "dynamic_enum" => "government_agency_type",
+        "default" => ""
+      },
       "reference_evaluation" => {
-        "dynamic_enum" => "reference_evaluation"},
+        "dynamic_enum" => "reference_evaluation",
         "default" => ""
       },
       "name_type" => {
-        "dynamic_enum" => "name_type"},
+        "dynamic_enum" => "name_type",
         "default" => ""
       },
       "level_of_detail" => {
-        "dynamic_enum" => "level_of_detail"},
+        "dynamic_enum" => "level_of_detail",
         "default" => ""
       },
       "modified_record" => {
-        "dynamic_enum" => "modified_record"},
+        "dynamic_enum" => "modified_record",
         "default" => ""
       },
       "cataloging_source" => {
-        "dynamic_enum" => "cataloging_source"},
+        "dynamic_enum" => "cataloging_source",
         "default" => ""
       },
       "maintenance_agency" => {"type" => "string", "maxLength" => 65000},
@@ -45,7 +48,7 @@
       "maintenance_agency_note" => {"type" => "string", "maxLength" => 65000},
       "language" => {"type" => "string", "maxLength" => 65000, "ifmissing" => "error"},  
       "script" => {"type" => "string", "maxLength" => 65000},  
-      "language_note" => {"type" => "string", "maxLength" => 65000},
-    },
-  },
+      "language_note" => {"type" => "string", "maxLength" => 65000}
+    }
+  }
 }
