@@ -6,41 +6,41 @@
     "type" => "object",
 
     "properties" => {
-      "maintenance_status" => {
-        "dynamic_enum" => "maintenance_status",
+      "maintenance_status_enum" => {
+        "dynamic_enum" => "maintenance_status_enum",
         "default" => "",
         "ifmissing" => "error"
       },
-      "publication_status" => {
-        "dynamic_enum" => "publication_status",
+      "publication_status_enum" => {
+        "dynamic_enum" => "publication_status_enum",
         "default" => ""
       },
-      "romanization" => {
-        "dynamic_enum" => "romanization",
+      "romanization_enum" => {
+        "dynamic_enum" => "romanization_enum",
         "default" => ""
       },
-      "government_agency_type" => {
-        "dynamic_enum" => "government_agency_type",
+      "government_agency_type_enum" => {
+        "dynamic_enum" => "government_agency_type_enum",
         "default" => ""
       },
-      "reference_evaluation" => {
-        "dynamic_enum" => "reference_evaluation",
+      "reference_evaluation_enum" => {
+        "dynamic_enum" => "reference_evaluation_enum",
         "default" => ""
       },
-      "name_type" => {
-        "dynamic_enum" => "name_type",
+      "name_type_enum" => {
+        "dynamic_enum" => "name_type_enum",
         "default" => ""
       },
-      "level_of_detail" => {
-        "dynamic_enum" => "level_of_detail",
+      "level_of_detail_enum" => {
+        "dynamic_enum" => "level_of_detail_enum",
         "default" => ""
       },
-      "modified_record" => {
-        "dynamic_enum" => "modified_record",
+      "modified_record_enum" => {
+        "dynamic_enum" => "modified_record_enum",
         "default" => ""
       },
-      "cataloging_source" => {
-        "dynamic_enum" => "cataloging_source",
+      "cataloging_source_enum" => {
+        "dynamic_enum" => "cataloging_source_enum",
         "default" => ""
       },
       "maintenance_agency" => {"type" => "string", "maxLength" => 65000},
