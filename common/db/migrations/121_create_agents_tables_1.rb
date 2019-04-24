@@ -28,8 +28,8 @@ Sequel.migration do
     end
 
     create_table(:agent_alternate_set) do
-      Integer :file_version_xlink_actuate_attribute_enum_id, :null => true
-      Integer :file_version_xlink_show_attribute_enum_id, :null => true
+      Integer :file_version_xlink_actuate_attribute_id, :null => true
+      Integer :file_version_xlink_show_attribute_id, :null => true
 
       String :set_component, :null => true
       String :descriptive_note, :null => true
@@ -44,12 +44,12 @@ Sequel.migration do
 
     create_table(:agent_conventions_declaration) do
       Integer :convention_enum_id, :null => false
+      Integer :file_version_xlink_actuate_attribute_id, :null => true
+      Integer :file_version_xlink_show_attribute_id, :null => true
 
       String :citation, :null => false
       String :descriptive_note, :null => false
       String :file_uri, :null => true
-      Integer :file_version_xlink_actuate_attribute_enum_id, :null => true
-      Integer :file_version_xlink_show_attribute_enum_id, :null => true
       String :xlink_title_attribute, :null => true
       String :xlink_role_attribute, :null => true
       DateTime :last_verified_date, :null => true
@@ -95,8 +95,9 @@ Sequel.migration do
       String :source_entry, :null => true
       String :descriptive_note, :null => true
       String :file_uri, :null => true
-      Integer :file_version_xlink_actuate_attribute_enum_id, :null => true
-      Integer :file_version_xlink_show_attribute_enum_id, :null => true
+      Integer :file_version_xlink_actuate_attribute_id, :null => true
+      Integer :file_version_xlink_show_attribute_id, :null => true
+
       String :xlink_title_attribute, :null => true
       String :xlink_role_attribute, :null => true
       
