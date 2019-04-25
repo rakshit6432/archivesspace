@@ -1,5 +1,95 @@
 en:
   enumerations:
+    maintenence_status_enum:
+      new: New
+      upgraded: Upgraded
+      revised_corrected: Revised/Corrected
+      derived: Derived
+      deleted: Deleted
+      cancelled_obsolete: Cancelled/Obsolete
+      deleted_split: Deleted-Split
+      deleted_replaced: Deleted-Replaced
+    publication_status_enum:
+      in_process: In-process
+      approved: Approved
+    romanization_enum:
+      int_std: International standard 
+      nat_std: National standard
+      nl_assoc_std: National library association standard
+      nl_bib_agency_std: National library or bibliographic agency standard
+      local_standard: Local standard
+      unknown_standard: Standard of unknown origin
+      conv_rom_cat_agency: Conventional romanization or conventional form of name in language of cataloging agency
+      not_applicable: Not applicable
+    government_agency_type_enum: 
+      ngo: Non-governmental organization
+      sac: Autonomous or semi-autonomous component
+      multilocal: Multilocal
+      fed: Federal/national
+      int_gov: International intergovernmental
+      local: Local
+      multistate: Multistate
+      undetermined: Government agency-type undetermined
+      provincial: State, provincial, territorial, dependent, etc.
+      unknown: Unknown if heading is government agency
+      other: Other
+      natc: No attempt to code
+    reference_evaluation_enum: 
+      tr_consistent: Tracings consistent with headings
+      tr_inconsistent: Tracings inconsistent with headings
+      not_applicable: Not applicable
+      natc: No attempt to code
+    name_type_enum: 
+      differentiated: Differentiated
+      undifferentiated: Undifferentiated
+      not_applicable: Not applicable
+      natc: No attempt to code
+    level_of_detail_enum: 
+      fully_established: Fully established
+      memorandum: Memorandum
+      provisional: Provisional
+      preliminary: Preliminary
+      not_applicable: Not applicable
+      natc: No attempt to code
+    modified_record_enum: 
+      not_modified: Not modified
+      shortened: Shortened
+      missing_characters: Missing characters
+      natc: No attempt to code
+    cataloging_source_enum:
+      nat_bib_agency: National bibliographic agency 
+      ccp: Cooperative cataloging program
+      other: Other
+      unknown: Unknown
+      natc: No attempt to code
+    source_enum: 
+      naf: NAF
+      snac: SNAC
+      local: Local
+    identifier_type_enum: 
+      loc: Library of Congress
+      lac: Library and Archives Canada
+      local: Local
+    agency_code_type_enum: 
+      oclc: OCLC
+      local: Local
+    maintenence_event_type_enum: 
+      created: Created
+      cancelled: Cancelled
+      deleted: Deleted
+      derived: Derived 
+      revised: Revised
+      updated: Updated
+    maintenence_agent_type_enum: 
+      human: Human
+      machine: Machine
+    convention_enum: 
+      aacr: Anglo-American Cataloging Rules
+      ccr: Cataloging Cultural Resources
+      da: Describing Archives- A Content Standard
+      rda: Resource Description and Access
+      rad: Rules for Archival Description
+      isaar: International Standard Archival Authority Record for Corporate Bodies, Persons, and Families
     linked_event_archival_record_roles:
       source: Source
       outcome: Outcome
@@ -1839,3 +1929,18 @@ en:
     rights_statement_act_restriction: Rights Statement Act Restriction
     rights_statement_act_type: Rights Statement Act Type
     rights_statement_other_rights_basis: Rights Statement Other Rights Basis
+    maintenence_status_enum: Maintenence Status
+    publication_status_enum: Publication Status
+    romanization_enum: Romanization
+    government_agency_type_enum: Government Agency Type
+    reference_evaluation_enum:  Reference Evaluation
+    name_type_enum: Name Type
+    level_of_detail_enum: Level of Detail
+    modified_record_enum:  Modified Record
+    cataloging_source_enum: Cataloging Source
+    source_enum: Source
+    identifier_type_enum:  Identifier Type
+    agency_code_type_enum: Agency Code
+    maintenence_event_type_enum: Maintenence Event Type
+    maintenence_agent_type_enum: Maintenence Agent Type
+    convention_enum: Convention

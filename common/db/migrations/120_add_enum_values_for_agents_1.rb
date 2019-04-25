@@ -23,6 +23,7 @@ Sequel.migration do
 
 		create_enum("cataloging_source_enum", ["nat_bib_agency", "ccp", "other", "unknown", "natc"])
 
+		# left off here
 		create_enum("source_enum", ["naf", "snac", "local"], nil, true)
 
 		create_enum("identifier_type_enum", ["loc", "lac", "local"], nil, true)
