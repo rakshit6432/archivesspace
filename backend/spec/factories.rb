@@ -105,6 +105,16 @@ FactoryBot.define do
       accession_date { generate(:yyyy_mm_dd) }
     end
 
+    factory :agent_record_control do
+      #maintenence_status_enum { "new" }
+      #maintenence_agency { generate(:alphanumstr) }
+      #agency_name { generate(:alphanumstr) }
+      #maintenance_agency_note { generate(:alphanumstr) }
+      language { generate(:alphanumstr) }
+      #script { generate(:alphanumstr) }
+      #language_note { generate(:alphanumstr) }
+    end
+
     factory :resource do
       json_schema_version { 1 }
       title { generate(:generic_title) }
