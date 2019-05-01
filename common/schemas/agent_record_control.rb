@@ -48,7 +48,11 @@
       "maintenance_agency_note" => {"type" => "string", "maxLength" => 65000},
       "language" => {"type" => "string", "maxLength" => 65000, "ifmissing" => "error"},  
       "script" => {"type" => "string", "maxLength" => 65000},  
-      "language_note" => {"type" => "string", "maxLength" => 65000}
+      "language_note" => {"type" => "string", "maxLength" => 65000},
+      "agent_person_id"           => {"type" => "integer", "required" => false},
+      "agent_family_id"           => {"type" => "integer", "required" => false},
+      "agent_corporate_entity_id" => {"type" => "integer", "required" => false},
+      "agent_software_id"         => {"type" => "integer", "required" => false}
     }
   }
 }
