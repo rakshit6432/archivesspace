@@ -17,6 +17,8 @@ Sequel.migration do
       Integer :agent_software_id,         :null => true
 
       Integer :agent_alternate_set_id, :null => false
+
+      apply_mtime_columns
     end
 
     create_table(:agent_conventions_declaration_rlshp) do
@@ -26,6 +28,8 @@ Sequel.migration do
       Integer :agent_software_id,         :null => true
 
       Integer :agent_conventions_declaration_id, :null => false
+
+      apply_mtime_columns
     end
 
     create_table(:agent_other_agency_codes_rlshp) do
@@ -35,6 +39,8 @@ Sequel.migration do
       Integer :agent_software_id,         :null => true
 
       Integer :agent_other_agency_codes_id, :null => false
+      
+      apply_mtime_columns
     end
 
     create_table(:agent_maintenance_history_rlshp) do
@@ -44,6 +50,8 @@ Sequel.migration do
       Integer :agent_software_id,         :null => true
 
       Integer :agent_maintenance_history_id, :null => false
+      
+      apply_mtime_columns
     end
 
     create_table(:agent_record_identifier_rlshp) do
@@ -53,6 +61,8 @@ Sequel.migration do
       Integer :agent_software_id,         :null => true
 
       Integer :agent_record_identifier_id, :null => false
+      
+      apply_mtime_columns
     end
 
     create_table(:agent_sources_rlshp) do
@@ -62,6 +72,8 @@ Sequel.migration do
       Integer :agent_software_id,         :null => true
 
       Integer :agent_sources_id, :null => false
+      
+      apply_mtime_columns
     end
   end
 end
