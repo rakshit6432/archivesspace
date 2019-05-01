@@ -3,7 +3,5 @@ class AgentRecordControl < Sequel::Model(:agent_record_control)
   corresponds_to JSONModel(:agent_record_control)
 
   set_model_scope :global
-  
-  include Identifiers
 end
 

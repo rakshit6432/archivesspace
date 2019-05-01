@@ -106,13 +106,67 @@ FactoryBot.define do
     end
 
     factory :agent_record_control do
-      #maintenence_status_enum { "new" }
-      #maintenence_agency { generate(:alphanumstr) }
-      #agency_name { generate(:alphanumstr) }
-      #maintenance_agency_note { generate(:alphanumstr) }
+      maintenence_status_enum { "new" }
+      maintenence_agency { generate(:alphanumstr) }
+      agency_name { generate(:alphanumstr) }
+      maintenance_agency_note { generate(:alphanumstr) }
       language { generate(:alphanumstr) }
-      #script { generate(:alphanumstr) }
-      #language_note { generate(:alphanumstr) }
+      script { generate(:alphanumstr) }
+      language_note { generate(:alphanumstr) }
+    end
+
+    factory :agent_alternate_set do
+      file_version_xlink_actuate_attribute { "other"}
+      file_version_xlink_show_attribute { "other" }
+      set_component { generate(:alphanumstr) }
+      descriptive_note { generate(:alphanumstr) }
+      file_uri { generate(:alphanumstr) }
+      xlink_title_attribute { generate(:alphanumstr) }
+      xlink_role_attribute { generate(:alphanumstr) }
+      last_verified_date { generate(:yyyy_mm_dd) }
+    end
+
+    factory :agent_conventions_declaration do
+      file_version_xlink_actuate_attribute { "other"}
+      file_version_xlink_show_attribute { "other" }
+      convention_enum { "aacr" }
+      citation { generate(:alphanumstr) }
+      descriptive_note { generate(:alphanumstr) }
+      file_uri { generate(:alphanumstr) }
+      xlink_title_attribute { generate(:alphanumstr) }
+      xlink_role_attribute { generate(:alphanumstr) }
+      last_verified_date { generate(:yyyy_mm_dd) }
+    end
+
+    factory :agent_sources do
+      file_version_xlink_actuate_attribute { "other"}
+      file_version_xlink_show_attribute { "other" }
+      descriptive_note { generate(:alphanumstr) }
+      source_entry { generate(:alphanumstr) }
+      file_uri { generate(:alphanumstr) }
+      xlink_title_attribute { generate(:alphanumstr) }
+      xlink_role_attribute { generate(:alphanumstr) }
+      last_verified_date { generate(:yyyy_mm_dd) }
+    end
+
+    factory :agent_other_agency_codes do
+      agency_code_type_enum { "oclc"}
+      maintenence_agency { generate(:alphanumstr) }
+    end
+
+    factory :agent_maintenence_history do
+      maintenence_event_type_enum { "oclc"}
+      maintenence_agent_type_enum { "oclc"}
+      event_date { generate(:yyyy_mm_dd) }
+      agent { generate(:alphanumstr) }
+      descriptive_note { generate(:alphanumstr) }
+    end
+
+    factory :agent_record_identifier do
+      primary_identifier { rand(10000000) }
+      record_identifier { generate(:alphanumstr) }
+      source_enum { "naf"}
+      identifier_type_enum { "loc"}
     end
 
     factory :resource do
