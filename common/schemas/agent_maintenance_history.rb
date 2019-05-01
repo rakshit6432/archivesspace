@@ -6,13 +6,13 @@
     "type" => "object",
 
     "properties" => {
-      "maintenence_event_type_enum" => {
-        "dynamic_enum" => "maintenence_event_type_enum", 
+      "maintenance_event_type_enum" => {
+        "dynamic_enum" => "maintenance_event_type_enum", 
         "ifmissing" => "error", 
         "default" => ""
       },
-      "maintenence_agent_type_enum" => {
-        "dynamic_enum" => "maintenence_agent_type_enum", 
+      "maintenance_agent_type_enum" => {
+        "dynamic_enum" => "maintenance_agent_type_enum", 
         "ifmissing" => "error", 
         "default" => "Human"
       },

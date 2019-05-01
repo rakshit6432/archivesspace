@@ -5,7 +5,7 @@ Sequel.migration do
   up do
     $stderr.puts "Adding enumerations and values"
 
-    create_enum("maintenence_status_enum", ["new", "upgraded", "revised_corrected", "derived", "deleted", "cancelled_obsolete", "deleted_split", "deleted_replaced"])
+    create_enum("maintenance_status_enum", ["new", "upgraded", "revised_corrected", "derived", "deleted", "cancelled_obsolete", "deleted_split", "deleted_replaced"])
 
 		create_enum("publication_status_enum", ["in_process", "approved"])
 
@@ -30,9 +30,9 @@ Sequel.migration do
 
 		create_enum("agency_code_type_enum", ["oclc", "local"], nil, true)
 
-		create_enum("maintenence_event_type_enum", ["created", "cancelled", "deleted", "derived", "revised", "updated"])
+		create_enum("maintenance_event_type_enum", ["created", "cancelled", "deleted", "derived", "revised", "updated"])
 
-		create_enum("maintenence_agent_type_enum", ["human", "machine"], "human")
+		create_enum("maintenance_agent_type_enum", ["human", "machine"], "human")
 
 		create_enum("convention_enum", ["aacr", "ccr", "da", "rda", "rad", "isaar"])
 

@@ -1,6 +1,6 @@
 en:
   enumerations:
-    maintenence_status_enum:
+    maintenance_status_enum:
       new: New
       upgraded: Upgraded
       revised_corrected: Revised/Corrected
@@ -73,14 +73,14 @@ en:
     agency_code_type_enum: 
       oclc: OCLC
       local: Local
-    maintenence_event_type_enum: 
+    maintenance_event_type_enum: 
       created: Created
       cancelled: Cancelled
       deleted: Deleted
       derived: Derived 
       revised: Revised
       updated: Updated
-    maintenence_agent_type_enum: 
+    maintenance_agent_type_enum: 
       human: Human
       machine: Machine
     convention_enum: 
@@ -1929,7 +1929,7 @@ en:
     rights_statement_act_restriction: Rights Statement Act Restriction
     rights_statement_act_type: Rights Statement Act Type
     rights_statement_other_rights_basis: Rights Statement Other Rights Basis
-    maintenence_status_enum: Maintenence Status
+    maintenance_status_enum: Maintenence Status
     publication_status_enum: Publication Status
     romanization_enum: Romanization
     government_agency_type_enum: Government Agency Type
@@ -1941,6 +1941,6 @@ en:
     source_enum: Source
     identifier_type_enum:  Identifier Type
     agency_code_type_enum: Agency Code
-    maintenence_event_type_enum: Maintenence Event Type
-    maintenence_agent_type_enum: Maintenence Agent Type
+    maintenance_event_type_enum: Maintenence Event Type
+    maintenance_agent_type_enum: Maintenence Agent Type
     convention_enum: Convention

@@ -16,9 +16,9 @@ Sequel.migration do
       Integer :modified_record_enum_id, :null => true
       Integer :cataloging_source_enum_id, :null => true
 
-      String :maintenence_agency, :null => true
+      String :maintenance_agency, :null => true
       String :agency_name, :null => true
-      String :maintenence_agency_note, :null => true
+      String :maintenance_agency_note, :null => true
       String :language, :null => false
       String :script, :null => true
       String :language_note, :null => true
@@ -61,15 +61,15 @@ Sequel.migration do
     create_table(:agent_other_agency_codes) do
       Integer :agency_code_type_enum_id, :null => false
 
-      String :maintenence_agency, :null => false
+      String :maintenance_agency, :null => false
 
       apply_mtime_columns
       Integer :lock_version, :default => 0, :null => false
     end
 
-    create_table(:agent_maintenence_history) do
-      Integer :maintenence_event_type_enum_id, :null => false
-      Integer :maintenence_agent_type_enum_id, :null => false
+    create_table(:agent_maintenance_history) do
+      Integer :maintenance_event_type_enum_id, :null => false
+      Integer :maintenance_agent_type_enum_id, :null => false
 
       DateTime :event_date, :null => false
       String :agent, :null => false
