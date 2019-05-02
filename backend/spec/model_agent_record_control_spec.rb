@@ -3,8 +3,6 @@ require_relative 'spec_helper'
 describe 'AgentRecordControl model' do
 
   it "allows agent_record_control records to be created" do
-
-  	# todo: fix spelling for maint
     arc = AgentRecordControl.new(:language => "foo", 
     														 :maintenance_status_enum => "new",
                                  :publication_status_enum => "in_process",
@@ -19,11 +17,44 @@ describe 'AgentRecordControl model' do
                                  :agency_name => "agency_name",
                                  :maintenance_agency_note => "maintenance_agency_note",
                                  :script => "script",
-                                 :language_note => "language_note")
+                                 :language_note => "language_note",
+                                 :agent_person_id => rand(10000))
 
 
     arc.save
     expect(arc.valid?).to eq(true)
+  end
+
+  it "requires an agent_record_control to point to an agent record" do
+    arc = AgentRecordControl.new(:language => "foo", 
+                                 :maintenance_status_enum => "new")
+
+
+    expect(arc.valid?).to eq(false)
+  end
+
+  it "is invalid if an agent_record_control points to more than one agent record" do
+    arc = AgentRecordControl.new(:language => "foo", 
+                                 :maintenance_status_enum => "new",
+                                 :agent_person_id => rand(10000),
+                                 :agent_family_id => rand(10000))
+
+    expect(arc.valid?).to eq(false)
+  end
+
+  it "agent_record_control must point to unique agent record" do
+    a1  = AgentRecordControl.new(:language => "foo", 
+                                 :maintenance_status_enum => "new",
+                                 :agent_person_id => 42)
+
+    a1.save
+
+    a2  = AgentRecordControl.new(:language => "foo", 
+                                 :maintenance_status_enum => "new",
+                                 :agent_person_id => 42)
+
+    expect(a1.valid?).to eq(true)
+    expect(a2.valid?).to eq(false)
   end
 
   it "allows agent_record_control records to be created from json" do
