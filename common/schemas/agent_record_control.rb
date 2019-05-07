@@ -7,39 +7,47 @@
 
     "properties" => {
       "maintenance_status_enum" => {
+        "type" => "string",
         "dynamic_enum" => "maintenance_status_enum",
-        "default" => "",
         "ifmissing" => "error"
       },
       "publication_status_enum" => {
+        "type" => "string",
         "dynamic_enum" => "publication_status_enum",
         "default" => ""
       },
       "romanization_enum" => {
+        "type" => "string",
         "dynamic_enum" => "romanization_enum",
         "default" => ""
       },
       "government_agency_type_enum" => {
+        "type" => "string",
         "dynamic_enum" => "government_agency_type_enum",
         "default" => ""
       },
       "reference_evaluation_enum" => {
+        "type" => "string",
         "dynamic_enum" => "reference_evaluation_enum",
         "default" => ""
       },
       "name_type_enum" => {
+        "type" => "string",
         "dynamic_enum" => "name_type_enum",
         "default" => ""
       },
       "level_of_detail_enum" => {
+        "type" => "string",
         "dynamic_enum" => "level_of_detail_enum",
         "default" => ""
       },
       "modified_record_enum" => {
+        "type" => "string",
         "dynamic_enum" => "modified_record_enum",
         "default" => ""
       },
       "cataloging_source_enum" => {
+        "type" => "string",
         "dynamic_enum" => "cataloging_source_enum",
         "default" => ""
       },

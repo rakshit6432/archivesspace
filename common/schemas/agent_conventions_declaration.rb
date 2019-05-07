@@ -7,6 +7,7 @@
 
     "properties" => {
       "convention_enum" => {
+        "type" => "string",
         "dynamic_enum" => "convention_enum",
         "ifmissing" => "error"
       },
