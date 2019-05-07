@@ -6,7 +6,9 @@ describe 'AgentRecordIdentifier model' do
       :identifier_type_enum => "loc",
       :source_enum => "naf",
       :primary_identifier => rand(10000),
-      :record_identifier => "record_identifer")
+      :record_identifier => "record_identifer"),
+      :agent_person_id => 1
+
 
     ari.save
     expect(ari.valid?).to eq(true)

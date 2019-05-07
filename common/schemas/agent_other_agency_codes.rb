@@ -6,7 +6,8 @@
     "type" => "object",
 
     "properties" => {
-      "agency_code_type_enum" => {
+        "agency_code_type_enum" => {
+        "type" => "string",
         "dynamic_enum" => "agency_code_type_enum",
         "ifmissing" => "error", 
         "default" => ""
