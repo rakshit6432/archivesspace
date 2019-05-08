@@ -24,9 +24,10 @@
         "items" => {"type" => "JSONModel(:agent_contact) object"}
       },
 
-      "agent_record_control" => {
+      "agent_record_controls" => {
         "required" => false,
-        "type" => "JSONModel(:agent_record_control) object"
+        "type" => "array",
+        "items" => {"type" => "JSONModel(:agent_record_control) object"}
       },
 
       "linked_agent_roles" => {
