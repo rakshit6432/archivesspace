@@ -9,8 +9,7 @@
       "maintenance_event_type_enum" => {
         "type" => "string",
         "dynamic_enum" => "maintenance_event_type_enum", 
-        "ifmissing" => "error", 
-        "default" => ""
+        "ifmissing" => "error"
       },
       "maintenance_agent_type_enum" => {
         "type" => "string",
@@ -20,7 +19,11 @@
       },
       "event_date" => {"type" => "JSONModel(:date) object", "ifmissing" => "error"},
       "agent" => {"type" => "string", "maxLength" => 65000, "ifmissing" => "error"},
-      "descriptive_note" => {"type" => "string", "maxLength" => 65000}
+      "descriptive_note" => {"type" => "string", "maxLength" => 65000},
+      "agent_person_id"           => {"type" => "integer", "required" => false},
+      "agent_family_id"           => {"type" => "integer", "required" => false},
+      "agent_corporate_entity_id" => {"type" => "integer", "required" => false},
+      "agent_software_id"         => {"type" => "integer", "required" => false} 
     }
   }
 }

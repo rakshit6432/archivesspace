@@ -295,14 +295,19 @@ module AgentManager
 
         self.one_to_many :agent_contact
 
-
         self.def_nested_record(:the_property => :agent_contacts,
                                :contains_records_of_type => :agent_contact,
                                :corresponding_to_association => :agent_contact)
 
+        self.one_to_many :agent_record_control, :class => "AgentRecordControl"
+
+        self.def_nested_record(:the_property => :agent_record_controls,
+                               :contains_records_of_type => :agent_record_control,
+                               :corresponding_to_association => :agent_record_control)
+
+
 
         self.one_to_many :date, :class => "ASDate"
-
 
         self.def_nested_record(:the_property => :dates_of_existence,
                                :contains_records_of_type => :date,

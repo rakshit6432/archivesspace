@@ -7,7 +7,11 @@
 
     "properties" => {
       "primary_identifier" => {"type" => "boolean", "ifmissing" => "error"},
-      "record_identifier" => {"type" => "string", "maxLength" => 65000, "ifmissing" => "error"},
+      "record_identifier" => {
+        "type" => "string", 
+        "maxLength" => 65000, 
+        "ifmissing" => "error"
+      },
       "source_enum" => {
         "type" => "string",
         "dynamic_enum" => "source_enum", 
@@ -16,8 +20,12 @@
       "identifier_type_enum" => {
         "type" => "string",
         "dynamic_enum" => "identifier_type_enum", 
-        "default" => ""
-      }
+        "required" => false
+      },
+      "agent_person_id"           => {"type" => "integer", "required" => false},
+      "agent_family_id"           => {"type" => "integer", "required" => false},
+      "agent_corporate_entity_id" => {"type" => "integer", "required" => false},
+      "agent_software_id"         => {"type" => "integer", "required" => false}
     }
   }
 }

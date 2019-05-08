@@ -14,7 +14,6 @@
         "ifmissing" => "error",
         "minItems" => 1
       },
-
       "display_name" => {
         "type" => "JSONModel(:name_person) object",
         "readonly" => true

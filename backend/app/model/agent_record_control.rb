@@ -4,11 +4,6 @@ class AgentRecordControl < Sequel::Model(:agent_record_control)
 
   set_model_scope :global
 
-  one_to_one :agent_person
-  one_to_one :agent_family
-  one_to_one :agent_corporate_entity
-  one_to_one :agent_software
-
   # validations:
   # must be linked to one agent type
 

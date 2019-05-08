@@ -58,7 +58,7 @@ module ASModel
     # subrecord was given, use the existing object), then associate those
     # subrecords with the main record.
     def apply_nested_records(json, new_record = false)
-
+      
       self.remove_nested_records if !new_record
 
       self.class.nested_records.each do |nested_record|
