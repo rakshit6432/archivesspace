@@ -30,6 +30,18 @@
         "items" => {"type" => "JSONModel(:agent_record_control) object"}
       },
 
+      "agent_alternate_sets" => {
+        "required" => false,
+        "type" => "array",
+        "items" => {"type" => "JSONModel(:agent_alternate_set) object"}
+      },
+
+      "agent_conventions_declarations" => {
+        "required" => false,
+        "type" => "array",
+        "items" => {"type" => "JSONModel(:agent_conventions_declaration) object"}
+      },
+
       "linked_agent_roles" => {
         "type" => "array",
         "items" => {"type" => "string"},

@@ -28,6 +28,8 @@ Sequel.migration do
     end
 
     create_table(:agent_alternate_set) do
+      primary_key :id
+
       Integer :file_version_xlink_actuate_attribute_id, :null => true
       Integer :file_version_xlink_show_attribute_id, :null => true
 
@@ -43,6 +45,8 @@ Sequel.migration do
     end
 
     create_table(:agent_conventions_declaration) do
+      primary_key :id
+
       Integer :convention_enum_id, :null => false
       Integer :file_version_xlink_actuate_attribute_id, :null => true
       Integer :file_version_xlink_show_attribute_id, :null => true
@@ -59,6 +63,8 @@ Sequel.migration do
     end
 
     create_table(:agent_other_agency_codes) do
+      primary_key :id
+
       Integer :agency_code_type_enum_id, :null => false
 
       String :maintenance_agency, :null => false
@@ -68,6 +74,8 @@ Sequel.migration do
     end
 
     create_table(:agent_maintenance_history) do
+      primary_key :id
+
       Integer :maintenance_event_type_enum_id, :null => false
       Integer :maintenance_agent_type_enum_id, :null => false
 
@@ -80,6 +88,8 @@ Sequel.migration do
     end
 
     create_table(:agent_record_identifier) do
+      primary_key :id
+
       Integer :identifier_type_enum_id, :null => false
       Integer :source_enum_id, :null => false
 
@@ -92,6 +102,8 @@ Sequel.migration do
     end
 
     create_table(:agent_sources) do
+      primary_key :id
+      
       String :source_entry, :null => true
       String :descriptive_note, :null => true
       String :file_uri, :null => true

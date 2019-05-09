@@ -9,7 +9,7 @@
       "convention_enum" => {
         "type" => "string",
         "dynamic_enum" => "convention_enum",
-        "ifmissing" => "error"
+        "required" => true
       },
       "citation" => {"type" => "string", "maxLength" => 65000, "ifmissing" => "error"},
       "descriptive_note" => {"type" => "string", "maxLength" => 65000},

@@ -305,6 +305,17 @@ module AgentManager
                                :contains_records_of_type => :agent_record_control,
                                :corresponding_to_association => :agent_record_control)
 
+        self.one_to_many :agent_alternate_set, :class => "AgentAlternateSet"
+
+        self.def_nested_record(:the_property => :agent_alternate_sets,
+                               :contains_records_of_type => :agent_alternate_set,
+                               :corresponding_to_association => :agent_alternate_set)
+
+        self.one_to_many :agent_conventions_declaration, :class => "AgentConventionsDeclaration"
+
+        self.def_nested_record(:the_property => :agent_conventions_declarations,
+                               :contains_records_of_type => :agent_conventions_declaration,
+                               :corresponding_to_association => :agent_conventions_declaration)
 
 
         self.one_to_many :date, :class => "ASDate"
