@@ -61,4 +61,24 @@ describe 'Software agent controller' do
 
   end
 
+  it "creates agent subrecords if appropriate" do
+    agent_with_subrecs = build(:json_agent_software_full_subrec)  
+
+    url = URI("#{JSONModel::HTTP.backend_url}/agents/software")
+    response = JSONModel::HTTP.post_json(url, agent_with_subrecs.to_json)
+
+    json_response = ASUtils.json_parse(response.body)
+
+    expect(json_response["status"]).to eq("Created")
+    agent_id = json_response["id"]
+
+    expect(AgentRecordControl.where(:agent_software_id => agent_id).count).to eq(1)
+    expect(AgentAlternateSet.where(:agent_software_id => agent_id).count).to eq(1)
+    expect(AgentConventionsDeclaration.where(:agent_software_id => agent_id).count).to eq(1)
+    expect(AgentSources.where(:agent_software_id => agent_id).count).to eq(1)
+    expect(AgentOtherAgencyCodes.where(:agent_software_id => agent_id).count).to eq(1)
+    expect(AgentMaintenanceHistory.where(:agent_software_id => agent_id).count).to eq(1)
+    expect(AgentRecordIdentifier.where(:agent_software_id => agent_id).count).to eq(1)
+  end
+
 end

@@ -128,4 +128,24 @@ describe 'Person agent controller' do
 
     expect(agent.names[0]['use_dates'].length).to eq(1)
   end
+
+  it "creates agent subrecords if appropriate" do
+    agent_with_subrecs = build(:json_agent_person_full_subrec)  
+
+    url = URI("#{JSONModel::HTTP.backend_url}/agents/people")
+    response = JSONModel::HTTP.post_json(url, agent_with_subrecs.to_json)
+
+    json_response = ASUtils.json_parse(response.body)
+
+    expect(json_response["status"]).to eq("Created")
+    agent_id = json_response["id"]
+
+    expect(AgentRecordControl.where(:agent_person_id => agent_id).count).to eq(1)
+    expect(AgentAlternateSet.where(:agent_person_id => agent_id).count).to eq(1)
+    expect(AgentConventionsDeclaration.where(:agent_person_id => agent_id).count).to eq(1)
+    expect(AgentSources.where(:agent_person_id => agent_id).count).to eq(1)
+    expect(AgentOtherAgencyCodes.where(:agent_person_id => agent_id).count).to eq(1)
+    expect(AgentMaintenanceHistory.where(:agent_person_id => agent_id).count).to eq(1)
+    expect(AgentRecordIdentifier.where(:agent_person_id => agent_id).count).to eq(1)
+  end
 end
