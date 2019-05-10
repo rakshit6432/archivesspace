@@ -106,8 +106,8 @@ FactoryBot.define do
     end
 
     factory :agent_record_control do
-      maintenence_status_enum { "new" }
-      maintenence_agency { generate(:alphanumstr) }
+      maintenance_status_enum { "new" }
+      maintenance_agency { generate(:alphanumstr) }
       agency_name { generate(:alphanumstr) }
       maintenance_agency_note { generate(:alphanumstr) }
       language { generate(:alphanumstr) }
@@ -151,12 +151,12 @@ FactoryBot.define do
 
     factory :agent_other_agency_codes do
       agency_code_type_enum { "oclc"}
-      maintenence_agency { generate(:alphanumstr) }
+      maintenance_agency { generate(:alphanumstr) }
     end
 
-    factory :agent_maintenence_history do
-      maintenence_event_type_enum { "oclc"}
-      maintenence_agent_type_enum { "oclc"}
+    factory :agent_maintenance_history do
+      maintenance_event_type_enum { "oclc"}
+      maintenance_agent_type_enum { "oclc"}
       event_date { generate(:yyyy_mm_dd) }
       agent { generate(:alphanumstr) }
       descriptive_note { generate(:alphanumstr) }
