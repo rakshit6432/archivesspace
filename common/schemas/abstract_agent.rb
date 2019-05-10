@@ -42,6 +42,30 @@
         "items" => {"type" => "JSONModel(:agent_conventions_declaration) object"}
       },
 
+      "agent_other_agency_codes" => {
+        "required" => false,
+        "type" => "array",
+        "items" => {"type" => "JSONModel(:agent_other_agency_codes) object"}
+      },
+
+      "agent_maintenance_histories" => {
+        "required" => false,
+        "type" => "array",
+        "items" => {"type" => "JSONModel(:agent_maintenance_history) object"}
+      },
+
+      "agent_record_identifiers" => {
+        "required" => false,
+        "type" => "array",
+        "items" => {"type" => "JSONModel(:agent_record_identifier) object"}
+      },
+
+      "agent_sources" => {
+        "required" => false,
+        "type" => "array",
+        "items" => {"type" => "JSONModel(:agent_sources) object"}
+      },
+
       "linked_agent_roles" => {
         "type" => "array",
         "items" => {"type" => "string"},

@@ -15,12 +15,12 @@
       "source_enum" => {
         "type" => "string",
         "dynamic_enum" => "source_enum", 
-        "ifmissing" => "error"
+        "required" => true
       },
       "identifier_type_enum" => {
         "type" => "string",
         "dynamic_enum" => "identifier_type_enum", 
-        "required" => false
+        "required" => true
       },
       "agent_person_id"           => {"type" => "integer", "required" => false},
       "agent_family_id"           => {"type" => "integer", "required" => false},

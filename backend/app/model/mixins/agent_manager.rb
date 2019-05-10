@@ -284,14 +284,11 @@ module AgentManager
       def register_agent_type(opts)
         AgentManager.register_agent_type(self, opts)
 
-
-
         self.one_to_many my_agent_type[:name_type]
 
         self.def_nested_record(:the_property => :names,
                                :contains_records_of_type => my_agent_type[:name_type],
                                :corresponding_to_association => my_agent_type[:name_type])
-
 
         self.one_to_many :agent_contact
 
@@ -317,6 +314,29 @@ module AgentManager
                                :contains_records_of_type => :agent_conventions_declaration,
                                :corresponding_to_association => :agent_conventions_declaration)
 
+        self.one_to_many :agent_other_agency_codes, :class => "AgentOtherAgencyCodes"
+
+        self.def_nested_record(:the_property => :agent_other_agency_codes,
+                               :contains_records_of_type => :agent_other_agency_codes,
+                               :corresponding_to_association => :agent_other_agency_codes)
+
+        self.one_to_many :agent_maintenance_history, :class => "AgentMaintenanceHistory"
+
+        self.def_nested_record(:the_property => :agent_maintenance_histories,
+                               :contains_records_of_type => :agent_maintenance_history,
+                               :corresponding_to_association => :agent_maintenance_history)
+
+        self.one_to_many :agent_record_identifier, :class => "AgentRecordIdentifier"
+
+        self.def_nested_record(:the_property => :agent_record_identifiers,
+                               :contains_records_of_type => :agent_record_identifier,
+                               :corresponding_to_association => :agent_record_identifier)
+
+        self.one_to_many :agent_sources, :class => "AgentSources"
+
+        self.def_nested_record(:the_property => :agent_sources,
+                               :contains_records_of_type => :agent_sources,
+                               :corresponding_to_association => :agent_sources)     
 
         self.one_to_many :date, :class => "ASDate"
 
