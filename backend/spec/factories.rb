@@ -105,7 +105,7 @@ FactoryBot.define do
       accession_date { generate(:yyyy_mm_dd) }
     end
 
-    factory :agent_record_control do
+    factory :agent_record_control, class: JSONModel(:agent_record_control) do
       maintenance_status_enum { "new" }
       maintenance_agency { generate(:alphanumstr) }
       agency_name { generate(:alphanumstr) }
@@ -115,7 +115,7 @@ FactoryBot.define do
       language_note { generate(:alphanumstr) }
     end
 
-    factory :agent_alternate_set do
+    factory :agent_alternate_set, class: JSONModel(:agent_alternate_set) do
       file_version_xlink_actuate_attribute { "other"}
       file_version_xlink_show_attribute { "other" }
       set_component { generate(:alphanumstr) }
@@ -126,7 +126,7 @@ FactoryBot.define do
       last_verified_date { generate(:yyyy_mm_dd) }
     end
 
-    factory :agent_conventions_declaration do
+    factory :agent_conventions_declaration, class: JSONModel(:agent_conventions_declaration) do
       file_version_xlink_actuate_attribute { "other"}
       file_version_xlink_show_attribute { "other" }
       convention_enum { "aacr" }
@@ -138,7 +138,7 @@ FactoryBot.define do
       last_verified_date { generate(:yyyy_mm_dd) }
     end
 
-    factory :agent_sources do
+    factory :agent_sources, class: JSONModel(:agent_sources) do
       file_version_xlink_actuate_attribute { "other"}
       file_version_xlink_show_attribute { "other" }
       descriptive_note { generate(:alphanumstr) }
@@ -149,21 +149,21 @@ FactoryBot.define do
       last_verified_date { generate(:yyyy_mm_dd) }
     end
 
-    factory :agent_other_agency_codes do
+    factory :agent_other_agency_codes, class: JSONModel(:agent_other_agency_codes) do
       agency_code_type_enum { "oclc"}
       maintenance_agency { generate(:alphanumstr) }
     end
 
-    factory :agent_maintenance_history do
-      maintenance_event_type_enum { "oclc"}
-      maintenance_agent_type_enum { "oclc"}
+    factory :agent_maintenance_history, class: JSONModel(:agent_maintenance_history) do
+      maintenance_event_type_enum { "created"}
+      maintenance_agent_type_enum { "human"}
       event_date { generate(:yyyy_mm_dd) }
       agent { generate(:alphanumstr) }
       descriptive_note { generate(:alphanumstr) }
     end
 
-    factory :agent_record_identifier do
-      primary_identifier { rand(10000000) }
+    factory :agent_record_identifier, class: JSONModel(:agent_record_identifier) do
+      primary_identifier { true }
       record_identifier { generate(:alphanumstr) }
       source_enum { "naf"}
       identifier_type_enum { "loc"}
@@ -271,6 +271,59 @@ FactoryBot.define do
     level { generate(:level) }
     title { "Archival Object #{generate(:generic_title)}" }
     resource { {'ref' => create(:json_resource_nohtml).uri} }
+  end
+
+  factory :json_agent_person_full_subrec, class: JSONModel(:agent_person) do
+    agent_type { 'agent_person' }
+    names { [build(:json_name_person)] }
+    dates_of_existence { [build(:json_date, :label => 'existence')] }
+    agent_record_controls { [build(:agent_record_control)] }
+    agent_alternate_sets { [build(:agent_alternate_set)] }
+    agent_conventions_declarations { [build(:agent_conventions_declaration)] }
+    agent_sources { [build(:agent_sources)] }
+    agent_other_agency_codes { [build(:agent_other_agency_codes)] }
+    agent_maintenance_histories { [build(:agent_maintenance_history)] }
+    agent_record_identifiers { [build(:agent_record_identifier)] }
+  end
+
+  factory :json_agent_corporate_entity_full_subrec, class: JSONModel(:agent_corporate_entity) do
+    agent_type { 'agent_corporate_entity' }
+    names { [build(:json_name_corporate_entity)] }
+    agent_contacts { [build(:json_agent_contact)] }
+    dates_of_existence { [build(:json_date, :label => 'existence')] }
+    agent_record_controls { [build(:agent_record_control)] }
+    agent_alternate_sets { [build(:agent_alternate_set)] }
+    agent_conventions_declarations { [build(:agent_conventions_declaration)] }
+    agent_sources { [build(:agent_sources)] }
+    agent_other_agency_codes { [build(:agent_other_agency_codes)] }
+    agent_maintenance_histories { [build(:agent_maintenance_history)] }
+    agent_record_identifiers { [build(:agent_record_identifier)] }
+  end
+
+  factory :json_agent_software_full_subrec, class: JSONModel(:agent_software) do
+    agent_type { 'agent_software' }
+    names { [build(:json_name_software)] }
+    dates_of_existence { [build(:json_date, :label => 'existence')] }
+    agent_record_controls { [build(:agent_record_control)] }
+    agent_alternate_sets { [build(:agent_alternate_set)] }
+    agent_conventions_declarations { [build(:agent_conventions_declaration)] }
+    agent_sources { [build(:agent_sources)] }
+    agent_other_agency_codes { [build(:agent_other_agency_codes)] }
+    agent_maintenance_histories { [build(:agent_maintenance_history)] }
+    agent_record_identifiers { [build(:agent_record_identifier)] }
+  end
+
+  factory :json_agent_family_full_subrec, class: JSONModel(:agent_family) do
+    agent_type { 'agent_family' }
+    names { [build(:json_name_family)] }
+    dates_of_existence { [build(:json_date, :label => 'existence')] }
+    agent_record_controls { [build(:agent_record_control)] }
+    agent_alternate_sets { [build(:agent_alternate_set)] }
+    agent_conventions_declarations { [build(:agent_conventions_declaration)] }
+    agent_sources { [build(:agent_sources)] }
+    agent_other_agency_codes { [build(:agent_other_agency_codes)] }
+    agent_maintenance_histories { [build(:agent_maintenance_history)] }
+    agent_record_identifiers { [build(:agent_record_identifier)] }
   end
 
   factory :json_archival_object_normal, class: JSONModel(:archival_object) do

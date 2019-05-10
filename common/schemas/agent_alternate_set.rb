@@ -22,7 +22,7 @@
       "xlink_title_attribute" => {"type" => "string", "maxLength" => 65000},
       "xlink_role_attribute" => {"type" => "string", "maxLength" => 65000},
       "last_verified_date" => {
-        "type" => "JSONModel(:date) object",
+        "type" => "date-time",
         "required" => false
       },
       "agent_person_id"           => {"type" => "integer", "required" => false},
