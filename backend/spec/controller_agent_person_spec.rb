@@ -129,7 +129,7 @@ describe 'Person agent controller' do
     expect(agent.names[0]['use_dates'].length).to eq(1)
   end
 
-  it "creates agent subrecords if appropriate" do
+  it "creates agent subrecords on POST if appropriate" do
     agent_with_subrecs = build(:json_agent_person_full_subrec)  
 
     url = URI("#{JSONModel::HTTP.backend_url}/agents/people")
