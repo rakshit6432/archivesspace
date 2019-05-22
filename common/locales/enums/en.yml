@@ -1,5 +1,19 @@
 en:
   enumerations:
+    date_type_enum:
+      single: Single
+      range: Range
+    date_role_enum:
+      begin: Begin
+      end: End
+    begin_date_standardized_type_enum:
+      standard: Standard
+      not_before: Not Before
+      not_after: Not After      
+    end_date_standardized_type_enum:
+      standard: Standard
+      not_before: Not Before
+      not_after: Not After      
     maintenance_status_enum:
       new: New
       upgraded: Upgraded

@@ -1,5 +1,19 @@
 ﻿es:
   enumerations:
+    date_type_enum:
+      single: Soltero
+      range: Distancia
+    date_role_enum:
+      begin: Empezar
+      end: Fin
+    begin_date_standardized_type_enum:
+      standard: Estándar
+      not_before: No antes
+      not_after: No después de
+    end_date_standardized_type_enum:
+      standard: Estándar
+      not_before: No antes
+      not_after: No después de 
     maintenance_status_enum:
       new: Nuevo
       upgraded: Actualizado
