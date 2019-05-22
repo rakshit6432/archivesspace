@@ -1,5 +1,19 @@
 ja:
   enumerations:
+    date_type_enum:
+      single: シングル
+      range: 範囲
+    date_role_enum:
+      begin: ベギン
+      end: 終わり
+    begin_date_standardized_type_enum:
+      standard: 標準
+      not_before: 前ではない
+      not_after: 後ではない
+    end_date_standardized_type_enum:
+      standard: 標準
+      not_before: 前ではない
+      not_after: 後ではない
     maintenance_status_enum:
       new: 新しい
       upgraded: アップグレード済み
