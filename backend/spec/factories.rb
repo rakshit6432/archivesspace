@@ -115,6 +115,36 @@ FactoryBot.define do
       language_note { generate(:alphanumstr) }
     end
 
+    factory :agent_date_single_expr, class: JSONModel(:agent_date) do
+      date_label { "creation" }
+      date_type_enum { "single" }
+      date_role_enum { "begin" }
+      begin_date_expression { "Yesterday" }
+    end
+
+    factory :agent_date_range_expr, class: JSONModel(:agent_date) do
+      date_label { "creation" }
+      date_type_enum { "range" }
+      date_role_enum { "begin" }
+      begin_date_expression { "Yesterday" }
+      end_date_expression { "Tomorrow" }
+    end
+
+    factory :agent_date_single_std, class: JSONModel(:agent_date) do
+      date_label { "creation" }
+      date_type_enum { "single" }
+      date_role_enum { "begin" }
+      begin_date_standardized { Time.now }
+    end
+
+    factory :agent_date_range_std, class: JSONModel(:agent_date) do
+      date_label { "creation" }
+      date_type_enum { "single" }
+      date_role_enum { "begin" }
+      begin_date_standardized { "2018-01-01" }
+      end_date_standardized { "2018-03-01"}
+    end
+
     factory :agent_alternate_set, class: JSONModel(:agent_alternate_set) do
       file_version_xlink_actuate_attribute { "other"}
       file_version_xlink_show_attribute { "other" }
