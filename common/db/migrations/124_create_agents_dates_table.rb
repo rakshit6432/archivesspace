@@ -8,7 +8,7 @@ Sequel.migration do
 
       Integer :date_label_id, :null => false # existing enum date_label
       Integer :date_type_enum_id, :null => false
-      Integer :date_role_enum_id, :null => false
+      Integer :date_role_enum_id, :null => true
 
       String :begin_date_expression, :null => true
       DateTime :begin_date_standardized, :null => true
