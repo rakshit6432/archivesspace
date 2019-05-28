@@ -3,20 +3,24 @@ require_relative 'utils'
 Sequel.migration do
 
   up do
-    create_table(:agent_date) do
+    create_table(:structured_date_label) do
       primary_key :id
 
       Integer :date_label_id, :null => false # existing enum date_label
       Integer :date_type_enum_id, :null => false
-      Integer :date_role_enum_id, :null => true
 
-      String :begin_date_expression, :null => true
-      DateTime :begin_date_standardized, :null => true
-      Integer :begin_date_standardized_type_enum_id, :null => true
+      apply_mtime_columns
+      Integer :lock_version, :default => 0, :null => false
+    end
 
-      String :end_date_expression, :null => true
-      DateTime :end_date_standardized, :null => true
-      Integer :end_date_standardized_type_enum_id, :null => true
+    create_table(:structured_date) do
+      primary_key :id
+      
+      Integer :structured_date_label_id, :null => false
+      Integer :date_role_enum_id, :null => false
+      String :date_expression, :null => true
+      DateTime :date_standardized, :null => true
+      Integer :date_standardized_type_enum_id, :null => true
 
       Integer :date_certainty_id, :null => true # existing enum date_certainty
       Integer :date_era_id, :null => true # existing enum date_era
