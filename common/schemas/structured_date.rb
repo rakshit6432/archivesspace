@@ -8,7 +8,7 @@
       "date_role_enum" => {"type" => "string", "dynamic_enum" => "date_role_enum" },
 
       "date_expression" => {"type" => "string", "maxLength" => 255},
-      "date_standardized" => {"type" => "date-time", "maxLength" => 255},
+      "date_standardized" => {"type" => "string", "maxLength" => 255},
       "date_standardized_type_enum" => {"type" => "string", "dynamic_enum" => "begin_date_standardized_type_enum", "required" => "false"},
   
       "date_certainty" => {"type" => "string", "dynamic_enum" => "date_certainty", "required" => "false"},

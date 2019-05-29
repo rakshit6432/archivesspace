@@ -19,7 +19,7 @@ Sequel.migration do
       Integer :structured_date_label_id, :null => false
       Integer :date_role_enum_id, :null => false
       String :date_expression, :null => true
-      DateTime :date_standardized, :null => true
+      String :date_standardized, :null => true
       Integer :date_standardized_type_enum_id, :null => true
 
       Integer :date_certainty_id, :null => true # existing enum date_certainty
