@@ -67,3 +67,13 @@ def create_enum(name, values, default = nil, editable = false, opts = {})
     self[:enumeration].where(:id => id).update(:default_value => id_of_default)
   end
 end
+
+def create_structured_date(r, role, expr, standardized)
+  #TODO: look up the right value of the role from the enum values table
+  self[:structured_date].insert(:date_role_enum_id => 4,
+                                :date_expression => expr,
+                                :date_standardized => standardized,
+                                :date_certainty_id => r[:certainty_id],
+                                :date_era_id => r[:era_id],
+                                :date_calendar_id => r[:calendar_id])
+end

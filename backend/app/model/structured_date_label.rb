@@ -10,6 +10,10 @@ class StructuredDateLabel < Sequel::Model(:structured_date_label)
   def_nested_record(:the_property => :structured_dates,
                     :contains_records_of_type => :structured_date,
                     :corresponding_to_association => :structured_dates)
+
+#  define_relationship(:name => :structured_date_agent,
+#                      :json_property => 'linked_records',
+#                      :contains_references_to_types => proc {[Accession, Resource]})
       
   plugin :nested_attributes
   nested_attributes :structured_dates
