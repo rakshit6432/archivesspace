@@ -9,7 +9,7 @@
 
       "date_expression" => {"type" => "string", "maxLength" => 255},
       "date_standardized" => {"type" => "string", "maxLength" => 255},
-      "date_standardized_type_enum" => {"type" => "string", "dynamic_enum" => "begin_date_standardized_type_enum", "required" => "false"},
+      "date_standardized_type_enum" => {"type" => "string", "dynamic_enum" => "date_standardized_type_enum", "required" => "false"},
   
       "date_certainty" => {"type" => "string", "dynamic_enum" => "date_certainty", "required" => "false"},
       "date_era" => {"type" => "string", "dynamic_enum" => "date_era", "required" => "false"},

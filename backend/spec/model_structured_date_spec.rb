@@ -160,6 +160,84 @@ describe 'Structured Date model' do
     expect(sdl.valid?).to eq(true)
   end
 
+  it "is valid if standardized date is in YYY" do
+    sdl = StructuredDateLabel.new(:date_label => "other", 
+                                  :date_type_enum => "single",
+                                  :structured_dates_attributes => [
+                                    {:date_role_enum => "begin",
+                                    :date_standardized => "199" }
+                                  ])
+
+    sdl.save
+  
+    expect(sdl.valid?).to eq(true)
+  end
+
+  it "is valid if standardized date is in YY" do
+    sdl = StructuredDateLabel.new(:date_label => "other", 
+                                  :date_type_enum => "single",
+                                  :structured_dates_attributes => [
+                                    {:date_role_enum => "begin",
+                                    :date_standardized => "19" }
+                                  ])
+
+    sdl.save
+  
+    expect(sdl.valid?).to eq(true)
+  end
+
+  it "is valid if standardized date is in Y" do
+    sdl = StructuredDateLabel.new(:date_label => "other", 
+                                  :date_type_enum => "single",
+                                  :structured_dates_attributes => [
+                                    {:date_role_enum => "begin",
+                                    :date_standardized => "1" }
+                                  ])
+
+    sdl.save
+  
+    expect(sdl.valid?).to eq(true)
+  end
+
+  it "is valid if standardized date is in YYY-MM" do
+    sdl = StructuredDateLabel.new(:date_label => "other", 
+                                  :date_type_enum => "single",
+                                  :structured_dates_attributes => [
+                                    {:date_role_enum => "begin",
+                                    :date_standardized => "199-12" }
+                                  ])
+
+    sdl.save
+  
+    expect(sdl.valid?).to eq(true)
+  end
+
+  it "is valid if standardized date is in YY-MM" do
+    sdl = StructuredDateLabel.new(:date_label => "other", 
+                                  :date_type_enum => "single",
+                                  :structured_dates_attributes => [
+                                    {:date_role_enum => "begin",
+                                    :date_standardized => "19-04" }
+                                  ])
+
+    sdl.save
+  
+    expect(sdl.valid?).to eq(true)
+  end
+
+  it "is valid if standardized date is in Y-MM" do
+    sdl = StructuredDateLabel.new(:date_label => "other", 
+                                  :date_type_enum => "single",
+                                  :structured_dates_attributes => [
+                                    {:date_role_enum => "begin",
+                                    :date_standardized => "1-06" }
+                                  ])
+
+    sdl.save
+  
+    expect(sdl.valid?).to eq(true)
+  end
+
   it "is invalid if standardized date is not in YYYY, YYYY-MM, YYYY-MM-DD format" do
     sdl = StructuredDateLabel.new(:date_label => "other", 
                                   :date_type_enum => "single",

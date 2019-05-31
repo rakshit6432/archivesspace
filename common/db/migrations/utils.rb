@@ -38,6 +38,21 @@ def create_editable_enum(name, values, default = nil, opts = {})
   create_enum(name, values, default, true, opts)
 end
 
+def get_enum_value_id(enum_name, enum_value)
+  enum_id = self[:enumeration].filter(:name => enum_name).select(:id).first[:id]
+
+  if enum_id
+    enum_value_id = self[:enumeration_value].filter(:value => enum_value, 
+                                                    :enumeration_id => enum_id)
+                                            .select(:id)
+                                            .first[:id]
+
+    enum_value_id = -1 unless enum_value_id
+    return enum_value_id
+  else
+    return -1
+  end
+end
 
 def create_enum(name, values, default = nil, editable = false, opts = {})
   id = self[:enumeration].insert(:name => name,
@@ -68,12 +83,90 @@ def create_enum(name, values, default = nil, editable = false, opts = {})
   end
 end
 
-def create_structured_date(r, role, expr, standardized)
-  #TODO: look up the right value of the role from the enum values table
-  self[:structured_date].insert(:date_role_enum_id => 4,
-                                :date_expression => expr,
-                                :date_standardized => standardized,
-                                :date_certainty_id => r[:certainty_id],
-                                :date_era_id => r[:era_id],
-                                :date_calendar_id => r[:calendar_id])
+def fits_structured_date_format?(expr)
+  matches_y           = (expr =~ /^[\d]{1}$/) == 0
+  matches_y_mm        = (expr =~ /^[\d]{1}-[\d]{2}$/) == 0
+  matches_yy          = (expr =~ /^[\d]{2}$/) == 0
+  matches_yy_mm       = (expr =~ /^[\d]{2}-[\d]{2}$/) == 0
+  matches_yyy         = (expr =~ /^[\d]{3}$/) == 0
+  matches_yyy_mm      = (expr =~ /^[\d]{3}-[\d]{2}$/) == 0
+  matches_yyyy        = (expr =~ /^[\d]{4}$/) == 0
+  matches_yyyy_mm     = (expr =~ /^[\d]{4}-[\d]{2}$/) == 0
+  matches_yyyy_mm_dd  = (expr =~ /^[\d]{4}-[\d]{2}-[\d]{2}$/) == 0
+  matches_mm_yyyy     = (expr =~ /^[\d]{2}-[\d]{4}$/) == 0
+  matches_mm_dd_yyyy = (expr =~ /^[\d]{4}-[\d]{2}-[\d]{2}$/) == 0
+
+  return matches_yyyy || matches_yyyy_mm || matches_yyyy_mm_dd || matches_yyy || matches_yy || matches_y || matches_yyy_mm || matches_yy_mm || matches_y_mm || matches_mm_yyyy || matches_mm_dd_yyyy
+end
+
+def create_structured_dates(r, expr_begin, expr_end, std_begin, std_end, rel)
+  #TODO: look up the right value of the role and type from the enum values table
+  role_id_begin = 42
+  role_id_end = 43
+
+  type_id_single = 10
+  type_id_range = 11
+
+  type_id = expr_end || std_end ? type_id_range : type_id_single
+
+  l = self[:structured_date_label].insert(:date_label_id => r[:label_id],
+                                          :date_type_enum_id => type_id,
+                                          :create_time => Time.now,
+                                          :system_mtime => Time.now,
+                                          :user_mtime => Time.now)
+
+  if expr_begin || std_begin
+    self[:structured_date].insert(:date_role_enum_id => role_id_begin,
+                                  :date_expression => expr_begin,
+                                  :date_standardized => std_begin,
+                                  :date_certainty_id => r[:certainty_id],
+                                  :date_era_id => r[:era_id],
+                                  :date_calendar_id => r[:calendar_id],
+                                  :structured_date_label_id => l,
+                                  :create_time => Time.now,
+                                  :system_mtime => Time.now,
+                                  :user_mtime => Time.now)
+  end
+
+  if std_end # expr_end || 
+    self[:structured_date].insert(:date_role_enum_id => role_id_end,
+                                  :date_expression => expr_end,
+                                  :date_standardized => std_end,
+                                  :date_certainty_id => r[:certainty_id],
+                                  :date_era_id => r[:era_id],
+                                  :date_calendar_id => r[:calendar_id],
+                                  :structured_date_label_id => l,
+                                  :create_time => Time.now,
+                                  :system_mtime => Time.now,
+                                  :user_mtime => Time.now)
+  end
+
+  # create records in join tables
+  if rel == :agent_person_id || rel == :agent_family_id || rel == :agent_corporate_entity_id || rel == :agent_software_id
+
+      self[:structured_date_agent_rlshp].insert(rel => r[rel],
+                                                :structured_date_label_id => l,
+                                                :create_time => Time.now,
+                                                :system_mtime => Time.now,
+                                                :user_mtime => Time.now)
+
+  elsif rel == :name_person_id || rel == :name_family_id || rel == :name_corporate_entity_id || rel == :name_software_id
+
+     self[:structured_date_name_rlshp].insert(rel => r[rel],
+                              :structured_date_label_id => l,
+                              :create_time => Time.now,
+                              :system_mtime => Time.now,
+                              :user_mtime => Time.now)
+
+  elsif rel == :related_agents_rlshp_id
+
+     self[:structured_date_name_rlshp].insert(rel => r[rel],
+                              :structured_date_label_id => l,
+                              :create_time => Time.now,
+                              :system_mtime => Time.now,
+                              :user_mtime => Time.now)
+  end
+
+
+
 end
