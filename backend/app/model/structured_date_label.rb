@@ -21,14 +21,13 @@ class StructuredDateLabel < Sequel::Model(:structured_date_label)
   def validate
     count = self.structured_dates.length
 
+    has_begin = self.structured_dates.inject(false) {|carry, date| carry || date.date_role_enum == "begin"}
+    has_end = self.structured_dates.inject(false) {|carry, date| carry || date.date_role_enum == "end"}
+
     if self.date_type_enum == "single"
-      errors.add(:base, "One date subrecord is required for single dates") unless count == 1
+      errors.add(:base, "At lease one start date subrecord is required for single dates") unless has_begin
+      errors.add(:base, "Single dates should not have end date subrecord") if has_end
     elsif self.date_type_enum == "range"
-      errors.add(:base, "Two date subrecords are required for ranged dates") unless count == 2
-
-      has_begin = self.structured_dates.inject(false) {|carry, date| carry || date.date_role_enum == "begin"}
-      has_end = self.structured_dates.inject(false) {|carry, date| carry || date.date_role_enum == "end"}
-
       errors.add(:base, "Ranged dates require begin and end dates") unless has_end && has_begin
     end
   end 

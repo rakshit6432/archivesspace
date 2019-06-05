@@ -99,15 +99,14 @@ def fits_structured_date_format?(expr)
   return matches_yyyy || matches_yyyy_mm || matches_yyyy_mm_dd || matches_yyy || matches_yy || matches_y || matches_yyy_mm || matches_yy_mm || matches_y_mm || matches_mm_yyyy || matches_mm_dd_yyyy
 end
 
-def create_structured_dates(r, expr_begin, expr_end, std_begin, std_end, rel)
-  #TODO: look up the right value of the role and type from the enum values table
-  role_id_begin = 42
-  role_id_end = 43
+def create_structured_dates(r, std_begin, std_end, rel)
+  #look up the right value of the role and type from the enum values table
+  role_id_begin = get_enum_value_id("date_role_enum", "begin")
+  role_id_end = get_enum_value_id("date_role_enum", "end")
+  type_id_single = get_enum_value_id("date_type_enum", "single")
+  type_id_range = get_enum_value_id("date_type_enum", "range")
 
-  type_id_single = 10
-  type_id_range = 11
-
-  type_id = expr_end || std_end ? type_id_range : type_id_single
+  type_id = std_end ? type_id_range : type_id_single
 
   l = self[:structured_date_label].insert(:date_label_id => r[:label_id],
                                           :date_type_enum_id => type_id,
@@ -115,9 +114,19 @@ def create_structured_dates(r, expr_begin, expr_end, std_begin, std_end, rel)
                                           :system_mtime => Time.now,
                                           :user_mtime => Time.now)
 
-  if expr_begin || std_begin
+  # in all cases, create a begin date record for the expression if one is present
+  if r[:expression]
     self[:structured_date].insert(:date_role_enum_id => role_id_begin,
-                                  :date_expression => expr_begin,
+                                  :date_expression => r[:expression],
+                                  :structured_date_label_id => l,
+                                  :create_time => Time.now,
+                                  :system_mtime => Time.now,
+                                  :user_mtime => Time.now)
+  end
+
+  # create standardized date record for begin if present
+  if std_begin
+    self[:structured_date].insert(:date_role_enum_id => role_id_begin,
                                   :date_standardized => std_begin,
                                   :date_certainty_id => r[:certainty_id],
                                   :date_era_id => r[:era_id],
@@ -128,9 +137,9 @@ def create_structured_dates(r, expr_begin, expr_end, std_begin, std_end, rel)
                                   :user_mtime => Time.now)
   end
 
-  if std_end # expr_end || 
+  # create standardized date record for if present
+  if std_end
     self[:structured_date].insert(:date_role_enum_id => role_id_end,
-                                  :date_expression => expr_end,
                                   :date_standardized => std_end,
                                   :date_certainty_id => r[:certainty_id],
                                   :date_era_id => r[:era_id],
@@ -160,13 +169,10 @@ def create_structured_dates(r, expr_begin, expr_end, std_begin, std_end, rel)
 
   elsif rel == :related_agents_rlshp_id
 
-     self[:structured_date_name_rlshp].insert(rel => r[rel],
+     self[:structured_date_related_agents_rlshp].insert(rel => r[rel],
                               :structured_date_label_id => l,
                               :create_time => Time.now,
                               :system_mtime => Time.now,
                               :user_mtime => Time.now)
   end
-
-
-
 end
