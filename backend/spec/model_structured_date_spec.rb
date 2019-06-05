@@ -8,20 +8,59 @@ describe 'Structured Date model' do
     expect(sdl.valid?).to eq(false)
   end
 
-  it "single date labels should have one subrecord" do
+  it "single date labels can have multiple begin subrecords" do
     sdl = StructuredDateLabel.new(:date_label => "other", 
                                   :date_type_enum => "single",
                                   :structured_dates_attributes => [
                                     {:date_role_enum => "begin",
-                                    :date_expression => "Yesterday"}
-                                  ])
+                                    :date_expression => "Yesterday"},
+                                    {:date_role_enum => "begin",
+                                    :date_standardized => "2019-01-01"},
+                                    ]
+                                  )
 
     sdl.save
   
     expect(sdl.valid?).to eq(true)
   end
 
-  it "ranged date labels should have two subrecords" do
+  it "ranged date labels can have multiple begin subrecords" do
+    sdl = StructuredDateLabel.new(:date_label => "other", 
+                                  :date_type_enum => "range",
+                                  :structured_dates_attributes => [
+                                    {:date_role_enum => "begin",
+                                    :date_expression => "Yesterday"},
+                                    {:date_role_enum => "begin",
+                                    :date_standardized => "2019-01-01"},
+                                    {:date_role_enum => "begin",
+                                    :date_standardized => "2019-01-01"},
+                                    {:date_role_enum => "end",
+                                    :date_standardized => "2019-01-01"},
+                                    {:date_role_enum => "end",
+                                    :date_standardized => "2019-01-01"},
+                                    ]
+                                  )
+
+    sdl.save
+  
+    expect(sdl.valid?).to eq(true)
+  end
+
+  it "single date labels should not have and end date subrecord" do
+    sdl = StructuredDateLabel.new(:date_label => "other", 
+                                  :date_type_enum => "single",
+                                  :structured_dates_attributes => [
+                                    {:date_role_enum => "begin",
+                                    :date_expression => "Yesterday"},
+                                    {:date_role_enum => "end",
+                                    :date_standardized => "2019-01-01"},
+                                    ]
+                                  )
+
+    expect(sdl.valid?).to eq(false)
+  end
+
+  it "ranged date labels should have begin and end subrecords" do
     sdl = StructuredDateLabel.new(:date_label => "other", 
                                   :date_type_enum => "range",
                                   :structured_dates_attributes => [
@@ -36,37 +75,13 @@ describe 'Structured Date model' do
     expect(sdl.valid?).to eq(true)
   end
 
-  it "single date labels with more than one subrecords are invalid" do
-    sdl = StructuredDateLabel.new(:date_label => "other", 
-                                  :date_type_enum => "single",
-                                  :structured_dates_attributes => [
-                                    {:date_role_enum => "begin",
-                                    :date_expression => "Yesterday"},
-                                    {:date_role_enum => "begin",
-                                    :date_expression => "Tomorrow"}
-                                  ])
-
-    expect(sdl.valid?).to eq(false)
-  end
-
-  it "ranged date labels with less than two subrecords are invalid" do
+  it "ranged date labels without begin subrecords are invalid" do
     sdl = StructuredDateLabel.new(:date_label => "other", 
                                   :date_type_enum => "range",
                                   :structured_dates_attributes => [
-                                    {:date_role_enum => "begin",
-                                    :date_expression => "Yesterday"}
-                                  ])
-
-    expect(sdl.valid?).to eq(false)
-  end
-
-  it "ranged date labels with more than two subrecords are invalid" do
-    sdl = StructuredDateLabel.new(:date_label => "other", 
-                                  :date_type_enum => "range",
-                                  :structured_dates_attributes => [
-                                    {:date_role_enum => "begin",
+                                    {:date_role_enum => "end",
                                     :date_expression => "Yesterday"},
-                                    {:date_role_enum => "begin",
+                                    {:date_role_enum => "end",
                                     :date_expression => "Tomorrow"},
                                     {:date_role_enum => "end",
                                     :date_expression => "Tomorrow"}
@@ -75,12 +90,14 @@ describe 'Structured Date model' do
     expect(sdl.valid?).to eq(false)
   end
 
-  it "ranged date labels should have a begin and an end subrecord" do
+  it "ranged date labels without end subrecords are invalid" do
     sdl = StructuredDateLabel.new(:date_label => "other", 
                                   :date_type_enum => "range",
                                   :structured_dates_attributes => [
                                     {:date_role_enum => "begin",
                                     :date_expression => "Yesterday"},
+                                    {:date_role_enum => "begin",
+                                    :date_expression => "Tomorrow"},
                                     {:date_role_enum => "begin",
                                     :date_expression => "Tomorrow"}
                                   ])
@@ -239,6 +256,17 @@ describe 'Structured Date model' do
   end
 
   it "is invalid if standardized date is not in YYYY, YYYY-MM, YYYY-MM-DD format" do
+    sdl = StructuredDateLabel.new(:date_label => "other", 
+                                  :date_type_enum => "single",
+                                  :structured_dates_attributes => [
+                                    {:date_role_enum => "begin",
+                                    :date_standardized => "1995/01/03" }
+                                  ])
+
+    expect(sdl.valid?).to eq(false)
+  end
+
+  it "is invalid if standardized date is not in YYYY, YYYY-MM, YYYY-MM-DD, etc format" do
     sdl = StructuredDateLabel.new(:date_label => "other", 
                                   :date_type_enum => "single",
                                   :structured_dates_attributes => [
