@@ -32,6 +32,11 @@ Sequel.migration do
       # create begin date with expr
       # Maybe we can parse structured date to try to figure out what's in there?
 
+      # date expression only
+      if !r[:begin] && !r[:end] && r[:expression]
+        create_structured_dates(r, nil, nil, rel)
+      end
+
       # begin only
       if r[:begin] && !r[:end]
         if fits_structured_date_format?(r[:begin])
