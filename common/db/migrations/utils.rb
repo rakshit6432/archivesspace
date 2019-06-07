@@ -83,6 +83,7 @@ def create_enum(name, values, default = nil, editable = false, opts = {})
   end
 end
 
+# used in migration 126 for creating structured dates
 def fits_structured_date_format?(expr)
   matches_y           = (expr =~ /^[\d]{1}$/) == 0
   matches_y_mm        = (expr =~ /^[\d]{1}-[\d]{2}$/) == 0
@@ -99,6 +100,7 @@ def fits_structured_date_format?(expr)
   return matches_yyyy || matches_yyyy_mm || matches_yyyy_mm_dd || matches_yyy || matches_yy || matches_y || matches_yyy_mm || matches_yy_mm || matches_y_mm || matches_mm_yyyy || matches_mm_dd_yyyy
 end
 
+# used in migration 126 for creating structured dates
 def create_structured_dates(r, std_begin, std_end, rel)
   #look up the right value of the role and type from the enum values table
   role_id_begin = get_enum_value_id("date_role_enum", "begin")
