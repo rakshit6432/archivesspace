@@ -276,4 +276,38 @@ describe 'Structured Date model' do
 
     expect(sdl.valid?).to eq(false)
   end
+
+  it "is valid if all begin standardized date are chronologically after all end standardized date" do
+    sdl = StructuredDateLabel.new(:date_label => "other", 
+                                  :date_type_enum => "range",
+                                  :structured_dates_attributes => [
+                                    {:date_role_enum => "begin",
+                                    :date_standardized => "1995-01-03" },
+                                    {:date_role_enum => "end",
+                                    :date_standardized => "1995-01-01" },
+                                    {:date_role_enum => "begin",
+                                    :date_standardized => "1995-01-03" },
+                                    {:date_role_enum => "end",
+                                    :date_standardized => "1995-01-01" }
+                                  ])
+
+    expect(sdl.valid?).to eq(false)
+  end
+
+  it "is invalid if any begin standardized date is chronologically after end standardized date" do
+    sdl = StructuredDateLabel.new(:date_label => "other", 
+                                  :date_type_enum => "range",
+                                  :structured_dates_attributes => [
+                                    {:date_role_enum => "begin",
+                                    :date_standardized => "1995-01-03" },
+                                    {:date_role_enum => "end",
+                                    :date_standardized => "1995-01-01" },
+                                    {:date_role_enum => "begin",
+                                    :date_standardized => "1995-01-03" },
+                                    {:date_role_enum => "end",
+                                    :date_standardized => "1993-01-01" }
+                                  ])
+
+    expect(sdl.valid?).to eq(false)
+  end
 end
