@@ -59,6 +59,12 @@
         "type" => "array",
         "items" => {"type" => "JSONModel(:agent_record_identifier) object"}
       },
+      
+      "structured_date_labels" => {
+        "required" => false,
+        "type" => "array",
+        "items" => {"type" => "JSONModel(:structured_date_label) object"}
+      },
 
       "agent_sources" => {
         "required" => false,

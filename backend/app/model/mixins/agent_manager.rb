@@ -57,6 +57,10 @@ module AgentManager
                                  :contains_references_to_types => proc {
                                    base.relationship_dependencies[:linked_agents]
                                  })
+
+        base.define_relationship(:name => :structured_date_agent,
+                                 :json_property => 'structured_date_labels',
+                                 :contains_references_to_types => proc {[StructuredDateLabel]})
       end
     end
 
@@ -337,12 +341,12 @@ module AgentManager
         self.def_nested_record(:the_property => :agent_sources,
                                :contains_records_of_type => :agent_sources,
                                :corresponding_to_association => :agent_sources)     
-
-        self.one_to_many :date, :class => "ASDate"
-
-        self.def_nested_record(:the_property => :dates_of_existence,
-                               :contains_records_of_type => :date,
-                               :corresponding_to_association => :date)
+#
+        #self.one_to_many :structured_date_label, :class => "StructuredDateLabel"
+#
+        #self.def_nested_record(:the_property => :structured_date_labels,
+                               #:contains_records_of_type => :structured_date_label,
+                               #:corresponding_to_association => :structured_date_label)
 
       end
 

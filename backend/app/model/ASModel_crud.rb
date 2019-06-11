@@ -354,6 +354,9 @@ module ASModel
       # Create a new record instance from the JSONModel 'json'.  Also creates any
       # nested record instances that it contains.
       def create_from_json(json, extra_values = {})
+        puts "++++++++++++++++++++++++++++++"
+        puts "in create from json: " + json.inspect
+        
         self.strict_param_setting = false
         values = ASUtils.keys_as_strings(extra_values)
 
@@ -372,6 +375,7 @@ module ASModel
 
         obj.refresh
         obj.create_ark_name if AppConfig[:arks_enabled]
+        
         obj
       end
 

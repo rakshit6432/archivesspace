@@ -8,8 +8,11 @@ module CrudHelpers
 
 
   def handle_create(model, json, opts = {})
+    puts "++++++++++++++++++++++++++++++"
+    puts "in crud_helpers handle create"
     obj = model.create_from_json(json, opts)
 
+    puts obj.inspect
     created_response(obj, json)
   end
 
