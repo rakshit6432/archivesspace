@@ -8,6 +8,8 @@ class ArchivesSpaceService < Sinatra::Base
              [400, :error]) \
   do
     with_record_conflict_reporting(AgentPerson, params[:agent]) do
+      puts "++++++++++++++++++++++++++++++"
+      puts "in controller action"
       handle_create(AgentPerson, params[:agent])
     end
   end

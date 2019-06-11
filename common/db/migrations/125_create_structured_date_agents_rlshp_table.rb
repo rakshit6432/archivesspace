@@ -14,7 +14,8 @@ Sequel.migration do
       Integer :structured_date_label_id, :null => false
 
       apply_mtime_columns
-      Integer :lock_version, :default => 0, :null => false
+      Integer :aspace_relationship_position, :null => true
+      Integer :suppressed, :default => 0, :null => false
     end
 
     # for dates of name use
@@ -28,7 +29,8 @@ Sequel.migration do
       Integer :structured_date_label_id, :null => false
 
       apply_mtime_columns
-      Integer :lock_version, :default => 0, :null => false
+      Integer :aspace_relationship_position, :null => true
+      Integer :suppressed, :default => 0, :null => false
     end
 
     # for agent relationship dates
@@ -39,7 +41,8 @@ Sequel.migration do
       Integer :structured_date_label_id, :null => false
 
       apply_mtime_columns
-      Integer :lock_version, :default => 0, :null => false
+      Integer :aspace_relationship_position, :null => true
+      Integer :suppressed, :default => 0, :null => false
     end
   end
 end
