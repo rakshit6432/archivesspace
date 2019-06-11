@@ -114,7 +114,8 @@ def create_structured_dates(r, std_begin, std_end, rel)
                                           :date_type_enum_id => type_id,
                                           :create_time => Time.now,
                                           :system_mtime => Time.now,
-                                          :user_mtime => Time.now)
+                                          :user_mtime => Time.now,
+                                          rel => r[rel])
 
   # in all cases, create a begin date record for the expression if one is present
   if r[:expression]
@@ -150,31 +151,5 @@ def create_structured_dates(r, std_begin, std_end, rel)
                                   :create_time => Time.now,
                                   :system_mtime => Time.now,
                                   :user_mtime => Time.now)
-  end
-
-  # create records in join tables
-  if rel == :agent_person_id || rel == :agent_family_id || rel == :agent_corporate_entity_id || rel == :agent_software_id
-
-      self[:structured_date_agent_rlshp].insert(rel => r[rel],
-                                                :structured_date_label_id => l,
-                                                :create_time => Time.now,
-                                                :system_mtime => Time.now,
-                                                :user_mtime => Time.now)
-
-  elsif rel == :name_person_id || rel == :name_family_id || rel == :name_corporate_entity_id || rel == :name_software_id
-
-     self[:structured_date_name_rlshp].insert(rel => r[rel],
-                              :structured_date_label_id => l,
-                              :create_time => Time.now,
-                              :system_mtime => Time.now,
-                              :user_mtime => Time.now)
-
-  elsif rel == :related_agents_rlshp_id
-
-     self[:structured_date_related_agents_rlshp].insert(rel => r[rel],
-                              :structured_date_label_id => l,
-                              :create_time => Time.now,
-                              :system_mtime => Time.now,
-                              :user_mtime => Time.now)
   end
 end
