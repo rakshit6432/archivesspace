@@ -181,12 +181,7 @@ module ASModel
 
       # Like JSONModel.parse_reference, but enforce repository restrictions
       def parse_reference(uri, opts)
-        puts "++++++++++++++++++++++++++++++"
-        puts "in parse_referece"
-        puts "uri: " + uri.to_s
         ref = JSONModel.parse_reference(uri, opts)
-
-        puts ref.inspect
 
         return nil if !ref
 

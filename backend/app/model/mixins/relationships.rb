@@ -583,32 +583,17 @@ module Relationships
 
     # Create set of relationships for a given update
     def apply_relationships(obj, json, opts, new_record = false)
-      puts "++++++++++++++++++++++++++++++"
-      puts "in apply_relationships"
-
       delete_existing_relationships(obj) if !new_record
 
       @relationships.each do |relationship_name, relationship_defn|
-        puts "relationship_name: #{relationship_name.to_s}"
-        puts "relationship_defn: #{relationship_defn.inspect}"
-        puts "relationships.inspect: #{@relationships.inspect}"
-
         property_name = relationship_defn.json_property
-
-        puts "property_name: " + property_name.to_s
 
         # If there's no property name, the relationship is just read-only
         next if !property_name
 
         # For each record reference in our JSON data
         ASUtils.as_array(json[property_name]).each_with_index do |reference, idx|
-          
-          puts "reference: " + reference.inspect
           record_type = parse_reference(reference['ref'], opts)
-
-          puts "idx: " + idx.inspect
-          puts "record_type: " + record_type.to_s
-          puts "participating_models: " + relationship_defn.participating_models.inspect
 
           referent_model = relationship_defn.participating_models.find {|model|
             model.my_jsonmodel.record_type == record_type[:type]
