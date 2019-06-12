@@ -60,12 +60,6 @@
         "items" => {"type" => "JSONModel(:agent_record_identifier) object"}
       },
       
-      "structured_date_labels" => {
-        "required" => false,
-        "type" => "array",
-        "items" => {"type" => "JSONModel(:structured_date_label) object"}
-      },
-
       "agent_sources" => {
         "required" => false,
         "type" => "array",
@@ -94,7 +88,10 @@
       "used_within_repositories" => {"type" => "array", "items" => {"type" => "JSONModel(:repository) uri"}, "readonly" => true},
       "used_within_published_repositories" => {"type" => "array", "items" => {"type" => "JSONModel(:repository) uri"}, "readonly" => true},
 
-      "dates_of_existence" => {"type" => "array", "items" => {"type" => "JSONModel(:date) object"}},
+      "dates_of_existence" => {
+        "type" => "array",
+        "items" => {"type" => "JSONModel(:structured_date_label) object"}
+      },
 
       "publish" => {"type" => "boolean"},
 

@@ -238,8 +238,8 @@ module AgentManager
         fields = []
 
         json.dates_of_existence.each do |date|
-          fields << hash_chunk(JSONModel(:date).from_hash(date),
-                               %w(date_type label certainty expression begin end era calendar))
+          fields << hash_chunk(JSONModel(:structured_date_label).from_hash(date),
+                               %w(date_type_enum date_label))
         end
 
         json.agent_contacts.each do |contact|
@@ -341,7 +341,7 @@ module AgentManager
 
         self.one_to_many :structured_date_label, :class => "StructuredDateLabel"
 
-        self.def_nested_record(:the_property => :structured_date_labels,
+        self.def_nested_record(:the_property => :dates_of_existence,
                                :contains_records_of_type => :structured_date_label,
                                :corresponding_to_association => :structured_date_label)
 
