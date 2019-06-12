@@ -102,19 +102,17 @@ describe 'Person agent controller' do
     expect(agent.title).to match(/Jimi Hendrix,.* Mr/)
   end
 
-
   it "allows agents to have dates of existence" do
 
-    date = build(:json_date, :label => "existence")
+    date = build(:json_structured_date_label, :date_label => "existence")
 
     id = create_person({:dates_of_existence => [date]}).id
 
     agent = JSONModel(:agent_person).find(id)
 
     expect(agent.dates_of_existence.length).to eq(1)
-    expect(agent.dates_of_existence[0]["expression"]).to eq(date.expression)
+    expect(agent.dates_of_existence[0]["structured_dates"][0]["date_expression"]).to eq(date["structured_dates"][0]["date_expression"])
   end
-
 
   it "allows names to have use dates" do
 

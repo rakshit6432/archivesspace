@@ -557,7 +557,7 @@ module JSONModel::Validations
     JSONModel(agent_type).add_validation("check_#{agent_type.to_s}") do |hash|
       errors = []
 
-      if hash.has_key?("dates_of_existence") && hash["dates_of_existence"].find {|d| d['label'] != 'existence' }
+      if hash.has_key?("dates_of_existence") && hash["dates_of_existence"].find {|d| d['date_label'] != 'existence' }
         errors << ["dates_of_existence", "Label must be 'existence' in this context"]
       end
 
