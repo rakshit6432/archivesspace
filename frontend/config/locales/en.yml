@@ -474,6 +474,7 @@ en:
         linked_via_rights_statement: Linked Records via Rights Statement
         target_record: This record will be updated
         victim_record: This record will be deleted
+        structured_date_fields: Date Subrecords
       action:
         create: Create Agent
         preview: Merge Preview
@@ -507,6 +508,11 @@ en:
     _frontend:
       action:
         save: Save Software
+
+  structured_date:
+    _frontend:
+      action:
+        add: Add Date Subrecord
 
   archival_object:
     external_ark_url: External ARK URL
@@ -592,12 +598,25 @@ en:
   dates_of_existence:
     _frontend:
       action:
-        add: Add Date
+        add: Add Date Set
 
   deaccession:
     _frontend:
       action:
         add: Add Deaccession
+
+  existence_date_sdl:
+    date_label: Label
+    date_type_enum: Date Type
+
+  structured_date_fields:
+    date_role_enum: Date Role
+    date_expression: Date Expression
+    date_standardized: Standardized Date
+    date_standardized_type_enum: Standardized Date Type
+    date_certainty: Certainty
+    date_era: Era
+    date_calendar: Calendar
 
   digital_object:
     _frontend:
