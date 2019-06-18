@@ -116,7 +116,7 @@ describe 'Person agent controller' do
 
   it "allows names to have use dates" do
 
-    date = build(:json_date)
+    date = build(:json_structured_date_label, {:date_label => "usage"})
 
     name = build(:json_name_person, {:use_dates => [date]})
 
