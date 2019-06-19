@@ -1528,3 +1528,37 @@ en:
         _plural: Sponsor Sets
       repo_settings:
         _plural: Per Repository OAI-PMH Settings
+
+  agent_record_control:
+    _plural: Agent Record Control
+    _frontend:
+      action:
+        add: Add Control Record
+    maintenance_status_enum: Maintenance Status
+    publication_status_enum: Publication Status
+    romanization_enum: Romanization
+    government_agency_type_enum: Government Agency Type
+    reference_evaluation_enum: Reference Evaluation
+    name_type_enum: Name Type
+    level_of_detail_enum: Level of Detail
+    modified_record_enum: Modified Record
+    cataloging_source_enum: Cataloging Source
+    maintenance_agency: Maintenance Agency
+    agency_name: Agency Name
+    maintenance_agency_note: Maintenance Agency Note
+    language: Language
+    script: Script
+    language_note: Language Note
+
+
+
+
+
+
+
+
+
+
+
+
+
