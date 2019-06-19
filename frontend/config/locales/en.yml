@@ -613,6 +613,10 @@ en:
     date_label: Label
     date_type_enum: Date Type
 
+  sdl_generic:
+    date_label: Label
+    date_type_enum: Date Type
+
   structured_date_fields:
     date_role_enum: Date Role
     date_expression: Date Expression
