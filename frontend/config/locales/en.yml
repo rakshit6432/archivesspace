@@ -1551,13 +1551,80 @@ en:
     language_note: Language Note
 
 
+  agent_alternate_set:
+    _plural: Agent Alternate Sets
+    _frontend:
+      action:
+        add: Add Alternate Set
+    set_component: Set Component
+    descriptive_note: Descriptive Note
+    file_uri: File URI
+    xlink_title_attribute: Xlink Title Attribute
+    xlink_role_attribute: Xlink Role Attribute
+    last_verified_date: Last Verified Date
+
+  agent_conventions_declaration:
+    _plural: Agent Conventions Declaration
+    _frontend:
+      action:
+        add: Add Conventions Declaration
+    convention_enum: Convention Type
+    citation: Citation
+    descriptive_note: Descriptive Note
+    file_uri: File URI
+    xlink_title_attribute: Xlink Title Attribute
+    xlink_role_attribute: Xlink Role Attribute
+    last_verified_date: Last Verified Date
+
+  agent_other_agency_code:
+    _plural: Other Agency Code
+    _frontend:
+      action:
+        add: Add Other Agency Code
+
+  agent_other_agency_codes:
+    agency_code_type_enum: Agency Code Type
+    maintenance_agency: Maintenance Agency
+
+  agent_maintenance_history:
+    _plural: Agent Maintenance Histories
+    _frontend:
+      action:
+        add: Add Maintenance History
+
+  agent_maintenance_histories:
+    maintenance_event_type_enum: Event Type
+    maintenance_agent_type_enum: Agent Type
+    agent: Agent
+    descriptive_note: Descriptive Note
+    event_date: Event Date
+
+  agent_record_identifier:
+    _plural: Agent Record Identifier
+    _frontend:
+      action:
+        add: Add Record Identifier
+
+  agent_record_identifiers:
+    identifier_type_enum: Identifier Type
+    source_enum: Source
+    primary_identifier: Is Primary Identifier?
+    record_identifier: Source Identifier
 
 
+  agent_source:
+    _plural: Agent Sources
+    _frontend:
+      action:
+        add: Add Source
 
-
-
-
-
+  agent_sources:
+    source_entry: Source Entry
+    descriptive_note: Descriptive Note
+    file_uri: File URI
+    xlink_title_attribute: Xlink Title Attribute
+    xlink_role_attribute: Xlink Role Attribute
+    last_verified_date: Last Verified Date
 
 
 
