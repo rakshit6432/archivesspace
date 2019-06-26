@@ -28,53 +28,28 @@ Sequel.migration do
         next
       end
 
-      # no begin or end, only expr
-      # create begin date with expr
-      # Maybe we can parse structured date to try to figure out what's in there?
-
-      # date expression only
-      if !r[:begin] && !r[:end] && r[:expression]
-        create_structured_dates(r, nil, nil, rel)
+      if fits_structured_date_format?(r[:begin])
+        std_begin = r[:begin]
+      else
+        std_begin = nil
       end
 
-      # begin only
-      if r[:begin] && !r[:end]
-        if fits_structured_date_format?(r[:begin])
-          std_begin = r[:begin]
-        else
-          std_begin = nil
-        end
-
-        create_structured_dates(r, std_begin, nil, rel)
+      if fits_structured_date_format?(r[:end])
+        std_end = r[:end]
+      else
+        std_end = nil
       end
 
-      # end only
-      if !r[:begin] && r[:end]
-        if fits_structured_date_format?(r[:end])
-          std_end = r[:end]
-        else
-          std_end = nil
-        end
-
-        create_structured_dates(r, nil, std_end, rel)
+      # create date for expression date expression only
+      if r[:expression]
+        create_structured_date_for_expr(r, rel)
       end
 
-      # begin and end present
-      if r[:begin] && r[:end]
-        if fits_structured_date_format?(r[:begin])
-          std_begin = r[:begin]
-        else
-          std_begin = nil
-        end
-
-        if fits_structured_date_format?(r[:end])
-          std_end = r[:end]
-        else
-          std_end = nil
-        end
-
+      # if either a begin or end is defined at this point, then create either a single or ranged date
+      if std_begin || std_end
         create_structured_dates(r, std_begin, std_end, rel)
-      end # of if
+      end
+      
     end # of loop
   end # of up
 end # of migration

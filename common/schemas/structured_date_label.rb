@@ -7,11 +7,11 @@
     "properties" => {
       "date_label" => {"type" => "string", "dynamic_enum" => "date_label", "ifmissing" => "error"},
       "date_type_enum" => {"type" => "string", "dynamic_enum" => "date_type_enum", "ifmissing" => "error"},
-      "structured_dates" => {
-        "required" => true,
-        "type" => "array",
-        "items" => {"type" => "JSONModel(:structured_date) object"}
-      },
+      "structured_date_single" => {"required" => true, "type" => "JSONModel(:structured_date_single) object"},
+      "structured_date_range" => {"required" => true, "type" => "JSONModel(:structured_date_range) object"},
+      "date_certainty" => {"type" => "string", "dynamic_enum" => "date_certainty", "required" => "false"},
+      "date_era" => {"type" => "string", "dynamic_enum" => "date_era", "required" => "false"},
+      "date_calendar" => {"type" => "string", "dynamic_enum" => "date_calendar", "required" => "false"}
     },
   },
 }

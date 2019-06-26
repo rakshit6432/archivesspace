@@ -101,6 +101,30 @@ def fits_structured_date_format?(expr)
 end
 
 # used in migration 126 for creating structured dates
+
+# put any date expression into a structured_date_single with role: begin
+def create_structured_date_for_expr(r, rel)
+  role_id_begin = get_enum_value_id("date_role_enum", "begin")
+  type_id_single = get_enum_value_id("date_type_enum", "single")
+
+  l = self[:structured_date_label].insert(:date_label_id => r[:label_id],
+                                          :date_type_enum_id => type_id_single,
+                                          :date_certainty_id => r[:certainty_id],
+                                          :date_era_id => r[:era_id],
+                                          :date_calendar_id => r[:calendar_id],
+                                          :create_time => Time.now,
+                                          :system_mtime => Time.now,
+                                          :user_mtime => Time.now,
+                                          rel => r[rel])
+
+  self[:structured_date_single].insert(:date_role_enum_id => role_id_begin,
+                                :date_expression => r[:expression],
+                                :structured_date_label_id => l,
+                                :create_time => Time.now,
+                                :system_mtime => Time.now,
+                                :user_mtime => Time.now)
+end
+
 def create_structured_dates(r, std_begin, std_end, rel)
   #look up the right value of the role and type from the enum values table
   role_id_begin = get_enum_value_id("date_role_enum", "begin")
@@ -112,41 +136,36 @@ def create_structured_dates(r, std_begin, std_end, rel)
 
   l = self[:structured_date_label].insert(:date_label_id => r[:label_id],
                                           :date_type_enum_id => type_id,
+                                          :date_certainty_id => r[:certainty_id],
+                                          :date_era_id => r[:era_id],
+                                          :date_calendar_id => r[:calendar_id],
                                           :create_time => Time.now,
                                           :system_mtime => Time.now,
                                           :user_mtime => Time.now,
                                           rel => r[rel])
 
-  # in all cases, create a begin date record for the expression if one is present
-  if r[:expression]
-    self[:structured_date].insert(:date_role_enum_id => role_id_begin,
-                                  :date_expression => r[:expression],
+  # create ranged date if end date present
+  if std_end && std_begin
+    self[:structured_date_range].insert(:begin_date_standardized => std_begin,
+                                  :end_date_standardized => std_end,
                                   :structured_date_label_id => l,
                                   :create_time => Time.now,
                                   :system_mtime => Time.now,
                                   :user_mtime => Time.now)
-  end
 
-  # create standardized date record for begin if present
-  if std_begin
-    self[:structured_date].insert(:date_role_enum_id => role_id_begin,
+  # otherwise, create a single, begin date if we have a begin
+  elsif std_begin
+    self[:structured_date_single].insert(:date_role_enum_id => role_id_begin,
                                   :date_standardized => std_begin,
-                                  :date_certainty_id => r[:certainty_id],
-                                  :date_era_id => r[:era_id],
-                                  :date_calendar_id => r[:calendar_id],
                                   :structured_date_label_id => l,
                                   :create_time => Time.now,
                                   :system_mtime => Time.now,
                                   :user_mtime => Time.now)
-  end
 
-  # create standardized date record for if present
-  if std_end
-    self[:structured_date].insert(:date_role_enum_id => role_id_end,
+  # otherwise, create a single, end date if we have an end
+  elsif std_end
+    self[:structured_date_single].insert(:date_role_enum_id => role_id_end,
                                   :date_standardized => std_end,
-                                  :date_certainty_id => r[:certainty_id],
-                                  :date_era_id => r[:era_id],
-                                  :date_calendar_id => r[:calendar_id],
                                   :structured_date_label_id => l,
                                   :create_time => Time.now,
                                   :system_mtime => Time.now,

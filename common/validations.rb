@@ -35,10 +35,18 @@ module JSONModel::Validations
     end
   end
 
-  [:structured_date].each do |type|
+  [:structured_date_single].each do |type|
     if JSONModel(type)
-      JSONModel(type).add_validation("check_structured_date") do |hash|
-        check_structured_date(hash)
+      JSONModel(type).add_validation("check_structured_date_single") do |hash|
+        check_structured_date_single(hash)
+      end
+    end
+  end
+
+  [:structured_date_range].each do |type|
+    if JSONModel(type)
+      JSONModel(type).add_validation("check_structured_date_range") do |hash|
+        check_structured_date_range(hash)
       end
     end
   end
@@ -163,50 +171,18 @@ module JSONModel::Validations
     errors = []
 
     # validate subrecords
-    hash["structured_dates"].each do |sd|
-      errors = errors | check_structured_date(sd)
-    end
+    # hash["structured_date_single"].each do |sds|
+    #   errors = errors | check_structured_date_single(sd)
+    # end
 
-    count = hash["structured_dates"].length
-
-    begin_dates = hash["structured_dates"].select {|date| date["date_role_enum"] == "begin"}
-    end_dates = hash["structured_dates"].select {|date| date["date_role_enum"] == "end"}
-
-    has_begin = begin_dates.length > 0
-    has_end = end_dates.length > 0
-
-    if hash["date_type_enum"] == "single"
-      errors << ["date_type_enum", "requires at least one start date subrecord"] unless has_begin
-      errors << ["date_type_enum", "requires no end date subrecords"] if has_end
-    elsif hash["date_type_enum"] == "range"
-      errors << ["date_type_enum", "requires a begin and end date"] unless has_end && has_begin
-
-      # check that no standardized begin date is chronologically after any standardized end date
-      begin_dates.select! {|d| d["date_standardized"]}
-      end_dates.select!   {|d| d["date_standardized"]}
-
-      begin_dates.map! {|d| Time.parse(d["date_standardized"])}
-      end_dates.map!   {|d| Time.parse(d["date_standardized"])}
-
-      out_of_order = false
-      begin_dates.each do |bd|
-        end_dates.each do |ed|
-          out_of_order = bd > ed
-
-          break if out_of_order
-        end
-
-        break if out_of_order
-      end
-
-      errors << ["date_type_enum", "requires that end dates are after begin dates"] if out_of_order
-
-    end
+    # hash["structured_date_range"].each do |sdr|
+    #   errors = errors | check_structured_date_range(sdr)
+    # end
 
     return errors
   end
 
-  def self.check_structured_date(hash)
+  def self.check_structured_date_single(hash)
     errors = []
 
     if hash["date_role_enum"].nil?
@@ -234,6 +210,71 @@ module JSONModel::Validations
       matches_mm_dd_yyyy = (hash["date_standardized"] =~ /^[\d]{4}-[\d]{2}-[\d]{2}$/) == 0
 
       errors << ["date_standardized", "must be in YYYY[YYY][YY][Y], YYYY[YYY][YY][Y]-MM, or YYYY-MM-DD format"] unless matches_yyyy || matches_yyyy_mm || matches_yyyy_mm_dd || matches_yyy || matches_yy || matches_y || matches_yyy_mm || matches_yy_mm || matches_y_mm || matches_mm_yyyy || matches_mm_dd_yyyy
+    end
+
+    return errors
+  end
+
+  def self.check_structured_date_range(hash)
+    errors = []
+
+    has_begin_expr_date = !hash["begin_date_expression"].nil? && 
+                          !hash["begin_date_expression"].empty?
+
+    has_end_expr_date = !hash["end_date_expression"].nil? && 
+                        !hash["end_date_expression"].empty?
+
+    has_begin_std_date = !hash["begin_date_standardized"].nil? &&
+                         !hash["begin_date_standardized"].empty?
+
+    has_end_std_date =   !hash["end_date_standardized"].nil? &&
+                         !hash["end_date_standardized"].empty?
+
+    errors << ["begin_date_expression", "is required"] if !has_begin_expr_date && (!has_begin_std_date && !has_end_std_date)
+
+    errors << ["end_date_expression", "requires begin date expression to be defined"] if !has_begin_expr_date && has_end_expr_date
+
+    errors << ["begin_date_standardized", "requires end_date_standardized to be defined"] if (has_begin_std_date && !has_end_std_date)
+
+    errors << ["end_date_standardized", "requires begin_date_standardized to be defined"] if (!has_begin_std_date && has_end_std_date)
+
+    if has_begin_std_date
+      matches_y          = (hash["begin_date_standardized"] =~ /^[\d]{1}$/) == 0
+      matches_y_mm       = (hash["begin_date_standardized"] =~ /^[\d]{1}-[\d]{2}$/) == 0
+      matches_yy         = (hash["begin_date_standardized"] =~ /^[\d]{2}$/) == 0
+      matches_yy_mm      = (hash["begin_date_standardized"] =~ /^[\d]{2}-[\d]{2}$/) == 0
+      matches_yyy        = (hash["begin_date_standardized"] =~ /^[\d]{3}$/) == 0
+      matches_yyy_mm     = (hash["begin_date_standardized"] =~ /^[\d]{3}-[\d]{2}$/) == 0
+      matches_yyyy       = (hash["begin_date_standardized"] =~ /^[\d]{4}$/) == 0
+      matches_yyyy_mm    = (hash["begin_date_standardized"] =~ /^[\d]{4}-[\d]{2}$/) == 0
+      matches_yyyy_mm_dd = (hash["begin_date_standardized"] =~ /^[\d]{4}-[\d]{2}-[\d]{2}$/) == 0
+      matches_mm_yyyy    = (hash["begin_date_standardized"] =~ /^[\d]{2}-[\d]{4}$/) == 0
+      matches_mm_dd_yyyy = (hash["begin_date_standardized"] =~ /^[\d]{4}-[\d]{2}-[\d]{2}$/) == 0
+
+      errors << ["begin_date_standardized", "must be in YYYY[YYY][YY][Y], YYYY[YYY][YY][Y]-MM, or YYYY-MM-DD format"] unless matches_yyyy || matches_yyyy_mm || matches_yyyy_mm_dd || matches_yyy || matches_yy || matches_y || matches_yyy_mm || matches_yy_mm || matches_y_mm || matches_mm_yyyy || matches_mm_dd_yyyy
+    end
+
+    if has_end_std_date
+      matches_y          = (hash["end_date_standardized"] =~ /^[\d]{1}$/) == 0
+      matches_y_mm       = (hash["end_date_standardized"] =~ /^[\d]{1}-[\d]{2}$/) == 0
+      matches_yy         = (hash["end_date_standardized"] =~ /^[\d]{2}$/) == 0
+      matches_yy_mm      = (hash["end_date_standardized"] =~ /^[\d]{2}-[\d]{2}$/) == 0
+      matches_yyy        = (hash["end_date_standardized"] =~ /^[\d]{3}$/) == 0
+      matches_yyy_mm     = (hash["end_date_standardized"] =~ /^[\d]{3}-[\d]{2}$/) == 0
+      matches_yyyy       = (hash["end_date_standardized"] =~ /^[\d]{4}$/) == 0
+      matches_yyyy_mm    = (hash["end_date_standardized"] =~ /^[\d]{4}-[\d]{2}$/) == 0
+      matches_yyyy_mm_dd = (hash["end_date_standardized"] =~ /^[\d]{4}-[\d]{2}-[\d]{2}$/) == 0
+      matches_mm_yyyy    = (hash["end_date_standardized"] =~ /^[\d]{2}-[\d]{4}$/) == 0
+      matches_mm_dd_yyyy = (hash["end_date_standardized"] =~ /^[\d]{4}-[\d]{2}-[\d]{2}$/) == 0
+
+      errors << ["end_date_standardized", "must be in YYYY[YYY][YY][Y], YYYY[YYY][YY][Y]-MM, or YYYY-MM-DD format"] unless matches_yyyy || matches_yyyy_mm || matches_yyyy_mm_dd || matches_yyy || matches_yy || matches_y || matches_yyy_mm || matches_yy_mm || matches_y_mm || matches_mm_yyyy || matches_mm_dd_yyyy
+    end
+
+    if errors.length == 0
+      bt = Time.parse(hash["begin_date_standardized"])
+      et = Time.parse(hash["end_date_standardized"])
+
+      errors << ["begin_date_standardized", "requires that end dates are after begin dates"] if bt > et
     end
 
     return errors
