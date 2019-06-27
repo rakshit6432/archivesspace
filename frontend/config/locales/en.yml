@@ -474,7 +474,8 @@ en:
         linked_via_rights_statement: Linked Records via Rights Statement
         target_record: This record will be updated
         victim_record: This record will be deleted
-        structured_date_fields: Date Subrecords
+        structured_date_single_fields: Single Date Subrecord
+        structured_date_range_fields: Ranged Date Subrecord
       action:
         create: Create Agent
         preview: Merge Preview
@@ -509,10 +510,15 @@ en:
       action:
         save: Save Software
 
-  structured_date:
+  structured_date_single:
     _frontend:
       action:
-        add: Add Date Subrecord
+        add: Add Single Date Subrecord
+
+  structured_date_range:
+    _frontend:
+      action:
+        add: Add Ranged Date Subrecord
 
   archival_object:
     external_ark_url: External ARK URL
@@ -608,23 +614,37 @@ en:
   existence_date_sdl:
     date_label: Label
     date_type_enum: Date Type
+    date_certainty: Certainty
+    date_era: Era
+    date_calendar: Calendar
 
   usage_date_sdl:
     date_label: Label
     date_type_enum: Date Type
+    date_certainty: Certainty
+    date_era: Era
+    date_calendar: Calendar
 
   sdl_generic:
     date_label: Label
     date_type_enum: Date Type
+    date_certainty: Certainty
+    date_era: Era
+    date_calendar: Calendar
 
-  structured_date_fields:
+  structured_date_single_fields:
     date_role_enum: Date Role
     date_expression: Date Expression
     date_standardized: Standardized Date
     date_standardized_type_enum: Standardized Date Type
-    date_certainty: Certainty
-    date_era: Era
-    date_calendar: Calendar
+
+  structured_date_range_fields:
+    begin_date_expression: Begin Date Expression
+    begin_date_standardized: Begin Standardized Date
+    begin_date_standardized_type_enum: Begin Standardized Date Type
+    end_date_expression: End Date Expression
+    end_date_standardized: End Standardized Date
+    end_date_standardized_type_enum: End Standardized Date Type
 
   digital_object:
     _frontend:
