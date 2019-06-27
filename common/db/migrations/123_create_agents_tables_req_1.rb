@@ -23,6 +23,11 @@ Sequel.migration do
       String :script, :null => true
       String :language_note, :null => true
 
+      Integer :agent_person_id, :null => true
+      Integer :agent_family_id, :null => true
+      Integer :agent_corporate_entity_id, :null => true
+      Integer :agent_software_id, :null => true
+
       apply_mtime_columns
       Integer :lock_version, :default => 0, :null => false
     end
@@ -39,6 +44,11 @@ Sequel.migration do
       String :xlink_title_attribute, :null => true
       String :xlink_role_attribute, :null => true
       DateTime :last_verified_date, :null => true
+
+      Integer :agent_person_id, :null => true
+      Integer :agent_family_id, :null => true
+      Integer :agent_corporate_entity_id, :null => true
+      Integer :agent_software_id, :null => true
 
       apply_mtime_columns
       Integer :lock_version, :default => 0, :null => false
@@ -58,6 +68,11 @@ Sequel.migration do
       String :xlink_role_attribute, :null => true
       DateTime :last_verified_date, :null => true
 
+      Integer :agent_person_id, :null => true
+      Integer :agent_family_id, :null => true
+      Integer :agent_corporate_entity_id, :null => true
+      Integer :agent_software_id, :null => true
+
       apply_mtime_columns
       Integer :lock_version, :default => 0, :null => false
     end
@@ -68,6 +83,11 @@ Sequel.migration do
       Integer :agency_code_type_enum_id, :null => false
 
       String :maintenance_agency, :null => false
+
+      Integer :agent_person_id, :null => true
+      Integer :agent_family_id, :null => true
+      Integer :agent_corporate_entity_id, :null => true
+      Integer :agent_software_id, :null => true
 
       apply_mtime_columns
       Integer :lock_version, :default => 0, :null => false
@@ -83,6 +103,11 @@ Sequel.migration do
       String :agent, :null => false
       String :descriptive_note, :null => false
 
+      Integer :agent_person_id, :null => true
+      Integer :agent_family_id, :null => true
+      Integer :agent_corporate_entity_id, :null => true
+      Integer :agent_software_id, :null => true
+
       apply_mtime_columns
       Integer :lock_version, :default => 0, :null => false
     end
@@ -96,6 +121,11 @@ Sequel.migration do
       Integer :primary_identifier, :null => false
 
       String :record_identifier, :null => false
+
+      Integer :agent_person_id, :null => true
+      Integer :agent_family_id, :null => true
+      Integer :agent_corporate_entity_id, :null => true
+      Integer :agent_software_id, :null => true
 
       apply_mtime_columns
       Integer :lock_version, :default => 0, :null => false
@@ -114,6 +144,11 @@ Sequel.migration do
       String :xlink_role_attribute, :null => true
       
       DateTime :last_verified_date, :null => true
+      
+      Integer :agent_person_id, :null => true
+      Integer :agent_family_id, :null => true
+      Integer :agent_corporate_entity_id, :null => true
+      Integer :agent_software_id, :null => true
 
       apply_mtime_columns
       Integer :lock_version, :default => 0, :null => false
