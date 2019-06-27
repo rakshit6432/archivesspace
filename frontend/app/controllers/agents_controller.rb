@@ -289,13 +289,15 @@ class AgentsController < ApplicationController
 
       if params["agent"]["names"]
         params['agent']['names'].each do |key, name|
-          name['use_dates'].each do |key, label|
-            if label["structured_date_single"]
-              label["date_type_enum"] = "single"
-            elsif label["structured_date_range"]
-              label["date_type_enum"] = "range"
-            else
-              label["date_type_enum"] = "Add or update either a single or ranged date subrecord to set"
+          if name['use_dates']
+            name['use_dates'].each do |key, label|
+              if label["structured_date_single"]
+                label["date_type_enum"] = "single"
+              elsif label["structured_date_range"]
+                label["date_type_enum"] = "range"
+              else
+                label["date_type_enum"] = "Add or update either a single or ranged date subrecord to set"
+              end
             end
           end
         end
