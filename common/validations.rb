@@ -178,14 +178,13 @@ module JSONModel::Validations
       errors << ["structured_date_single", "must specifiy either a single or ranged date"]
     end
 
-    # validate subrecords
-    # hash["structured_date_single"].each do |sds|
-    #   errors = errors | check_structured_date_single(sd)
-    # end
+    if hash["structured_date_range"] && hash["date_type_enum"] == "single"
+      errors << ["structured_date_range", "Must specify single date for date type of single"]
+    end
 
-    # hash["structured_date_range"].each do |sdr|
-    #   errors = errors | check_structured_date_range(sdr)
-    # end
+    if hash["structured_date_single"] && hash["date_type_enum"] == "range"
+      errors << ["structured_date_range", "Must specify range date for date type of range"]
+    end
 
     return errors
   end
