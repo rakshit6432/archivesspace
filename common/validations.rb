@@ -170,6 +170,14 @@ module JSONModel::Validations
   def self.check_structured_date_label(hash)
     errors = []
 
+    if hash["structured_date_range"] && hash["structured_date_single"]
+      errors << ["structured_date_single", "cannot specify both a single and ranged date"]
+    end
+
+    if !hash["structured_date_range"] && !hash["structured_date_single"]
+      errors << ["structured_date_single", "must specifiy either a single or ranged date"]
+    end
+
     # validate subrecords
     # hash["structured_date_single"].each do |sds|
     #   errors = errors | check_structured_date_single(sd)

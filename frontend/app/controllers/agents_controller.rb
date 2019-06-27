@@ -7,6 +7,7 @@ class AgentsController < ApplicationController
 
 
   before_action :assign_types
+  before_action :set_structured_date_type, only: [:create, :update]
 
   include ExportHelper
 
@@ -271,6 +272,48 @@ class AgentsController < ApplicationController
 
       @agent_type = :"#{params[:agent_type]}"
       @name_type = name_type_for_agent_type(@agent_type)
+    end
+
+    def set_structured_date_type
+      if params["agent"]["dates_of_existence"]
+        params['agent']['dates_of_existence'].each do |key, label|
+          if label["structured_date_single"]
+            label["date_type_enum"] = "single"
+          elsif label["structured_date_range"]
+            label["date_type_enum"] = "range"
+          else
+            label["date_type_enum"] = "Add or update either a single or ranged date subrecord to set"
+          end
+        end
+      end
+
+      if params["agent"]["names"]
+        params['agent']['names'].each do |key, name|
+          name['use_dates'].each do |key, label|
+            if label["structured_date_single"]
+              label["date_type_enum"] = "single"
+            elsif label["structured_date_range"]
+              label["date_type_enum"] = "range"
+            else
+              label["date_type_enum"] = "Add or update either a single or ranged date subrecord to set"
+            end
+          end
+        end
+      end
+
+      if params["agent"]["related_agents"]
+        params['agent']['related_agents'].each do |key, rel|
+          if rel["dates"]
+            if rel["dates"]["structured_date_single"]
+              rel["dates"]["date_type_enum"] = "single"
+            elsif rel["dates"]["structured_date_range"]
+              rel["dates"]["date_type_enum"] = "range"
+            else
+              rel["dates"]["date_type_enum"] = "Add or update either a single or ranged date subrecord to set"
+            end
+          end
+        end
+      end
     end
 
     def ensure_auth_and_display
