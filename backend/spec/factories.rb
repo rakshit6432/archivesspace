@@ -456,17 +456,17 @@ FactoryBot.define do
   factory :json_structured_date_label, class: JSONModel(:structured_date_label) do
     date_type_enum { "single" }
     date_label { 'existence' }
-    structured_dates {[ build(:json_structured_date) ]}
+    structured_date_single {[ build(:json_structured_date_single) ]}
+    date_certainty { "approximate" }
+    date_era { "ce" }
+    date_calendar { "gregorian" }
   end
 
-  factory :json_structured_date, class: JSONModel(:structured_date) do
+  factory :json_structured_date_single, class: JSONModel(:structured_date_single) do
     date_role_enum  { "begin" }
     date_expression { "Yesterday" }
     date_standardized { "2019-06-01" }
     date_standardized_type_enum { "standard" }
-    date_certainty { "approximate" }
-    date_era { "ce" }
-    date_calendar { "gregorian" }
   end
 
   factory :json_date, class: JSONModel(:date) do
