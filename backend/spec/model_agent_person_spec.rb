@@ -399,8 +399,6 @@ describe 'Agent model' do
     end
 
     it "will catch duplications resulting from updates" do
-      # TODO: fix this test
-      pending "failing, fix me"
       agent.names[0]['primary_name'] << "x"
 
       agent_obj = AgentPerson.create_from_json(agent, :is_slug_auto => false)

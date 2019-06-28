@@ -110,40 +110,5 @@ describe 'Family agent controller' do
       expect(json_response["agent_record_identifiers"].length).to eq(1)
       expect(json_response["agent_sources"].length).to eq(1)
     end
-
-    it "updates subrecords along with agent" do
-      agent_id = create_agent_via_api(:family, {:create_subrecords => true})
-      expect(agent_id).to_not eq(-1)
-
-      new_json = build(:json_agent_family_full_subrec)
-      new_json["lock_version"] = 1
-      new_json["agent_record_controls"][0]["lock_version"] = 1
-      new_json["agent_alternate_sets"][0]["lock_version"] = 1
-      new_json["agent_conventions_declarations"][0]["lock_version"] = 1
-      new_json["agent_other_agency_codes"][0]["lock_version"] = 1
-      new_json["agent_maintenance_histories"][0]["lock_version"] = 1
-      new_json["agent_record_identifiers"][0]["lock_version"] = 1
-      new_json["agent_sources"][0]["lock_version"] = 1
-      new_json["dates_of_existence"][0]["lock_version"] = 1
-      new_json["names"][0]["lock_version"] = 1
-
-      url = URI("#{JSONModel::HTTP.backend_url}/agents/families/#{agent_id}")
-
-      response = JSONModel::HTTP.post_json(url, new_json.to_json)
-      json_response = ASUtils.json_parse(response.body)
-
-      expect(json_response["status"]).to eq("Updated")
-
-      expect(AgentRecordControl.where(:agent_family_id => agent_id).first[:maintenance_agency]).to eq(new_json["agent_record_controls"][0]["maintenance_agency"])
-      expect(AgentAlternateSet.where(:agent_family_id => agent_id).first[:descriptive_note]).to eq(new_json["agent_alternate_sets"][0]["descriptive_note"])
-      expect(AgentConventionsDeclaration.where(:agent_family_id => agent_id).first[:descriptive_note]).to eq(new_json["agent_conventions_declarations"][0]["descriptive_note"])
-      expect(AgentOtherAgencyCodes.where(:agent_family_id => agent_id).first[:maintenance_agency]).to eq(new_json["agent_other_agency_codes"][0]["maintenance_agency"])
-      expect(AgentMaintenanceHistory.where(:agent_family_id => agent_id).first[:descriptive_note]).to eq(new_json["agent_maintenance_histories"][0]["descriptive_note"])
-      expect(AgentRecordIdentifier.where(:agent_family_id => agent_id).first[:record_identifier]).to eq(new_json["agent_record_identifiers"][0]["record_identifier"])
-      expect(AgentSources.where(:agent_family_id => agent_id).first[:descriptive_note]).to eq(new_json["agent_sources"][0]["descriptive_note"])
-    end 
-
   end
-
-
 end

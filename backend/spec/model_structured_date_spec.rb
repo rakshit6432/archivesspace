@@ -5,365 +5,140 @@ describe 'Structured Date model' do
     JSONModel::strict_mode(false)
   end
 
+  it "creates valid label record with single date" do
+    sd = build(:json_structured_date_label)
+    errs = JSONModel::Validations.check_structured_date_label(sd)
+
+    expect(errs.length > 0).to eq(false)
+  end
+
+  it "creates valid label record with range date" do
+    sd = build(:json_structured_date_label_range)
+    errs = JSONModel::Validations.check_structured_date_label(sd)
+
+    expect(errs.length > 0).to eq(false)
+  end
+
   it "label record is invalid without a date subrecord" do
-    expect {
-      StructuredDateLabel.create_from_json(
-        JSONModel(:structured_date_label).from_hash(
-          {:date_label => "other", 
-          :date_type_enum => "single"}
-          )
-        )
-    }.to raise_error(JSONModel::ValidationException)
+    sd = build(:json_structured_date_label, :structured_date_single => nil)
+    errs = JSONModel::Validations.check_structured_date_label(sd)
+
+    expect(errs.length > 0).to eq(true)
 
   end
 
-  it "single date labels can have multiple begin subrecords" do
-    expect {
-      StructuredDateLabel.create_from_json(
-        JSONModel(:structured_date_label).from_hash(
-          :date_label => "other", 
-          :date_type_enum => "single",
-          :structured_dates => 
-          [
-            {:date_role_enum => "begin",
-            :date_expression => "Yesterday"},
-            {:date_role_enum => "begin",
-             :date_standardized => "2019-01-01"}
-          ]
-        )
-      )
-    }.to_not raise_error
+  it "label record is invalid if it has a single subrecord but type == range" do
+    sd = build(:json_structured_date_label, :date_type_enum => "range")
+    errs = JSONModel::Validations.check_structured_date_label(sd)
+
+    expect(errs.length > 0).to eq(true)
+
   end
 
-  it "ranged date labels can have multiple begin subrecords" do
-    expect {
-      StructuredDateLabel.create_from_json(
-        JSONModel(:structured_date_label).from_hash(
-          :date_label => "other", 
-          :date_type_enum => "range",
-          :structured_dates => [
-            {:date_role_enum => "begin",
-            :date_expression => "Yesterday"},
-            {:date_role_enum => "begin",
-            :date_standardized => "2019-01-01"},
-            {:date_role_enum => "begin",
-            :date_standardized => "2019-01-01"},
-            {:date_role_enum => "end",
-            :date_standardized => "2019-01-02"},
-            {:date_role_enum => "end",
-            :date_standardized => "2019-01-02"}
-            ]
-          )
-        )
-      }.to_not raise_error
+  it "label record is invalid if it has a range subrecord but type == single" do
+    sd = build(:json_structured_date_label_range, :date_type_enum => "single")
+    errs = JSONModel::Validations.check_structured_date_label(sd)
+
+    expect(errs.length > 0).to eq(true)
+
   end
 
-  it "single date labels should not have and end date subrecord" do
-    expect {
-      StructuredDateLabel.create_from_json(
-        JSONModel(:structured_date_label).from_hash(
-          :date_label => "other", 
-          :date_type_enum => "single",
-          :structured_dates => [
-            {:date_role_enum => "begin",
-            :date_expression => "Yesterday"},
-            {:date_role_enum => "end",
-            :date_standardized => "2019-01-01"},
-            ]
-          )
-        )
-    }.to raise_error(JSONModel::ValidationException)
+  it "label record is invalid both single and range subrecords are defined" do
+    sdr = build(:json_structured_date_range)
+    sd = build(:json_structured_date_label, :structured_date_range => sdr)
+    errs = JSONModel::Validations.check_structured_date_label(sd)
+
+    expect(errs.length > 0).to eq(true)
+
   end
 
-  it "ranged date labels should have begin and end subrecords" do
-    expect {
-      StructuredDateLabel.create_from_json(
-        JSONModel(:structured_date_label).from_hash(
-          :date_label => "other", 
-          :date_type_enum => "range",
-          :structured_dates => [
-            {:date_role_enum => "begin",
-            :date_expression => "Yesterday"},
-            {:date_role_enum => "end",
-            :date_expression => "Tomorrow"}
-          ]
-        )
-      )
-    }.to_not raise_error
+  it "single dates are invalid unless a date is present in the subrecord" do
+    sds = build(:json_structured_date_single, :date_expression => nil, :date_standardized => nil)
+  
+    errs = JSONModel::Validations.check_structured_date_single(sds)
+    expect(errs.length > 0).to eq(true)
   end
 
-  it "ranged date labels without begin subrecords are invalid" do
-    expect {
-      StructuredDateLabel.create_from_json(
-        JSONModel(:structured_date_label).from_hash(
-          :date_label => "other", 
-          :date_type_enum => "range",
-          :structured_dates => [
-            {:date_role_enum => "end",
-            :date_expression => "Yesterday"},
-            {:date_role_enum => "end",
-            :date_expression => "Tomorrow"},
-            {:date_role_enum => "end",
-            :date_expression => "Tomorrow"}
-          ]
-        )
-      )
-    }.to raise_error(JSONModel::ValidationException)
+  it "single dates are invalid if standardized dates do not fit format" do
+    sds = build(:json_structured_date_single, :date_standardized => "Dec 12, 1928")
+  
+    errs = JSONModel::Validations.check_structured_date_single(sds)
+    expect(errs.length > 0).to eq(true)
   end
 
-  it "ranged date labels without end subrecords are invalid" do
-    expect {
-      StructuredDateLabel.create_from_json(
-        JSONModel(:structured_date_label).from_hash(
-                  :date_label => "other", 
-                  :date_type_enum => "range",
-                  :structured_dates => [
-                    {:date_role_enum => "begin",
-                    :date_expression => "Yesterday"},
-                    {:date_role_enum => "begin",
-                    :date_expression => "Tomorrow"},
-                    {:date_role_enum => "begin",
-                    :date_expression => "Tomorrow"}
-                  ]
-                )
-              )
-            }.to raise_error(JSONModel::ValidationException)
+  it "single dates are invalid if role is missing" do
+    sds = build(:json_structured_date_single, :date_role_enum => nil)
+  
+    errs = JSONModel::Validations.check_structured_date_single(sds)
+    expect(errs.length > 0).to eq(true)
   end
 
-  it "is invalid unless a date is present in the subrecord" do
-    expect {
-      StructuredDateLabel.create_from_json(
-        JSONModel(:structured_date_label).from_hash(
-                  :date_label => "other", 
-                  :date_type_enum => "single",
-                  :structured_dates => [
-                    {:date_role_enum => "begin"}
-                  ]
-                )
-              )
-            }.to raise_error(JSONModel::ValidationException)
+  it "range dates are invalid if begin standardized dates do not fit format" do
+    sdr = build(:json_structured_date_range, :begin_date_standardized => "Dec 12, 1928")
+  
+    errs = JSONModel::Validations.check_structured_date_range(sdr)
+    expect(errs.length > 0).to eq(true)
   end
 
-  it "is invalid unless a role is present in the subrecord" do
-    expect {
-      StructuredDateLabel.create_from_json(
-        JSONModel(:structured_date_label).from_hash(   
-          :date_label => "other", 
-          :date_type_enum => "single",
-          :structured_dates => [
-            {:date_expression => "begin"}
-          ]
-        )
-      )
-    }.to raise_error(JSONModel::ValidationException)
+  it "range dates are invalid if end standardized dates do not fit format" do
+    sdr = build(:json_structured_date_range, :end_date_standardized => "Dec 12, 1928")
+  
+    errs = JSONModel::Validations.check_structured_date_range(sdr)
+    expect(errs.length > 0).to eq(true)
   end
 
-  it "is valid if date expression is present in the subrecord" do
-    expect {
-      StructuredDateLabel.create_from_json(
-        JSONModel(:structured_date_label).from_hash(
-          :date_label => "other", 
-          :date_type_enum => "single",
-          :structured_dates => [
-            {:date_role_enum => "begin",
-            :date_expression => "Yesterday"}
-          ]
-        )
-      )
-    }.to_not raise_error
+  it "range dates are valid with just a begin date expression" do
+    sdr = build(:json_structured_date_range, 
+        :begin_date_expression => "Dec 12, 1928", 
+        :begin_date_standardized => nil, 
+        :end_date_expression => nil, 
+        :end_date_standardized => nil)
+  
+    errs = JSONModel::Validations.check_structured_date_range(sdr)
+    expect(errs.length > 0).to eq(false)
   end
 
-  it "is valid if standardized date is present" do
-    expect {
-      StructuredDateLabel.create_from_json(
-        JSONModel(:structured_date_label).from_hash(
-          :date_label => "other", 
-          :date_type_enum => "single",
-          :structured_dates => [
-            {:date_role_enum => "begin",
-            :date_standardized => "1995" }
-          ]
-        )
-      )
-    }.to_not raise_error
+  it "range dates are invalid if end expression present with no begin" do
+    sdr = build(:json_structured_date_range, 
+        :begin_date_expression => nil, 
+        :begin_date_standardized => nil, 
+        :end_date_expression => "Foo", 
+        :end_date_standardized => nil)
+  
+    errs = JSONModel::Validations.check_structured_date_range(sdr)
+    expect(errs.length > 0).to eq(true)
   end
 
-  it "is valid if standardized date is in YYYY-MM format" do
-    expect {
-      StructuredDateLabel.create_from_json(
-        JSONModel(:structured_date_label).from_hash(   
-          :date_label => "other", 
-          :date_type_enum => "single",
-          :structured_dates => [
-            {:date_role_enum => "begin",
-            :date_standardized => "1995-01" }
-          ]
-        )
-      )
-    }.to_not raise_error
+  it "range dates are invalid if end standardized date present with no begin" do
+    sdr = build(:json_structured_date_range, 
+        :begin_date_expression => nil, 
+        :begin_date_standardized => nil, 
+        :end_date_expression => nil, 
+        :end_date_standardized => "2001-01-01")
+  
+    errs = JSONModel::Validations.check_structured_date_range(sdr)
+    expect(errs.length > 0).to eq(true)
   end
 
-  it "is valid if standardized date is in YYYY-MM-DD format" do
-    expect {
-      StructuredDateLabel.create_from_json(
-        JSONModel(:structured_date_label).from_hash(   
-          :date_label => "other", 
-          :date_type_enum => "single",
-          :structured_dates => [
-            {:date_role_enum => "begin",
-            :date_standardized => "1995-01-03" }
-          ]
-        )
-      )
-    }.to_not raise_error
+  it "range dates are invalid if begin standardized date present with no end" do
+    sdr = build(:json_structured_date_range, 
+        :begin_date_expression => nil, 
+        :begin_date_standardized => "2001-01-01", 
+        :end_date_expression => nil, 
+        :end_date_standardized => nil)
+  
+    errs = JSONModel::Validations.check_structured_date_range(sdr)
+    expect(errs.length > 0).to eq(true)
   end
 
-
-  it "is valid if standardized date is in YYY" do
-    expect {
-      StructuredDateLabel.create_from_json(
-        JSONModel(:structured_date_label).from_hash(   
-          :date_label => "other", 
-          :date_type_enum => "single",
-          :structured_dates => [
-            {:date_role_enum => "begin",
-            :date_standardized => "199" }
-          ]
-        )
-      )
-    }.to_not raise_error
-  end
-
-  it "is valid if standardized date is in YY" do
-    expect {
-      StructuredDateLabel.create_from_json(
-        JSONModel(:structured_date_label).from_hash(   
-          :date_label => "other", 
-          :date_type_enum => "single",
-          :structured_dates => [
-            {:date_role_enum => "begin",
-            :date_standardized => "19" }
-          ]
-        )
-      )
-    }.to_not raise_error
-  end
-
-  it "is valid if standardized date is in Y" do
-    expect {
-      StructuredDateLabel.create_from_json(
-        JSONModel(:structured_date_label).from_hash(   
-          :date_label => "other", 
-          :date_type_enum => "single",
-          :structured_dates => [
-            {:date_role_enum => "begin",
-            :date_standardized => "1" }
-          ]
-        )
-      )
-    }.to_not raise_error
-  end
-
-
-  it "is valid if standardized date is in YYY-MM" do
-    expect {
-      StructuredDateLabel.create_from_json(
-        JSONModel(:structured_date_label).from_hash(   
-          :date_label => "other", 
-          :date_type_enum => "single",
-          :structured_dates => [
-            {:date_role_enum => "begin",
-            :date_standardized => "199-12" }
-          ]
-        )
-      )
-    }.to_not raise_error
-  end
-
-  it "is valid if standardized date is in YY-MM" do
-   expect {
-      StructuredDateLabel.create_from_json(
-        JSONModel(:structured_date_label).from_hash(   
-          :date_label => "other", 
-          :date_type_enum => "single",
-          :structured_dates => [
-            {:date_role_enum => "begin",
-            :date_standardized => "19-12" }
-          ]
-        )
-      )
-    }.to_not raise_error
-  end
-
-  it "is valid if standardized date is in Y-MM" do
-    expect {
-      StructuredDateLabel.create_from_json(
-        JSONModel(:structured_date_label).from_hash(   
-          :date_label => "other", 
-          :date_type_enum => "single",
-          :structured_dates => [
-            {:date_role_enum => "begin",
-            :date_standardized => "1-12" }
-          ]
-        )
-      )
-    }.to_not raise_error
-  end
-
-  it "is invalid if standardized date is not in YYYY, YYYY-MM, YYYY-MM-DD format" do
-    expect {
-      StructuredDateLabel.create_from_json(
-        JSONModel(:structured_date_label).from_hash(   
-          :date_label => "other", 
-          :date_type_enum => "single",
-          :structured_dates => [
-            {:date_role_enum => "begin",
-            :date_standardized => "10/12/1993" }
-          ]
-        )
-      )
-    }.to raise_error(JSONModel::ValidationException)
-  end
-
-  it "is valid if all begin standardized date are chronologically after all end standardized date" do
-    expect {
-      StructuredDateLabel.create_from_json(
-        JSONModel(:structured_date_label).from_hash(
-          :date_label => "other", 
-          :date_type_enum => "range",
-          :structured_dates => [
-            {:date_role_enum => "begin",
-            :date_standardized => "1995-01-01" },
-            {:date_role_enum => "end",
-            :date_standardized => "1995-01-03" },
-            {:date_role_enum => "begin",
-            :date_standardized => "1995-01-01" },
-            {:date_role_enum => "end",
-            :date_standardized => "1995-01-03" }
-          ]
-        )
-      )
-    }.to_not raise_error
-  end
-
-  it "is invalid if any begin standardized date is chronologically after end standardized date" do
-    expect {
-      StructuredDateLabel.create_from_json(
-        JSONModel(:structured_date_label).from_hash(
-          :date_label => "other", 
-          :date_type_enum => "range",
-          :structured_dates => [
-            {:date_role_enum => "begin",
-            :date_standardized => "1995-01-03" },
-            {:date_role_enum => "end",
-            :date_standardized => "1995-01-01" },
-            {:date_role_enum => "begin",
-            :date_standardized => "1995-01-03" },
-            {:date_role_enum => "end",
-            :date_standardized => "1993-01-01" }
-          ]
-        )
-      )
-    }.to raise_error(JSONModel::ValidationException)
+  it "range dates are invalid end date is after begin" do
+    sdr = build(:json_structured_date_range, 
+        :begin_date_expression => nil, 
+        :begin_date_standardized => "2001-01-02", 
+        :end_date_expression => nil, 
+        :end_date_standardized => "2001-01-01")
+  
+    errs = JSONModel::Validations.check_structured_date_range(sdr)
+    expect(errs.length > 0).to eq(true)
   end
 end
