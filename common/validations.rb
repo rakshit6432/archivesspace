@@ -277,7 +277,7 @@ module JSONModel::Validations
       errors << ["end_date_standardized", "must be in YYYY[YYY][YY][Y], YYYY[YYY][YY][Y]-MM, or YYYY-MM-DD format"] unless matches_yyyy || matches_yyyy_mm || matches_yyyy_mm_dd || matches_yyy || matches_yy || matches_y || matches_yyy_mm || matches_yy_mm || matches_y_mm || matches_mm_yyyy || matches_mm_dd_yyyy
     end
 
-    if errors.length == 0
+    if errors.length == 0 && hash["begin_date_standardized"] && hash["end_date_standardized"]
       bt = Time.parse(hash["begin_date_standardized"])
       et = Time.parse(hash["end_date_standardized"])
 

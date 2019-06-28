@@ -33,7 +33,7 @@ describe 'Related agents' do
     child = create(:json_agent_person, "related_agents" => [relationship.to_hash])
 
     child = JSONModel(:agent_person).find(child.id)
-    expect(child.related_agents.first['dates']['structured_dates'][0]['date_expression']).to eq(date['structured_dates'][0]['date_expression'])
+    expect(child.related_agents.first['dates']['structured_date_single']['date_expression']).to eq(date['structured_date_single']['date_expression'])
 
     # Updates work too
     expect(lambda {
