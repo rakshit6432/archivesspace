@@ -6,6 +6,8 @@ Sequel.migration do
     create_enum("date_type_enum", ["single", "range"])
     create_enum("date_role_enum", ["begin", "end"])
     create_enum("date_standardized_type_enum", ["standard", "not_before", "not_after"])
+    create_enum("begin_date_standardized_type_enum", ["standard", "not_before", "not_after"])
+    create_enum("end_date_standardized_type_enum", ["standard", "not_before", "not_after"])
 
     date_std_type_id = get_enum_value_id("date_standardized_type_enum", "standard")
 

@@ -124,6 +124,8 @@ module AspaceFormHelper
 
     end
 
+    # renders a list of form element sets from a template. Each item will be re-orderable.
+    # Objects should be an array.
     def list_for(objects, context_name, &block)
 
       objects ||= []
@@ -145,6 +147,7 @@ module AspaceFormHelper
     end
 
 
+    # renders a single template containing form elements. 
     def fields_for(object, context_name, &block)
 
       result = ""
@@ -154,9 +157,18 @@ module AspaceFormHelper
         result << @parent.capture(object, &block)
       end
 
+      extra_classes = ""
+
+      # ANW-429: Add class to top level div so element can be switched out by JS based on user form input
+      # TODO: refactor
+      extra_classes += "sdl-subrecord-form" if context_name == "structured_date_range" || "structured_date_single"
+
+
       ("<div data-name-path=\"#{set_index(self.path(context_name), '${index}')}\" " +
         " data-id-path=\"#{id_for(set_index(self.path(context_name), '${index}'), false)}\" " +
-        " class=\"subrecord-form-fields-for\">#{result}</div>").html_safe
+        " class=\"subrecord-form-fields-for #{extra_classes}\">#{result}</div>").html_safe
+
+
 
     end
 
@@ -723,6 +735,10 @@ module AspaceFormHelper
       control_group_classes << "js-slug_textfield" if name == "slug"
       control_group_classes << "js-slug_auto_checkbox" if name == "is_slug_auto"
 
+      # ANW-429: add JS classes to structured date fields
+      control_group_classes << "js-structured_date_select" if name == "date_type_enum"
+
+
       controls_classes << "#{opts[:controls_class]}" if opts.has_key? :controls_class
 
       control_group = "<div class=\"#{control_group_classes.join(' ')}\">"
@@ -731,6 +747,11 @@ module AspaceFormHelper
       control_group << field_html
       control_group << "</div>"
       control_group << "</div>"
+
+      # ANW-429
+      # TODO: Refactor to the JS files, ideally so this is run when the "Add Date" button is clicked. This is a tricky one since the select field this JS needs to be run on doesn't exist until the callbacks that run after the button is clicked run.
+      control_group << "<script>selectStructuredDateSubform();</script>" if name == "date_type_enum"
+
       control_group.html_safe
     end
   end
@@ -1015,7 +1036,6 @@ module AspaceFormHelper
     @delivering_js_templates = true
 
     result = ""
-
     return result if @templates.blank?
 
     obj = {}
@@ -1034,6 +1054,12 @@ module AspaceFormHelper
     while(true)
       templates_to_process.each do |name, template|
         context = FormContext.new("${path}", obj, self)
+
+        # REMOVE ME: Debugging code to figure out why calendar span tags are being removed from date field templates
+        # if name == "structured_date_range_fields"
+          # puts "++++++++++++++++++++++++++++++"
+          # puts capture(context, &template[:block])
+        # end
 
         def context.id_for(name, qualify = true)
           name = path(name) if qualify
