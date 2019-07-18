@@ -57,7 +57,7 @@
         <%= form.label_and_textarea("description") %>
 
         <% if !form.readonly? || !form['dates'].blank? %>
-          <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "dates", :template => "sdl_generic", :cardinality => :zero_to_one} %>
+          <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "dates", :template => "structured_date_label", :cardinality => :zero_to_one} %>
         <% end %>
       </div>
     </div>
