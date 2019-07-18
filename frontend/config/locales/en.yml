@@ -474,8 +474,8 @@ en:
         linked_via_rights_statement: Linked Records via Rights Statement
         target_record: This record will be updated
         victim_record: This record will be deleted
-        structured_date_single_fields: Single Date Subrecord
-        structured_date_range_fields: Ranged Date Subrecord
+        structured_date_single_fields: Single Date
+        structured_date_range_fields: Range Date
       action:
         create: Create Agent
         preview: Merge Preview
@@ -513,12 +513,12 @@ en:
   structured_date_single:
     _frontend:
       action:
-        add: Add Single Date Subrecord
+        add: Add Single Date
 
   structured_date_range:
     _frontend:
       action:
-        add: Add Ranged Date Subrecord
+        add: Add Range Date
 
   archival_object:
     external_ark_url: External ARK URL
@@ -611,21 +611,7 @@ en:
       action:
         add: Add Deaccession
 
-  existence_date_sdl:
-    date_label: Label
-    date_type_enum: Date Type
-    date_certainty: Certainty
-    date_era: Era
-    date_calendar: Calendar
-
-  usage_date_sdl:
-    date_label: Label
-    date_type_enum: Date Type
-    date_certainty: Certainty
-    date_era: Era
-    date_calendar: Calendar
-
-  sdl_generic:
+  structured_date_label:
     date_label: Label
     date_type_enum: Date Type
     date_certainty: Certainty

@@ -731,6 +731,7 @@ module AspaceFormHelper
 
       control_group_classes << "#{opts[:control_class]}" if opts.has_key? :control_class
 
+      #TODO: refactor this. We don't need a separate method for each extra special class to be added below. Probably the thing to is to use the opts param.
       # ANW-617: add JS classes to slug fields
       control_group_classes << "js-slug_textfield" if name == "slug"
       control_group_classes << "js-slug_auto_checkbox" if name == "is_slug_auto"
@@ -749,7 +750,7 @@ module AspaceFormHelper
       control_group << "</div>"
 
       # ANW-429
-      # TODO: Refactor to the JS files, ideally so this is run when the "Add Date" button is clicked. This is a tricky one since the select field this JS needs to be run on doesn't exist until the callbacks that run after the button is clicked run.
+      # TODO: Refactor to the JS files, ideally so this is run when the "Add Date" button is clicked. This is a tricky one since the select field this JS needs to be run on doesn't exist until the callbacks that run after the button is clicked run. Putting it here means that it runs as part of the html, and is always included in the right context.
       control_group << "<script>selectStructuredDateSubform();</script>" if name == "date_type_enum"
 
       control_group.html_safe
