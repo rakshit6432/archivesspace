@@ -76,9 +76,9 @@
 
 <% define_template "structured_date_single_fields", jsonmodel_definition(:structured_date_single) do |form| %>
     <section class="subrecord-form sdl-subrecord-form">
-      <h3 class="subrecord-form-heading">
+      <h4 class="subrecord-form-heading">
         <%= I18n.t("agent._frontend.section.structured_date_single_fields") %>
-      </h3>
+      </h4>
       <div class="subrecord-form-fields subrecord-form-container">
         <div class="structured-date-container">
           <%= form.label_and_select "date_role_enum", form.possible_options_for("date_role_enum", false, required: true) %>
@@ -94,9 +94,9 @@
 <% define_template "structured_date_range_fields", jsonmodel_definition(:structured_date_range) do |form| %>
 
   <section class="subrecord-form sdl-subrecord-form">
-    <h3 class="subrecord-form-heading">
+    <h4 class="subrecord-form-heading">
       <%= I18n.t("agent._frontend.section.structured_date_range_fields") %>
-    </h3>
+    </h4>
     <div class="subrecord-form-fields subrecord-form-container">
       <div class="structured-date-container">
         <%= form.label_and_textfield "begin_date_expression",  {:field_opts => {:size => 30, :class => "form-control"} }%>
