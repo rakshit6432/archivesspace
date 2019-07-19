@@ -175,6 +175,9 @@ var selectStructuredDateSubform = function() {
     }
 
     $target_subrecord_list.replaceWith($date_subform);
+    var $updated_subrecord_list = $($this).parent().find(".sdl-subrecord-form");;
+
+    $(document).triggerHandler("subrecordcreated.aspace", ["date", $updated_subrecord_list]);
     index++;
   });
 };
