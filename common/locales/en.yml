@@ -1338,6 +1338,15 @@ en:
     publish: Publish
     _singular: Agent
     _plural: Agents
+    agent_record_controls_tooltip: Agent Record Controls Tooltip
+    agent_alternate_sets_tooltip: Agent Alternate Sets Tooltip
+    agent_conventions_declarations_tooltip: Agent Conventions Declarations Tooltip
+    agent_other_agency_codes_tooltip: Other Agency Code Tooltip
+    agent_maintenance_histories_tooltip: Agent Maintenance Histories Tooltip
+    agent_record_identifiers_tooltip: Agent Record Identifiers Tooltip
+    agent_sources_tooltip: Agent Sources Tooltip
+    agent_sources_tooltip: Agent Sources Tooltip
+
 
   agent_person:
     <<: *agent_attributes
