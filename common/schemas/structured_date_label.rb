@@ -9,9 +9,9 @@
       "date_type_enum" => {"type" => "string", "dynamic_enum" => "date_type_enum", "ifmissing" => "error"},
       "structured_date_single" => {"required" => false, "type" => "JSONModel(:structured_date_single) object"},
       "structured_date_range" => {"required" => false, "type" => "JSONModel(:structured_date_range) object"},
-      "date_certainty" => {"type" => "string", "dynamic_enum" => "date_certainty", "required" => "false"},
-      "date_era" => {"type" => "string", "dynamic_enum" => "date_era", "required" => "false"},
-      "date_calendar" => {"type" => "string", "dynamic_enum" => "date_calendar", "required" => "false"}
+      "date_certainty" => {"type" => "string", "dynamic_enum" => "date_certainty"},
+      "date_era" => {"type" => "string", "dynamic_enum" => "date_era"},
+      "date_calendar" => {"type" => "string", "dynamic_enum" => "date_calendar"}
     },
   },
 }
