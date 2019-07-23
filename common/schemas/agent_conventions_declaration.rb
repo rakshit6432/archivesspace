@@ -8,10 +8,10 @@
       "convention_enum" => {
         "type" => "string",
         "dynamic_enum" => "convention_enum",
-        "required" => true
+        "ifmissing" => "error"
       },
       "citation" => {"type" => "string", "maxLength" => 65000, "ifmissing" => "error"},
-      "descriptive_note" => {"type" => "string", "maxLength" => 65000},
+      "descriptive_note" => {"type" => "string", "maxLength" => 65000, "default" => ""},
       "file_uri" => {"type" => "string", "maxLength" => 65000},
       "file_version_xlink_actuate_attribute" => {
         "type" => "string",
