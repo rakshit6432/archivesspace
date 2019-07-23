@@ -6,6 +6,10 @@ en:
     date_role_enum:
       begin: Begin
       end: End
+    date_standardized_type_enum:
+      standard: Standard
+      not_before: Not Before
+      not_after: Not After
     begin_date_standardized_type_enum:
       standard: Standard
       not_before: Not Before
