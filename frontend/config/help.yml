@@ -103,6 +103,15 @@ topics:
   agent_software_notes: 525
   agent_software_related_agents: 526
   agent_software_external_documents: 527
+  # Agent Shared
+  agent_sources: -1
+  agent_record_identifiers: -1
+  agent_maintenance_histories: -1
+  agent_other_agency_codes: -1
+  agent_conventions_declarations: -1
+  agent_alternate_sets: -1
+  agent_record_controls: -1
+
   # Location (601)
   location: 601
   # Event (602-)
