@@ -1597,6 +1597,11 @@ en:
     _frontend:
       action:
         add: Add Maintenance History
+    maintenance_event_type_enum: Event Type
+    maintenance_agent_type_enum: Agent Type
+    agent: Agent
+    descriptive_note: Descriptive Note
+    event_date: Event Date
 
   agent_maintenance_histories:
     maintenance_event_type_enum: Event Type
@@ -1610,6 +1615,10 @@ en:
     _frontend:
       action:
         add: Add Record Identifier
+    identifier_type_enum: Identifier Type
+    source_enum: Source
+    primary_identifier: Is Primary Identifier?
+    record_identifier: Source Identifier
 
   agent_record_identifiers:
     identifier_type_enum: Identifier Type
