@@ -561,6 +561,70 @@ en:
         <li>Library of Congress <em>(for Library of Congress Bagger 2.1.2)</em></li>
         </ul>
 
+  agent_record_control:
+    maintenance_status_enum_tooltip: Maintenance Status Tooltip
+    publication_status_enum_tooltip: Publication Status Tooltip
+    romanization_enum_tooltip: Romanization Tooltip
+    government_agency_type_enum_tooltip: Government Agency Type Tooltip
+    reference_evaluation_enum_tooltip: Reference Evaluation Tooltip
+    name_type_enum_tooltip: Name Type Tooltip
+    level_of_detail_enum_tooltip: Level of Detail Tooltip
+    modified_record_enum_tooltip: Modified Record Tooltip
+    cataloging_source_enum_tooltip: Cataloging Source Tooltip
+    maintenance_agency_tooltip: Maintenance Agency Tooltip
+    agency_name_tooltip: Agency Name Tooltip
+    maintenance_agency_note_tooltip: Maintenance Agency Note Tooltip
+    language_tooltip: Language Tooltip
+    script_tooltip: Script Tooltip
+    language_note_tooltip: Language Note Tooltip
+
+  agent_alternate_set:
+    set_component_tooltip: Set Component Tooltip
+    descriptive_note_tooltip: Descriptive Note Tooltip
+    file_uri_tooltip: File URI Tooltip
+    file_version_xlink_actuate_attribute_tooltip: Xlink Actuate Tooltip
+    file_version_xlink_show_attribute_tooltip: Xlink Show Tooltip
+    xlink_title_attribute_tooltip: Xlink Title Tooltip
+    xlink_role_attribute_tooltip: Xlink Role Tooltip
+    last_verified_date_tooltip: Last Verified Date Tooltip
+
+  agent_conventions_declaration:
+    convention_enum_tooltip: Convention Tooltip    
+    citation_tooltip: Citation
+    descriptive_note_tooltip: Descriptive Note Tooltip
+    file_uri_tooltip: File URI Tooltip
+    file_version_xlink_actuate_attribute_tooltip: Xlink Actuate Tooltip
+    file_version_xlink_show_attribute_tooltip: Xlink Show Tooltip
+    xlink_title_attribute_tooltip: Xlink Title Tooltip
+    xlink_role_attribute_tooltip: Xlink Role Tooltip
+    last_verified_date_tooltip: Last Verified Date Tooltip
+
+  agent_other_agency_codes:
+    agency_code_type_enum_tooltip: Agency Code Type Tooltip
+    maintenance_agency_tooltip: Maintenance Agency Tooltip
+
+  agent_maintenance_histories:
+    maintenance_event_type_enum_tooltip: Maintenance Event Type Tooltip
+    maintenance_agent_type_enum_tooltip: Maintenance Agent Type Tooltip
+    agent_tooltip: Agent Tooltip
+    event_date_tooltip: Event Date Tooltip
+    descriptive_note_tooltip: Descriptive Note Tooltip
+
+  agent_record_identifiers:
+    identifier_type_enum_tooltip: Identifier Type Tooltip
+    source_enum_tooltip: Source Enum Tooltip
+    record_identifier_tooltip: Source Enum Tooltip
+
+  agent_sources:
+    source_entry_tooltip: Agent Sources Tooltip
+    descriptive_note_tooltip: Descriptive Note Tooltip
+    file_uri_tooltip: File URI Tooltip
+    file_version_xlink_actuate_attribute_tooltip: Xlink Actuate Tooltip
+    file_version_xlink_show_attribute_tooltip: Xlink Show Tooltip
+    xlink_title_attribute_tooltip: Xlink Title Tooltip
+    xlink_role_attribute_tooltip: Xlink Role Tooltip
+    last_verified_date_tooltip: Last Verified Date Tooltip
+
   name:
     _singular: Name Form
     _plural: Name Forms
