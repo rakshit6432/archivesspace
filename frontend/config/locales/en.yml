@@ -1568,6 +1568,8 @@ en:
     file_uri: File URI
     xlink_title_attribute: Xlink Title Attribute
     xlink_role_attribute: Xlink Role Attribute
+    file_version_xlink_actuate_attribute: Xlink Actuate Attribute
+    file_version_xlink_show_attribute: Xlink Show Attribute
     last_verified_date: Last Verified Date
 
   agent_conventions_declaration:
@@ -1582,6 +1584,8 @@ en:
     file_uri: File URI
     xlink_title_attribute: Xlink Title Attribute
     xlink_role_attribute: Xlink Role Attribute
+    file_version_xlink_actuate_attribute: Xlink Actuate Attribute
+    file_version_xlink_show_attribute: Xlink Show Attribute
     last_verified_date: Last Verified Date
 
   agent_other_agency_code:
@@ -1645,6 +1649,8 @@ en:
     file_uri: File URI
     xlink_title_attribute: Xlink Title Attribute
     xlink_role_attribute: Xlink Role Attribute
+    file_version_xlink_actuate_attribute: Xlink Actuate Attribute
+    file_version_xlink_show_attribute: Xlink Show Attribute
     last_verified_date: Last Verified Date
 
 
