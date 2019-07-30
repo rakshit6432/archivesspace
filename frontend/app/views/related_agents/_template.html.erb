@@ -56,8 +56,11 @@
 
         <%= form.label_and_textarea("description") %>
 
-        <% if !form.readonly? || !form['dates'].blank? %>
+        <% if !form.readonly? && !form['dates'].blank? %>
           <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "dates", :template => "structured_date_label", :cardinality => :zero_to_one} %>
+
+        <% elsif form.readonly? && !form['dates'].blank? %>
+          <%= render_aspace_partial :partial => "structured_dates/show", :locals => { :dates => [form['dates']], :section_id => "rel_dates", :section_title => I18n.t("related_agent.dates") } %>
         <% end %>
       </div>
     </div>

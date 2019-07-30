@@ -844,6 +844,7 @@ en:
         add: Add Related Accession
 
   related_agent:
+    dates: Relationship Dates
     _frontend:
       messages:
         select_a_type: "<em>Please select a Relationship Type</em>"
