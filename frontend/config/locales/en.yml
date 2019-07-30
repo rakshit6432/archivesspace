@@ -467,6 +467,10 @@ en:
         please_select_a_agent_to_merge: Please select an agent
       section:
         basic_information: Basic Information
+        record_control_information: Record Control Information
+        identity_information: Identity Information
+        description_information: Description Information
+        relation_information: Relation Information
         dates_of_existence: Dates of Existence
         name: Name Forms
         contacts: Contact Details
@@ -1536,10 +1540,10 @@ en:
         _plural: Per Repository OAI-PMH Settings
 
   agent_record_control:
-    _plural: Agent Record Control
+    _plural: Record Info
     _frontend:
       action:
-        add: Add Control Record
+        add: Add Record Info
     maintenance_status_enum: Maintenance Status
     publication_status_enum: Publication Status
     romanization_enum: Romanization
@@ -1558,11 +1562,11 @@ en:
 
 
   agent_alternate_set:
-    _plural: Agent Alternate Sets
-    _singular: Agent Alternate Set
+    _plural: Alternate Sets
+    _singular: Alternate Set
     _frontend:
       action:
-        add: Add Alternate Set
+        add: Add Record
     set_component: Set Component
     descriptive_note: Descriptive Note
     file_uri: File URI
@@ -1573,11 +1577,11 @@ en:
     last_verified_date: Last Verified Date
 
   agent_conventions_declaration:
-    _plural: Agent Conventions Declaration
-    _singular: Agent Conventions Declaration
+    _plural: Conventions Declarations
+    _singular: Conventions Declaration
     _frontend:
       action:
-        add: Add Conventions Declaration
+        add: Add Convention
     convention_enum: Convention Type
     citation: Citation
     descriptive_note: Descriptive Note
@@ -1593,18 +1597,18 @@ en:
     _singular: Other Agency Code
     _frontend:
       action:
-        add: Add Other Agency Code
+        add: Add Agency Code
 
   agent_other_agency_codes:
     agency_code_type_enum: Agency Code Type
     maintenance_agency: Maintenance Agency
 
   agent_maintenance_history:
-    _plural: Agent Maintenance Histories
+    _plural: Maintenance History
     _singular: Agent Maintenance History
     _frontend:
       action:
-        add: Add Maintenance History
+        add: Add Event
     maintenance_event_type_enum: Event Type
     maintenance_agent_type_enum: Agent Type
     agent: Agent
@@ -1619,11 +1623,11 @@ en:
     event_date: Event Date
 
   agent_record_identifier:
-    _plural: Agent Record Identifiers
-    _singular: Agent Record Identifier
+    _plural: Record IDs
+    _singular: Record ID
     _frontend:
       action:
-        add: Add Record Identifier
+        add: Add Record ID
     identifier_type_enum: Identifier Type
     source_enum: Source
     primary_identifier: Is Primary Identifier?
@@ -1637,7 +1641,7 @@ en:
 
 
   agent_source:
-    _plural: Agent Sources
+    _plural: Sources
     _singular: Agent Source
     _frontend:
       action:

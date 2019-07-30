@@ -3,19 +3,19 @@
     <div class="agent-record-control-container">
       <%= form.label_and_select "maintenance_status_enum", form.possible_options_for("maintenance_status_enum", false) %>
       <%= form.label_and_select "publication_status_enum", [""] + form.possible_options_for("publication_status_enum", false) %>
+      <%= form.label_and_textfield "maintenance_agency",  {:field_opts => {:size => 30, :class => "form-control"} }%>
+      <%= form.label_and_textfield "agency_name",  {:field_opts => {:size => 30, :class => "form-control"} }%>
+      <%= form.label_and_textarea "maintenance_agency_note",  {:field_opts => {:size => 30, :class => "form-control"} }%>
+      <%= form.label_and_textfield "language",  {:field_opts => {:size => 30, :class => "form-control"} }%>
+      <%= form.label_and_textfield "script",  {:field_opts => {:size => 30, :class => "form-control"} }%>
       <%= form.label_and_select "romanization_enum", [""] + form.possible_options_for("romanization_enum", false) %>
+      <%= form.label_and_textarea "language_note",  {:field_opts => {:size => 30, :class => "form-control"} }%>
       <%= form.label_and_select "government_agency_type_enum", [""] + form.possible_options_for("government_agency_type_enum", false) %>
       <%= form.label_and_select "reference_evaluation_enum", [""] + form.possible_options_for("reference_evaluation_enum", false) %>
       <%= form.label_and_select "name_type_enum", [""] + form.possible_options_for("name_type_enum", false) %>
       <%= form.label_and_select "level_of_detail_enum", [""] + form.possible_options_for("level_of_detail_enum", false) %>
       <%= form.label_and_select "modified_record_enum", [""] + form.possible_options_for("modified_record_enum", false) %>
       <%= form.label_and_select "cataloging_source_enum", [""] + form.possible_options_for("cataloging_source_enum", false) %>
-      <%= form.label_and_textfield "maintenance_agency",  {:field_opts => {:size => 30, :class => "form-control"} }%>
-      <%= form.label_and_textfield "agency_name",  {:field_opts => {:size => 30, :class => "form-control"} }%>
-      <%= form.label_and_textarea "maintenance_agency_note",  {:field_opts => {:size => 30, :class => "form-control"} }%>
-      <%= form.label_and_textfield "language",  {:field_opts => {:size => 30, :class => "form-control"} }%>
-      <%= form.label_and_textfield "script",  {:field_opts => {:size => 30, :class => "form-control"} }%>
-      <%= form.label_and_textarea "language_note",  {:field_opts => {:size => 30, :class => "form-control"} }%>
     </div>
   </div>
 <% end %>
