@@ -345,6 +345,12 @@ module AgentManager
                                :contains_records_of_type => :structured_date_label,
                                :corresponding_to_association => :structured_date_label)
 
+        self.one_to_many :agent_place, :class => "AgentPlace"
+
+        self.def_nested_record(:the_property => :agent_places,
+                               :contains_records_of_type => :agent_place,
+                               :corresponding_to_association => :agent_place)
+
       end
 
 
