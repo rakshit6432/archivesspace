@@ -66,6 +66,12 @@
         "items" => {"type" => "JSONModel(:agent_sources) object"}
       },
 
+      "agent_places" => {
+        "required" => false,
+        "type" => "array",
+        "items" => {"type" => "JSONModel(:agent_place) object"}
+      },
+
       "linked_agent_roles" => {
         "type" => "array",
         "items" => {"type" => "string"},
