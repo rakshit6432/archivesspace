@@ -6,7 +6,12 @@
              :save_button_text => I18n.t("#{@agent.agent_type}._frontend.action.save")
            }) do |sidebar| %>
 
+    <% if action_name != "show" %>
+      <%= render_aspace_partial :partial => "shared/sidebar_entry", :locals => {:anchor => "record_control_information", :title => "Record Control Information"} %>
+    <% end %>
+
     <%= sidebar.render_for_view_and_edit(:subrecord_type => 'agent_record_identifier', :property => 'agent_record_identifiers', :anchor => "#{@agent.agent_type}_agent_record_identifier") %>
+
 
     <%= sidebar.render_for_view_and_edit(:subrecord_type => 'agent_record_control', :property => 'agent_record_controls', :anchor => "#{@agent.agent_type}_agent_record_control") %>
 
@@ -20,7 +25,16 @@
 
     <%= sidebar.render_for_view_and_edit(:subrecord_type => 'agent_alternate_set', :property => 'agent_alternate_sets', :anchor => "#{@agent.agent_type}_agent_alternate_set") %>
 
+    <% if action_name != "show" %>
+        <%= render_aspace_partial :partial => "shared/sidebar_entry", :locals => {:anchor => "identity_information", :title => "Identity Information"} %>
+    <% end %>
+
     <%= sidebar.render_for_view_and_edit(:subrecord_type => 'agent_name', :property => 'names', :anchor => "#{@agent.agent_type}_names") %>
+
+
+    <% if action_name != "show" %>
+        <%= render_aspace_partial :partial => "shared/sidebar_entry", :locals => {:anchor => "description_information", :title => "Description Information"} %>
+    <% end %>
 
     <%= sidebar.render_for_view_and_edit(:subrecord_type => 'dates_of_existence', :property => 'dates_of_existence',
                                          :anchor => "#{@agent.agent_type}_dates_of_existence") %>
@@ -34,6 +48,10 @@
     <%= sidebar.render_for_view_and_edit(:subrecord_type => 'note', :property => 'notes', :anchor => "#{@agent.agent_type}_notes") %>
 
     <%= sidebar.render_for_view_and_edit(:subrecord_type => 'external_document', :property => "external_documents", :anchor => "#{@agent.agent_type}_external_documents") %>
+
+    <% if action_name != "show" %>
+        <%= render_aspace_partial :partial => "shared/sidebar_entry", :locals => {:anchor => "relation_information", :title => "Relation Information"} %>
+    <% end %>
 
     <%= sidebar.render_for_view_and_edit(:subrecord_type => 'related_agent', :property => 'related_agents', :anchor => "related_agents") %>
 
