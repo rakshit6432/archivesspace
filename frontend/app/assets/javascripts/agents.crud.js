@@ -10,6 +10,36 @@
 
 $(function() {
 
+  var init_id_form = function(subform) {
+    // setup agent_record_identifier form
+    var $subform = $(subform);
+    var $isPrimary = $(":input[name$=\"[primary_identifier]\"]", $subform);
+   // var $primarySection = $isPrimary.closest(".subrecord-form-wrapper")
+    var $primarySection = $isPrimary.closest("section.subrecord-form")
+
+    var handleIsPrimaryChange = function(val) {
+      if (val) {
+        $subform.addClass("primary-id");
+      } else {
+        $subform.removeClass("primary-id");
+      }
+      $isPrimary.val(val ? 1 : 0);
+    }
+
+    $(".btn-primary-id-toggle", $subform).click(function(event) {
+      console.log("clicked!");
+      event.preventDefault();
+
+      $primarySection.triggerHandler("isprimarytoggle.aspace", [$subform])
+    });
+
+    $primarySection.on("isprimarytoggle.aspace", function(event, primary_id_form) {
+      handleIsPrimaryChange(primary_id_form == $subform);
+    });
+
+    handleIsPrimaryChange($isPrimary.val() == "1");
+  };
+
   var init_name_form = function(subform) {
     var $subform = $(subform);
     var $checkbox = $(":checkbox[name$=\"[sort_name_auto_generate]\"]", $subform);
@@ -132,6 +162,10 @@ $(function() {
   $(document).bind("subrecordcreated.aspace", function(event, object_name, subform) {
     if (object_name === "name") {
       init_name_form($(subform));
+    }
+
+    if(object_name === "agent_record_identifier") {
+      init_id_form($(subform));
     }
 
     if (object_name === "linked_agent") {

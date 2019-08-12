@@ -614,6 +614,7 @@ en:
     identifier_type_enum_tooltip: Identifier Type Tooltip
     source_enum_tooltip: Source Enum Tooltip
     record_identifier_tooltip: Source Enum Tooltip
+    is_primary: Primary
 
   agent_sources:
     source_entry_tooltip: Agent Sources Tooltip

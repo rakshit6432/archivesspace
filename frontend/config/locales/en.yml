@@ -812,6 +812,7 @@ en:
         add: Add Name Form
         make_authorized: Make Authoritive Name
         make_display_name: Make Display Name
+        make_primary: Make Primary
 
   note:
     _frontend:
