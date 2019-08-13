@@ -808,6 +808,7 @@ en:
     _frontend:
       section:
         use_date: Date(s) of Name Use
+        dates: Dates
       action:
         add: Add Name Form
         make_authorized: Make Authoritive Name
@@ -1562,6 +1563,15 @@ en:
     script: Script
     language_note: Language Note
 
+  agent_place:
+    _frontend:
+      action:
+        add: Add Place
+    section:
+      dates: Dates
+    _plural: Places
+    place_role_enum: Role
+    text_note: Note
 
   agent_alternate_set:
     _plural: Alternate Sets
