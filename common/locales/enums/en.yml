@@ -1,5 +1,11 @@
 en:
   enumerations:
+    place_role_enum:
+      assoc_country: Associated Country
+      residence: Residence
+      other_assoc: Other
+      place_of_birth: Place of Birth
+      place_of_death: Place of Death
     date_type_enum:
       single: Single
       range: Range
