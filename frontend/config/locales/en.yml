@@ -1573,6 +1573,21 @@ en:
     place_role_enum: Role
     text_note: Note
 
+  agent_occupation:
+    _frontend:
+      action:
+        add: Add Occupation
+    section:
+      dates: Dates
+    _plural: Occupations
+    text_note: Note
+
+  place:
+    _plural: Places
+    _frontend:
+      action:
+        add: Add Place
+
   agent_alternate_set:
     _plural: Alternate Sets
     _singular: Alternate Set

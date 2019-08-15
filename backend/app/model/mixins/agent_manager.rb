@@ -351,6 +351,12 @@ module AgentManager
                                :contains_records_of_type => :agent_place,
                                :corresponding_to_association => :agent_place)
 
+        self.one_to_many :agent_occupation, :class => "AgentOccupation"
+
+        self.def_nested_record(:the_property => :agent_occupations,
+                               :contains_records_of_type => :agent_occupation,
+                               :corresponding_to_association => :agent_occupation)
+
       end
 
 
