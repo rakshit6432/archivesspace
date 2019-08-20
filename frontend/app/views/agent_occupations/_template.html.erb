@@ -3,7 +3,7 @@
     <div class="agent-record-control-container">
       <%= form.label_and_textfield "text_note",  {:field_opts => {:size => 30, :class => "form-control"} }%>
 
-			<%# render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "subjects", :template_erb => "subjects/template", :template => "subrecord_subject_agent_occupation", :heading_text => "Occupation Subject", :heading_size => "h4"} %>
+			<%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "subjects", :template_erb => "subjects/template", :template => "subrecord_subject_agent_occupation", :heading_text => "Occupation Subject", :heading_size => "h4"} %>
 
 			<%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "places", :template_erb => "subjects/template", :template => "subrecord_subject_agent_occupation_place", :heading_text => "Place Subject", :heading_size => "h4"} %>
 
