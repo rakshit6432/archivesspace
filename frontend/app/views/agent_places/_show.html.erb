@@ -1,25 +1,25 @@
 <%
-   section_id = "agent_alternate_set" if section_id.blank?
-   section_title = "Alternate Sets" if section_title.blank?
+   section_id = "agent_place" if section_id.blank?
+   section_title = "Places" if section_title.blank?
 %>
 
 <section id="<%= section_id %>">
   <h3><%= section_title %></h3>
   <div class="panel-group details" id="<%= section_id %>_accordion">
-    <% agent_alternate_sets.each_with_index do | agent_alternate_set, index | %>
+    <% agent_places.each_with_index do | agent_place, index | %>
       <div class="panel panel-default">
         <div class="panel-heading">
-          <div class="row accordion-toggle collapsed" data-toggle="collapse" data-parent="#<%= section_id %>_accordion" href="#<%= section_id %>_agent_alternate_set_<%= index %>">
+          <div class="row accordion-toggle collapsed" data-toggle="collapse" data-parent="#<%= section_id %>_accordion" href="#<%= section_id %>_agent_place_<%= index %>">
             <div class="col-md-1">
               <span class="glyphicon"></span>
             </div>
             <div class="col-md-6">
-              <%= I18n.t("agent_alternate_set._singular") %>
+              <%= I18n.t("agent_place._singular") %>
             </div>
           </div>
         </div>
-        <div id="<%= section_id %>_agent_alternate_set_<%= index %>" class="panel-collapse collapse">
-          <%= read_only_view(agent_alternate_set) %>
+        <div id="<%= section_id %>_agent_place_<%= index %>" class="panel-collapse collapse">
+          <%= read_only_view(agent_place) %>
         </div>
       </div>
     <% end %>

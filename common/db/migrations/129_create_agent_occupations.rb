@@ -20,8 +20,7 @@ Sequel.migration do
       Integer :lock_version, :default => 0, :null => false
     end
 
-    # for second relationship linking occupation and other subject-based agent subrecs to places
-    create_table(:subject_agent_place_rlshp) do
+    create_table(:subject_agent_occupation_rlshp) do
       primary_key :id
 
       Integer :subject_id, :null => true
@@ -34,15 +33,24 @@ Sequel.migration do
       apply_mtime_columns(false)
     end
 
+    # for second relationship linking places (also a subject) to occupations. Can't use the table above for both, since we can only use the "agent_occupation_id" FK for one thing at a time
+    create_table(:subject_agent_occupation_place_rlshp) do
+      primary_key :id
+
+      Integer :subject_id, :null => true
+      Integer :agent_occupation_id, :null => true
+
+      Integer :aspace_relationship_position
+
+      Integer :suppressed, :default => 0, :null => false
+
+      apply_mtime_columns(false)
+    end
+ 
+
     alter_table(:structured_date_label) do
     	add_column(:agent_occupation_id, Integer, :null => true)
     end
-
-    alter_table(:subject_rlshp) do
-    	add_column(:agent_occupation_id, Integer, :null => true)
-    end
-
-
   end
 end
  
