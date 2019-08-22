@@ -58,6 +58,8 @@
    <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "agent_places", :section_id => "#{@agent.agent_type}_agent_place", :template => "agent_place", help_topic: "agent_places"} %>
 
    <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "agent_occupations", :section_id => "#{@agent.agent_type}_agent_occupation", :template => "agent_occupation", help_topic: "agent_occupation"} %>
+   
+   <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "agent_functions", :section_id => "#{@agent.agent_type}_agent_function", :template => "agent_function", help_topic: "agent_function"} %>
 
   <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "agent_contacts", :section_id => "#{@agent.agent_type}_contact_details", :template_erb => "agents/contact_details", :template => "agent_contact", :help_topic => "#{@agent.agent_type}_contact_details"} %>
   

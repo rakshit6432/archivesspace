@@ -21,3 +21,15 @@
     <%= render_aspace_partial :partial => "subjects/linker", :locals => { :form => form, :linker_label => "Place", :multiplicity => "one", :term_type_filter => "geographic" }%>
   </div>
 <% end %>
+
+<% define_template "subrecord_subject_agent_function", jsonmodel_definition(:agent_function) do |form| %>
+  <div class="subrecord-form-fields">
+    <%= render_aspace_partial :partial => "subjects/linker", :locals => { :form => form, :linker_label => "Function", :term_type_filter => "function" }%>
+  </div>
+<% end %>
+
+<% define_template "subrecord_subject_agent_function_place", jsonmodel_definition(:agent_function) do |form| %>
+  <div class="subrecord-form-fields">
+    <%= render_aspace_partial :partial => "subjects/linker", :locals => { :form => form, :linker_label => "Place", :multiplicity => "one", :term_type_filter => "geographic" }%>
+  </div>
+<% end %>
