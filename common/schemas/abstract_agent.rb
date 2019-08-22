@@ -83,6 +83,12 @@
         "type" => "array",
         "items" => {"type" => "JSONModel(:agent_function) object"}
       },
+      
+      "agent_topics" => {
+        "required" => false,
+        "type" => "array",
+        "items" => {"type" => "JSONModel(:agent_topic) object"}
+      },
 
       "linked_agent_roles" => {
         "type" => "array",
