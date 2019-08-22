@@ -28,8 +28,17 @@ Sequel.migration do
     	add_column(:agent_place_id, Integer, :null => true)
     end
 
-    alter_table(:subject_rlshp) do
-    	add_column(:agent_place_id, Integer, :null => true)
+    create_table(:subject_agent_place_rlshp) do
+      primary_key :id
+
+      Integer :subject_id, :null => true
+      Integer :agent_place_id, :null => true
+
+      Integer :aspace_relationship_position
+
+      Integer :suppressed, :default => 0, :null => false
+
+      apply_mtime_columns(false)
     end
   end
 end
