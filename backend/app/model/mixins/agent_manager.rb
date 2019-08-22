@@ -362,6 +362,12 @@ module AgentManager
         self.def_nested_record(:the_property => :agent_functions,
                                :contains_records_of_type => :agent_function,
                                :corresponding_to_association => :agent_function)
+        
+        self.one_to_many :agent_topic, :class => "AgentTopic"
+
+        self.def_nested_record(:the_property => :agent_topics,
+                               :contains_records_of_type => :agent_topic,
+                               :corresponding_to_association => :agent_topic)
 
       end
 
