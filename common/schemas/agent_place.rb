@@ -7,11 +7,15 @@
     "properties" => {
       "place_role_enum" => {"type" => "string", "dynamic_enum" => "place_role_enum"},
 
-      "text_note" => {"type" => "string", "maxLength" => 255},
-
       "dates" => {
         "type" => "array",
         "items" => {"type" => "JSONModel(:structured_date_label) object"}
+      },
+
+      "notes" => {
+        "type" => "array",
+        "items" => {"type" => [{"type" => "JSONModel(:note_text) object"},
+                               {"type" => "JSONModel(:note_citation) object"}]},
       },
 
       "subjects" => {

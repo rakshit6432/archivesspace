@@ -2,6 +2,8 @@ class AgentFunction < Sequel::Model(:agent_function)
   include ASModel
 
   corresponds_to JSONModel(:agent_function)
+  
+  include Notes
 
   set_model_scope :global
 

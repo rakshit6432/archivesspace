@@ -2,6 +2,8 @@ class AgentTopic < Sequel::Model(:agent_topic)
   include ASModel
 
   corresponds_to JSONModel(:agent_topic)
+  
+  include Notes
 
   set_model_scope :global
 
