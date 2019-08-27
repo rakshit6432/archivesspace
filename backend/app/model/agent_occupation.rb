@@ -3,6 +3,8 @@ class AgentOccupation < Sequel::Model(:agent_occupation)
 
   corresponds_to JSONModel(:agent_occupation)
 
+  include Notes
+  
   set_model_scope :global
 
   self.one_to_many :structured_date_label, :class => "StructuredDateLabel"

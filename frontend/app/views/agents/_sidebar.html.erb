@@ -39,8 +39,18 @@
     <%= sidebar.render_for_view_and_edit(:subrecord_type => 'dates_of_existence', :property => 'dates_of_existence',
                                          :anchor => "#{@agent.agent_type}_dates_of_existence") %>
                                          
-    <%= sidebar.render_for_view_and_edit(:subrecord_type => 'agent_name', :property => 'names', :anchor => "#{@agent.agent_type}_names") %>
-    
+    <%= sidebar.render_for_view_and_edit(:subrecord_type => 'agent_place', :property => 'agent_place',
+                                         :anchor => "#{@agent.agent_type}_agent_place") %>
+
+    <%= sidebar.render_for_view_and_edit(:subrecord_type => 'agent_occupation', :property => 'agent_occupation',
+                                         :anchor => "#{@agent.agent_type}_agent_occupation") %>
+ 
+    <%= sidebar.render_for_view_and_edit(:subrecord_type => 'agent_function', :property => 'agent_function',
+                                         :anchor => "#{@agent.agent_type}_agent_function") %>
+
+    <%= sidebar.render_for_view_and_edit(:subrecord_type => 'agent_topic', :property => 'agent_topic',
+                                         :anchor => "#{@agent.agent_type}_agent_topic") %>
+ 
     <% if user_can?('view_agent_contact_record') %>
       <%= sidebar.render_for_view_and_edit(:subrecord_type => 'agent_contact', :property => 'agent_contacts', :anchor => "#{@agent.agent_type}_contact_details") %>
     <% end %>

@@ -5,9 +5,12 @@
     "type" => "object",
 
     "properties" => {
-      "place_role_enum" => {"type" => "string", "dynamic_enum" => "place_role_enum"},
 
-      "text_note" => {"type" => "string", "maxLength" => 255},
+      "notes" => {
+        "type" => "array",
+        "items" => {"type" => [{"type" => "JSONModel(:note_text) object"},
+                               {"type" => "JSONModel(:note_citation) object"}]},
+      },
 
       "dates" => {
         "type" => "array",

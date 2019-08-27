@@ -34,7 +34,28 @@ module NotesHelper
         }
       }
 
-    elsif jsonmodel_type =~ /agent/
+    elsif jsonmodel_type == "agent_place" ||
+          jsonmodel_type == "agent_occupation" ||
+          jsonmodel_type == "agent_function" ||
+          jsonmodel_type == "agent_topic"
+
+      note_types = {
+        "text" => {
+          :target => :note_text,
+          :value => "text",
+          :i18n => I18n.t("note.note_text")
+        },
+        "citation" => {
+          :target => :note_citation,
+          :value => "citation",
+          :i18n => I18n.t("note.note_citation")
+        }
+      }
+
+    elsif jsonmodel_type == "agent_person" ||
+          jsonmodel_type == "agent_family" ||
+          jsonmodel_type == "agent_corporate_entity" ||
+          jsonmodel_type == "agent_software"
 
       note_types = {
         "bioghist" => {
