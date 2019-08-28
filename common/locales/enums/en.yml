@@ -1,5 +1,9 @@
 en:
   enumerations:
+    gender_enum:
+      male: Male
+      female: Female
+      not_known: Not Known
     place_role_enum:
       assoc_country: Associated Country
       residence: Residence

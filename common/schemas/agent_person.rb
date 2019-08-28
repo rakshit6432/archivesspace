@@ -19,6 +19,12 @@
         "readonly" => true
       },
 
+      "agent_genders" => {
+        "required" => false,
+        "type" => "array",
+        "items" => {"type" => "JSONModel(:agent_gender) object"}
+      },
+
       "related_agents" => {
         "type" => "array",
         "items" => {
