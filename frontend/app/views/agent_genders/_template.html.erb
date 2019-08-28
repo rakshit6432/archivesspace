@@ -1,0 +1,9 @@
+<% define_template "agent_gender", jsonmodel_definition(:agent_gender) do |form| %>
+  <div class="subrecord-form-fields">
+    <div class="agent-record-control-container">
+      <%= form.label_and_select "gender_enum", [""] + form.possible_options_for("gender_enum", false) %>
+
+      <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "dates", :template_erb => "dates/template", :template => "structured_date_label", :heading_text => I18n.t("name._frontend.section.dates"), :heading_size => "h4"} %>
+    </div>
+  </div>
+<% end %>

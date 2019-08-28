@@ -1563,6 +1563,14 @@ en:
     script: Script
     language_note: Language Note
 
+  agent_gender:
+    _plural: Gender
+    _singular: Gender
+    _frontend:
+      action:
+        add: Add Gender Info
+    gender_enum: Gender
+    
   agent_place:
     _frontend:
       action:
