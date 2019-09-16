@@ -169,6 +169,39 @@ FactoryBot.define do
       identifier_type_enum { "loc"}
     end
 
+    factory :json_agent_place, class: JSONModel(:agent_place) do
+      place_role_enum { "place_of_birth" }
+      dates { [build(:json_structured_date_label)] }
+      notes { [build(:json_note_text)] }
+      subjects { [{'ref' => create(:json_subject).uri}] }
+    end
+
+    factory :json_agent_occupation, class: JSONModel(:agent_occupation) do
+      dates { [build(:json_structured_date_label)] }
+      notes { [build(:json_note_text)] }
+      subjects { [{'ref' => create(:json_subject).uri}] }
+      places { [{'ref' => create(:json_subject).uri}] }
+    end
+
+    factory :json_agent_function, class: JSONModel(:agent_function) do
+      dates { [build(:json_structured_date_label)] }
+      notes { [build(:json_note_text)] }
+      subjects { [{'ref' => create(:json_subject).uri}] }
+      places { [{'ref' => create(:json_subject).uri}] }
+    end
+
+    factory :json_agent_topic, class: JSONModel(:agent_topic) do
+      dates { [build(:json_structured_date_label)] }
+      notes { [build(:json_note_text)] }
+      subjects { [{'ref' => create(:json_subject).uri}] }
+      places { [{'ref' => create(:json_subject).uri}] }
+    end
+
+    factory :json_agent_gender, class: JSONModel(:agent_gender) do
+      dates { [build(:json_structured_date_label)] }
+      gender_enum { "female" }
+    end
+
     factory :resource do
       json_schema_version { 1 }
       title { generate(:generic_title) }
@@ -284,6 +317,11 @@ FactoryBot.define do
     agent_other_agency_codes { [build(:agent_other_agency_codes)] }
     agent_maintenance_histories { [build(:agent_maintenance_history)] }
     agent_record_identifiers { [build(:agent_record_identifier)] }
+    agent_places { [build(:json_agent_place)] }
+    agent_occupations { [build(:json_agent_occupation)] }
+    agent_functions { [build(:json_agent_function)] }
+    agent_topics { [build(:json_agent_topic)] }
+    agent_genders { [build(:json_agent_gender)] }
   end
 
   factory :json_agent_corporate_entity_full_subrec, class: JSONModel(:agent_corporate_entity) do
@@ -298,6 +336,10 @@ FactoryBot.define do
     agent_other_agency_codes { [build(:agent_other_agency_codes)] }
     agent_maintenance_histories { [build(:agent_maintenance_history)] }
     agent_record_identifiers { [build(:agent_record_identifier)] }
+    agent_places { [build(:json_agent_place)] }
+    agent_occupations { [build(:json_agent_occupation)] }
+    agent_functions { [build(:json_agent_function)] }
+    agent_topics { [build(:json_agent_topic)] }
   end
 
   factory :json_agent_software_full_subrec, class: JSONModel(:agent_software) do
@@ -311,6 +353,10 @@ FactoryBot.define do
     agent_other_agency_codes { [build(:agent_other_agency_codes)] }
     agent_maintenance_histories { [build(:agent_maintenance_history)] }
     agent_record_identifiers { [build(:agent_record_identifier)] }
+    agent_places { [build(:json_agent_place)] }
+    agent_occupations { [build(:json_agent_occupation)] }
+    agent_functions { [build(:json_agent_function)] }
+    agent_topics { [build(:json_agent_topic)] }
   end
 
   factory :json_agent_family_full_subrec, class: JSONModel(:agent_family) do
@@ -324,6 +370,10 @@ FactoryBot.define do
     agent_other_agency_codes { [build(:agent_other_agency_codes)] }
     agent_maintenance_histories { [build(:agent_maintenance_history)] }
     agent_record_identifiers { [build(:agent_record_identifier)] }
+    agent_places { [build(:json_agent_place)] }
+    agent_occupations { [build(:json_agent_occupation)] }
+    agent_functions { [build(:json_agent_function)] }
+    agent_topics { [build(:json_agent_topic)] }
   end
 
   factory :json_archival_object_normal, class: JSONModel(:archival_object) do
