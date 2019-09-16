@@ -81,7 +81,7 @@ describe 'Corporate entity agent controller' do
 
 
   describe "subrecord CRUD" do
-    it "creates agent subrecords if appropriate" do
+    it "creates agent subrecords on POST if appropriate" do
       agent_id = create_agent_via_api(:corporate_entity, {:create_subrecords => true})
       expect(agent_id).to_not eq(-1)
 
@@ -92,7 +92,12 @@ describe 'Corporate entity agent controller' do
       expect(AgentOtherAgencyCodes.where(:agent_corporate_entity_id => agent_id).count).to eq(1)
       expect(AgentMaintenanceHistory.where(:agent_corporate_entity_id => agent_id).count).to eq(1)
       expect(AgentRecordIdentifier.where(:agent_corporate_entity_id => agent_id).count).to eq(1)
-    end 
+      expect(StructuredDateLabel.where(:agent_corporate_entity_id => agent_id).count).to eq(1)
+      expect(AgentPlace.where(:agent_corporate_entity_id => agent_id).count).to eq(1)
+      expect(AgentOccupation.where(:agent_corporate_entity_id => agent_id).count).to eq(1)
+      expect(AgentFunction.where(:agent_corporate_entity_id => agent_id).count).to eq(1)
+      expect(AgentTopic.where(:agent_corporate_entity_id => agent_id).count).to eq(1)
+    end
 
     it "deletes agent subrecords when parent agent is deleted" do
       agent_id = create_agent_via_api(:corporate_entity, {:create_subrecords => true})
@@ -109,6 +114,11 @@ describe 'Corporate entity agent controller' do
       expect(AgentOtherAgencyCodes.where(:agent_corporate_entity_id => agent_id).count).to eq(0)
       expect(AgentMaintenanceHistory.where(:agent_corporate_entity_id => agent_id).count).to eq(0)
       expect(AgentRecordIdentifier.where(:agent_corporate_entity_id => agent_id).count).to eq(0)
+      expect(StructuredDateLabel.where(:agent_corporate_entity_id => agent_id).count).to eq(0)
+      expect(AgentPlace.where(:agent_corporate_entity_id => agent_id).count).to eq(0)
+      expect(AgentOccupation.where(:agent_corporate_entity_id => agent_id).count).to eq(0)
+      expect(AgentFunction.where(:agent_corporate_entity_id => agent_id).count).to eq(0)
+      expect(AgentTopic.where(:agent_corporate_entity_id => agent_id).count).to eq(0)
     end
 
     it "gets subrecords along with agent" do
@@ -126,6 +136,11 @@ describe 'Corporate entity agent controller' do
       expect(json_response["agent_maintenance_histories"].length).to eq(1)
       expect(json_response["agent_record_identifiers"].length).to eq(1)
       expect(json_response["agent_sources"].length).to eq(1)
+      expect(json_response["dates_of_existence"].length).to eq(1)
+      expect(json_response["agent_places"].length).to eq(1)
+      expect(json_response["agent_occupations"].length).to eq(1)
+      expect(json_response["agent_functions"].length).to eq(1)
+      expect(json_response["agent_topics"].length).to eq(1)
     end
   end
 
