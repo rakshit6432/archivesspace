@@ -525,22 +525,27 @@
 <% define_template "chronology_item" do |form, item| %>
   <div class="subrecord-form-fields" data-type="chronology_item">
     <%= form.label_and_textfield("event_date") %>
-    <div class="form-group">
-      <label class="control-label"><%= I18n.t("chronology_item.events") %></label>
-      <div class="controls">
+    <%= form.label_and_textfield("place") %>
+    <section class="subrecord-form chronology_item_list">
+      <h5 class="subrecord-form-heading">
+        <%= I18n.t("chronology_item.events") %>
+        <% if not form.readonly? %>
+          <button class="btn btn-xs btn-default pull-right add-event-btn"><%= I18n.t("note._frontend.action.add_event") %></button>
+        <% end %>
+      </h5>
+      <div class="controls chronology_item_list">
         <%= form.list_for(form["events"], "events[]") do |event| %>
           <% form.emit_template("chronology_item_event", event) %>
         <% end %>
-        <% if not form.readonly? %>
-          <button class="btn btn-xs btn-default add-event-btn"><%= I18n.t("note._frontend.action.add_event") %></button>
-        <% end %>
       </div>
-    </div>
+    </section>
   </div>
 <% end %>
 
 <% define_template "chronology_item_event" do |form, event| %>
-  <div class="subrecord-form-inline"><%= form.textfield(nil, event, { :escape => false }) %></div>
+  <div class="subrecord-form-inline">
+      <%= form.textfield(nil, event, { :escape => false }) %>
+  </div>
 <% end %>
 
 <% define_template "bib_item" do |form, item| %>

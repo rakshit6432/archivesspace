@@ -860,10 +860,11 @@ en:
     event_date: Event Date
     event_date_tooltip: |
         <p>The date of an event in a chronology list.</p>
-    events: Events
+    events: Event Items
     events_tooltip: |
         <p>A description of an event corresponding to the chronology date item.</p>
-    events_singular: Event
+    events_singular: Event Item
+    place: Event Place
 
   note_definedlist:
     <<: *note_attributes
