@@ -34,7 +34,5 @@ Sequel.migration do
 
 		create_enum("maintenance_agent_type_enum", ["human", "machine"], "human")
 
-		create_enum("convention_enum", ["aacr", "ccr", "da", "rda", "rad", "isaar"])
-
   end
 end

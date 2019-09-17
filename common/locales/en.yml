@@ -589,7 +589,7 @@ en:
     last_verified_date_tooltip: Last Verified Date Tooltip
 
   agent_conventions_declaration:
-    convention_enum_tooltip: Convention Tooltip    
+    name_rule_tooltip: Name Rule Tooltip
     citation_tooltip: Citation
     descriptive_note_tooltip: Descriptive Note Tooltip
     file_uri_tooltip: File URI Tooltip

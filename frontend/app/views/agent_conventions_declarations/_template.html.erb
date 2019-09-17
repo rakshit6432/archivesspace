@@ -1,7 +1,7 @@
 <% define_template "agent_conventions_declaration", jsonmodel_definition(:agent_conventions_declaration) do |form| %>
   <div class="subrecord-form-fields">
     <div class="agent-record-control-container">
-      <%= form.label_and_select "convention_enum", [""] + form.possible_options_for("convention_enum", false) %>
+      <%= form.label_and_select "name_rule", [""] + form.possible_options_for("name_rule", false) %>
       <%= form.label_and_textfield "citation",  {:field_opts => {:size => 30, :class => "form-control"} }%>
       <%= form.label_and_textfield "descriptive_note",  {:field_opts => {:size => 30, :class => "form-control"} }%>
       <%= form.label_and_textfield "file_uri",  {:field_opts => {:size => 30, :class => "form-control"} }%>

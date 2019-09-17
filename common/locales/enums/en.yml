@@ -111,13 +111,6 @@ en:
     maintenance_agent_type_enum: 
       human: Human
       machine: Machine
-    convention_enum: 
-      aacr: Anglo-American Cataloging Rules
-      ccr: Cataloging Cultural Resources
-      da: Describing Archives- A Content Standard
-      rda: Resource Description and Access
-      rad: Rules for Archival Description
-      isaar: International Standard Archival Authority Record for Corporate Bodies, Persons, and Families
     linked_event_archival_record_roles:
       source: Source
       outcome: Outcome
@@ -421,6 +414,9 @@ en:
       aacr: Anglo-American Cataloging Rules
       dacs: "Describing Archives: A Content Standard"
       rda: Resource Description and Access
+      ccr: Cataloging Cultural Resources 
+      rad: Rules for Archival Description
+      isaar: International Standard Archival Authority Record for Corporate Bodies, Persons, and Families
     extent_extent_type:
       cassettes: Cassettes
       cubic_feet: Cubic Feet
@@ -1971,4 +1967,3 @@ en:
     agency_code_type_enum: Agency Code
     maintenance_event_type_enum: Maintenence Event Type
     maintenance_agent_type_enum: Maintenence Agent Type
-    convention_enum: Convention
