@@ -11,8 +11,8 @@
       "subordinate_name_2" => {"type" => "string", "maxLength" => 65000},
       "number" => {"type" => "string", "maxLength" => 255},
       "location" => {"type" => "string", "maxLength" => 65000},
-      "jurisdiction" => {"type" => "string", "maxLength" => 65000},
       "conference_meeting" => {"type" => "boolean", "default" => false},
+      "jurisdiction" => {"type" => "boolean", "default" => false},
     },
   },
 }

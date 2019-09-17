@@ -14,8 +14,11 @@
     <%= form.label_and_textfield "dates" %>
     <hr/>
     <%= form.label_and_textfield "qualifier" %>
+    <hr/>
+    <%= form.label_and_textfield "family_type" %>
+    <%= form.label_and_textfield "location" %>
+    <hr/>
     <%= form.label_and_textfield "sort_name", {:field_opts => {:automatable => true}, :required => :conditionally}%>
-    <%= form.label_and_textfield "sort_name" %>
     <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "use_dates", :template_erb => "dates/template", :template => "structured_date_label", :heading_text => I18n.t("name._frontend.section.use_date"), :heading_size => "h4", :template_overrides => "agents/name_forms/date_labels"} %>
   </div>
 <% end %>
