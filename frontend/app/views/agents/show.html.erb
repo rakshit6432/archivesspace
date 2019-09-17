@@ -55,6 +55,10 @@
           <%= render_aspace_partial :partial => "agent_alternate_sets/show", :locals => { :agent_alternate_sets => @agent.agent_alternate_sets, :section_id => "#{@agent.agent_type}_agent_alternate_set" } %>
         <% end %>
 
+        <% if @agent.agent_identifiers.length > 0 %>
+          <%= render_aspace_partial :partial => "agent_identifiers/show", :locals => { :agent_identifiers => @agent.agent_identifiers, :section_id => "#{@agent.agent_type}_agent_identifier" } %>
+        <% end %>
+
 
         <section id="<%= @agent.agent_type %>_names">
           <h3><%= I18n.t("agent_name._plural") %></h3>

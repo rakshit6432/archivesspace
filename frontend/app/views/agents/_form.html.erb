@@ -45,6 +45,8 @@
       <%= I18n.t("agent._frontend.section.identity_information") %>
     </h3>
 
+   <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "agent_identifiers", :section_id => "#{@agent.agent_type}_agent_identifier", :template => "agent_identifiers", help_topic: "agent_identifiers"} %>
+
   <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "names", :section_id => "#{@agent.agent_type}_names", :template_erb => "agents/name_forms/#{@agent.agent_type}", :template => "name_#{@agent.agent_type.to_s.gsub("agent_","")}", :help_topic => "#{@agent.agent_type}_names"} %>
   </section>
 
@@ -52,6 +54,7 @@
     <h3>
       <%= I18n.t("agent._frontend.section.description_information") %>
     </h3>
+
 
   <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "dates_of_existence", :section_id => "#{@agent.agent_type}_dates_of_existence", :template_erb => "dates/template", :template => "structured_date_label", :heading_text => I18n.t("agent._frontend.section.dates_of_existence"), :template_overrides => {"date_label" => "agents/date_labels"}, :help_topic => "#{@agent.agent_type}_dates_of_existence"} %>
 

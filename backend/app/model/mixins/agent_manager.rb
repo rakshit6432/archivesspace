@@ -369,6 +369,12 @@ module AgentManager
                                :contains_records_of_type => :agent_topic,
                                :corresponding_to_association => :agent_topic)
 
+        self.one_to_many :agent_identifier, :class => "AgentIdentifier"
+
+        self.def_nested_record(:the_property => :agent_identifiers,
+                               :contains_records_of_type => :agent_identifier,
+                               :corresponding_to_association => :agent_identifier)
+
       end
 
 
