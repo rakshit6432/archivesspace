@@ -202,6 +202,11 @@ FactoryBot.define do
       gender_enum { "female" }
     end
 
+    factory :json_agent_identifier, class: JSONModel(:agent_identifier) do
+      entity_identifier { generate(:alphanumstr) }
+      identifier_type_enum { "loc"}
+    end
+
     factory :resource do
       json_schema_version { 1 }
       title { generate(:generic_title) }
@@ -322,6 +327,7 @@ FactoryBot.define do
     agent_functions { [build(:json_agent_function)] }
     agent_topics { [build(:json_agent_topic)] }
     agent_genders { [build(:json_agent_gender)] }
+    agent_identifiers { [build(:json_agent_identifier)] }
   end
 
   factory :json_agent_corporate_entity_full_subrec, class: JSONModel(:agent_corporate_entity) do
@@ -340,6 +346,7 @@ FactoryBot.define do
     agent_occupations { [build(:json_agent_occupation)] }
     agent_functions { [build(:json_agent_function)] }
     agent_topics { [build(:json_agent_topic)] }
+    agent_identifiers { [build(:json_agent_identifier)] }
   end
 
   factory :json_agent_software_full_subrec, class: JSONModel(:agent_software) do
@@ -357,6 +364,7 @@ FactoryBot.define do
     agent_occupations { [build(:json_agent_occupation)] }
     agent_functions { [build(:json_agent_function)] }
     agent_topics { [build(:json_agent_topic)] }
+    agent_identifiers { [build(:json_agent_identifier)] }
   end
 
   factory :json_agent_family_full_subrec, class: JSONModel(:agent_family) do
@@ -374,6 +382,7 @@ FactoryBot.define do
     agent_occupations { [build(:json_agent_occupation)] }
     agent_functions { [build(:json_agent_function)] }
     agent_topics { [build(:json_agent_topic)] }
+    agent_identifiers { [build(:json_agent_identifier)] }
   end
 
   factory :json_archival_object_normal, class: JSONModel(:archival_object) do

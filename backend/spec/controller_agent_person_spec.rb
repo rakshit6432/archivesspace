@@ -145,6 +145,7 @@ describe 'Person agent controller' do
       expect(AgentFunction.where(:agent_person_id => agent_id).count).to eq(1)
       expect(AgentTopic.where(:agent_person_id => agent_id).count).to eq(1)
       expect(AgentGender.where(:agent_person_id => agent_id).count).to eq(1)
+      expect(AgentIdentifier.where(:agent_person_id => agent_id).count).to eq(1)
     end
 
     it "deletes agent subrecords when parent agent is deleted" do
@@ -168,6 +169,7 @@ describe 'Person agent controller' do
       expect(AgentFunction.where(:agent_person_id => agent_id).count).to eq(0)
       expect(AgentTopic.where(:agent_person_id => agent_id).count).to eq(0)
       expect(AgentGender.where(:agent_person_id => agent_id).count).to eq(0)
+      expect(AgentIdentifier.where(:agent_person_id => agent_id).count).to eq(0)
     end
 
     it "gets subrecords along with agent" do
@@ -191,6 +193,7 @@ describe 'Person agent controller' do
       expect(json_response["agent_functions"].length).to eq(1)
       expect(json_response["agent_topics"].length).to eq(1)
       expect(json_response["agent_genders"].length).to eq(1)
+      expect(json_response["agent_identifiers"].length).to eq(1)
     end
   end
 end

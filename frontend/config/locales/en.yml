@@ -1570,6 +1570,21 @@ en:
       action:
         add: Add Gender Info
     gender_enum: Gender
+
+  agent_identifier:
+    _plural: Identifiers
+    _singular: Identifier
+    _frontend:
+      action:
+        add: Add Identifier
+        
+    identifier_type_enum: Identifier Type
+    entity_identifier: Entity Identifier
+
+  agent_identifiers:
+    identifier_type_enum: Identifier Type
+    entity_identifier: Entity Identifier
+ 
     
   agent_place:
     _frontend:

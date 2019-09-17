@@ -59,7 +59,13 @@
         "type" => "array",
         "items" => {"type" => "JSONModel(:agent_record_identifier) object"}
       },
-      
+
+      "agent_identifiers" => {
+        "required" => false,
+        "type" => "array",
+        "items" => {"type" => "JSONModel(:agent_identifier) object"}
+      },
+ 
       "agent_sources" => {
         "required" => false,
         "type" => "array",

@@ -1,0 +1,8 @@
+<% define_template "agent_identifiers", jsonmodel_definition(:agent_identifier) do |form| %>
+  <div class="subrecord-form-fields">
+    <div class="agent-record-control-container">
+      <%= form.label_and_textfield "entity_identifier",  {:field_opts => {:size => 30, :class => "form-control"} }%>
+      <%= form.label_and_select "identifier_type_enum", [""] + form.possible_options_for("identifier_type_enum", false) %>
+    </div>
+  </div>
+<% end %>

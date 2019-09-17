@@ -29,6 +29,8 @@
         <%= render_aspace_partial :partial => "shared/sidebar_entry", :locals => {:anchor => "identity_information", :title => "Identity Information"} %>
     <% end %>
 
+    <%= sidebar.render_for_view_and_edit(:subrecord_type => 'agent_identifier', :property => 'agent_identifiers', :anchor => "#{@agent.agent_type}_agent_identifier") %>
+
     <%= sidebar.render_for_view_and_edit(:subrecord_type => 'agent_name', :property => 'names', :anchor => "#{@agent.agent_type}_names") %>
 
 
