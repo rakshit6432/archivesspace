@@ -97,13 +97,6 @@
     maintenance_agent_type_enum: 
       human: Humain
       machine: Machine
-    convention_enum: 
-      aacr: Règles de catalogage anglo-américaines
-      ccr: Catalogage des ressources culturelles
-      da: Description des archives - Une norme de contenu
-      rda: Description de la ressource et accès
-      rad: Règles de description archivistique
-      isaar: Notice d'autorité archivistique internationale type pour les personnes morales et les personnes morales
     linked_event_archival_record_roles:
       source: Source
       outcome: Résultat
@@ -1957,4 +1950,3 @@
     agency_code_type_enum: Code d'agence
     maintenance_event_type_enum: Type d'événement de maintenance
     maintenance_agent_type_enum: Type d'agent de maintenance
-    convention_enum: Convention

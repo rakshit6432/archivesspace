@@ -1650,7 +1650,7 @@ en:
     _frontend:
       action:
         add: Add Convention
-    convention_enum: Convention Type
+    name_rule: Name Rule
     citation: Citation
     descriptive_note: Descriptive Note
     file_uri: File URI

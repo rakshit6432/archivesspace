@@ -129,7 +129,7 @@ FactoryBot.define do
     factory :agent_conventions_declaration, class: JSONModel(:agent_conventions_declaration) do
       file_version_xlink_actuate_attribute { "other"}
       file_version_xlink_show_attribute { "other" }
-      convention_enum { "aacr" }
+      name_rule { "aacr" }
       citation { generate(:alphanumstr) }
       descriptive_note { generate(:alphanumstr) }
       file_uri { generate(:alphanumstr) }

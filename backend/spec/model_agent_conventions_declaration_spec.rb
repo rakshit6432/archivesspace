@@ -3,7 +3,7 @@ require_relative 'spec_helper'
 describe 'AgentConventionsDeclaration model' do
   it "allows agent_conventions_declaration records to be created" do
     acd = AgentConventionsDeclaration.new(
-      :convention_enum => "aacr",
+      :name_rule => "aacr",
       :file_version_xlink_actuate_attribute => "other",
       :file_version_xlink_show_attribute => "other",
       :citation => "citation",
@@ -21,7 +21,7 @@ describe 'AgentConventionsDeclaration model' do
 
   it "requires an agent_conventions_declaration to point to an agent record" do
     acd = AgentConventionsDeclaration.new(
-      :convention_enum => "aacr",
+      :name_rule => "aacr",
       :file_version_xlink_actuate_attribute => "other",
       :file_version_xlink_show_attribute => "other",
       :citation => "citation",
@@ -36,7 +36,7 @@ describe 'AgentConventionsDeclaration model' do
 
   it "is invalid if an agent_conventions_declaration points to more than one agent record" do
     acd = AgentConventionsDeclaration.new(
-      :convention_enum => "aacr",
+      :name_rule => "aacr",
       :file_version_xlink_actuate_attribute => "other",
       :file_version_xlink_show_attribute => "other",
       :citation => "citation",

@@ -57,7 +57,7 @@ Sequel.migration do
     create_table(:agent_conventions_declaration) do
       primary_key :id
 
-      Integer :convention_enum_id, :null => false
+      Integer :name_rule_id, :null => false
       Integer :file_version_xlink_actuate_attribute_id, :null => true
       Integer :file_version_xlink_show_attribute_id, :null => true
 

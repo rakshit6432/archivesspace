@@ -5,9 +5,9 @@
     "type" => "object",
 
     "properties" => {
-      "convention_enum" => {
+      "name_rule" => {
         "type" => "string",
-        "dynamic_enum" => "convention_enum",
+        "dynamic_enum" => "name_rule",
         "ifmissing" => "error"
       },
       "citation" => {"type" => "string", "maxLength" => 65000, "ifmissing" => "error"},

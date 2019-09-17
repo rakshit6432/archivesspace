@@ -97,13 +97,6 @@ ja:
     maintenance_agent_type_enum: 
       human: 人間
       machine: 機械
-    convention_enum: 
-      aacr: 英米目録規則
-      ccr: 文化資源のカタログ化
-      da: アーカイブの記述 - コンテンツ標準
-      rda: リソースの説明とアクセス
-      rad: アーカイブ記述の規則
-      isaar: 団体、個人、および家族のための国際標準保管機関記録
     linked_event_archival_record_roles:
       source: ソース
       outcome: 結果
@@ -1956,4 +1949,3 @@ ja:
     agency_code_type_enum: 代理店コード
     maintenance_event_type_enum: メンテナンスイベントの種類
     maintenance_agent_type_enum: メンテナンスエージェントの種類
-    convention_enum: コンベンション
