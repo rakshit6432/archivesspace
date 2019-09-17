@@ -520,6 +520,8 @@ en:
     family_name: Family Name
     family_name_tooltip: |
         <p>The last name, or surname, for a family, typically supplemented with the term "family".</p>
+    family_type: Family Type
+    location: Location
 
   name_corporate_entity:
     <<: *agent_name_attributes
@@ -533,6 +535,13 @@ en:
     subordinate_name_2: Subordinate Name 2
     subordinate_name_2_tooltip: |
         <p>A hierarchical unit with the corporate entity named in the Primary Name field and lower than the unit named in the Subordinate Name 1 field.</p>
+
+    jurisdiction: Jurisdiction?
+    jurisdiction_tooltip: Jurisdiction Tooltip
+    conference_meeting: Conference Meeting?
+    conference_meeting_tooltip: Conference Meeting Tooltip
+    location: Location
+    location_tooltip: Location Tooltip
 
   name_software:
     <<: *agent_name_attributes
