@@ -72,9 +72,21 @@ describe 'Person agent controller' do
   end
 
 
-  it "allows agents to have a bioghist notes" do
+  it "allows people to have a bioghist notes" do
 
     n1 = build(:json_note_bioghist)
+
+    id = create_person({:notes => [n1]}).id
+
+    agent = JSONModel(:agent_person).find(id)
+
+    expect(agent.notes.length).to eq(1)
+    expect(agent.notes[0]["label"]).to eq(n1.label)
+  end
+
+  it "allows people to have a general_context notes" do
+
+    n1 = build(:json_note_general_context)
 
     id = create_person({:notes => [n1]}).id
 

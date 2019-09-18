@@ -79,6 +79,29 @@ describe 'Corporate entity agent controller' do
     expect(JSONModel(:agent_corporate_entity).find(id).names.first['sort_name']).to match(/\AArchivesSpace.* \(Global\)/)
   end
 
+  it "allows corporations to have a bioghist notes" do
+
+    n1 = build(:json_note_bioghist)
+
+    id = create_corporate_entity({:notes => [n1]}).id
+
+    agent = JSONModel(:agent_corporate_entity).find(id)
+
+    expect(agent.notes.length).to eq(1)
+    expect(agent.notes[0]["label"]).to eq(n1.label)
+  end
+
+  it "allows corporations to have a general_context notes" do
+
+    n1 = build(:json_note_general_context)
+
+    id = create_corporate_entity({:notes => [n1]}).id
+
+    agent = JSONModel(:agent_corporate_entity).find(id)
+
+    expect(agent.notes.length).to eq(1)
+    expect(agent.notes[0]["label"]).to eq(n1.label)
+  end
 
   describe "subrecord CRUD" do
     it "creates agent subrecords on POST if appropriate" do

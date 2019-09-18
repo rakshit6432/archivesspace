@@ -63,6 +63,30 @@ describe 'Family agent controller' do
     expect((uris - results).length).to eq(0)
   end
 
+  it "allows families to have a bioghist notes" do
+
+    n1 = build(:json_note_bioghist)
+
+    id = create_family({:notes => [n1]}).id
+
+    agent = JSONModel(:agent_family).find(id)
+
+    expect(agent.notes.length).to eq(1)
+    expect(agent.notes[0]["label"]).to eq(n1.label)
+  end
+
+  it "allows families to have a general_context notes" do
+
+    n1 = build(:json_note_general_context)
+
+    id = create_family({:notes => [n1]}).id
+
+    agent = JSONModel(:agent_family).find(id)
+
+    expect(agent.notes.length).to eq(1)
+    expect(agent.notes[0]["label"]).to eq(n1.label)
+  end
+
   describe "subrecord CRUD" do
     it "creates agent subrecords on POST if appropriate" do
       agent_id = create_agent_via_api(:family, {:create_subrecords => true})
