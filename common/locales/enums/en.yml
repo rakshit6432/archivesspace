@@ -1691,6 +1691,7 @@ en:
       physfacet: Physical Facet
       rights_statement: Rights
       general_context: General Context
+      mandate: Mandate
     note_digital_object_type:
       <<: *note_type_definitions
     note_langmaterial_type:

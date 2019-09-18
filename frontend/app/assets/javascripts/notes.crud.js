@@ -182,7 +182,19 @@ $(function() {
 
         initNoteType($subform, 'template_note_general_context_selector', true, '.add-sub-note-btn', callback);
       };
-      
+
+      initialisers.note_mandate = function($subform) {
+
+        var callback = function($subform) {
+          var $topLevelNoteTypeSelector = $("select.mandate-note-type", $subform);
+          $topLevelNoteTypeSelector.change(changeNoteTemplate);
+          initRemoveActionForSubRecord($subform);
+        }
+
+        initNoteType($subform, 'template_note_mandate_selector', true, '.add-sub-note-btn', callback);
+      };
+ 
+
       var initCollapsible = function($noteform) {
 
         if (!$.contains(document, $noteform[0])) {
