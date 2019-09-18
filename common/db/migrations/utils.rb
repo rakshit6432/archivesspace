@@ -54,6 +54,17 @@ def get_enum_value_id(enum_name, enum_value)
   end
 end
 
+
+def get_enum_id(enum_name)
+  enum_id = self[:enumeration].filter(:name => enum_name).select(:id).first[:id]
+
+  if enum_id
+    return enum_id
+  else
+    return -1
+  end
+end
+
 def create_enum(name, values, default = nil, editable = false, opts = {})
   id = self[:enumeration].insert(:name => name,
                                  :json_schema_version => 1,
@@ -80,6 +91,38 @@ def create_enum(name, values, default = nil, editable = false, opts = {})
 
   if !id_of_default.nil?
     self[:enumeration].where(:id => id).update(:default_value => id_of_default)
+  end
+end
+
+# adds a value to an existing enumeration. 
+# if applicable, the new value is set to last position.
+def add_values_to_enum(name, values)
+  enum_id = get_enum_id(name)
+  include_position = self.schema(:enumeration_value).flatten.include?(:position)
+
+  if enum_id != -1
+    # find the last position
+    if include_position
+      last_position = self[:enumeration_value].where(:enumeration_id => enum_id)
+                                              .order(:position)
+                                              .last[:position]
+
+      # if no other values are present, last pos is zero
+      last_position = 0 if last_position.nil?
+    end
+
+    values.each_with_index do |value, ind|
+      props = { :enumeration_id => enum_id, 
+                :value => value, 
+                :readonly => 0 } 
+
+      i = ind += 1 # index starts at zero
+      props[:position] = i + last_position if include_position
+
+      self[:enumeration_value].insert(props)
+    end
+  else
+    raise "enumeration not found."
   end
 end
 
