@@ -61,6 +61,30 @@ describe 'Software agent controller' do
     expect(JSONModel(:agent_software).find(id).names.first['sort_name']).to eq("ArchivesSpace 1.0")
 
   end
+  
+  it "allows software to have a bioghist notes" do
+
+    n1 = build(:json_note_bioghist)
+
+    id = create_software({:notes => [n1]}).id
+
+    agent = JSONModel(:agent_software).find(id)
+
+    expect(agent.notes.length).to eq(1)
+    expect(agent.notes[0]["label"]).to eq(n1.label)
+  end
+
+  it "allows software to have a general_context notes" do
+
+    n1 = build(:json_note_general_context)
+
+    id = create_software({:notes => [n1]}).id
+
+    agent = JSONModel(:agent_software).find(id)
+
+    expect(agent.notes.length).to eq(1)
+    expect(agent.notes[0]["label"]).to eq(n1.label)
+  end
 
 
   describe "subrecord CRUD" do

@@ -432,6 +432,11 @@ FactoryBot.define do
     subnotes { [ build(:json_note_outline), build(:json_note_text) ] }
   end
 
+  factory :json_note_general_context, class: JSONModel(:note_general_context) do
+    label { generate(:alphanumstr) }
+    subnotes { [ build(:json_note_outline), build(:json_note_text) ] }
+  end
+
   factory :json_note_outline, class: JSONModel(:note_outline) do
     levels { [ build(:json_note_outline_level) ] }
   end
