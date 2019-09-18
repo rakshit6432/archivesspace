@@ -1690,6 +1690,7 @@ en:
       materialspec: Materials Specific Details
       physfacet: Physical Facet
       rights_statement: Rights
+      general_context: General Context
     note_digital_object_type:
       <<: *note_type_definitions
     note_langmaterial_type:

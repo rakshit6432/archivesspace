@@ -112,7 +112,7 @@
       "notes" => {
         "type" => "array",
         "items" => {"type" => [{"type" => "JSONModel(:note_bioghist) object"},
-                               {"type" => "JSONModel(:note_agent_rights_statement) object"}]},
+                               {"type" => "JSONModel(:note_general_context) object"}]},
       },
 
       "used_within_repositories" => {"type" => "array", "items" => {"type" => "JSONModel(:repository) uri"}, "readonly" => true},
