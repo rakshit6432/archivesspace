@@ -54,7 +54,6 @@ module NotesHelper
 
     elsif jsonmodel_type == "agent_person" ||
           jsonmodel_type == "agent_family" ||
-          jsonmodel_type == "agent_corporate_entity" ||
           jsonmodel_type == "agent_software"
 
       note_types = {
@@ -67,6 +66,25 @@ module NotesHelper
           :target => :note_general_context,
           :value => "general_context",
           :i18n => I18n.t("enumerations._note_types.general_context", :default => "general_context")
+        }
+      }
+
+    elsif jsonmodel_type == "agent_corporate_entity"
+      note_types = {
+        "bioghist" => {
+          :target => :note_bioghist,
+          :value => "bioghist",
+          :i18n => I18n.t("enumerations._note_types.bioghist", :default => "bioghist")
+        },
+        "general_context" => {
+          :target => :note_general_context,
+          :value => "general_context",
+          :i18n => I18n.t("enumerations._note_types.general_context", :default => "general_context")
+        },
+        "mandate" => {
+          :target => :note_mandate,
+          :value => "mandate",
+          :i18n => I18n.t("enumerations._note_types.mandate", :default => "mandate")
         }
       }
 
@@ -172,11 +190,25 @@ module NotesHelper
 
     note_types
   end
-  
+
   def general_context_subnotes
     note_types = {}
 
     JSONModel(:note_general_context).schema['properties']['subnotes']['items']['type'].each do |item_def|
+      type = JSONModel.parse_jsonmodel_ref(item_def['type'])[0].to_s
+      note_types[type] = {
+        :value => type,
+        :i18n => I18n.t("#{type}.option", :default => type)
+      }
+    end
+
+    note_types
+  end
+
+  def mandate_subnotes
+    note_types = {}
+
+    JSONModel(:note_mandate).schema['properties']['subnotes']['items']['type'].each do |item_def|
       type = JSONModel.parse_jsonmodel_ref(item_def['type'])[0].to_s
       note_types[type] = {
         :value => type,
