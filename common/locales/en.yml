@@ -801,6 +801,7 @@ en:
     note_rights_statement: Rights Statement Note
     note_rights_statement_act: Act Note
     note_agent_rights_statement: Rights Statement Note (do not use)
+    note_general_context: General Context
     _singular: Note
     _plural: Notes
 
@@ -886,6 +887,10 @@ en:
         <p>An attribute for indicating the type of numeration to be applied to the note items</p>
 
   note_bioghist:
+    <<: *note_attributes
+    subnotes: Sub Notes
+
+  note_general_context:
     <<: *note_attributes
     subnotes: Sub Notes
 

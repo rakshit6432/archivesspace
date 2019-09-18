@@ -172,7 +172,17 @@ $(function() {
         initNoteType($subform, 'template_note_bioghist_selector', true, '.add-sub-note-btn', callback);
       };
 
+      initialisers.note_general_context = function($subform) {
 
+        var callback = function($subform) {
+          var $topLevelNoteTypeSelector = $("select.general_context-note-type", $subform);
+          $topLevelNoteTypeSelector.change(changeNoteTemplate);
+          initRemoveActionForSubRecord($subform);
+        }
+
+        initNoteType($subform, 'template_note_general_context_selector', true, '.add-sub-note-btn', callback);
+      };
+      
       var initCollapsible = function($noteform) {
 
         if (!$.contains(document, $noteform[0])) {

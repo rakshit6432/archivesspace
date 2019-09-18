@@ -63,10 +63,10 @@ module NotesHelper
           :value => "bioghist",
           :i18n => I18n.t("enumerations._note_types.bioghist", :default => "bioghist")
         },
-        "agent_rights_statement" => {
-          :target => :note_agent_rights_statement,
-          :value => "agent_rights_statement",
-          :i18n => I18n.t("note.note_agent_rights_statement")
+        "general_context" => {
+          :target => :note_general_context,
+          :value => "general_context",
+          :i18n => I18n.t("enumerations._note_types.general_context", :default => "general_context")
         }
       }
 
@@ -163,6 +163,20 @@ module NotesHelper
     note_types = {}
 
     JSONModel(:note_bioghist).schema['properties']['subnotes']['items']['type'].each do |item_def|
+      type = JSONModel.parse_jsonmodel_ref(item_def['type'])[0].to_s
+      note_types[type] = {
+        :value => type,
+        :i18n => I18n.t("#{type}.option", :default => type)
+      }
+    end
+
+    note_types
+  end
+  
+  def general_context_subnotes
+    note_types = {}
+
+    JSONModel(:note_general_context).schema['properties']['subnotes']['items']['type'].each do |item_def|
       type = JSONModel.parse_jsonmodel_ref(item_def['type'])[0].to_s
       note_types[type] = {
         :value => type,
