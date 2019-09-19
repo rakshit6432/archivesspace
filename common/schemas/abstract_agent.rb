@@ -113,6 +113,8 @@
         "type" => "array",
         "items" => {"type" => [{"type" => "JSONModel(:note_bioghist) object"},
                                {"type" => "JSONModel(:note_mandate) object"},
+                               {"type" => "JSONModel(:note_legal_status) object"},
+                               {"type" => "JSONModel(:note_structure_or_genealogy) object"},
                                {"type" => "JSONModel(:note_general_context) object"}]},
       },
 

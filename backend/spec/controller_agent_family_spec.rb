@@ -87,6 +87,18 @@ describe 'Family agent controller' do
     expect(agent.notes[0]["label"]).to eq(n1.label)
   end
 
+  it "allows families to have a structure_or_genealogy notes" do
+
+    n1 = build(:json_note_legal_status)
+
+    id = create_family({:notes => [n1]}).id
+
+    agent = JSONModel(:agent_family).find(id)
+
+    expect(agent.notes.length).to eq(1)
+    expect(agent.notes[0]["label"]).to eq(n1.label)
+  end
+
   describe "subrecord CRUD" do
     it "creates agent subrecords on POST if appropriate" do
       agent_id = create_agent_via_api(:family, {:create_subrecords => true})

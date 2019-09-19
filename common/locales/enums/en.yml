@@ -1692,6 +1692,8 @@ en:
       rights_statement: Rights
       general_context: General Context
       mandate: Mandate
+      legal_status: Legal Status
+      structure_or_genealogy: Structure Or Genealogy
     note_digital_object_type:
       <<: *note_type_definitions
     note_langmaterial_type:

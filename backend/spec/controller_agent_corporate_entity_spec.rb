@@ -115,6 +115,30 @@ describe 'Corporate entity agent controller' do
     expect(agent.notes[0]["label"]).to eq(n1.label)
   end
 
+  it "allows corporations to have a legal_status notes" do
+
+    n1 = build(:json_note_legal_status)
+
+    id = create_corporate_entity({:notes => [n1]}).id
+
+    agent = JSONModel(:agent_corporate_entity).find(id)
+
+    expect(agent.notes.length).to eq(1)
+    expect(agent.notes[0]["label"]).to eq(n1.label)
+  end
+  
+  it "allows corporations to have a structure_or_genealogy notes" do
+
+    n1 = build(:json_note_legal_status)
+
+    id = create_corporate_entity({:notes => [n1]}).id
+
+    agent = JSONModel(:agent_corporate_entity).find(id)
+
+    expect(agent.notes.length).to eq(1)
+    expect(agent.notes[0]["label"]).to eq(n1.label)
+  end
+
   describe "subrecord CRUD" do
     it "creates agent subrecords on POST if appropriate" do
       agent_id = create_agent_via_api(:corporate_entity, {:create_subrecords => true})
