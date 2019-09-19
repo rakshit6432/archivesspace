@@ -34,6 +34,21 @@ module NotesHelper
         }
       }
 
+    elsif jsonmodel_type == "agent_contact"
+
+      note_types = {
+        "text" => {
+          :target => :note_text,
+          :value => "text",
+          :i18n => I18n.t("note.note_text")
+        },
+        "chronology" => {
+          :target => :note_chronology,
+          :value => "chronology",
+          :i18n => I18n.t("note.note_chronology")
+        }
+      }
+
     elsif jsonmodel_type == "agent_place" ||
           jsonmodel_type == "agent_occupation" ||
           jsonmodel_type == "agent_function" ||
