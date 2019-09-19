@@ -53,7 +53,6 @@ module NotesHelper
       }
 
     elsif jsonmodel_type == "agent_person" ||
-          jsonmodel_type == "agent_family" ||
           jsonmodel_type == "agent_software"
 
       note_types = {
@@ -66,6 +65,26 @@ module NotesHelper
           :target => :note_general_context,
           :value => "general_context",
           :i18n => I18n.t("enumerations._note_types.general_context", :default => "general_context")
+        }
+      }
+
+    elsif jsonmodel_type == "agent_family"
+
+      note_types = {
+        "bioghist" => {
+          :target => :note_bioghist,
+          :value => "bioghist",
+          :i18n => I18n.t("enumerations._note_types.bioghist", :default => "bioghist")
+        },
+        "general_context" => {
+          :target => :note_general_context,
+          :value => "general_context",
+          :i18n => I18n.t("enumerations._note_types.general_context", :default => "general_context")
+        },
+        "structure_or_genealogy" => {
+          :target => :note_structure_or_genealogy,
+          :value => "structure_or_genealogy",
+          :i18n => I18n.t("enumerations._note_types.structure_or_genealogy", :default => "structure_or_genealogy")
         }
       }
 
@@ -85,6 +104,16 @@ module NotesHelper
           :target => :note_mandate,
           :value => "mandate",
           :i18n => I18n.t("enumerations._note_types.mandate", :default => "mandate")
+        },
+        "legal_status" => {
+          :target => :note_legal_status,
+          :value => "legal_status",
+          :i18n => I18n.t("enumerations._note_types.legal_status", :default => "legal_status")
+        },
+        "structure_or_genealogy" => {
+          :target => :note_structure_or_genealogy,
+          :value => "structure_or_genealogy",
+          :i18n => I18n.t("enumerations._note_types.structure_or_genealogy", :default => "structure_or_genealogy")
         }
       }
 
@@ -219,6 +248,33 @@ module NotesHelper
     note_types
   end
 
+  def legal_status_subnotes
+    note_types = {}
+
+    JSONModel(:note_legal_status).schema['properties']['subnotes']['items']['type'].each do |item_def|
+      type = JSONModel.parse_jsonmodel_ref(item_def['type'])[0].to_s
+      note_types[type] = {
+        :value => type,
+        :i18n => I18n.t("#{type}.option", :default => type)
+      }
+    end
+
+    note_types
+  end
+
+  def structure_or_genealogy_subnotes
+    note_types = {}
+
+    JSONModel(:note_structure_or_genealogy).schema['properties']['subnotes']['items']['type'].each do |item_def|
+      type = JSONModel.parse_jsonmodel_ref(item_def['type'])[0].to_s
+      note_types[type] = {
+        :value => type,
+        :i18n => I18n.t("#{type}.option", :default => type)
+      }
+    end
+
+    note_types
+  end
 
   def clean_note(note)
     MixedContentParser::parse(note, url_for(:root), :wrap_blocks => true)

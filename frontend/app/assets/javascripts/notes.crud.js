@@ -193,8 +193,29 @@ $(function() {
 
         initNoteType($subform, 'template_note_mandate_selector', true, '.add-sub-note-btn', callback);
       };
- 
 
+      initialisers.note_legal_status = function($subform) {
+
+        var callback = function($subform) {
+          var $topLevelNoteTypeSelector = $("select.legal_status-note-type", $subform);
+          $topLevelNoteTypeSelector.change(changeNoteTemplate);
+          initRemoveActionForSubRecord($subform);
+        }
+
+        initNoteType($subform, 'template_note_legal_status_selector', true, '.add-sub-note-btn', callback);
+      };
+ 
+      initialisers.note_structure_or_genealogy = function($subform) {
+
+        var callback = function($subform) {
+          var $topLevelNoteTypeSelector = $("select.structure_or_genealogy-note-type", $subform);
+          $topLevelNoteTypeSelector.change(changeNoteTemplate);
+          initRemoveActionForSubRecord($subform);
+        }
+
+        initNoteType($subform, 'template_note_structure_or_genealogy_selector', true, '.add-sub-note-btn', callback);
+      };
+ 
       var initCollapsible = function($noteform) {
 
         if (!$.contains(document, $noteform[0])) {
