@@ -77,7 +77,6 @@ FactoryBot.define do
                             #:telephones => [nil, build(:json_telephone)].sample,
                             :email => [nil, generate(:alphanumstr)].sample,
                             :email_signature => [nil, generate(:alphanumstr)].sample,
-                            :note => [nil, generate(:alphanumstr)].sample,
                             :json_schema_version => 1)
       end
     end
