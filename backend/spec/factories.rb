@@ -452,6 +452,11 @@ FactoryBot.define do
     subnotes { [ build(:json_note_text) ] }
   end
 
+  factory :json_note_contact_note, class: JSONModel(:note_contact_note) do
+    date_of_contact { generate(:alphanumstr) }
+    contact_notes { generate(:alphanumstr) }
+  end
+
   factory :json_note_outline, class: JSONModel(:note_outline) do
     levels { [ build(:json_note_outline_level) ] }
   end

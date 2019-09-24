@@ -37,15 +37,10 @@ module NotesHelper
     elsif jsonmodel_type == "agent_contact"
 
       note_types = {
-        "text" => {
-          :target => :note_text,
-          :value => "text",
-          :i18n => I18n.t("note.note_text")
-        },
-        "chronology" => {
-          :target => :note_chronology,
-          :value => "chronology",
-          :i18n => I18n.t("note.note_chronology")
+        "contact_note" => {
+          :target => :note_contact_note,
+          :value => "contact_note",
+          :i18n => I18n.t("note.note_contact_note")
         }
       }
 

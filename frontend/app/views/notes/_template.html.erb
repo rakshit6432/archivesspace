@@ -433,6 +433,24 @@
   </div>
 <% end %>
 
+<% define_template "note_contact_note", jsonmodel_definition(:note_contact_note) do |form| %>
+  <div class="subrecord-form-fields" data-type="note_contact_note">
+    <h3 class="subrecord-form-heading">
+      <%= I18n.t("note.note_contact_note") %>
+    </h3>
+    <div class="subrecord-form-container">
+      <%= form.hidden_input(:jsonmodel_type, "note_contact_note") %>
+      <%= form.hidden_input("ingest_problem") %>
+      <%= form.label_and_textfield("persistent_id") %>
+      <%= form.label_and_textfield("date_of_contact") %>
+
+      <%= form.label_and_textarea('contact_notes', :field_opts => {:class => "mixed-content"}) %>
+
+      <%= form.label_and_boolean("publish", {}, user_prefs["publish"]) %>
+    </div>
+  </div>
+<% end %>
+
 <% define_template "note_legal_status_selector" do |form, item| %>
   <% if item %>
     <% form.emit_template(item["jsonmodel_type"]) %>
