@@ -803,6 +803,7 @@ en:
     note_agent_rights_statement: Rights Statement Note (do not use)
     note_general_context: General Context
     note_mandate: Mandate
+    note_contact_note: Contact Note
     note_legal_status: Legal Status
     note_structure_or_genealogy: Structure Or Genealogy 
     _singular: Note
@@ -900,6 +901,12 @@ en:
   note_mandate:
     <<: *note_attributes
     subnotes: Sub Notes
+
+  note_contact_note:
+    <<: *note_attributes
+    subnotes: Sub Notes
+    date_of_contact: Date of Contact
+    contact_notes: Contact Notes
 
   note_legal_status:
     <<: *note_attributes

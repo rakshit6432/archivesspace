@@ -24,8 +24,7 @@
 
       "notes" => {
         "type" => "array",
-        "items" => {"type" => [{"type" => "JSONModel(:note_chronology) object"},
-                               {"type" => "JSONModel(:note_text) object"}]},
+        "items" => {"type" => [{"type" => "JSONModel(:note_contact_note) object"}]},
       },
     },
   },

@@ -193,6 +193,17 @@ $(function() {
 
         initNoteType($subform, 'template_note_mandate_selector', true, '.add-sub-note-btn', callback);
       };
+      
+      initialisers.note_contact_note = function($subform) {
+
+        var callback = function($subform) {
+          var $topLevelNoteTypeSelector = $("select.contact_note-note-type", $subform);
+          $topLevelNoteTypeSelector.change(changeNoteTemplate);
+          initRemoveActionForSubRecord($subform);
+        }
+
+        initNoteType($subform, 'template_note_contact_note_selector', true, '.add-sub-note-btn', callback);
+      };
 
       initialisers.note_legal_status = function($subform) {
 
