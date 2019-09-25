@@ -6,16 +6,14 @@
       <%= form.label_and_textfield "maintenance_agency",  {:field_opts => {:size => 30, :class => "form-control"} }%>
       <%= form.label_and_textfield "agency_name",  {:field_opts => {:size => 30, :class => "form-control"} }%>
       <%= form.label_and_textarea "maintenance_agency_note",  {:field_opts => {:size => 30, :class => "form-control"} }%>
-      <%= form.label_and_textfield "language",  {:field_opts => {:size => 30, :class => "form-control"} }%>
-      <%= form.label_and_textfield "script",  {:field_opts => {:size => 30, :class => "form-control"} }%>
       <%= form.label_and_select "romanization_enum", [""] + form.possible_options_for("romanization_enum", false) %>
-      <%= form.label_and_textarea "language_note",  {:field_opts => {:size => 30, :class => "form-control"} }%>
       <%= form.label_and_select "government_agency_type_enum", [""] + form.possible_options_for("government_agency_type_enum", false) %>
       <%= form.label_and_select "reference_evaluation_enum", [""] + form.possible_options_for("reference_evaluation_enum", false) %>
       <%= form.label_and_select "name_type_enum", [""] + form.possible_options_for("name_type_enum", false) %>
       <%= form.label_and_select "level_of_detail_enum", [""] + form.possible_options_for("level_of_detail_enum", false) %>
       <%= form.label_and_select "modified_record_enum", [""] + form.possible_options_for("modified_record_enum", false) %>
       <%= form.label_and_select "cataloging_source_enum", [""] + form.possible_options_for("cataloging_source_enum", false) %>
+      <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "lang_materials", :custom_action_template => "lang_materials/subrecord_form_action"} %>
     </div>
   </div>
 <% end %>
