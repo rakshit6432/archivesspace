@@ -28,11 +28,7 @@ class RecordInheritance
         }
 
         properties = JSONModel::JSONModel(record_type).schema['properties']
-        if properties[property].nil?
-          next
-          puts "++++++++++++++++++++++++++++++"
-          puts "SKIPPING property #{property} in schema #{record_type.inspect}"
-        elsif properties[property]['type'].include?('object')
+        if properties[property]['type'].include?('object')
           add_inline_inheritance_field(properties[property], schema_def)
 
         elsif properties[property]['type'] == 'array'
