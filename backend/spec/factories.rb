@@ -268,7 +268,7 @@ FactoryBot.define do
     fax { [nil, generate(:alphanumstr)].sample }
     email { [nil, generate(:alphanumstr)].sample }
     email_signature { [nil, generate(:alphanumstr)].sample }
-    note { [nil, generate(:alphanumstr)].sample }
+    notes { [build(:json_note_contact_note)] }
   end
 
   factory :json_agent_corporate_entity, class: JSONModel(:agent_corporate_entity) do
