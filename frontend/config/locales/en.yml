@@ -749,6 +749,7 @@ en:
         add: Add Instance
 
   lang_material:
+    _plural: Languages
     _frontend:
       action:
         add: Add Language
