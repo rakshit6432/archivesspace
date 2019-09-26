@@ -56,6 +56,10 @@
 
     <%= sidebar.render_for_view_and_edit(:subrecord_type => 'agent_topic', :property => 'agent_topic',
                                          :anchor => "#{@agent.agent_type}_agent_topic") %>
+
+    <%= sidebar.render_for_view_and_edit(:subrecord_type => 'lang_material', :property => 'lang_materials',
+                                         :anchor => "#{@agent.agent_type}_lang_materials") %>
+ 
  
     <% if user_can?('view_agent_contact_record') %>
       <%= sidebar.render_for_view_and_edit(:subrecord_type => 'agent_contact', :property => 'agent_contacts', :anchor => "#{@agent.agent_type}_contact_details") %>
