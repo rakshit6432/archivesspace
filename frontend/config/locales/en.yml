@@ -1564,6 +1564,27 @@ en:
     script: Script
     language_note: Language Note
 
+  agent_record_control_required:
+    _plural: Record Info
+    _frontend:
+      action:
+        add: Add Required Field Set
+    maintenance_status_enum: Maintenance Status
+    publication_status_enum: Publication Status
+    romanization_enum: Romanization
+    government_agency_type_enum: Government Agency Type
+    reference_evaluation_enum: Reference Evaluation
+    name_type_enum: Name Type
+    level_of_detail_enum: Level of Detail
+    modified_record_enum: Modified Record
+    cataloging_source_enum: Cataloging Source
+    maintenance_agency: Maintenance Agency
+    agency_name: Agency Name
+    maintenance_agency_note: Maintenance Agency Note
+    language: Language
+    script: Script
+    language_note: Language Note
+
   agent_gender:
     _plural: Gender
     _singular: Gender
@@ -1572,13 +1593,29 @@ en:
         add: Add Gender Info
     gender_enum: Gender
 
+  agent_gender_required:
+    _plural: Gender
+    _singular: Gender
+    _frontend:
+      action:
+        add: Add Required Field Set
+    gender_enum: Gender
+
   agent_identifier:
     _plural: Identifiers
     _singular: Identifier
     _frontend:
       action:
         add: Add Identifier
-        
+    identifier_type_enum: Identifier Type
+    entity_identifier: Entity Identifier
+
+  agent_identifier_required:
+    _plural: Identifiers
+    _singular: Identifier
+    _frontend:
+      action:
+        add: Add Required Field Set
     identifier_type_enum: Identifier Type
     entity_identifier: Entity Identifier
 
@@ -1635,6 +1672,21 @@ en:
     _singular: Alternate Set
     _frontend:
       action:
+        add: Add Required Field Set
+    set_component: Set Component
+    descriptive_note: Descriptive Note
+    file_uri: File URI
+    xlink_title_attribute: Xlink Title Attribute
+    xlink_role_attribute: Xlink Role Attribute
+    file_version_xlink_actuate_attribute: Xlink Actuate Attribute
+    file_version_xlink_show_attribute: Xlink Show Attribute
+    last_verified_date: Last Verified Date
+
+  agent_alternate_set_required:
+    _plural: Alternate Sets
+    _singular: Alternate Set
+    _frontend:
+      action:
         add: Add Record
     set_component: Set Component
     descriptive_note: Descriptive Note
@@ -1661,6 +1713,22 @@ en:
     file_version_xlink_show_attribute: Xlink Show Attribute
     last_verified_date: Last Verified Date
 
+  agent_conventions_declaration_required:
+    _plural: Conventions Declarations
+    _singular: Conventions Declaration
+    _frontend:
+      action:
+        add: Add Required Field Set
+    name_rule: Name Rule
+    citation: Citation
+    descriptive_note: Descriptive Note
+    file_uri: File URI
+    xlink_title_attribute: Xlink Title Attribute
+    xlink_role_attribute: Xlink Role Attribute
+    file_version_xlink_actuate_attribute: Xlink Actuate Attribute
+    file_version_xlink_show_attribute: Xlink Show Attribute
+    last_verified_date: Last Verified Date
+
   agent_other_agency_code:
     _plural: Other Agency Codes
     _singular: Other Agency Code
@@ -1669,6 +1737,15 @@ en:
         add: Add Agency Code
 
   agent_other_agency_codes:
+    agency_code_type_enum: Agency Code Type
+    maintenance_agency: Maintenance Agency
+
+  agent_other_agency_code_required:
+    _plural: Other Agency Codes
+    _singular: Other Agency Code
+    _frontend:
+      action:
+        add: Add Required Field Set
     agency_code_type_enum: Agency Code Type
     maintenance_agency: Maintenance Agency
 
@@ -1685,6 +1762,18 @@ en:
     event_date: Event Date
 
   agent_maintenance_histories:
+    maintenance_event_type_enum: Event Type
+    maintenance_agent_type_enum: Agent Type
+    agent: Agent
+    descriptive_note: Descriptive Note
+    event_date: Event Date
+
+  agent_maintenance_history_required:
+    _plural: Maintenance History
+    _singular: Agent Maintenance History
+    _frontend:
+      action:
+        add: Add Required Field Set
     maintenance_event_type_enum: Event Type
     maintenance_agent_type_enum: Agent Type
     agent: Agent
@@ -1708,6 +1797,17 @@ en:
     primary_identifier: Is Primary Identifier?
     record_identifier: Source Identifier
 
+  agent_record_identifier_required:
+    _plural: Record IDs
+    _singular: Record ID
+    _frontend:
+      action:
+        add: Add Required Field Set
+    identifier_type_enum: Identifier Type
+    source_enum: Source
+    primary_identifier: Is Primary Identifier?
+    record_identifier: Source Identifier
+
 
   agent_source:
     _plural: Sources
@@ -1717,6 +1817,19 @@ en:
         add: Add Source
 
   agent_sources:
+    source_entry: Source Entry
+    descriptive_note: Descriptive Note
+    file_uri: File URI
+    xlink_title_attribute: Xlink Title Attribute
+    xlink_role_attribute: Xlink Role Attribute
+    file_version_xlink_actuate_attribute: Xlink Actuate Attribute
+    file_version_xlink_show_attribute: Xlink Show Attribute
+    last_verified_date: Last Verified Date
+
+  agent_source_required:
+    _frontend:
+      action:
+        add: Add Required Field Set
     source_entry: Source Entry
     descriptive_note: Descriptive Note
     file_uri: File URI

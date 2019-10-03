@@ -17,3 +17,14 @@
     </div>
   </div>
 <% end %>
+
+<% define_template "agent_record_control_required", jsonmodel_definition(:agent_record_control) do |form| %>
+  <% field_names = ["maintenance_status_enum", "publication_status_enum", "maintenance_agency", "agency_name", "maintenance_agency_note", "romanization_enum", "government_agency_type_enum", "reference_evaluation_enum", "name_type_enum", "level_of_detail_enum", "modified_record_enum", "cataloging_source_enum"] %>
+  <% field_names.each do |field_name| %>
+    <% if form.required?(field_name) %>
+      <%= form.label_and_readonly field_name %>
+    <% else %>
+      <%= form.label_and_req_boolean field_name %>
+    <% end %>
+  <% end %>
+<% end %>

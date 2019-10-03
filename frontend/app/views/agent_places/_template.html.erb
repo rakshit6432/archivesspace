@@ -12,3 +12,14 @@
     </div>
   </div>
 <% end %>
+
+<% define_template "agent_place_required", jsonmodel_definition(:agent_place) do |form| %>
+  <% field_names = ["place_role_enum"] %>
+  <% field_names.each do |field_name| %>
+    <% if form.required?(field_name) %>
+      <%= form.label_and_readonly field_name %>
+    <% else %>
+      <%= form.label_and_req_boolean field_name %>
+    <% end %>
+  <% end %>
+<% end %>
