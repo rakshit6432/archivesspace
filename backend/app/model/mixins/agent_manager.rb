@@ -59,6 +59,10 @@ module AgentManager
                                    base.relationship_dependencies[:linked_agents]
                                  })
 
+        base.define_relationship(:name => :linked_agents,
+                                 :json_property => 'resources',
+                                 :contains_references_to_types => proc {[Resource]})
+
       end
     end
 
@@ -387,6 +391,17 @@ module AgentManager
       def sequel_to_jsonmodel(objs, opts = {})
         jsons = super
 
+        # ANW-429: To make repository URIs and resolved data available to this agent outside of the context of a repo, we must resort to a SQL query to bypass ASModel_scoping. Is there a better way?
+        jsons.each do |json|
+          if json["resources"]
+            json["resources"].each do |r|
+              resource_sequel = self.fetch("SELECT * FROM resource where id = #{r['resource_id'].to_i.to_s}").first
+              r["ref"].gsub!("repositories//", 
+                             "repositories/#{resource_sequel[:repo_id]}/") if resource_sequel
+            end
+          end
+        end
+       
         if opts[:calculate_linked_repositories]
           agents_to_repositories = GlobalRecordRepositoryLinkages.new(self, :linked_agents).call(objs)
 

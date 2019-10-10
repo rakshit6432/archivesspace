@@ -88,6 +88,10 @@
 
 
   <%= render_aspace_partial :partial => "related_agents/form", :locals => {:form => form} %>
+  
+  <%= render_aspace_partial :partial => "related_resources/agent_form", :locals => {:form => form, :name => "related_resources", :section_id => "#{@agent.agent_type}_resources"} %>
+
+  <%# render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "related_resources", :section_id => "#{@agent.agent_type}_resources", :template => "agent_related_resources", :template_erb => "related_resources/agent_form"} %>
   <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "external_ids", :hidden => true} %>
   </section>
 
