@@ -18,6 +18,8 @@
 
     <%= render_aspace_partial :partial => "shared/slug", :locals => {:form => form, :record_type => @agent} if AppConfig[:use_human_readable_urls] %>
 
+    <%= form.label_and_boolean "publish" %>
+
   </section>
 
   <section id="record_control_information" class="agents-subsection">
