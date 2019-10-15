@@ -167,6 +167,11 @@ $(function() {
 
     if(object_name === "agent_record_identifier") {
       init_id_form($(subform));
+
+      // ANW-429: if this is the first agent identifier subrecord, then make sure it's set as primary
+      if($("#agent_person_agent_record_identifier ul").children().length == 1) {
+        $(".btn-primary-id-toggle").click();
+      }
     }
 
     if (object_name === "linked_agent") {
