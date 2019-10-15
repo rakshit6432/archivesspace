@@ -102,24 +102,6 @@
         "readonly" => true
       },
 
-      "resources" => {
-        "type" => "array",
-        "items" => {
-          "type" => "object",
-          "subtype" => "ref",
-          "properties" => {
-            "ref" => {
-              "type" => "JSONModel(:resource) uri",
-              "ifmissing" => "error"
-            },
-            "_resolved" => {
-              "type" => "object",
-              "readonly" => "true"
-            }
-          }
-        }
-      },
-
       "external_documents" => {"type" => "array", "items" => {"type" => "JSONModel(:external_document) object"}},
 
       "system_generated" => {

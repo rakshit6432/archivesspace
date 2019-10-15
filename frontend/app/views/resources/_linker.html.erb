@@ -1,8 +1,6 @@
 <%
-   obj = form.obj if obj.nil? 
-   
-   if obj.has_key?('_resolved')
-     selected_json =  obj['_resolved'].to_json
+   if form.obj.has_key?('_resolved')
+     selected_json =  form.obj['_resolved'].to_json
    else
      selected_json = "{}"
    end
@@ -31,7 +29,7 @@
             data-exclude='<%= exclude_ids.to_json %>'
           />
           
-          <% if obj.has_key?('_resolved') %>
+          <% if form.obj.has_key?('_resolved') %>
           
             <input type="text" 
               class='prelinker' 
@@ -41,7 +39,7 @@
             <input type="text" 
               class='prelinker' 
               name="<%= form.path %>[ref]"
-              value="<%= obj["ref"] %>" />
+              value="<%= form.obj["ref"] %>" />
 
          <% end %>
          <div class="input-group-btn">
