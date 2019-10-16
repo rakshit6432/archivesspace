@@ -389,6 +389,26 @@ en:
       error_prefix: Error importing file
       complete: Import Complete
 
+  name_person:
+    language: Language
+    script: Script
+    romanization_enum: Transliteration
+
+  name_family:
+    language: Language
+    script: Script
+    romanization_enum: Transliteration
+
+  name_corporate_entity:
+    language: Language
+    script: Script
+    romanization_enum: Transliteration
+
+  name_software:
+    language: Language
+    script: Script
+    romanization_enum: Transliteration
+
   default_values:
     form_title:
       archival_object: Component Record Defaults
@@ -1602,26 +1622,26 @@ en:
     gender_enum: Gender
 
   agent_identifier:
-    _plural: Identifiers
+    _plural: Entity IDs
     _singular: Identifier
     _frontend:
       action:
-        add: Add Identifier
+        add: Add Entity ID
     identifier_type_enum: Identifier Type
-    entity_identifier: Entity Identifier
+    entity_identifier: Entity IDs
 
   agent_identifier_required:
-    _plural: Identifiers
+    _plural: Entity IDs
     _singular: Identifier
     _frontend:
       action:
         add: Add Required Field Set
     identifier_type_enum: Identifier Type
-    entity_identifier: Entity Identifier
+    entity_identifier: Entity IDs
 
   agent_identifiers:
     identifier_type_enum: Identifier Type
-    entity_identifier: Entity Identifier
+    entity_identifier: Entity IDs
  
     
   agent_place:
@@ -1672,7 +1692,7 @@ en:
     _singular: Alternate Set
     _frontend:
       action:
-        add: Add Required Field Set
+        add: Add Alternative Set
     set_component: Set Component
     descriptive_note: Descriptive Note
     file_uri: File URI
@@ -1703,7 +1723,7 @@ en:
     _frontend:
       action:
         add: Add Convention
-    name_rule: Name Rule
+    name_rule: Convention
     citation: Citation
     descriptive_note: Descriptive Note
     file_uri: File URI
@@ -1789,13 +1809,13 @@ en:
     identifier_type_enum: Identifier Type
     source_enum: Source
     primary_identifier: Is Primary Identifier?
-    record_identifier: Source Identifier
+    record_identifier: Record Identifier
 
   agent_record_identifiers:
     identifier_type_enum: Identifier Type
     source_enum: Source
     primary_identifier: Is Primary Identifier?
-    record_identifier: Source Identifier
+    record_identifier: Record Identifier
 
   agent_record_identifier_required:
     _plural: Record IDs

@@ -1,6 +1,11 @@
 require_relative 'spec_helper'
 
 describe 'AgentSources model' do
+
+  it "validates the record making sure at least one of set component, file uri or description is set" do
+    pending
+  end
+  
   it "allows agent_sources records to be created" do
     as = AgentSources.new(:file_version_xlink_actuate_attribute => "other",
                           :file_version_xlink_show_attribute => "other",

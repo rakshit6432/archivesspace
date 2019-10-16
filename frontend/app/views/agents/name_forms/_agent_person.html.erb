@@ -19,6 +19,11 @@
     <%= form.label_and_textfield "number" %>
     <%= form.label_and_textfield "dates" %>
     <hr/>
+    <%= form.label_and_select "language", [""] + form.possible_options_for("language", false) %>
+    <%= form.label_and_select "script", [""] + form.possible_options_for("script", false) %>
+    <%= form.label_and_select "romanization_enum", [""] + form.possible_options_for("romanization_enum", false) %>
+    <hr/>
+ 
     <%= form.label_and_textfield "qualifier" %>
     <%= form.label_and_textfield "sort_name", {:field_opts => {:automatable => true}, :required => :conditionally}%>
     <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "use_dates", :template_erb => "dates/template", :template => "structured_date_label", :heading_text => I18n.t("name._frontend.section.use_date"), :heading_size => "h4", :template_overrides => {"date_label" => "agents/name_forms/date_labels"}} %>

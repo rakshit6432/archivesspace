@@ -51,6 +51,22 @@ module JSONModel::Validations
     end
   end
 
+  [:agent_sources].each do |type|
+    if JSONModel(type)
+      JSONModel(type).add_validation("check_agent_sources") do |hash|
+        check_agent_sources(hash)
+      end
+    end
+  end
+
+  [:agent_alternate_set].each do |type|
+    if JSONModel(type)
+      JSONModel(type).add_validation("check_agent_alternate_set") do |hash|
+        check_agent_alternate_set(hash)
+      end
+    end
+  end
+
   # Specification:
   # https://www.pivotaltracker.com/story/show/41430143
   # See also: https://www.pivotaltracker.com/story/show/51373893
@@ -282,6 +298,32 @@ module JSONModel::Validations
       et = Time.parse(hash["end_date_standardized"])
 
       errors << ["begin_date_standardized", "requires that end dates are after begin dates"] if bt > et
+    end
+
+    return errors
+  end
+
+  def self.check_agent_sources(hash)
+    errors = []
+
+    if (hash["source_entry"].nil?     || hash["source_entry"].empty?) && 
+       (hash["descriptive_note"].nil? || hash["descriptive_note"].empty?) && 
+       (hash["file_uri"].nil?         || hash["file_uri"].empty?)
+
+      errors << ["agent_sources", "Must specify one of Source Entry, Descriptive Note or File URI"]
+    end
+
+    return errors
+  end
+
+  def self.check_agent_alternate_set(hash)
+    errors = []
+
+    if (hash["set_component"].nil?    || hash["set_component"].empty?) && 
+       (hash["descriptive_note"].nil? || hash["descriptive_note"].empty?) && 
+       (hash["file_uri"].nil?         || hash["file_uri"].empty?)
+
+      errors << ["agent_sources", "Must specify one of Set Component, Descriptive Note or File URI"]
     end
 
     return errors

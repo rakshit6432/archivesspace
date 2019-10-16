@@ -2,9 +2,9 @@
   <div class="subrecord-form-fields">
     <div class="agent-record-control-container">
       <%= form.label_and_select "maintenance_event_type_enum", [""] + form.possible_options_for("maintenance_event_type_enum", false) %>
-      <%= form.label_and_select "maintenance_agent_type_enum", form.possible_options_for("maintenance_agent_type_enum", false) %>
-      <%= form.label_and_textfield "agent",  {:field_opts => {:size => 30, :class => "form-control"} }%>
       <%= form.label_and_date "event_date" %>
+      <%= form.label_and_textfield "agent",  {:field_opts => {:size => 30, :class => "form-control"} }%>
+      <%= form.label_and_select "maintenance_agent_type_enum", form.possible_options_for("maintenance_agent_type_enum", false) %>
       <%= form.label_and_textfield "descriptive_note",  {:field_opts => {:size => 30, :class => "form-control"} }%>
     </div>
   </div>

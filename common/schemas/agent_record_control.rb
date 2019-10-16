@@ -51,7 +51,17 @@
         "dynamic_enum" => "cataloging_source_enum",
         "required" => false
       },
-      "lang_materials" => {"type" => "array", "items" => {"type" => "JSONModel(:lang_material) object"}},
+      "language" => {
+        "type" => "string", 
+        "dynamic_enum" => "language_iso639_2", 
+        "required" => false
+      },
+      "script" => {
+        "type" => "string", 
+        "dynamic_enum" => "script_iso15924",
+        "required" => false
+      },
+      "language_note" => {"type" => "string", "maxLength" => 65000},
       "maintenance_agency" => {"type" => "string", "maxLength" => 65000},
       "agency_name" => {"type" => "string", "maxLength" => 65000},
       "maintenance_agency_note" => {"type" => "string", "maxLength" => 65000},

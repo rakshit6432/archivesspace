@@ -9,17 +9,20 @@ Sequel.migration do
 
       Integer :maintenance_status_enum_id, :null => false
       Integer :publication_status_enum_id, :null => true
-      Integer :romanization_enum_id, :null => true
       Integer :government_agency_type_enum_id, :null => true
       Integer :reference_evaluation_enum_id, :null => true
       Integer :name_type_enum_id, :null => true
       Integer :level_of_detail_enum_id, :null => true
       Integer :modified_record_enum_id, :null => true
       Integer :cataloging_source_enum_id, :null => true
+      Integer :language_id, :null => true
+      Integer :script_id, :null => true
+      Integer :romanization_enum_id, :null => true
 
       String :maintenance_agency, :null => true
       String :agency_name, :null => true
       String :maintenance_agency_note, :null => true
+      String :language_note, :null => true
 
       Integer :agent_person_id, :null => true
       Integer :agent_family_id, :null => true
@@ -113,7 +116,7 @@ Sequel.migration do
     create_table(:agent_record_identifier) do
       primary_key :id
 
-      Integer :identifier_type_enum_id, :null => false
+      Integer :identifier_type_enum_id, :null => true
       Integer :source_enum_id, :null => false
 
       Integer :primary_identifier, :null => false

@@ -14,6 +14,11 @@
     <%= form.label_and_textfield "manufacturer" %>
     <%= form.label_and_textfield "dates" %>
     <hr/>
+    <%= form.label_and_select "language", [""] + form.possible_options_for("language", false) %>
+    <%= form.label_and_select "script", [""] + form.possible_options_for("script", false) %>
+    <%= form.label_and_select "romanization_enum", [""] + form.possible_options_for("romanization_enum", false) %>
+    <hr/>
+ 
     <%= form.label_and_textfield "qualifier" %>
     <%= form.label_and_textfield "sort_name", {:field_opts => {:automatable => true}, :required => :conditionally}%>
     <%= form.label_and_textfield "sort_name" %>
