@@ -389,26 +389,6 @@ en:
       error_prefix: Error importing file
       complete: Import Complete
 
-  name_person:
-    language: Language
-    script: Script
-    romanization_enum: Transliteration
-
-  name_family:
-    language: Language
-    script: Script
-    romanization_enum: Transliteration
-
-  name_corporate_entity:
-    language: Language
-    script: Script
-    romanization_enum: Transliteration
-
-  name_software:
-    language: Language
-    script: Script
-    romanization_enum: Transliteration
-
   default_values:
     form_title:
       archival_object: Component Record Defaults
@@ -830,6 +810,7 @@ en:
       section:
         use_date: Date(s) of Name Use
         dates: Dates
+        parallel_names: Parallel Names
       action:
         add: Add Name Form
         make_authorized: Make Authoritive Name
@@ -1858,7 +1839,6 @@ en:
     file_version_xlink_actuate_attribute: Xlink Actuate Attribute
     file_version_xlink_show_attribute: Xlink Show Attribute
     last_verified_date: Last Verified Date
-
 
 
 

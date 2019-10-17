@@ -5,6 +5,12 @@ class NameFamily < Sequel::Model(:name_family)
   include AgentNames
   include AutoGenerator
 
+  self.one_to_many :parallel_name_family, :class => "ParallelNameFamily"
+
+  self.def_nested_record(:the_property => :parallel_names,
+                         :contains_records_of_type => :parallel_name_family,
+                         :corresponding_to_association => :parallel_name_family)
+
   def validate
     if authorized
       validates_unique([:authorized, :agent_family_id],

@@ -2,7 +2,7 @@
   :schema => {
     "$schema" => "http://www.archivesspace.org/archivesspace.json",
     "version" => 1,
-    "parent" => "abstract_name",
+    "parent" => "abstract_parallel_name",
     "type" => "object",
 
     "properties" => {
@@ -14,8 +14,6 @@
       "suffix" => {"type" => "string", "maxLength" => 65000},
       "fuller_form" => {"type" => "string", "maxLength" => 65000},
       "number" => {"type" => "string", "maxLength" => 255},
-
-      "parallel_names" => {"type" => "array", "items" => {"type" => "JSONModel(:parallel_name_person) object"}},
     },
   },
 }

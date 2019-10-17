@@ -5,6 +5,12 @@ class NameCorporateEntity < Sequel::Model(:name_corporate_entity)
   include AgentNames
 
   include AutoGenerator
+  
+  self.one_to_many :parallel_name_corporate_entity, :class => "ParallelNameCorporateEntity"
+
+  self.def_nested_record(:the_property => :parallel_names,
+                         :contains_records_of_type => :parallel_name_corporate_entity,
+                         :corresponding_to_association => :parallel_name_corporate_entity)
 
   def validate
     if authorized

@@ -4,6 +4,12 @@ class NamePerson < Sequel::Model(:name_person)
 
   include AgentNames
   include AutoGenerator
+  
+  self.one_to_many :parallel_name_person, :class => "ParallelNamePerson"
+
+  self.def_nested_record(:the_property => :parallel_names,
+                         :contains_records_of_type => :parallel_name_person,
+                         :corresponding_to_association => :parallel_name_person)
 
   def validate
     if authorized

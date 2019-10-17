@@ -405,6 +405,10 @@ en:
     _plural: Deaccessions
     _singular: Deaccession
 
+  parallel_name: &parallel_name_attributes
+    _frontend:
+      action:
+        add: Add Parallel Name
   agent_name: &agent_name_attributes
     authority_id: Authority ID
     authority_id_tooltip: |
@@ -509,13 +513,19 @@ en:
         <p>The sort name may be edited by unchecking the "Automatically generate" checkbox and then entering the form of the sort name desired.</p>
     authorized: Authorized
     is_display_name: Display Name
+    language: Language
+    script: Script
+    romanization_enum: Transliteration
     _singular: Name
     _plural: Names
 
   name_person:
     <<: *agent_name_attributes
 
-  name_family:
+  parallel_name_person:
+    <<: *agent_name_attributes
+
+  name_family: &agent_family_attributes
     <<: *agent_name_attributes
     family_name: Family Name
     family_name_tooltip: |
@@ -523,7 +533,10 @@ en:
     family_type: Family Type
     location: Location
 
-  name_corporate_entity:
+  parallel_name_family:
+    <<: *agent_family_attributes
+
+  name_corporate_entity: &agent_corporate_entity_attributes
     <<: *agent_name_attributes
     subordinate_name_1: Subordinate Name 1
     subordinate_name_1_tooltip: |
@@ -543,7 +556,10 @@ en:
     location: Location
     location_tooltip: Location Tooltip
 
-  name_software:
+  parallel_name_corporate_entity:
+    <<: *agent_corporate_entity_attributes
+
+  name_software: &agent_software_attributes
     <<: *agent_name_attributes
     software_name: Software Name
     software_name_tooltip: |
@@ -569,6 +585,9 @@ en:
         <li>Adobe <em>(for Adobe Photoshop CS3)</em></li>
         <li>Library of Congress <em>(for Library of Congress Bagger 2.1.2)</em></li>
         </ul>
+        
+  parallel_name_software:
+    <<: *agent_software_attributes
 
   agent_record_control:
     maintenance_status_enum_tooltip: Maintenance Status Tooltip

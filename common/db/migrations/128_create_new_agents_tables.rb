@@ -205,6 +205,11 @@ Sequel.migration do
       Integer :name_corporate_entity_id, :null => true 
       Integer :name_software_id, :null => true 
 
+      Integer :parallel_name_person_id, :null => true 
+      Integer :parallel_name_family_id, :null => true 
+      Integer :parallel_name_corporate_entity_id, :null => true 
+      Integer :parallel_name_software_id, :null => true 
+
       Integer :related_agents_rlshp_id, :null => true
 
       Integer :agent_place_id, :null => true

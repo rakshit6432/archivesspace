@@ -2,7 +2,7 @@
   :schema => {
     "$schema" => "http://www.archivesspace.org/archivesspace.json",
     "version" => 1,
-    "parent" => "abstract_name",
+    "parent" => "abstract_parallel_name",
     "type" => "object",
 
     "properties" => {
@@ -13,8 +13,6 @@
       "location" => {"type" => "string", "maxLength" => 65000},
       "conference_meeting" => {"type" => "boolean", "default" => false},
       "jurisdiction" => {"type" => "boolean", "default" => false},
-
-      "parallel_names" => {"type" => "array", "items" => {"type" => "JSONModel(:parallel_name_corporate_entity) object"}},
     },
   },
 }
