@@ -828,6 +828,7 @@ en:
         select_a_note_type: "<em>Please select a Note Type</em>"
       action:
         add: Add Note
+        add_for_contact_note: Add Contact Note
         add_content_item: Add Content Item
         add_note_orderedlist: Add Item
         add_sub_note: Add Sub Note

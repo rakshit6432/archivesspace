@@ -413,8 +413,17 @@ $(function() {
 
         initRemoveActionForSubRecord($subform);
 
-        var $topLevelNoteTypeSelector = $("select.top-level-note-type", $subform);
+        var $topLevelNoteTypeSelector            = $("select.top-level-note-type", $subform);
+        var $topLevelNoteTypeSelectorOptionCount = $("select.top-level-note-type option", $subform).length;
         $topLevelNoteTypeSelector.change(changeNoteTemplate);
+
+        // if top level note selector only has one item, then select it automatically.
+        // note: the value in this if statement is 2 because this selector will have a blank first option.
+        if($topLevelNoteTypeSelectorOptionCount == 2) {
+          $topLevelNoteTypeSelector.find('option:nth-child(2)')
+                                   .prop('selected', true)
+                                   .trigger('change');
+        } 
 
         index++;
       };
