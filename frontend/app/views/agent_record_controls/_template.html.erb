@@ -16,7 +16,6 @@
       <%= form.label_and_select "level_of_detail_enum", [""] + form.possible_options_for("level_of_detail_enum", false) %>
       <%= form.label_and_select "modified_record_enum", [""] + form.possible_options_for("modified_record_enum", false) %>
       <%= form.label_and_select "cataloging_source_enum", [""] + form.possible_options_for("cataloging_source_enum", false) %>
-      <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "lang_materials", :custom_action_template => "lang_materials/subrecord_form_action"} %>
     </div>
   </div>
 <% end %>

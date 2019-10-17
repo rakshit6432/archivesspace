@@ -1,5 +1,6 @@
 class AgentGender < Sequel::Model(:agent_gender)
   include ASModel
+  include Notes
 
   corresponds_to JSONModel(:agent_gender)
   

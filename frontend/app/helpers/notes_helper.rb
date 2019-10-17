@@ -47,7 +47,8 @@ module NotesHelper
     elsif jsonmodel_type == "agent_place" ||
           jsonmodel_type == "agent_occupation" ||
           jsonmodel_type == "agent_function" ||
-          jsonmodel_type == "agent_topic"
+          jsonmodel_type == "agent_topic" ||
+          jsonmodel_type == "agent_gender"
 
       note_types = {
         "text" => {
