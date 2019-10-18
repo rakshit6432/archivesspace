@@ -22,7 +22,7 @@ Sequel.migration do
       add_column(:romanization_enum_id, Integer)
     end
 
-    alter_table(:name_family) do
+    alter_table(:name_person) do
       add_column(:language_id, Integer)
       add_column(:script_id, Integer)
       add_column(:romanization_enum_id, Integer)
