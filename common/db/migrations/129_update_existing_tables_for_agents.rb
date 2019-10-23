@@ -48,13 +48,5 @@ Sequel.migration do
     alter_table(:note) do
       add_column(:agent_contact_id, Integer, :null => true)
     end
-    
-    alter_table(:lang_material) do
-      add_column(:agent_record_control_id, Integer, :null => true)
-      add_column(:agent_person_id, Integer, :null => true)
-      add_column(:agent_family_id, Integer, :null => true)
-      add_column(:agent_corporate_entity_id, Integer, :null => true)
-      add_column(:agent_software_id, Integer, :null => true)
-    end
   end
 end

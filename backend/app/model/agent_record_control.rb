@@ -1,7 +1,6 @@
 class AgentRecordControl < Sequel::Model(:agent_record_control)
   include ASModel
   include AgentSubrecords
-  include LangMaterials
   
   corresponds_to JSONModel(:agent_record_control)
 

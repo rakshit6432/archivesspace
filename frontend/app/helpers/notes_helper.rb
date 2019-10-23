@@ -34,6 +34,21 @@ module NotesHelper
         }
       }
 
+    elsif jsonmodel_type =~ /used_language/
+
+      note_types = {
+        "text" => {
+          :target => :note_text,
+          :value => "text",
+          :i18n => I18n.t("note.note_text")
+        },
+        "citation" => {
+          :target => :note_citation,
+          :value => "citation",
+          :i18n => I18n.t("note.note_citation")
+        }
+      }
+
     elsif jsonmodel_type == "agent_contact"
 
       note_types = {

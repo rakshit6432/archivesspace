@@ -126,7 +126,7 @@
         "items" => {"type" => "JSONModel(:structured_date_label) object"}
       },
       
-      "lang_materials" => {"type" => "array", "items" => {"type" => "JSONModel(:lang_material) object"}},
+      "used_languages" => {"type" => "array", "items" => {"type" => "JSONModel(:used_language) object"}},
 
       "publish" => {"type" => "boolean"},
 

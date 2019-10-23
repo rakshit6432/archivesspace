@@ -51,7 +51,6 @@ module AgentManager
       base.include(Relationships)
       base.include(RelatedAgents)
       base.include(Events)
-      base.include(LangMaterials)
 
       ArchivesSpaceService.loaded_hook do
         base.define_relationship(:name => :linked_agents,
@@ -375,6 +374,12 @@ module AgentManager
         self.def_nested_record(:the_property => :agent_identifiers,
                                :contains_records_of_type => :agent_identifier,
                                :corresponding_to_association => :agent_identifier)
+
+        self.one_to_many :used_language, :class => "UsedLanguage"
+
+        self.def_nested_record(:the_property => :used_languages,
+                               :contains_records_of_type => :used_language,
+                               :corresponding_to_association => :used_language)
 
       end
 

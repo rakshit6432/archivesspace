@@ -1603,6 +1603,24 @@ en:
         add: Add Required Field Set
     gender_enum: Gender
 
+  used_language:
+    _plural: Languages
+    _singular: Language
+    _frontend:
+      action:
+        add: Add Language
+    language: Language
+    script: Script
+
+  used_language_required:
+    _plural: Languages
+    _singular: Language
+    _frontend:
+      action:
+        add: Add Language
+    language: Language
+    script: Script
+
   agent_identifier:
     _plural: Entity IDs
     _singular: Identifier
