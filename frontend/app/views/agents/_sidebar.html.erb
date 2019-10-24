@@ -45,16 +45,17 @@
         <%= sidebar.render_for_view_and_edit(:subrecord_type => 'agent_gender', :property => 'agent_genders', :anchor => "agent_person_agent_gender") %>
     <% end %>
 
-    <%= sidebar.render_for_view_and_edit(:subrecord_type => 'agent_place', :property => 'agent_place',
+
+    <%= sidebar.render_for_view_and_edit(:subrecord_type => 'agent_place', :property => 'agent_places',
                                          :anchor => "#{@agent.agent_type}_agent_place") %>
 
-    <%= sidebar.render_for_view_and_edit(:subrecord_type => 'agent_occupation', :property => 'agent_occupation',
+    <%= sidebar.render_for_view_and_edit(:subrecord_type => 'agent_occupation', :property => 'agent_occupations',
                                          :anchor => "#{@agent.agent_type}_agent_occupation") %>
  
-    <%= sidebar.render_for_view_and_edit(:subrecord_type => 'agent_function', :property => 'agent_function',
+    <%= sidebar.render_for_view_and_edit(:subrecord_type => 'agent_function', :property => 'agent_functions',
                                          :anchor => "#{@agent.agent_type}_agent_function") %>
 
-    <%= sidebar.render_for_view_and_edit(:subrecord_type => 'agent_topic', :property => 'agent_topic',
+    <%= sidebar.render_for_view_and_edit(:subrecord_type => 'agent_topic', :property => 'agent_topics',
                                          :anchor => "#{@agent.agent_type}_agent_topic") %>
 
     <%= sidebar.render_for_view_and_edit(:subrecord_type => 'used_language', :property => 'used_languages',
