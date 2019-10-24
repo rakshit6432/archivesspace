@@ -1,9 +1,11 @@
 <%
    section_id = "subjects" if section_id.blank?
+   section_title = I18n.t("subject._plural") if section_title.blank?
+   heading_size = "h3" if heading_size.blank?
 %>
 
 <section id="<%= section_id %>" class="subrecord-form-dummy">
-  <h3><%= I18n.t("subject._plural") %></h3>
+  <<%= heading_size %>><%= section_title %></<%= heading_size %>>
   <div class="subrecord-form-container">
     <div class="subrecord-form-fields">
       <div class="row">

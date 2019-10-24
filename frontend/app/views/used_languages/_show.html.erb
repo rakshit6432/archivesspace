@@ -20,6 +20,9 @@
         </div>
         <div id="<%= section_id %>_used_language_<%= index %>" class="panel-collapse collapse">
           <%= read_only_view(used_language) %>
+          <% if used_language["notes"].length > 0 %>
+            <%= render_aspace_partial :partial => "notes/show", :locals => { :notes => used_language["notes"], :section_id => "used_language_notes", :context => context, :heading_size => "h4" } %>
+          <% end %>
         </div>
       </div>
     <% end %>

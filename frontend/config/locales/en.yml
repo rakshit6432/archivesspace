@@ -1642,7 +1642,6 @@ en:
   agent_identifiers:
     identifier_type_enum: Identifier Type
     entity_identifier: Entity IDs
- 
     
   agent_place:
     _frontend:
@@ -1651,8 +1650,11 @@ en:
     section:
       dates: Dates
     _plural: Places
+    _singular: Place
     place_role_enum: Role
     text_note: Note
+    dates: Dates
+    subjects: Places
 
   agent_occupation:
     _frontend:
@@ -1661,7 +1663,11 @@ en:
     section:
       dates: Dates
     _plural: Occupations
+    _singular: Occupation
     text_note: Note
+    dates: Dates
+    subjects: Occupations
+    places: Places
 
   agent_function:
     _frontend:
@@ -1670,7 +1676,11 @@ en:
     section:
       dates: Dates
     _plural: Functions
+    _singular: Function
     text_note: Note
+    dates: Dates
+    subjects: Functions
+    places: Places
 
   agent_topic:
     _frontend:
@@ -1679,7 +1689,11 @@ en:
     section:
       dates: Dates
     _plural: Topics
+    _singular: Topic
     text_note: Note
+    dates: Dates
+    subjects: Topics
+    places: Places
 
   place:
     _plural: Places
@@ -1828,7 +1842,6 @@ en:
     primary_identifier: Is Primary Identifier?
     record_identifier: Source Identifier
 
-
   agent_source:
     _plural: Sources
     _singular: Agent Source
@@ -1858,6 +1871,10 @@ en:
     file_version_xlink_actuate_attribute: Xlink Actuate Attribute
     file_version_xlink_show_attribute: Xlink Show Attribute
     last_verified_date: Last Verified Date
+
+  agent_parallel_name:
+    _plural: Parallel Names
+    use_dates: Use Dates
 
 
 

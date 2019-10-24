@@ -1,6 +1,6 @@
 <%
    section_id = "agent_identifiers" if section_id.blank?
-   section_title = "Record IDs" if section_title.blank?
+   section_title = "Entity IDs" if section_title.blank?
 %>
 
 <section id="<%= section_id %>">
@@ -14,7 +14,8 @@
               <span class="glyphicon"></span>
             </div>
             <div class="col-md-6">
-              <%= I18n.t("agent_identifier._singular") %>
+              <%= agent_identifier["entity_identifier"] %>
+
             </div>
           </div>
         </div>
