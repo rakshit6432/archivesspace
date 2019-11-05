@@ -514,8 +514,14 @@ en:
     authorized: Authorized
     is_display_name: Display Name
     language: Language
+    language_tooltip: |
+        <p>Indicates the language used in recording the name form. Example: Russian (for Каспаров, Г. К. (Гарри Кимович))</p>
     script: Script
+    script_tooltip: |
+        <p>Indicates the script used in recording the name form. Example: Cyrillic (for Каспаров, Г. К. (Гарри Кимович))</p> 
     romanization_enum: Transliteration
+    romanization_tooltip: |
+        <p>Indicates the transliteration scheme used in recording the name form.</p>
     _singular: Name
     _plural: Names
 
@@ -589,70 +595,137 @@ en:
   parallel_name_software:
     <<: *agent_software_attributes
 
-  agent_record_control:
-    maintenance_status_enum_tooltip: Maintenance Status Tooltip
-    publication_status_enum_tooltip: Publication Status Tooltip
-    romanization_enum_tooltip: Romanization Tooltip
-    government_agency_type_enum_tooltip: Government Agency Type Tooltip
-    reference_evaluation_enum_tooltip: Reference Evaluation Tooltip
-    name_type_enum_tooltip: Name Type Tooltip
-    level_of_detail_enum_tooltip: Level of Detail Tooltip
-    modified_record_enum_tooltip: Modified Record Tooltip
-    cataloging_source_enum_tooltip: Cataloging Source Tooltip
-    maintenance_agency_tooltip: Maintenance Agency Tooltip
-    agency_name_tooltip: Agency Name Tooltip
-    maintenance_agency_note_tooltip: Maintenance Agency Note Tooltip
-    language_tooltip: Language Tooltip
-    script_tooltip: Script Tooltip
-    language_note_tooltip: Language Note Tooltip
-
-  agent_alternate_set:
-    set_component_tooltip: Set Component Tooltip
-    descriptive_note_tooltip: Descriptive Note Tooltip
-    file_uri_tooltip: File URI Tooltip
-    file_version_xlink_actuate_attribute_tooltip: Xlink Actuate Tooltip
-    file_version_xlink_show_attribute_tooltip: Xlink Show Tooltip
-    xlink_title_attribute_tooltip: Xlink Title Tooltip
-    xlink_role_attribute_tooltip: Xlink Role Tooltip
-    last_verified_date_tooltip: Last Verified Date Tooltip
-
-  agent_conventions_declaration:
-    name_rule_tooltip: Name Rule Tooltip
-    citation_tooltip: Citation
-    descriptive_note_tooltip: Descriptive Note Tooltip
-    file_uri_tooltip: File URI Tooltip
-    file_version_xlink_actuate_attribute_tooltip: Xlink Actuate Tooltip
-    file_version_xlink_show_attribute_tooltip: Xlink Show Tooltip
-    xlink_title_attribute_tooltip: Xlink Title Tooltip
-    xlink_role_attribute_tooltip: Xlink Role Tooltip
-    last_verified_date_tooltip: Last Verified Date Tooltip
-
-  agent_other_agency_codes:
-    agency_code_type_enum_tooltip: Agency Code Type Tooltip
-    maintenance_agency_tooltip: Maintenance Agency Tooltip
-
-  agent_maintenance_histories:
-    maintenance_event_type_enum_tooltip: Maintenance Event Type Tooltip
-    maintenance_agent_type_enum_tooltip: Maintenance Agent Type Tooltip
-    agent_tooltip: Agent Tooltip
-    event_date_tooltip: Event Date Tooltip
-    descriptive_note_tooltip: Descriptive Note Tooltip
-
   agent_record_identifiers:
-    identifier_type_enum_tooltip: Identifier Type Tooltip
-    source_enum_tooltip: Source Enum Tooltip
-    record_identifier_tooltip: Source Enum Tooltip
+    identifier_type_enum_tooltip: |
+        <p>Indicates the type or format of the authority record identifier. Values in this Controlled Value List may be modified.</p>
+    source_enum_tooltip: | 
+        <p>Indicates the originating authority file of an associated identifier. Example: NAF (for nr2003017069). Values in this Controlled Value List may be modified.</p>
+    record_identifier_tooltip: |
+        <p>The identifier for the Agent record, usually consisting of a unique alpha-numeric string. Identifier may originate in an external authority file, or be generated locally.</p> 
     is_primary: Primary
 
+  agent_record_control:
+    maintenance_status_enum_tooltip: |
+        <p>Indicates the current state of the record.</p>
+    publication_status_enum_tooltip: |
+        <p>Indicates whether an Agent record should be publicly available.</p>
+    romanization_enum_tooltip: |
+        <p>Indicates whether the authorized name form was romanized from a non-Latin script, and the type of romanization scheme. Example: National library or bibliographic agency standard (for ALA-LC Romanization Table (e.g., Kasparov, G. K. (Garri Kimovich) for Каспаров, Г. К. (Гарри Кимович)).</p>
+    government_agency_type_enum_tooltip: |
+        <p>Indicates the type of agency or jurisdiction represented by the authorized name form.</p>
+    reference_evaluation_enum_tooltip: |
+        <p>Indicates the level of consistency between the authorized name form and other name forms in the Agent record. When there are no additional forms, the field should be recorded as "Not applicable".</p>
+    name_type_enum_tooltip: |
+        <p>Indicates the uniqueness of the authorized name form within the Agents module. Unique name entries should be recorded as "Differentiated", while Agent records used to gather multiple Agents with identical names should be marked as "Undifferentiated".</p>
+    level_of_detail_enum_tooltip: |
+        <p>Indicates the completeness of the Agent record according to consortial or local requirements.</p>
+    modified_record_enum_tooltip: |
+        <p>Indicates whether an Agent record has been modified, and how it has been changed.</p>
+    cataloging_source_enum_tooltip: |
+        <p>Indicates where an Agent record originated. Locally produced records not submitted to a cooperative cataloging program should be recorded as "Other".</p>
+    maintenance_agency_tooltip: |
+        <p>Code value for the agency or organization responsible for creating or maintaining an Agent record. Code value should be taken from a registry and be recorded using ISO 15511 conventions. Example: US-UPB (for Brigham Young University, using Library of Congress MARC Organization Code).</p>
+    agency_name_tooltip: |
+        <p>The name of the agency or organization responsible for creating or maintaining an Agent record. Name recorded should correspond with the name form associated in with the code value in the registry. Example: Brigham Young University, Harold B. Lee Library (for code value UPB, using Library of Congress MARC Organization Code).</p>
+    maintenance_agency_note_tooltip: |
+        <p>The content of the note, providing details about the maintenance agency responsible for the Agent description.</p>
+    language_tooltip: |
+        <p>The language used in the preparation of the Agent description. Example: English.</p>
+    script_tooltip: |
+        <p>The text script used in the preparation of the Agent description. Example: Latin.</p>
+    language_note_tooltip: |
+        <p>The content of the note, providing details about the language and scripts used in the preparation of the Agent description.</p>
+
+  agent_alternate_set:
+    set_component_tooltip: | 
+        <p>A caption to provide identification and access to an equivalent linked authority record.</p>
+    descriptive_note_tooltip: |
+        <p>The content of the note, providing details about the linked authority record.</p>
+    file_uri_tooltip: |
+        <p>A URI for an equivalent record in an external authority file. Example: http://id.loc.gov/authorities/names/n80060393 (for Library of Congress Linked Data Serviceentry for Robert W. Service).</p>
+    file_version_xlink_actuate_attribute_tooltip: |
+        <p>Indicates whether associated URI should be resolved when the Agent record is rendered.</p>
+    file_version_xlink_show_attribute_tooltip: |
+        <p>Indicates where the remote resource linked in the associated URI should be rendered.</p>
+    xlink_title_attribute_tooltip: |
+        <p>Title of the remote resources linked in the associated URI, which may be used as a caption.</p>
+    xlink_role_attribute_tooltip: |
+        <p>Type or nature of the remote resource linked in the associated URI.</p>
+    last_verified_date_tooltip: |
+        <p>Last date or date and time the linked resource linked in the associated URI was verified.</p>
+
+  agent_conventions_declaration:
+    name_rule_tooltip: |
+        <p>A content standard used in the formulation of the Agent record content. Example: Describing Archives: A Content Standard.</p>
+    citation_tooltip: |
+        <p>Bibliographic citation for a convention used in the formulation of the Agent record content. Example: Society of American Archivists. Describing Archives: A Content Standard (Chicago: Society of American Archivists, 2013).</p>
+    descriptive_note_tooltip: |
+        <p>The content of the note, providing details about the convention was used in the preparation of the Agent description. Example: Used for formulating biographical history note content. (for Describing Archives: A Content Standard).</p>
+    file_uri_tooltip: |
+        <p>A URI for the online location of the convention used in the preparation of the Agent description. Example: http://www2.archivists.org/standards/DACS/ (for Describing Archives: A Content Standard).</p>
+    file_version_xlink_actuate_attribute_tooltip: |
+        <p>Indicates whether associated URI should be resolved when the Agent record is rendered.</p>
+    file_version_xlink_show_attribute_tooltip: |
+        <p>Indicates where the remote resource linked in the associated URI should be rendered.</p>
+    xlink_title_attribute_tooltip: |
+        <p>Title of the remote resources linked in the associated URI, which may be used as a caption.</p>
+    xlink_role_attribute_tooltip: |
+        <p>Type or nature of the remote resource linked in the associated URI.</p>
+    last_verified_date_tooltip: |
+        <p>Last date or date and time the linked resource linked in the associated URI was verified.</p>
+
+  agent_other_agency_codes:
+    agency_code_type_enum_tooltip: |
+        <p>The source of the maintenance agency code. Example: OCLC.</p>
+    maintenance_agency_tooltip: |
+        <p>Alternative code values for the agency or organization responsible for creating or maintaining an Agent record. Code value should be taken from a registry and be recorded using ISO 15511 conventions. Example: OCLC-UBY (for United States, Brigham Young University, using the OCLC symbol).</p>
+
+
+  agent_maintenance_histories:
+    maintenance_event_type_enum_tooltip: |
+        <p>Indicates the type of maintenance event.</p>
+    maintenance_agent_type_enum_tooltip: |
+        <p>Indicates whether the maintenance event was performed by a person or by a software system.</p>
+    agent_tooltip: |
+        <p>Name of the person, agency, or software responsible for the maintenance event.</p>
+    event_date_tooltip: |
+        <p>Timestamp of the recording of the maintenance event.</p>
+    descriptive_note_tooltip: |
+        <p>The content of the note, providing details about the maintenance performed.</p>
+
   agent_sources:
-    source_entry_tooltip: Agent Sources Tooltip
-    descriptive_note_tooltip: Descriptive Note Tooltip
-    file_uri_tooltip: File URI Tooltip
-    file_version_xlink_actuate_attribute_tooltip: Xlink Actuate Tooltip
-    file_version_xlink_show_attribute_tooltip: Xlink Show Tooltip
-    xlink_title_attribute_tooltip: Xlink Title Tooltip
-    xlink_role_attribute_tooltip: Xlink Role Tooltip
-    last_verified_date_tooltip: Last Verified Date Tooltip
+    source_entry_tooltip: |
+        <p>Bibliographic citation for a source used in the formulation of the Agent record content. Example: Lockhart, G. W. On the trail of Robert Service (Edinburgh : Luath Press, 1991).</p>
+    descriptive_note_tooltip: |
+        <p>The content of the note, providing details about the content of the sources used in preparation of the Agent description.</p>
+    file_uri_tooltip: |
+        <p>A URI for the online location of the source used in the preparation of the Agent description. Example: http://www.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=8373 (for Find-A-Grave entry for Robert W. Service).</p>
+    file_version_xlink_actuate_attribute_tooltip: |
+        <p>Indicates whether associated URI should be resolved when the Agent record is rendered.</p>
+    file_version_xlink_show_attribute_tooltip: |
+        <p>Indicates where the remote resource linked in the associated URI should be rendered.</p>
+    xlink_title_attribute_tooltip: |
+        <p>Title of the remote resources linked in the associated URI, which may be used as a caption.</p>
+    xlink_role_attribute_tooltip: |
+        <p>Type or nature of the remote resource linked in the associated URI.</p>
+    last_verified_date_tooltip: |
+        <p>Last date or date and time the linked resource linked in the associated URI was verified.</p>
+
+  agent_identifiers:
+    entity_identifier_tooltip: |
+        <p>Records identifiers associated with an entity, such as legal identifiers assigned by an authoritative agency.</p>
+    identifier_type_enum_tooltip: |
+        <p>Indicates the type or source of the entity identifier recorded.</p>
+
+  agent_gender:
+    gender_enum_tooltip: |
+        <p>Gender of the subject.</p>
+
+  agent_place:
+    place_role_enum_tooltip: |
+        <p>Indicates the relationship of the geographic location to the agent.</p> 
+    subject_tooltip: |
+        <p>A geographic location associated with the agent.</p>
 
   name:
     _singular: Name Form
@@ -1463,8 +1536,10 @@ en:
     agent_alternate_sets_tooltip: Agent Alternate Sets Tooltip
     agent_conventions_declarations_tooltip: Agent Conventions Declarations Tooltip
     agent_other_agency_codes_tooltip: Other Agency Code Tooltip
-    agent_maintenance_histories_tooltip: Agent Maintenance Histories Tooltip
-    agent_record_identifiers_tooltip: Agent Record Identifiers Tooltip
+    agent_maintenance_histories_tooltip: |
+        <p>Events associated with the creation or maintenance of the Agent record.</p>
+    agent_record_identifiers_tooltip: |
+        <p>Identifiers associated with the Agent record.</p>
     agent_sources_tooltip: Agent Sources Tooltip
     agent_sources_tooltip: Agent Sources Tooltip
 
