@@ -1,4 +1,10 @@
 <%
+  plugin = false if plugin.blank?
+  name = "" if name.nil?
+  singular = name.singularize if singular.blank?
+  i18n_prefix = plugin ? 'plugins.' : ''
+  heading_text = I18n.t("#{i18n_prefix}#{singular}._plural") if heading_text.blank?
+
   # Allow multiple subjects to be linked if it's an empty linker
   multiplicity = "many" if multiplicity.blank?
 
@@ -32,7 +38,11 @@
 %>
 
 <div class="form-group required">
-   <label class="control-label col-sm-2"><%= linker_label %></label>
+   <% if !name.blank? %>
+     <%= wrap_with_tooltip(linker_label, "#{form.i18n_for(name)}_tooltip", "subrecord-form-heading-label control-label col-sm-2") %>
+   <% else %>
+     <label class="control-label col-sm-2"><%= linker_label %></label>
+   <% end %>
    <div class="controls col-sm-8">
        <div class="input-group linker-wrapper">
           <input type="text" class="linker"

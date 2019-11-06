@@ -717,6 +717,13 @@ en:
     identifier_type_enum_tooltip: |
         <p>Indicates the type or source of the entity identifier recorded.</p>
 
+
+  used_language:
+    language_tooltip: |
+        <p>The language(s) associated with the agent. Example: English.</p>
+    script_tooltip: |
+        <p>The text script associated with the agent. Example: Latin.</p>    
+
   agent_gender:
     gender_enum_tooltip: |
         <p>Gender of the subject.</p>
@@ -724,8 +731,34 @@ en:
   agent_place:
     place_role_enum_tooltip: |
         <p>Indicates the relationship of the geographic location to the agent.</p> 
-    subject_tooltip: |
+
+  subrecord_subject_agent_place:
+    subjects_tooltip: |
         <p>A geographic location associated with the agent.</p>
+
+  subrecord_subject_agent_occupation:
+    subjects_tooltip: |
+        <p>The occupation of the agent.</p>
+
+  subrecord_subject_agent_occupation_place:
+    places_tooltip: |
+        <p>A geographic location associated with the occupations.</p>
+
+  subrecord_subject_agent_function:
+    subjects_tooltip: |
+        <p>Terms used to identify the functions, processes, tasks, activities or transactions performed by the agent.</p>
+
+  subrecord_subject_agent_function_place:
+    places_tooltip: |
+        <p>A geographic location associated with the functions.</p>
+
+  subrecord_subject_agent_topic:
+    subjects_tooltip: |
+        <p>A subject associated with the agent.</p>
+
+  subrecord_subject_agent_topic_place:
+    places_tooltip: |
+        <p>A geographic location associated with the subjects.</p>
 
   name:
     _singular: Name Form
@@ -1532,16 +1565,30 @@ en:
     publish: Publish
     _singular: Agent
     _plural: Agents
-    agent_record_controls_tooltip: Agent Record Controls Tooltip
-    agent_alternate_sets_tooltip: Agent Alternate Sets Tooltip
-    agent_conventions_declarations_tooltip: Agent Conventions Declarations Tooltip
-    agent_other_agency_codes_tooltip: Other Agency Code Tooltip
+    agent_record_controls_tooltip: |
+        <p>Information about the record describing the Agent.</p>
+    agent_alternate_sets_tooltip: |
+        <p>Used to point to linked authority records when two or more records for the same entity were derived from two or more authority systems.</p>
+    agent_conventions_declarations_tooltip: |
+        <p>A content standard used in the formulation of the Agent record content. Example: Describing Archives: A Content Standard. This sub-record can be used instead of Rules entries on individual name forms.</p>
+    agent_other_agency_codes_tooltip: |
+        <p>Information on alternative codes for the agency or organization responsible for creating or maintaining an Agent record.</p>
     agent_maintenance_histories_tooltip: |
         <p>Events associated with the creation or maintenance of the Agent record.</p>
     agent_record_identifiers_tooltip: |
         <p>Identifiers associated with the Agent record.</p>
-    agent_sources_tooltip: Agent Sources Tooltip
-    agent_sources_tooltip: Agent Sources Tooltip
+    agent_sources_tooltip: |
+        <p>A source used in the formulation of the Agent record content.</p>
+    agent_identifiers_tooltip: |
+        <p>Identifiers associated with an entity, such as legal identifiers assigned by an authoritative agency. Examples include an ORCID identifier for a person or a MARC Repository Code for a corporate entity.</p>
+    agent_genders_tooltip: Agent Genders Tooltip
+    agent_places_tooltip: Agent Places Tooltip
+    agent_occupations_tooltip: Agent Occupations Tooltip
+    agent_functions_tooltip: Agent Functions Tooltip
+    agent_topics_tooltip: Agent Topics Tooltip
+    agent_contacts_tooltip: Agent Contacts Tooltip
+    used_languages_tooltip: Languages Tooltip 
+    related_agents_tooltip: Other agents associated with the agent.
 
 
   agent_person:

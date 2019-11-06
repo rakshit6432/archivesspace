@@ -1,5 +1,7 @@
 <%= render_aspace_partial :partial => "related_agents/template" %>
 
+<%# render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "related_agents", :section_id => "#{@agent.agent_type}_related_agents"} %>
+
 <% @agent_type = form['agent_type'] %>
 <% define_template "related_agents_#{@agent_type}", jsonmodel_definition(@agent_type.intern) do |form|  %>
 
