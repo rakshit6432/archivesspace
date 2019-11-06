@@ -7,4 +7,8 @@ describe 'AgentPlace model' do
     place = AgentPlace.create_from_json(build(:json_agent_place))
     expect(AgentPlace[place[:id]]).to_not eq(nil)
   end
+
+  it "validates that agent_place records have a valid subject defined" do
+  	pending
+  end
 end

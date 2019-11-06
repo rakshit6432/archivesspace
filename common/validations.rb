@@ -27,6 +27,15 @@ module JSONModel::Validations
     end
   end
 
+  [:agent_function, :agent_place, :agent_occupation, :agent_topic].each do |type|
+    if JSONModel(type)
+      JSONModel(type).add_validation("check_#{type}_subject_subrecord") do |hash|
+        check_agent_subject_subrecord(hash)
+      end
+    end
+  end
+
+
   [:structured_date_label].each do |type|
     if JSONModel(type)
       JSONModel(type).add_validation("check_structured_date_label") do |hash|
@@ -50,6 +59,15 @@ module JSONModel::Validations
       end
     end
   end
+
+  [:used_language].each do |type|
+    if JSONModel(type)
+      JSONModel(type).add_validation("check_used_language") do |hash|
+        check_used_language(hash)
+      end
+    end
+  end
+
 
   [:agent_sources].each do |type|
     if JSONModel(type)
@@ -324,6 +342,26 @@ module JSONModel::Validations
        (hash["file_uri"].nil?         || hash["file_uri"].empty?)
 
       errors << ["agent_sources", "Must specify one of Set Component, Descriptive Note or File URI"]
+    end
+
+    return errors
+  end
+
+  def self.check_agent_subject_subrecord(hash)
+    errors = []
+
+    if hash["subjects"].empty?
+      errors << ["subjects", "Must specify a primary subject"]
+    end
+
+    return errors
+  end
+
+  def self.check_used_language(hash)
+    errors = []
+
+    if hash["language"].nil? && hash["notes"].empty?
+      errors << ["language", "Must specify either language or a note."]
     end
 
     return errors

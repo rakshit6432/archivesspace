@@ -5,4 +5,8 @@ describe 'AgentTopic model' do
     topic = AgentTopic.create_from_json(build(:json_agent_topic))
     expect(AgentTopic[topic[:id]]).to_not eq(nil)
   end
+
+  it "validates that agent_topic records have a valid subject defined" do
+  	pending
+  end
 end

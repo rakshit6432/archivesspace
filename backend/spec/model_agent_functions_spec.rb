@@ -5,4 +5,8 @@ describe 'AgentFunction model' do
     function = AgentFunction.create_from_json(build(:json_agent_function))
     expect(AgentFunction[function[:id]]).to_not eq(nil)
   end
+
+  it "validates that agent_function records have a valid subject defined" do
+  	pending
+  end
 end

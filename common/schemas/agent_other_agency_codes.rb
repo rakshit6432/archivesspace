@@ -13,7 +13,8 @@
       "maintenance_agency" => {
           "type" => "string", 
           "maxLength" => 65000, 
-          "required" => false
+          "required" => true,
+          "ifmissing" => "error",
       },
       "agent_person_id"           => {"type" => "integer", "required" => false},
       "agent_family_id"           => {"type" => "integer", "required" => false},
