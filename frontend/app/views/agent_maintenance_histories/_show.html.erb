@@ -20,7 +20,7 @@
           </div>
         </div>
         <div id="<%= section_id %>_agent_maintenance_history_<%= index %>" class="panel-collapse collapse">
-          <%= read_only_view(agent_maintenance_history) %>
+          <%= render_aspace_partial :partial => "agent_maintenance_histories/show_fields", :locals => { :agent_maintenance_history => agent_maintenance_history } %>
         </div>
       </div>
     <% end %>

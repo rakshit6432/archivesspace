@@ -19,7 +19,8 @@
           </div>
         </div>
         <div id="<%= section_id %>_agent_record_control_<%= index %>" class="panel-collapse collapse">
-          <%= read_only_view(agent_record_control) %>
+          <%# read_only_view(agent_record_control) %>
+          <%= render_aspace_partial :partial => "agent_record_controls/show_fields", :locals => { :agent_record_control => agent_record_control } %>
         </div>
       </div>
     <% end %>
