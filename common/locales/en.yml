@@ -726,7 +726,7 @@ en:
 
   agent_gender:
     gender_enum_tooltip: |
-        <p>Gender of the subject.</p>
+        <p>Gender of the subject.</p></br><p>Values for this list can be added or changed via the System -> Manage Controlled Value Lists menu.</p>
 
   agent_place:
     place_role_enum_tooltip: |

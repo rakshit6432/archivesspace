@@ -25,7 +25,7 @@ Sequel.migration do
     create_enum("begin_date_standardized_type_enum", ["standard", "not_before", "not_after"])
     create_enum("end_date_standardized_type_enum", ["standard", "not_before", "not_after"])
   	create_enum("place_role_enum", ["assoc_country", "residence", "other_assoc", "place_of_birth", "place_of_death"])
-  	create_enum("gender_enum", ["male", "female", "not_known"])
+  	create_editable_enum("gender_enum", [])
 
     add_values_to_enum("note_multipart_type", ["general_context", "mandate", "legal_status", "structure_or_genealogy"])
 
