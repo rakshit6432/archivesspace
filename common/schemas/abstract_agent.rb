@@ -96,6 +96,12 @@
         "items" => {"type" => "JSONModel(:agent_topic) object"}
       },
 
+      "agent_resources" => {
+        "required" => false,
+        "type" => "array",
+        "items" => {"type" => "JSONModel(:agent_resource) object"}
+      },
+
       "linked_agent_roles" => {
         "type" => "array",
         "items" => {"type" => "string"},

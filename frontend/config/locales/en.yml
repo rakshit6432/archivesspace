@@ -1876,5 +1876,28 @@ en:
     _plural: Parallel Names
     use_dates: Use Dates
 
+  agent_resource: &agent_resource_attributes
+    _frontend:
+      action:
+        add: Add Related Resource
+    section:
+      dates: Dates
+      places: Places
+    _plural: Related Resources
+    _singular: Related Resource
+    dates: Dates
+    places: Places
+    linked_agent_role: Related Agent Role
+    linked_resource: Related Resource
+    linked_resource_description: Related Resource Description
+    file_uri: File URI
+    xlink_title_attribute: Xlink Title Attribute
+    xlink_role_attribute: Xlink Role Attribute
+    file_version_xlink_actuate_attribute: Xlink Actuate Attribute
+    file_version_xlink_show_attribute: Xlink Show Attribute
+    last_verified_date: Last Verified Date
+
+  agent_resources:
+    <<: *agent_resource_attributes
 
 

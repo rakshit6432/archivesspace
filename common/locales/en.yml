@@ -732,6 +732,26 @@ en:
     place_role_enum_tooltip: |
         <p>Indicates the relationship of the geographic location to the agent.</p> 
 
+  agent_resource:
+    linked_agent_role_tooltip: |
+        <p>REQUIRED FIELD: The type of relation of entity being described to the resource.</p>
+    linked_resource_tooltip: |
+        <p>A resource related to the agent/entity.</p>
+    linked_resource_description_tooltip: |
+        <p>Free text field for recording bibliographic information, related collection information, etc.</p>
+    file_uri_tooltip: |
+        <p>A URI for the online location of the source used in the preparation of the Agent description. Example: http://www.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=8373 (for Find-A-Grave entry for Robert W. Service).</p>
+    file_version_xlink_actuate_attribute_tooltip: |
+        <p>Indicates whether associated URI should be resolved when the Agent record is rendered.</p>
+    file_version_xlink_show_attribute_tooltip: |
+        <p>Indicates where the remote resource linked in the associated URI should be rendered.</p>
+    xlink_title_attribute_tooltip: |
+        <p>Title of the remote resources linked in the associated URI, which may be used as a caption.</p>
+    xlink_role_attribute_tooltip: |
+        <p>Type or nature of the remote resource linked in the associated URI.</p>
+    last_verified_date_tooltip: |
+        <p>Last date or date and time the linked resource linked in the associated URI was verified.</p>
+
   subrecord_subject_agent_place:
     subjects_tooltip: |
         <p>A geographic location associated with the agent.</p>
@@ -759,6 +779,10 @@ en:
   subrecord_subject_agent_topic_place:
     places_tooltip: |
         <p>A geographic location associated with the subjects.</p>
+
+  subrecord_subject_agent_resource_place:
+    places_tooltip: |
+        <p>A geographic location associated with the linked resource.</p>
 
   name:
     _singular: Name Form
@@ -1589,6 +1613,7 @@ en:
     agent_contacts_tooltip: Agent Contacts Tooltip
     used_languages_tooltip: Languages Tooltip 
     related_agents_tooltip: Other agents associated with the agent.
+    agent_resources_tooltip: Resources and other records associated with the agent.
 
 
   agent_person:

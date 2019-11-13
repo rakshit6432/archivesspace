@@ -73,6 +73,9 @@
     <% if action_name != "show" %>
         <%= render_aspace_partial :partial => "shared/sidebar_entry", :locals => {:anchor => "relation_information", :title => "Relation Information"} %>
     <% end %>
+    
+    <%= sidebar.render_for_view_and_edit(:subrecord_type => 'agent_resource', :property => 'agent_resources',
+                                         :anchor => "#{@agent.agent_type}_agent_resource") %>
 
     <%= sidebar.render_for_view_and_edit(:subrecord_type => 'related_agent', :property => 'related_agents', :anchor => "related_agents") %>
 

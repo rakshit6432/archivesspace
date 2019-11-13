@@ -40,6 +40,12 @@
   </div>
 <% end %>
 
+<% define_template "subrecord_subject_agent_resource_place", jsonmodel_definition(:agent_resource) do |form| %>
+  <div class="subrecord-form-fields">
+    <%= render_aspace_partial :partial => "subjects/linker", :locals => { :form => form, :linker_label => "Place", :multiplicity => "one", :term_type_filter => "geographic", :name => "places" }%>
+  </div>
+<% end %>
+
 <% define_template "subrecord_subject_agent_topic_place", jsonmodel_definition(:agent_topic) do |form| %>
   <div class="subrecord-form-fields">
     <%= render_aspace_partial :partial => "subjects/linker", :locals => { :form => form, :linker_label => "Place", :multiplicity => "one", :term_type_filter => "geographic", :name => "places" }%>

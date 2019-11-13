@@ -1,0 +1,22 @@
+<% define_template "agent_resource", jsonmodel_definition(:agent_resource) do |form| %>
+  <div class="subrecord-form-fields">
+    <div class="agent-record-control-container">
+      <%= form.label_and_select "linked_agent_role", form.possible_options_for("linked_agent_role", false) %>
+
+      <%= form.label_and_textfield "linked_resource",  {:field_opts => {:size => 30, :class => "form-control"} }%>
+
+      <%= form.label_and_textarea "linked_resource_description",  {:field_opts => {:size => 30, :class => "form-control"} }%>
+
+      <%= form.label_and_textfield "file_uri",  {:field_opts => {:size => 30, :class => "form-control"} }%>
+      <%= form.label_and_select "file_version_xlink_actuate_attribute", [""] + form.possible_options_for("file_version_xlink_actuate_attribute", false) %>
+      <%= form.label_and_select "file_version_xlink_show_attribute", [""] + form.possible_options_for("file_version_xlink_show_attribute", false) %>
+      <%= form.label_and_textfield "xlink_title_attribute",  {:field_opts => {:size => 30, :class => "form-control"} }%>
+      <%= form.label_and_textfield "xlink_role_attribute",  {:field_opts => {:size => 30, :class => "form-control"} }%>
+      <%= form.label_and_date "last_verified_date" %>
+
+			<%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "places", :template_erb => "subjects/template", :template => "subrecord_subject_agent_resource_place", :heading_text => "Place Subject", :heading_size => "h4"} %>
+			
+      <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "dates", :template_erb => "dates/template", :template => "structured_date_label", :heading_text => I18n.t("name._frontend.section.dates"), :heading_size => "h4"} %>
+    </div>
+  </div>
+<% end %>

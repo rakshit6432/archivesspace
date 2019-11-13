@@ -381,6 +381,12 @@ module AgentManager
                                :contains_records_of_type => :used_language,
                                :corresponding_to_association => :used_language)
 
+        self.one_to_many :agent_resource, :class => "AgentResource"
+
+        self.def_nested_record(:the_property => :agent_resources,
+                               :contains_records_of_type => :agent_resource,
+                               :corresponding_to_association => :agent_resource)
+
       end
 
 

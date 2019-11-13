@@ -88,6 +88,7 @@
       <%= I18n.t("agent._frontend.section.relation_information") %>
     </h3>
 
+  <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "agent_resources", :section_id => "#{@agent.agent_type}_agent_resource", :template => "agent_resource", help_topic: "agent_resource"} %>
 
   <%= render_aspace_partial :partial => "related_agents/form", :locals => {:form => form} %>
   <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "external_ids", :hidden => true} %>
