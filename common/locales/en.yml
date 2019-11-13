@@ -929,6 +929,39 @@ en:
     ref: Related Agent
     _singular: Associative Relationship
 
+  agent_relationship_identity:
+    relator: Relationship Type
+    description: Description
+    date: Date
+    dates: Dates
+    ref: Related Agent
+    _singular: Identity Relationship
+
+  agent_relationship_hierarchical:
+    relator: Relationship Type
+    description: Description
+    date: Date
+    dates: Dates
+    ref: Related Agent
+    _singular: Hierarchical Relationship
+
+
+  agent_relationship_temporal:
+    relator: Relationship Type
+    description: Description
+    date: Date
+    dates: Dates
+    ref: Related Agent
+    _singular: Temporal Relationship
+
+  agent_relationship_family:
+    relator: Relationship Type
+    description: Description
+    date: Date
+    dates: Dates
+    ref: Related Agent
+    _singular: Family Relationship
+
   note:
     item: Item
     content_item: Content Item
