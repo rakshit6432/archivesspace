@@ -7,6 +7,10 @@ describe 'AgentFunction model' do
   end
 
   it "validates that agent_function records have a valid subject defined" do
-  	pending
+    function = AgentFunction.create_from_json(build(:json_agent_function))
+    
+    expect {
+	    function = AgentFunction.create_from_json(build(:json_agent_function, :subjects => []))
+    }.to raise_error(JSONModel::ValidationException)
   end
 end

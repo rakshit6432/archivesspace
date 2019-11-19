@@ -9,6 +9,10 @@ describe 'AgentPlace model' do
   end
 
   it "validates that agent_place records have a valid subject defined" do
-  	pending
+    s = build(:json_subject).uri
+
+    expect {
+	    place = AgentPlace.create_from_json(build(:json_agent_place, :subjects => []))
+    }.to raise_error(JSONModel::ValidationException)
   end
 end

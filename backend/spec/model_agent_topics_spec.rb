@@ -7,6 +7,10 @@ describe 'AgentTopic model' do
   end
 
   it "validates that agent_topic records have a valid subject defined" do
-  	pending
+    topic = AgentTopic.create_from_json(build(:json_agent_topic))
+
+    expect {
+	    topic = AgentTopic.create_from_json(build(:json_agent_topic, :subjects => []))
+    }.to raise_error(JSONModel::ValidationException)
   end
 end
