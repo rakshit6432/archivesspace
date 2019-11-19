@@ -158,6 +158,7 @@ describe 'Corporate entity agent controller' do
       expect(AgentTopic.where(:agent_corporate_entity_id => agent_id).count).to eq(1)
       expect(AgentIdentifier.where(:agent_corporate_entity_id => agent_id).count).to eq(1)
       expect(UsedLanguage.where(:agent_corporate_entity_id => agent_id).count).to eq(1)
+      expect(AgentResource.where(:agent_corporate_entity_id => agent_id).count).to eq(1)
     end
 
     it "deletes agent subrecords when parent agent is deleted" do
@@ -182,6 +183,7 @@ describe 'Corporate entity agent controller' do
       expect(AgentTopic.where(:agent_corporate_entity_id => agent_id).count).to eq(0)
       expect(AgentIdentifier.where(:agent_corporate_entity_id => agent_id).count).to eq(0)
       expect(UsedLanguage.where(:agent_corporate_entity_id => agent_id).count).to eq(0)
+      expect(AgentResource.where(:agent_corporate_entity_id => agent_id).count).to eq(0)
     end
 
     it "gets subrecords along with agent" do
@@ -206,6 +208,7 @@ describe 'Corporate entity agent controller' do
       expect(json_response["agent_topics"].length).to eq(1)
       expect(json_response["agent_identifiers"].length).to eq(1)
       expect(json_response["used_languages"].length).to eq(1)
+      expect(json_response["agent_resources"].length).to eq(1)
     end
   end
 

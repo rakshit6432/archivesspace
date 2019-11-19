@@ -195,6 +195,19 @@ FactoryBot.define do
       places { [{'ref' => create(:json_subject).uri}] }
     end
 
+    factory :json_agent_resource, class: JSONModel(:agent_resource) do
+      dates { [build(:json_structured_date_label)] }
+      places { [{'ref' => create(:json_subject).uri}] }
+      file_version_xlink_actuate_attribute { "other"}
+      file_version_xlink_show_attribute { "other" }
+      xlink_title_attribute { generate(:alphanumstr) }
+      xlink_role_attribute { generate(:alphanumstr) }
+      linked_resource { generate(:alphanumstr) }
+      linked_resource_description { generate(:alphanumstr) }
+      file_uri { generate(:alphanumstr) }
+      linked_agent_role { "creator" }
+    end
+
     # NOTE: using this factory will fail unless values are added manually to the gender enum list. See agent_spec_helper.rb#add_gender_values
     factory :json_agent_gender, class: JSONModel(:agent_gender) do
       dates { [build(:json_structured_date_label)] }
@@ -326,6 +339,8 @@ FactoryBot.define do
     agent_functions { [build(:json_agent_function)] }
     agent_topics { [build(:json_agent_topic)] }
     agent_identifiers { [build(:json_agent_identifier)] }
+    agent_genders { [build(:json_agent_gender)] }
+    agent_resources { [build(:json_agent_resource)] }
     used_languages { [build(:json_used_language)] }
   end
 
@@ -347,6 +362,7 @@ FactoryBot.define do
     agent_topics { [build(:json_agent_topic)] }
     agent_identifiers { [build(:json_agent_identifier)] }
     used_languages { [build(:json_used_language)] }
+    agent_resources { [build(:json_agent_resource)] }
   end
 
   factory :json_agent_software_full_subrec, class: JSONModel(:agent_software) do
@@ -366,6 +382,7 @@ FactoryBot.define do
     agent_topics { [build(:json_agent_topic)] }
     agent_identifiers { [build(:json_agent_identifier)] }
     used_languages { [build(:json_used_language)] }
+    agent_resources { [build(:json_agent_resource)] }
   end
 
   factory :json_agent_family_full_subrec, class: JSONModel(:agent_family) do
@@ -385,6 +402,7 @@ FactoryBot.define do
     agent_topics { [build(:json_agent_topic)] }
     agent_identifiers { [build(:json_agent_identifier)] }
     used_languages { [build(:json_used_language)] }
+    agent_resources { [build(:json_agent_resource)] }
   end
 
   factory :json_archival_object_normal, class: JSONModel(:archival_object) do

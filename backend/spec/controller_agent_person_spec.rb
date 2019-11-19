@@ -140,6 +140,10 @@ describe 'Person agent controller' do
   end
 
   describe "subrecord CRUD" do
+    before :each do
+      add_gender_values
+    end
+
     it "creates agent subrecords on POST if appropriate" do
       agent_id = create_agent_via_api(:person, {:create_subrecords => true})
       expect(agent_id).to_not eq(-1)
@@ -158,6 +162,9 @@ describe 'Person agent controller' do
       expect(AgentTopic.where(:agent_person_id => agent_id).count).to eq(1)
       expect(AgentIdentifier.where(:agent_person_id => agent_id).count).to eq(1)
       expect(UsedLanguage.where(:agent_person_id => agent_id).count).to eq(1)
+      expect(UsedLanguage.where(:agent_person_id => agent_id).count).to eq(1)
+      expect(AgentGender.where(:agent_person_id => agent_id).count).to eq(1)
+      expect(AgentResource.where(:agent_person_id => agent_id).count).to eq(1)
     end
 
     it "deletes agent subrecords when parent agent is deleted" do
@@ -182,6 +189,8 @@ describe 'Person agent controller' do
       expect(AgentTopic.where(:agent_person_id => agent_id).count).to eq(0)
       expect(AgentIdentifier.where(:agent_person_id => agent_id).count).to eq(0)
       expect(UsedLanguage.where(:agent_person_id => agent_id).count).to eq(0)
+      expect(AgentGender.where(:agent_person_id => agent_id).count).to eq(0)
+      expect(AgentResource.where(:agent_person_id => agent_id).count).to eq(0)
     end
 
     it "gets subrecords along with agent" do
@@ -205,7 +214,9 @@ describe 'Person agent controller' do
       expect(json_response["agent_functions"].length).to eq(1)
       expect(json_response["agent_topics"].length).to eq(1)
       expect(json_response["agent_identifiers"].length).to eq(1)
+      expect(json_response["agent_genders"].length).to eq(1)
       expect(json_response["used_languages"].length).to eq(1)
+      expect(json_response["agent_resources"].length).to eq(1)
     end
   end
 end

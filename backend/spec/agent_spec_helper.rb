@@ -37,3 +37,10 @@ def create_agent_via_api(agent_type, opts = {})
 rescue => e
 	return -1
 end
+
+def add_gender_values
+	ge = Enumeration.find(:name => 'gender_enum')
+  ge.add_enumeration_value(:value => 'female')
+  ge.add_enumeration_value(:value => 'male')
+  ge.add_enumeration_value(:value => 'non-binary')
+end
