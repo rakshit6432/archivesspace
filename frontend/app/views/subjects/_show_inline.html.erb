@@ -12,14 +12,18 @@
       <div class="row">
         <% if auth_present %>
           <div class="col-md-3"><strong><%= I18n.t("subject.authority_id") %></strong></div>
+          <div class="col-md-8"><strong><%= I18n.t("subject.heading") %></strong></div>
         <% end %>
-        <div class="col-md-8"><strong><%= I18n.t("subject.heading") %></strong></div>
       </div>
       <% subjects.each_with_index do | subject, index | %>
         <div class="row">
-          <% if subject['_resolved']["authority_id"] %>
+          <% if auth_present %>
             <div class="col-md-3 pull1">
-              <%= subject['_resolved']["authority_id"] %>
+              <% if subject['_resolved']["authority_id"] %>
+                <%= subject['_resolved']["authority_id"] %>
+              <% else %>
+                &nbsp;
+              <% end %>
             </div>
           <% end %>
           <div class="col-md-8 token-list">

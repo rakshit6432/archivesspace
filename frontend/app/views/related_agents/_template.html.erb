@@ -34,7 +34,18 @@
       <h3 class="subrecord-form-heading"><%= I18n.t("#{relationship_type}._singular") %></h3>
       <div class="subrecord-form-container">
         <%= form.hidden_input(:jsonmodel_type, "#{relationship_type}") %>
-        <%= form.label_and_select("relator", form.possible_options_for("relator")) %>
+
+        <%# ANW-429: Only show a select box here if there is more than one option. Otherwise, use a hidden form field to simplify the UI. %>
+        <%# Entries in possible_options_for look like this: %>
+        <%# ["Family Related with Related", "is_related_with"] %>
+
+        <% if form.possible_options_for("relator").length == 1 %>
+          <% sole_option = form.possible_options_for("relator").first %>
+          <%= form.hidden_input("relator", sole_option[1]) %>
+        <% else %>
+          <%= form.label_and_select("relator", form.possible_options_for("relator")) %>
+        <% end %>
+
         <% if opts[:readonly] %>
           <div class="token-list <%= form['_resolved']['agent_type'] %>">
             <%= form.label_with_field(:ref, render_token(:object => form,

@@ -1879,17 +1879,17 @@ en:
   agent_resource: &agent_resource_attributes
     _frontend:
       action:
-        add: Add Related Resource
+        add: Add Related External Resource
     section:
       dates: Dates
       places: Places
-    _plural: Related Resources
-    _singular: Related Resource
+    _plural: Related External Resources
+    _singular: Related External Resource
     dates: Dates
     places: Places
-    linked_agent_role: Related Agent Role
-    linked_resource: Related Resource
-    linked_resource_description: Related Resource Description
+    linked_agent_role: Resource Relation Type
+    linked_resource: Related External Resource
+    linked_resource_description: Description
     file_uri: File URI
     xlink_title_attribute: Xlink Title Attribute
     xlink_role_attribute: Xlink Role Attribute
