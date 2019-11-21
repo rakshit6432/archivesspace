@@ -36,9 +36,9 @@ class AgentsController < ApplicationController
       @agent.update(defaults.values) if defaults
     end
 
-    required = RequiredFields.get @agent_type.to_s
+    @required = RequiredFields.get @agent_type.to_s
     begin
-      @agent.update_concat(required.values) if required
+      @agent.update_concat(@required.values) if @required
     rescue Exception => e
       flash[:error] = e.message
       redirect_to :controller => :agents, :action => :required
@@ -60,9 +60,9 @@ class AgentsController < ApplicationController
   end
 
   def create
-    required = RequiredFields.get @agent_type.to_s
-    if required
-      required_values = required.values
+    @required = RequiredFields.get @agent_type.to_s
+    if @required
+      required_values = @required.values
     else
       required_values = nil
     end
@@ -71,8 +71,8 @@ class AgentsController < ApplicationController
                 :required => required_values,
                 :find_opts => find_opts,
                 :on_invalid => ->(){
-                  required = RequiredFields.get @agent_type.to_s
-                  @agent.update_concat(required.values) if required
+                  @required = RequiredFields.get @agent_type.to_s
+                  @agent.update_concat(@required.values) if @required
                   ensure_auth_and_display()
                   return render_aspace_partial :partial => "agents/new" if inline?
                   return render :action => :new
@@ -164,11 +164,11 @@ class AgentsController < ApplicationController
   end
 
   def required
-    required = RequiredFields.get params['agent_type']
+    @required = RequiredFields.get params['agent_type']
 
     @agent = JSONModel(@agent_type).new({:agent_type => @agent_type})._always_valid!
 
-    @agent.update(required.form_values) if required
+    @agent.update(@required.form_values) if @required
 
     render 'required'
 

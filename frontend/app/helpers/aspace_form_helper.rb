@@ -1175,5 +1175,20 @@ module AspaceFormHelper
     }
   end
 
+  # ANW-429: returns true if an admin has specified field_name as a custom require in record_name.
+  # This code is run inside the templates to ensure that these fields are required no matter how many copies of record_name are added to a form.
+  # required_values is generally queried from the DB once in the controller, and then passed in here from the view preventing multiple queries.
+  def is_required_by_admin?(required_values, record_name, field_name)
+    return false if required_values.nil? || required_values[record_name].nil?
+
+    # need to call #first because it's possible to specify requires for multiple subrecords, so required_values[record_name] contains an array of hashes.
+    required_list_for_record = required_values[record_name].first
+
+    if required_list_for_record     
+      required_list_for_record[field_name] == "REQ"
+    else
+      false
+    end
+  end
 
 end
