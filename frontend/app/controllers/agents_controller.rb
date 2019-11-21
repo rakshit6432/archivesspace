@@ -26,6 +26,9 @@ class AgentsController < ApplicationController
   end
 
   def show
+    @required = RequiredFields.get @agent_type.to_s
+    @required = {} if @required.nil?
+    
     @agent = JSONModel(@agent_type).find(params[:id], find_opts)
   end
 
