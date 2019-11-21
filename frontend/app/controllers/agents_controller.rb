@@ -37,8 +37,10 @@ class AgentsController < ApplicationController
     end
 
     @required = RequiredFields.get @agent_type.to_s
+    @required = {} if @required.nil?
+
     begin
-      @agent.update_concat(@required.values) if @required
+      @agent.update_concat(@required.values) if @required.class == RequiredFields
     rescue Exception => e
       flash[:error] = e.message
       redirect_to :controller => :agents, :action => :required
@@ -56,12 +58,16 @@ class AgentsController < ApplicationController
   end
 
   def edit
+    @required = RequiredFields.get @agent_type.to_s
+    @required = {} if @required.nil?
     @agent = JSONModel(@agent_type).find(params[:id], find_opts)
   end
 
   def create
     @required = RequiredFields.get @agent_type.to_s
-    if @required
+    @required = {} if @required.nil?
+
+    if @required.class == RequiredFields
       required_values = @required.values
     else
       required_values = nil
@@ -72,7 +78,8 @@ class AgentsController < ApplicationController
                 :find_opts => find_opts,
                 :on_invalid => ->(){
                   @required = RequiredFields.get @agent_type.to_s
-                  @agent.update_concat(@required.values) if @required
+                  @required = {} if @required.nil?
+                  @agent.update_concat(@required.values) if @required.class == RequiredFields
                   ensure_auth_and_display()
                   return render_aspace_partial :partial => "agents/new" if inline?
                   return render :action => :new
@@ -94,6 +101,9 @@ class AgentsController < ApplicationController
   end
 
   def update
+    @required = RequiredFields.get @agent_type.to_s
+    @required = {} if @required.nil?
+    
     handle_crud(:instance => :agent,
                 :model => JSONModel(@agent_type),
                 :obj => JSONModel(@agent_type).find(params[:id], find_opts),
@@ -165,10 +175,11 @@ class AgentsController < ApplicationController
 
   def required
     @required = RequiredFields.get params['agent_type']
+    @required = {} if @required.nil?
 
     @agent = JSONModel(@agent_type).new({:agent_type => @agent_type})._always_valid!
 
-    @agent.update(@required.form_values) if @required
+    @agent.update(@required.form_values) if @required.class == RequiredFields
 
     render 'required'
 

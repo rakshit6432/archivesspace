@@ -7,7 +7,7 @@
 
     <%= render_aspace_partial :partial => "agents/name_forms/authority_fields_required", :locals => {:form => form} %>
 
-    <% field_names = ["primary_name", "subordinate_name_1", "subordinate_name_2", "number", "dates"] %>
+    <% field_names = ["primary_name", "subordinate_name_1", "subordinate_name_2", "number", "dates", "location", "conference_meeting", "jurisdiction", "language", "script", "romanization_enum"] %>
     <% field_names.each do |field_name| %>
       <% if form.required?(field_name) %>
         <%= form.label_and_readonly field_name %>
