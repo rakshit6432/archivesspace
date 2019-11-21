@@ -1545,7 +1545,7 @@ en:
       repo_settings:
         _plural: Per Repository OAI-PMH Settings
 
-  agent_record_control:
+  agent_record_control: &agent_record_control_attributes
     _plural: Record Info
     _frontend:
       action:
@@ -1567,27 +1567,9 @@ en:
     language_note: Language Note
 
   agent_record_control_required:
-    _plural: Record Info
-    _frontend:
-      action:
-        add: Add Required Field Set
-    maintenance_status_enum: Maintenance Status
-    publication_status_enum: Publication Status
-    romanization_enum: Romanization
-    government_agency_type_enum: Government Agency Type
-    reference_evaluation_enum: Reference Evaluation
-    name_type_enum: Name Type
-    level_of_detail_enum: Level of Detail
-    modified_record_enum: Modified Record
-    cataloging_source_enum: Cataloging Source
-    maintenance_agency: Maintenance Agency
-    agency_name: Agency Name
-    maintenance_agency_note: Maintenance Agency Note
-    language: Language
-    script: Script
-    language_note: Language Note
-
-  agent_gender:
+    <<: *agent_record_control_attributes
+   
+  agent_gender: &agent_gender_attributes
     _plural: Gender
     _singular: Gender
     _frontend:
@@ -1596,14 +1578,9 @@ en:
     gender_enum: Gender
 
   agent_gender_required:
-    _plural: Gender
-    _singular: Gender
-    _frontend:
-      action:
-        add: Add Required Field Set
-    gender_enum: Gender
+    <<: *agent_gender_attributes
 
-  used_language:
+  used_language: &used_language_attributes
     _plural: Languages
     _singular: Language
     _frontend:
@@ -1613,15 +1590,9 @@ en:
     script: Script
 
   used_language_required:
-    _plural: Languages
-    _singular: Language
-    _frontend:
-      action:
-        add: Add Language
-    language: Language
-    script: Script
-
-  agent_identifier:
+    <<: *used_language_attributes
+ 
+  agent_identifier: &agent_identifier_attributes
     _plural: Entity IDs
     _singular: Identifier
     _frontend:
@@ -1631,19 +1602,13 @@ en:
     entity_identifier: Entity IDs
 
   agent_identifier_required:
-    _plural: Entity IDs
-    _singular: Identifier
-    _frontend:
-      action:
-        add: Add Required Field Set
-    identifier_type_enum: Identifier Type
-    entity_identifier: Entity IDs
-
+    <<: *agent_identifier_attributes
+   
   agent_identifiers:
     identifier_type_enum: Identifier Type
     entity_identifier: Entity IDs
     
-  agent_place:
+  agent_place: &agent_place_attributes
     _frontend:
       action:
         add: Add Place
@@ -1655,6 +1620,9 @@ en:
     text_note: Note
     dates: Dates
     subjects: Places
+
+  agent_place_required:
+    <<: *agent_place_attributes
 
   agent_occupation:
     _frontend:
@@ -1701,7 +1669,7 @@ en:
       action:
         add: Add Place
 
-  agent_alternate_set:
+  agent_alternate_set: &agent_alternate_set_attributes
     _plural: Alternate Sets
     _singular: Alternate Set
     _frontend:
@@ -1717,21 +1685,9 @@ en:
     last_verified_date: Last Verified Date
 
   agent_alternate_set_required:
-    _plural: Alternate Sets
-    _singular: Alternate Set
-    _frontend:
-      action:
-        add: Add Record
-    set_component: Set Component
-    descriptive_note: Descriptive Note
-    file_uri: File URI
-    xlink_title_attribute: Xlink Title Attribute
-    xlink_role_attribute: Xlink Role Attribute
-    file_version_xlink_actuate_attribute: Xlink Actuate Attribute
-    file_version_xlink_show_attribute: Xlink Show Attribute
-    last_verified_date: Last Verified Date
-
-  agent_conventions_declaration:
+    <<: *agent_alternate_set_attributes
+  
+  agent_conventions_declaration: &agent_conventions_declaration_attributes
     _plural: Conventions Declarations
     _singular: Conventions Declaration
     _frontend:
@@ -1748,42 +1704,25 @@ en:
     last_verified_date: Last Verified Date
 
   agent_conventions_declaration_required:
-    _plural: Conventions Declarations
-    _singular: Conventions Declaration
-    _frontend:
-      action:
-        add: Add Required Field Set
-    name_rule: Name Rule
-    citation: Citation
-    descriptive_note: Descriptive Note
-    file_uri: File URI
-    xlink_title_attribute: Xlink Title Attribute
-    xlink_role_attribute: Xlink Role Attribute
-    file_version_xlink_actuate_attribute: Xlink Actuate Attribute
-    file_version_xlink_show_attribute: Xlink Show Attribute
-    last_verified_date: Last Verified Date
+    <<: *agent_conventions_declaration_attributes
+ 
 
-  agent_other_agency_code:
+  agent_other_agency_code: &agent_other_agency_code_attributes
     _plural: Other Agency Codes
     _singular: Other Agency Code
     _frontend:
       action:
         add: Add Agency Code
+    agency_code_type_enum: Agency Code Type
+    maintenance_agency: Maintenance Agency
 
   agent_other_agency_codes:
-    agency_code_type_enum: Agency Code Type
-    maintenance_agency: Maintenance Agency
+    <<: *agent_other_agency_code_attributes
 
   agent_other_agency_code_required:
-    _plural: Other Agency Codes
-    _singular: Other Agency Code
-    _frontend:
-      action:
-        add: Add Required Field Set
-    agency_code_type_enum: Agency Code Type
-    maintenance_agency: Maintenance Agency
-
-  agent_maintenance_history:
+    <<: *agent_other_agency_code_attributes
+ 
+  agent_maintenance_history: &agent_maintenance_history_attributes
     _plural: Maintenance History
     _singular: Agent Maintenance History
     _frontend:
@@ -1796,25 +1735,12 @@ en:
     event_date: Event Date
 
   agent_maintenance_histories:
-    maintenance_event_type_enum: Event Type
-    maintenance_agent_type_enum: Agent Type
-    agent: Agent
-    descriptive_note: Descriptive Note
-    event_date: Event Date
-
+    <<: *agent_maintenance_history_attributes
+  
   agent_maintenance_history_required:
-    _plural: Maintenance History
-    _singular: Agent Maintenance History
-    _frontend:
-      action:
-        add: Add Required Field Set
-    maintenance_event_type_enum: Event Type
-    maintenance_agent_type_enum: Agent Type
-    agent: Agent
-    descriptive_note: Descriptive Note
-    event_date: Event Date
-
-  agent_record_identifier:
+    <<: *agent_maintenance_history_attributes
+ 
+  agent_record_identifier: &agent_record_identifier_attributes
     _plural: Record IDs
     _singular: Record ID
     _frontend:
@@ -1826,52 +1752,32 @@ en:
     record_identifier: Record Identifier
 
   agent_record_identifiers:
-    identifier_type_enum: Identifier Type
-    source_enum: Source
-    primary_identifier: Is Primary Identifier?
-    record_identifier: Record Identifier
+    <<: *agent_record_identifier_attributes
 
   agent_record_identifier_required:
-    _plural: Record IDs
-    _singular: Record ID
-    _frontend:
-      action:
-        add: Add Required Field Set
-    identifier_type_enum: Identifier Type
-    source_enum: Source
-    primary_identifier: Is Primary Identifier?
-    record_identifier: Source Identifier
+    <<: *agent_record_identifier_attributes
 
-  agent_source:
+  agent_source: &agent_source_attributes
     _plural: Sources
     _singular: Agent Source
     _frontend:
       action:
         add: Add Source
+    source_entry: Source Entry
+    descriptive_note: Descriptive Note
+    file_uri: File URI
+    xlink_title_attribute: Xlink Title Attribute
+    xlink_role_attribute: Xlink Role Attribute
+    file_version_xlink_actuate_attribute: Xlink Actuate Attribute
+    file_version_xlink_show_attribute: Xlink Show Attribute
+    last_verified_date: Last Verified Date
 
   agent_sources:
-    source_entry: Source Entry
-    descriptive_note: Descriptive Note
-    file_uri: File URI
-    xlink_title_attribute: Xlink Title Attribute
-    xlink_role_attribute: Xlink Role Attribute
-    file_version_xlink_actuate_attribute: Xlink Actuate Attribute
-    file_version_xlink_show_attribute: Xlink Show Attribute
-    last_verified_date: Last Verified Date
+    <<: *agent_source_attributes
 
   agent_source_required:
-    _frontend:
-      action:
-        add: Add Required Field Set
-    source_entry: Source Entry
-    descriptive_note: Descriptive Note
-    file_uri: File URI
-    xlink_title_attribute: Xlink Title Attribute
-    xlink_role_attribute: Xlink Role Attribute
-    file_version_xlink_actuate_attribute: Xlink Actuate Attribute
-    file_version_xlink_show_attribute: Xlink Show Attribute
-    last_verified_date: Last Verified Date
-
+    <<: *agent_source_attributes
+ 
   agent_parallel_name:
     _plural: Parallel Names
     use_dates: Use Dates
