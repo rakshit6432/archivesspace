@@ -1,6 +1,6 @@
 # NOTE: Many of the translations in this file have been generated using
 # Google translate
-﻿es:
+es:
   actions:
     add: Añadir
     add_event: Agregar evento
@@ -141,6 +141,7 @@
   search_results:
     title: Resultados de la búsqueda
     context: Encontrado en
+    selected: ¿Seleccionado?
     no_results: Registros no encontrados
     no_results_prefix: No hay resultados de la búsqueda
     result_type: Tipo de registro
@@ -149,6 +150,7 @@
     filtered_by: Filtrado por
     modified: Modificado por
     created: Creado por
+    actions: Comportamiento
     text_placeholder: Filtrar por texto
     clear_all: Borrar todo
     component_switch: Mostrar componentes
@@ -160,7 +162,6 @@
       level: Nivel
       classification_path: Clasificación
       accession_date_year: Fecha de entrada
-      creators: Creador
       source: Fuente
       rules: Reglas
       parent_type: Tipo de registro
