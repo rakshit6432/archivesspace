@@ -1625,7 +1625,7 @@ en:
   agent_place_required:
     <<: *agent_place_attributes
 
-  agent_occupation:
+  agent_occupation: &agent_occupation_attributes
     _frontend:
       action:
         add: Add Occupation
@@ -1638,7 +1638,10 @@ en:
     subjects: Occupations
     places: Places
 
-  agent_function:
+  agent_occupation_required:
+    <<: *agent_occupation_attributes
+
+  agent_function: &agent_function_attributes
     _frontend:
       action:
         add: Add Function
@@ -1651,7 +1654,10 @@ en:
     subjects: Functions
     places: Places
 
-  agent_topic:
+  agent_function_required:
+    <<: *agent_function_attributes
+
+  agent_topic: &agent_topic_attributes
     _frontend:
       action:
         add: Add Topic
@@ -1663,6 +1669,9 @@ en:
     dates: Dates
     subjects: Topics
     places: Places
+
+  agent_topic_required:
+    <<: *agent_topic_attributes
 
   place:
     _plural: Places
@@ -1805,6 +1814,9 @@ en:
     last_verified_date: Last Verified Date
 
   agent_resources:
+    <<: *agent_resource_attributes
+
+  agent_resource_required:
     <<: *agent_resource_attributes
 
 

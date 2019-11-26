@@ -90,7 +90,10 @@
 
   <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "agent_resources", :section_id => "#{@agent.agent_type}_agent_resource", :template => "agent_resource", help_topic: "agent_resource"} %>
 
-  <%= render_aspace_partial :partial => "related_agents/form", :locals => {:form => form} %>
+  <% unless @agent.agent_type.to_s == "agent_software" %>
+    <%= render_aspace_partial :partial => "related_agents/form", :locals => {:form => form} %>
+  <% end %>
+  
   <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "external_ids", :hidden => true} %>
   </section>
 

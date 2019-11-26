@@ -24,17 +24,28 @@
 
   <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "dates_of_existence", :section_id => "#{@agent.agent_type}_dates_of_existence", :template_erb => "dates/template_required", :template => "structured_date_label", :heading_text => I18n.t("agent._frontend.section.dates_of_existence"), :help_topic => "#{@agent.agent_type}_dates_of_existence"} %>
 
-   <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "agent_genders", :section_id => "#{@agent.agent_type}_agent_gender_required", :template => "agent_gender_required", help_topic: "agent_genders", :action_button_override => "agent_gender_required" } %>
+  <% if @agent.agent_type == "person" %>
+    <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "agent_genders", :section_id => "#{@agent.agent_type}_agent_gender_required", :template => "agent_gender_required", help_topic: "agent_genders", :action_button_override => "agent_gender_required" } %>
+  <% end %>
 
    <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "agent_places", :section_id => "#{@agent.agent_type}_agent_place_required", :template => "agent_place_required", help_topic: "agent_places", :action_button_override => "agent_place_required" } %>
 
-  <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "agent_contacts", :section_id => "#{@agent.agent_type}_contact_details", :template_erb => "agents/contact_details_required", :template => "agent_contact", :help_topic => "#{@agent.agent_type}_contact_details"} %>
+   <%# render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "agent_occupations", :section_id => "#{@agent.agent_type}_agent_occupation_required", :template => "agent_occupation_required", help_topic: "agent_occupations", :action_button_override => "agent_occupation_required" } %>
 
-  <%= render_aspace_partial :partial => "notes/form_required", :locals => {:form => form, :all_note_types => note_types_for(form['jsonmodel_type']), :section_id => "#{@agent.agent_type}_notes"} %>
+   <%# render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "agent_functions", :section_id => "#{@agent.agent_type}_agent_function_required", :template => "agent_function_required", help_topic: "agent_functions", :action_button_override => "agent_function_required" } %>
+
+   <%# render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "agent_topics", :section_id => "#{@agent.agent_type}_agent_topic_required", :template => "agent_topic_required", help_topic: "agent_topics", :action_button_override => "agent_topic_required" } %>
+
+   <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "used_languages", :section_id => "#{@agent.agent_type}_used_language_required", :template => "used_language_required", help_topic: "used_languages", :action_button_override => "used_language_required" } %>
+
+  <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "agent_contacts", :section_id => "#{@agent.agent_type}_contact_details", :template_erb => "agents/contact_details_required", :template => "agent_contact", :help_topic => "#{@agent.agent_type}_contact_details"} %>
 
   <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "external_documents", :section_id => "#{@agent.agent_type}_external_documents", :template_erb => "external_documents/template_required", :help_topic => "#{@agent.agent_type}_external_documents"} %>
 
-  <%= render_aspace_partial :partial => "related_agents/form_required", :locals => {:form => form} %>
+   <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "agent_resources", :section_id => "#{@agent.agent_type}_agent_resource_required", :template => "agent_resource_required", help_topic: "agent_resources", :action_button_override => "agent_resource_required" } %>
+
+
+  <%# render_aspace_partial :partial => "related_agents/form_required", :locals => {:form => form} %>
 
 
   <%= form_plugins_for("agent", form) %>

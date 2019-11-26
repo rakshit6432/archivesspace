@@ -11,3 +11,10 @@
     </div>
   </div>
 <% end %>
+
+<% define_template "agent_function_required", jsonmodel_definition(:agent_function) do |form| %>
+    <%= form.label_and_disabled_checkbox "Function" %>
+    <%= form.label_and_disabled_checkbox "Place" %>
+    <%= form.label_and_disabled_checkbox "Notes" %>
+    <%= form.label_and_disabled_checkbox "Dates" %>
+<% end %>

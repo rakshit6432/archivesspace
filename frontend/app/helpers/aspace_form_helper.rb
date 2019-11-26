@@ -311,6 +311,20 @@ module AspaceFormHelper
       label_with_field(name, date_input, opts)
     end
 
+    def label_and_disabled_checkbox(name)
+      html = ""
+
+      html << "<div class='form-group'>"
+
+      html << "<label class='col-sm-2 control-label'>#{name}</label>"
+      html << "<div class='col-sm-1'>"
+      html << "<input type='checkbox' name='disabled' disabled>"
+      html << "</div>"
+      html << "</div>"
+
+      return html.html_safe
+    end
+
     def label_and_textarea(name, opts = {})
       label_with_field(name, textarea(name, obj[name] || opts[:default], opts[:field_opts] || {}), opts)
     end
