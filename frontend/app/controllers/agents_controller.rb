@@ -8,6 +8,7 @@ class AgentsController < ApplicationController
 
   before_action :assign_types
   before_action :set_structured_date_type, only: [:create, :update]
+  before_action :get_required
 
   include ExportHelper
 
@@ -26,9 +27,6 @@ class AgentsController < ApplicationController
   end
 
   def show
-    @required = RequiredFields.get @agent_type.to_s
-    @required = {} if @required.nil?
-    
     @agent = JSONModel(@agent_type).find(params[:id], find_opts)
   end
 
@@ -38,9 +36,6 @@ class AgentsController < ApplicationController
       defaults = DefaultValues.get @agent_type.to_s
       @agent.update(defaults.values) if defaults
     end
-
-    @required = RequiredFields.get @agent_type.to_s
-    @required = {} if @required.nil?
 
     begin
       @agent.update_concat(@required.values) if @required.class == RequiredFields
@@ -61,15 +56,10 @@ class AgentsController < ApplicationController
   end
 
   def edit
-    @required = RequiredFields.get @agent_type.to_s
-    @required = {} if @required.nil?
     @agent = JSONModel(@agent_type).find(params[:id], find_opts)
   end
 
   def create
-    @required = RequiredFields.get @agent_type.to_s
-    @required = {} if @required.nil?
-
     if @required.class == RequiredFields
       required_values = @required.values
     else
@@ -104,9 +94,6 @@ class AgentsController < ApplicationController
   end
 
   def update
-    @required = RequiredFields.get @agent_type.to_s
-    @required = {} if @required.nil?
-    
     handle_crud(:instance => :agent,
                 :model => JSONModel(@agent_type),
                 :obj => JSONModel(@agent_type).find(params[:id], find_opts),
@@ -177,9 +164,6 @@ class AgentsController < ApplicationController
   end
 
   def required
-    @required = RequiredFields.get params['agent_type']
-    @required = {} if @required.nil?
-
     @agent = JSONModel(@agent_type).new({:agent_type => @agent_type})._always_valid!
 
     @agent.update(@required.form_values) if @required.class == RequiredFields
@@ -279,6 +263,11 @@ class AgentsController < ApplicationController
 
     def name_type_for_agent_type(agent_type)
       JSONModel(agent_type).type_of("names/items")
+    end
+
+    def get_required
+      @required = RequiredFields.get @agent_type.to_s
+      @required = {} if @required.nil?
     end
 
     def assign_types
