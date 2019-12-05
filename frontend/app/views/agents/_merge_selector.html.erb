@@ -15,9 +15,8 @@
 
           <%= render_aspace_partial :partial => "shared/flash_messages" %>
 
+          <h3><%= I18n.t("agent._frontend.section.basic_information") %></h3>
           <section id="basic_information_left" class="basic-info-group">
-            <h3><%= I18n.t("agent._frontend.section.basic_information") %></h3>
-
             <div class="form-group">
               <label class="col-sm-2 control-label"><%= I18n.t("agent.type") %></label>
               <div class="col-sm-9 label-only"><%= I18n.t("agent.agent_type.#{@agent.agent_type}") %></div>
@@ -25,8 +24,8 @@
             <%= display_audit_info(@agent) %>
           </section>
 
-          <section id="<%= @agent.agent_type %>_agent_record_identifier_left" class="doe-group">
-            <h3><%= I18n.t("agent_record_identifiers._plural") %></h3>
+          <h3><%= I18n.t("agent_record_identifiers._plural") %></h3>
+          <section id="<%= @agent.agent_type %>_agent_record_identifier_left" class="merge-group">
             <div id="agent_dates_wrapper_left">
               <div id="date_of_existence_left">
                 <% if @agent.agent_record_identifiers.length > 0 %>
@@ -36,8 +35,8 @@
             </div>
           </section>
 
-          <section id="<%= @agent.agent_type %>_agent_record_control_left" class="doe-group">
-            <h3><%= I18n.t("agent_record_controls._plural") %></h3>
+          <h3><%= I18n.t("agent_record_controls._plural") %></h3>
+          <section id="<%= @agent.agent_type %>_agent_record_control_left" class="merge-group">
             <div id="agent_dates_wrapper_left">
               <div id="date_of_existence_left">
                 <% if @agent.agent_record_controls.length > 0 %>
@@ -47,8 +46,8 @@
             </div>
           </section>
 
-          <section id="<%= @agent.agent_type %>_agent_other_agency_code_left" class="doe-group">
-            <h3><%= I18n.t("agent_other_agency_codes._plural") %></h3>
+          <h3><%= I18n.t("agent_other_agency_codes._plural") %></h3>
+          <section id="<%= @agent.agent_type %>_agent_other_agency_code_left" class="merge-group">
             <div id="agent_dates_wrapper_left">
               <div id="date_of_existence_left">
                 <% if @agent.agent_other_agency_codes.length > 0 %>
@@ -58,8 +57,8 @@
             </div>
           </section>
 
-          <section id="<%= @agent.agent_type %>_agent_conventions_declaration_left" class="doe-group">
-            <h3><%= I18n.t("agent_conventions_declarations._plural") %></h3>
+          <h3><%= I18n.t("agent_conventions_declarations._plural") %></h3>
+          <section id="<%= @agent.agent_type %>_agent_conventions_declaration_left" class="merge-group">
             <div id="agent_dates_wrapper_left">
               <div id="date_of_existence_left">
                 <% if @agent.agent_conventions_declarations.length > 0 %>
@@ -69,8 +68,8 @@
             </div>
           </section>
 
-          <section id="<%= @agent.agent_type %>_agent_maintenance_history_left" class="doe-group">
-            <h3><%= I18n.t("agent_maintenance_histories._plural") %></h3>
+          <h3><%= I18n.t("agent_maintenance_histories._plural") %></h3>
+          <section id="<%= @agent.agent_type %>_agent_maintenance_history_left" class="merge-group">
             <div id="agent_dates_wrapper_left">
               <div id="date_of_existence_left">
                 <% if @agent.agent_maintenance_histories.length > 0 %>
@@ -80,8 +79,8 @@
             </div>
           </section>
 
-          <section id="<%= @agent.agent_type %>_agent_source_left" class="doe-group">
-            <h3><%= I18n.t("agent_sources._plural") %></h3>
+          <h3><%= I18n.t("agent_sources._plural") %></h3>
+          <section id="<%= @agent.agent_type %>_agent_source_left" class="merge-group">
             <div id="agent_dates_wrapper_left">
               <div id="date_of_existence_left">
                 <% if @agent.agent_sources.length > 0 %>
@@ -91,8 +90,8 @@
             </div>
           </section>
 
-          <section id="<%= @agent.agent_type %>_agent_alternate_set_left" class="doe-group">
-            <h3><%= I18n.t("agent_alternate_sets._plural") %></h3>
+          <h3><%= I18n.t("agent_alternate_sets._plural") %></h3>
+          <section id="<%= @agent.agent_type %>_agent_alternate_set_left" class="merge-group">
             <div id="agent_dates_wrapper_left">
               <div id="date_of_existence_left">
                 <% if @agent.agent_alternate_sets.length > 0 %>
@@ -102,8 +101,8 @@
             </div>
           </section>
 
-          <section id="<%= @agent.agent_type %>_agent_identifier_left" class="doe-group">
-            <h3><%= I18n.t("agent_identifiers._plural") %></h3>
+          <h3><%= I18n.t("agent_identifiers._plural") %></h3>
+          <section id="<%= @agent.agent_type %>_agent_identifier_left" class="merge-group">
             <div id="agent_dates_wrapper_left">
               <div id="date_of_existence_left">
                 <% if @agent.agent_identifiers.length > 0 %>
@@ -113,8 +112,8 @@
             </div>
           </section>
  
-          <section id="<%= @agent.agent_type %>_dates_of_existence_left" class="doe-group">
-            <h3><%= I18n.t("agent._frontend.section.dates_of_existence") %></h3>
+          <h3><%= I18n.t("agent._frontend.section.dates_of_existence") %></h3>
+          <section id="<%= @agent.agent_type %>_dates_of_existence_left" class="merge-group doe-group">
             <div id="agent_dates_wrapper_left">
               <div id="date_of_existence_left">
                 <% if @agent.dates_of_existence.length > 0 %>
@@ -124,8 +123,8 @@
             </div>
           </section>
 
-          <section id="<%= @agent.agent_type %>_names_left" class="names-group">
-            <h3><%= I18n.t("agent_name._plural") %></h3>
+          <h3><%= I18n.t("agent_name._plural") %></h3>
+          <section id="<%= @agent.agent_type %>_names_left" class="names-group merge-group">
             <div id="agent_name_wrapper_left">
               <div id="agent_name_left">
                 <%= render_aspace_partial :partial => "shared/subrecord_form_merge", :locals => {:form => form, :name => "names", :section_id => "#{@agent.agent_type}_names", :template_erb => "agents/name_forms/#{@agent.agent_type}_merge_target", :template => "name_#{@agent.agent_type.to_s.gsub("agent_","")}", :help_topic => "#{@agent.agent_type}_names"} %>
@@ -133,8 +132,8 @@
             </div>
           </section>
 
-          <section id="<%= @agent.agent_type %>_contact_details_left" class="contact-group">
-            <h3><%= I18n.t("agent_contact._plural") %></h3>
+          <h3><%= I18n.t("agent_contact._plural") %></h3>
+          <section id="<%= @agent.agent_type %>_contact_details_left" class="contact-group merge-group">
             <div id="agent_contact_wrapper_left">
               <div id="agent_contact_left">
                 <% if @agent.agent_contacts.length > 0 %>
@@ -144,8 +143,8 @@
             </div>
           </section>
 
-        <section id="<%= @agent.agent_type %>_notes_left" class="notes-group">
-          <h3><%= I18n.t("note._plural") %></h3>
+        <h3><%= I18n.t("note._plural") %></h3>
+        <section id="<%= @agent.agent_type %>_notes_left" class="notes-group merge-group">
           <div id="agent_notes_wrapper_left">
             <div id="agent_note_left">
               <% if @agent.notes.length > 0 %>
@@ -155,28 +154,27 @@
           </div>
         </section>
 
-          <section id="<%= @agent.agent_type %>_related_agents_left" class="related-group">
-            <h3><%= I18n.t("related_agent._plural") %></h3>
-            <div id="agent_related_wrapper_left">
-              <div id="agent_related_left">
-                <% if !@agent['related_agents'].blank? %>
-                  <%= render_aspace_partial :partial => "related_agents/show_merge_target", :locals => { :context => form } %>
-                <% end %>
-              </div>
+        <h3><%= I18n.t("related_agent._plural") %></h3>
+        <section id="<%= @agent.agent_type %>_related_agents_left" class="related-group merge-group">
+          <div id="agent_related_wrapper_left">
+            <div id="agent_related_left">
+              <% if !@agent['related_agents'].blank? %>
+                <%= render_aspace_partial :partial => "related_agents/show_merge_target", :locals => { :context => form } %>
+              <% end %>
             </div>
-          </section>
+          </div>
+        </section>
 
-
-          <section id="<%= @agent.agent_type %>_external_documents_left" class="ed-group">
-            <h3><%= I18n.t("external_document._plural") %></h3>
-            <div id="agent_external_document_wrapper_left">
-              <div id="agent_external_document_left">
-                <% if @agent.external_documents.length > 0 %>
-                  <%= render_aspace_partial :partial => "shared/subrecord_form_merge", :locals => {:form => form, :name => "external_documents", :section_id => "#{@agent.agent_type}_external_documents", :template_erb => "external_documents/template_merge_target"} %>
-                <% end %>
-              </div>
+        <h3><%= I18n.t("external_document._plural") %></h3>
+        <section id="<%= @agent.agent_type %>_external_documents_left" class="ed-group merge-group">
+          <div id="agent_external_document_wrapper_left">
+            <div id="agent_external_document_left">
+              <% if @agent.external_documents.length > 0 %>
+                <%= render_aspace_partial :partial => "shared/subrecord_form_merge", :locals => {:form => form, :name => "external_documents", :section_id => "#{@agent.agent_type}_external_documents", :template_erb => "external_documents/template_merge_target"} %>
+              <% end %>
             </div>
-          </section>
+          </div>
+        </section>
 
         <% end %>
       <% end %>
@@ -192,9 +190,8 @@
 
           <%= render_aspace_partial :partial => "shared/flash_messages" %>
 
+          <h3><%= I18n.t("agent._frontend.section.basic_information") %></h3>
           <section id="basic_information_right" class="basic-info-group">
-            <h3><%= I18n.t("agent._frontend.section.basic_information") %></h3>
-
             <div class="form-group">
               <label class="col-sm-2 control-label"><%= I18n.t("agent.type") %></label>
               <div class="col-sm-9 label-only"><%= I18n.t("agent.agent_type.#{@agent.agent_type}") %></div>
@@ -202,8 +199,8 @@
             <%= display_audit_info(@victim) %>
           </section>
 
-          <section id="<%= @victim.agent_type %>_agent_record_identifier_right" class="doe-group">
-            <h3><%= I18n.t("agent_record_identifiers._plural") %></h3>
+          <h3><%= I18n.t("agent_record_identifiers._plural") %></h3>
+          <section id="<%= @victim.agent_type %>_agent_record_identifier_right" class="merge-group">
             <div id="agent_dates_wrapper_right">
               <div id="date_of_existence_right">
                 <% if @victim.agent_record_identifiers.length > 0 %>
@@ -213,8 +210,8 @@
             </div>
           </section>
 
-          <section id="<%= @victim.agent_type %>_agent_record_control_right" class="doe-group">
-            <h3><%= I18n.t("agent_record_controls._plural") %></h3>
+          <h3><%= I18n.t("agent_record_controls._plural") %></h3>
+          <section id="<%= @victim.agent_type %>_agent_record_control_right" class="merge-group">
             <div id="agent_dates_wrapper_right">
               <div id="date_of_existence_right">
                 <% if @victim.agent_record_controls.length > 0 %>
@@ -224,8 +221,8 @@
             </div>
           </section>
 
-          <section id="<%= @victim.agent_type %>_agent_other_agency_code_right" class="doe-group">
-            <h3><%= I18n.t("agent_other_agency_codes._plural") %></h3>
+          <h3><%= I18n.t("agent_other_agency_codes._plural") %></h3>
+          <section id="<%= @victim.agent_type %>_agent_other_agency_code_right" class="merge-group">
             <div id="agent_dates_wrapper_right">
               <div id="date_of_existence_right">
                 <% if @victim.agent_other_agency_codes.length > 0 %>
@@ -235,8 +232,8 @@
             </div>
           </section>
 
-          <section id="<%= @victim.agent_type %>_agent_conventions_declaration_right" class="doe-group">
-            <h3><%= I18n.t("agent_conventions_declarations._plural") %></h3>
+          <h3><%= I18n.t("agent_conventions_declarations._plural") %></h3>
+          <section id="<%= @victim.agent_type %>_agent_conventions_declaration_right" class="merge-group">
             <div id="agent_dates_wrapper_right">
               <div id="date_of_existence_right">
                 <% if @victim.agent_conventions_declarations.length > 0 %>
@@ -246,8 +243,8 @@
             </div>
           </section>
 
-         <section id="<%= @victim.agent_type %>_agent_maintenance_history_right" class="doe-group">
-            <h3><%= I18n.t("agent_maintenance_histories._plural") %></h3>
+         <h3><%= I18n.t("agent_maintenance_histories._plural") %></h3>
+         <section id="<%= @victim.agent_type %>_agent_maintenance_history_right" class="merge-group">
             <div id="agent_dates_wrapper_right">
               <div id="date_of_existence_right">
                 <% if @victim.agent_maintenance_histories.length > 0 %>
@@ -257,8 +254,8 @@
             </div>
           </section>
 
-          <section id="<%= @victim.agent_type %>_agent_source_right" class="doe-group">
-            <h3><%= I18n.t("agent_sources._plural") %></h3>
+          <h3><%= I18n.t("agent_sources._plural") %></h3>
+          <section id="<%= @victim.agent_type %>_agent_source_right" class="merge-group">
             <div id="agent_dates_wrapper_right">
               <div id="date_of_existence_right">
                 <% if @victim.agent_sources.length > 0 %>
@@ -269,8 +266,8 @@
           </section>
 
 
-        <section id="<%= @victim.agent_type %>_agent_alternate_set_right" class="doe-group">
-            <h3><%= I18n.t("agent_alternate_sets._plural") %></h3>
+          <h3><%= I18n.t("agent_alternate_sets._plural") %></h3>
+          <section id="<%= @victim.agent_type %>_agent_alternate_set_right" class="merge-group">
             <div id="agent_dates_wrapper_right">
               <div id="date_of_existence_right">
                 <% if @victim.agent_alternate_sets.length > 0 %>
@@ -280,8 +277,8 @@
             </div>
           </section>
 
-          <section id="<%= @victim.agent_type %>_agent_identifier_right" class="doe-group">
-            <h3><%= I18n.t("agent_identifiers._plural") %></h3>
+          <h3><%= I18n.t("agent_identifiers._plural") %></h3>
+          <section id="<%= @victim.agent_type %>_agent_identifier_right" class="merge-group">
             <div id="agent_dates_wrapper_right">
               <div id="date_of_existence_right">
                 <% if @victim.agent_identifiers.length > 0 %>
@@ -291,8 +288,8 @@
             </div>
           </section>
           
-          <section id="<%= @victim.agent_type %>_dates_of_existence_right" class="doe-group">
-            <h3><%= I18n.t("agent._frontend.section.dates_of_existence") %></h3>
+          <h3><%= I18n.t("agent._frontend.section.dates_of_existence") %></h3>
+          <section id="<%= @victim.agent_type %>_dates_of_existence_right" class="merge-group doe-group">
             <div id="agent_dates_wrapper_right">
               <div id="date_of_existence_right" >
                 <% if @victim.dates_of_existence.length > 0 %>
@@ -302,8 +299,8 @@
             </div>
           </section>
 
-          <section id="<%= @victim.agent_type %>_names_right" class="names-group">
-            <h3><%= I18n.t("agent_name._plural") %></h3>
+          <h3><%= I18n.t("agent_name._plural") %></h3>
+          <section id="<%= @victim.agent_type %>_names_right" class="names-group merge-group">
             <div id="agent_name_wrapper_right">
               <div id="agent_name_right">
                 <%= render_aspace_partial :partial => "shared/subrecord_form_merge", :locals => {:form => form, :name => "names", :section_id => "#{@agent.agent_type}_names", :template_erb => "agents/name_forms/#{@agent.agent_type}_merge", :template => "name_#{@agent.agent_type.to_s.gsub("agent_","")}", :help_topic => "#{@agent.agent_type}_names"} %>
@@ -311,8 +308,8 @@
             </div>
           </section>
 
-          <section id="<%= @victim.agent_type %>_contact_details_right" class="contact-group">
-            <h3><%= I18n.t("agent_contact._plural") %></h3>
+          <h3><%= I18n.t("agent_contact._plural") %></h3>
+          <section id="<%= @victim.agent_type %>_contact_details_right" class="contact-group merge-group">
             <div id="agent_contact_wrapper_right">
               <div id="agent_contact_right">
                 <% if @victim.agent_contacts.length > 0 %>
@@ -322,8 +319,8 @@
             </div>
           </section>
 
-          <section id="<%= @victim.agent_type %>_notes_right" class="notes-group">
-            <h3><%= I18n.t("note._plural") %></h3>
+          <h3><%= I18n.t("note._plural") %></h3>
+          <section id="<%= @victim.agent_type %>_notes_right" class="notes-group merge-group">
             <div id="agent_notes_wrapper_right">
               <div id="agent_note_right">
                 <% if @victim.notes.length > 0 %>
@@ -333,8 +330,8 @@
             </div>
           </section>
 
-          <section id="<%= @victim.agent_type %>_related_agents_right" class="related-group">
-            <h3><%= I18n.t("related_agent._plural") %></h3>
+          <h3><%= I18n.t("related_agent._plural") %></h3>
+          <section id="<%= @victim.agent_type %>_related_agents_right" class="related-group merge-group">
             <div id="agent_related_wrapper_right">
               <div id="agent_related_right">
                 <% if !@victim['related_agents'].blank? %>
@@ -344,9 +341,8 @@
             </div>
           </section>
 
-
-          <section id="<%= @victim.agent_type %>_external_documents_right" class="ed-group">
-            <h3><%= I18n.t("external_document._plural") %></h3>
+          <h3><%= I18n.t("external_document._plural") %></h3>
+          <section id="<%= @victim.agent_type %>_external_documents_right" class="ed-group merge-group">
             <div id="agent_external_document_wrapper_right">
               <div id="agent_external_document_right">
                 <% if @victim.external_documents.length > 0 %>
