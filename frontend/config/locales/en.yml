@@ -1739,7 +1739,7 @@ en:
   agent_conventions_declarations:
     <<: *agent_conventions_declaration_attributes
 
-  agent_conventions_declarations_required:
+  agent_conventions_declaration_required:
     <<: *agent_conventions_declaration_attributes
 
   agent_conventions_declaration_merge_target:
