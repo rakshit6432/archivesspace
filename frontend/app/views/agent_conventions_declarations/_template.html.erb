@@ -49,3 +49,23 @@
     <% end %>
   <% end %>
 <% end %>
+
+<% define_template "agent_conventions_declaration_merge_target", jsonmodel_definition(:agent_conventions_declaration) do |form| %>
+  <% field_names = ["name_rule", "citation", "descriptive_note", "file_uri", "file_version_xlink_actuate_attribute", "file_version_xlink_show_attribute", "xlink_title_attribute", "xlink_role_attribute", "last_verified_date"] %>
+  <% field_names.each do |field_name| %>
+    <%= form.label_and_readonly field_name %>
+  <% end %>
+<% end %>
+
+<% define_template "agent_conventions_declaration_merge_victim", jsonmodel_definition(:agent_conventions_declaration) do |form| %>
+
+  <%= form.label_and_merge_select "name_rule" %>
+  <%= form.label_and_merge_select "citation" %>
+  <%= form.label_and_merge_select "descriptive_note" %>
+  <%= form.label_and_merge_select "file_uri" %>
+  <%= form.label_and_merge_select "file_version_xlink_actuate_attribute" %>
+  <%= form.label_and_merge_select "file_version_xlink_show_attribute" %>
+  <%= form.label_and_merge_select "xlink_title_attribute" %>
+  <%= form.label_and_merge_select "xlink_role_attribute" %>
+  <%= form.label_and_merge_select "last_verified_date" %>
+<% end %>

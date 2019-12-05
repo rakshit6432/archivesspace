@@ -36,6 +36,7 @@
     </div>
   </div>
 <% end %>
+
 <% define_template "agent_alternate_set_required", jsonmodel_definition(:agent_alternate_set) do |form| %>
   <% field_names = ["set_component", "descriptive_note", "file_uri", "file_version_xlink_actuate_attribute", "file_version_xlink_show_attribute", "xlink_title_attribute", "xlink_role_attribute", "last_verified_date"] %>
   <% field_names.each do |field_name| %>
@@ -45,4 +46,24 @@
       <%= form.label_and_req_boolean field_name %>
     <% end %>
   <% end %>
+<% end %>
+
+<% define_template "agent_alternate_set_merge_target", jsonmodel_definition(:agent_alternate_set) do |form| %>
+  <% field_names = ["set_component", "descriptive_note", "file_uri", "file_version_xlink_actuate_attribute", "file_version_xlink_show_attribute", "xlink_title_attribute", "xlink_role_attribute", "last_verified_date"] %>
+  <% field_names.each do |field_name| %>
+    <%= form.label_and_readonly field_name %>
+  <% end %>
+<% end %>
+
+<% define_template "agent_alternate_set_merge_victim", jsonmodel_definition(:agent_alternate_set) do |form| %>
+
+  <%= form.label_and_merge_select "set_component" %>
+  <%= form.label_and_merge_select "descriptive_note" %>
+  <%= form.label_and_merge_select "file_uri" %>
+  <%= form.label_and_merge_select "file_version_xlink_actuate_attribute" %>
+  <%= form.label_and_merge_select "file_version_xlink_show_attribute" %>
+  <%= form.label_and_merge_select "xlink_title_attribute" %>
+  <%= form.label_and_merge_select "xlink_role_attribute" %>
+  <%= form.label_and_merge_select "last_verified_date" %>
+
 <% end %>

@@ -1567,7 +1567,16 @@ en:
     script: Script
     language_note: Language Note
 
+  agent_record_controls:
+    <<: *agent_record_control_attributes
+
   agent_record_control_required:
+    <<: *agent_record_control_attributes
+
+  agent_record_control_merge_target:
+    <<: *agent_record_control_attributes
+
+  agent_record_control_merge_victim:
     <<: *agent_record_control_attributes
    
   agent_gender: &agent_gender_attributes
@@ -1602,13 +1611,18 @@ en:
     identifier_type_enum: Identifier Type
     entity_identifier: Entity IDs
 
+  agent_identifiers:
+    <<: *agent_identifier_attributes
+
   agent_identifier_required:
     <<: *agent_identifier_attributes
-   
-  agent_identifiers:
-    identifier_type_enum: Identifier Type
-    entity_identifier: Entity IDs
-    
+
+  agent_identifier_merge_target:
+    <<: *agent_identifier_attributes
+
+  agent_identifier_merge_victim:
+    <<: *agent_identifier_attributes
+
   agent_place: &agent_place_attributes
     _frontend:
       action:
@@ -1694,7 +1708,16 @@ en:
     file_version_xlink_show_attribute: Xlink Show Attribute
     last_verified_date: Last Verified Date
 
+  agent_alternate_sets:
+    <<: *agent_alternate_set_attributes
+
   agent_alternate_set_required:
+    <<: *agent_alternate_set_attributes
+
+  agent_alternate_set_merge_target:
+    <<: *agent_alternate_set_attributes
+
+  agent_alternate_set_merge_victim:
     <<: *agent_alternate_set_attributes
   
   agent_conventions_declaration: &agent_conventions_declaration_attributes
@@ -1713,10 +1736,18 @@ en:
     file_version_xlink_show_attribute: Xlink Show Attribute
     last_verified_date: Last Verified Date
 
-  agent_conventions_declaration_required:
+  agent_conventions_declarations:
+    <<: *agent_conventions_declaration_attributes
+
+  agent_conventions_declarations_required:
+    <<: *agent_conventions_declaration_attributes
+
+  agent_conventions_declaration_merge_target:
+    <<: *agent_conventions_declaration_attributes
+
+  agent_conventions_declaration_merge_victim:
     <<: *agent_conventions_declaration_attributes
  
-
   agent_other_agency_code: &agent_other_agency_code_attributes
     _plural: Other Agency Codes
     _singular: Other Agency Code
@@ -1730,6 +1761,12 @@ en:
     <<: *agent_other_agency_code_attributes
 
   agent_other_agency_code_required:
+    <<: *agent_other_agency_code_attributes
+
+  agent_other_agency_code_merge_target:
+    <<: *agent_other_agency_code_attributes
+
+  agent_other_agency_code_merge_victim:
     <<: *agent_other_agency_code_attributes
  
   agent_maintenance_history: &agent_maintenance_history_attributes
@@ -1749,6 +1786,12 @@ en:
   
   agent_maintenance_history_required:
     <<: *agent_maintenance_history_attributes
+
+  agent_maintenance_history_merge_target:
+    <<: *agent_maintenance_history_attributes
+
+  agent_maintenance_history_merge_victim:
+    <<: *agent_maintenance_history_attributes
  
   agent_record_identifier: &agent_record_identifier_attributes
     _plural: Record IDs
@@ -1765,6 +1808,12 @@ en:
     <<: *agent_record_identifier_attributes
 
   agent_record_identifier_required:
+    <<: *agent_record_identifier_attributes
+
+  agent_record_identifier_merge_target:
+    <<: *agent_record_identifier_attributes
+
+  agent_record_identifier_merge_victim:
     <<: *agent_record_identifier_attributes
 
   agent_source: &agent_source_attributes
@@ -1786,6 +1835,12 @@ en:
     <<: *agent_source_attributes
 
   agent_source_required:
+    <<: *agent_source_attributes
+
+  agent_source_merge_target:
+    <<: *agent_source_attributes
+
+  agent_source_merge_victim:
     <<: *agent_source_attributes
  
   agent_parallel_name:

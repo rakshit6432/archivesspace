@@ -23,3 +23,17 @@
     <% end %>
   <% end %>
 <% end %>
+
+<% define_template "agent_identifier_merge_target", jsonmodel_definition(:agent_identifier) do |form| %>
+  <% field_names = ["entity_identifier", "identifier_type_enum"] %>
+  <% field_names.each do |field_name| %>
+    <%= form.label_and_readonly field_name %>
+  <% end %>
+<% end %>
+
+<% define_template "agent_identifier_merge_victim", jsonmodel_definition(:agent_identifier) do |form| %>
+
+  <%= form.label_and_merge_select "entity_identifier" %>
+  <%= form.label_and_merge_select "identifier_type_enum" %>
+  
+<% end %>

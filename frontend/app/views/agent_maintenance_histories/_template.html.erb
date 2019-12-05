@@ -25,3 +25,19 @@
     <% end %>
   <% end %>
 <% end %>
+
+<% define_template "agent_maintenance_history_merge_target", jsonmodel_definition(:agent_maintenance_history) do |form| %>
+  <% field_names = ["maintenance_event_type_enum", "event_date", "agent", "maintenance_agent_type_enum", "descriptive_note"] %>
+  <% field_names.each do |field_name| %>
+    <%= form.label_and_readonly field_name %>
+  <% end %>
+<% end %>
+
+<% define_template "agent_maintenance_history_merge_victim", jsonmodel_definition(:agent_maintenance_history) do |form| %>
+
+  <%= form.label_and_merge_select "maintenance_event_type_enum" %>
+  <%= form.label_and_merge_select "event_date" %>
+  <%= form.label_and_merge_select "agent" %>
+  <%= form.label_and_merge_select "maintenance_agent_type_enum" %>
+  <%= form.label_and_merge_select "descriptive_note" %>
+<% end %>

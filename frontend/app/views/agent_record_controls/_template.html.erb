@@ -75,3 +75,29 @@
     <% end %>
   <% end %>
 <% end %>
+
+<% define_template "agent_record_control_merge_target", jsonmodel_definition(:agent_record_control) do |form| %>
+  <% field_names = ["maintenance_status_enum", "publication_status_enum", "maintenance_agency", "agency_name", "maintenance_agency_note", "language", "script", "language_note", "romanization_enum", "government_agency_type_enum", "reference_evaluation_enum", "name_type_enum", "level_of_detail_enum", "modified_record_enum", "cataloging_source_enum"] %>
+  <% field_names.each do |field_name| %>
+    <%= form.label_and_readonly field_name %>
+  <% end %>
+<% end %>
+
+<% define_template "agent_record_control_merge_victim", jsonmodel_definition(:agent_record_control) do |form| %>
+
+  <%= form.label_and_merge_select "maintenance_status_enum" %>
+  <%= form.label_and_merge_select "publication_status_enum" %>
+  <%= form.label_and_merge_select "maintenance_agency" %>
+  <%= form.label_and_merge_select "agency_name" %>
+  <%= form.label_and_merge_select "maintenance_agency_note" %>
+  <%= form.label_and_merge_select "language" %>
+  <%= form.label_and_merge_select "script" %>
+  <%= form.label_and_merge_select "language_note" %>
+  <%= form.label_and_merge_select "romanization_enum" %>
+  <%= form.label_and_merge_select "government_agency_type_enum" %>
+  <%= form.label_and_merge_select "reference_evaluation_enum" %>
+  <%= form.label_and_merge_select "name_type_enum" %>
+  <%= form.label_and_merge_select "level_of_detail_enum" %>
+  <%= form.label_and_merge_select "modified_record_enum" %>
+  <%= form.label_and_merge_select "cataloging_source_enum" %>
+<% end %>
