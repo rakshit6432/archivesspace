@@ -472,6 +472,7 @@ en:
         identity_information: Identity Information
         description_information: Description Information
         relation_information: Relation Information
+        date_of_existence: Date of Existence
         dates_of_existence: Dates of Existence
         name: Name Forms
         contacts: Contact Details
