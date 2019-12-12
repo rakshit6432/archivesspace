@@ -49,8 +49,15 @@ class ArchivesSpaceService < Sinatra::Base
   .permissions([:merge_agent_record])
   .returns([200, :updated]) \
   do
+    STDERR.puts "++++++++++++++++++++++++++++++"
+    STDERR.puts "IN BACKEND CONTROLLER"
+    STDERR.puts params.inspect
+
     target, victims = parse_references(params[:merge_request_detail])
     selections = parse_selections(params[:merge_request_detail].selections)
+
+    STDERR.puts selections.inspect
+
     if (victims.map {|r| r[:type]} + [target[:type]]).any? {|type| !AgentManager.known_agent_type?(type)}
       raise BadParamsException.new(:merge_request_detail => ["Agent merge request can only merge agent records"])
     end
@@ -169,7 +176,14 @@ class ArchivesSpaceService < Sinatra::Base
     path.pop
     return all_values
   end
+
   def merge_details(target, victim, selections, dry_run)
+    STDERR.puts "IN MERGE DETAILS"
+    STDERR.puts "target: " + target.inspect
+    STDERR.puts "victim: " + victim.inspect
+    STDERR.puts "selections: " + selections.inspect
+
+
     target[:linked_events] = []
     victim[:linked_events] = []
     selections.each_key do |key|
@@ -184,7 +198,7 @@ class ArchivesSpaceService < Sinatra::Base
         path_fix.push(part)
       end
       path_fix_length = path_fix.length
-      if path_fix[0] != 'related_agents' && path_fix[0] != 'external_documents' && path_fix[0] != 'notes'
+      if path_fix[0] != 'related_agents' && path_fix[0] != 'external_documents' && path_fix[0] != 'notes' && path_fix[0] != 'dates_of_existence'
         case path_fix_length
           when 1
             target[path_fix[0]] = victim[path_fix[0]]
@@ -218,6 +232,8 @@ class ArchivesSpaceService < Sinatra::Base
         target['external_documents'].push(victim['external_documents'][path_fix[1]])
       elsif path_fix[0] === 'notes'
         target['notes'].push(victim['notes'][path_fix[1]])
+      elsif path_fix[0] === 'dates_of_existence'
+        target['dates_of_existence'].push(victim['dates_of_existence'][path_fix[1]])
       end
       target['title'] = target['names'][0]['sort_name']
     end
