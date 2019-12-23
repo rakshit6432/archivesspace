@@ -40,6 +40,5 @@ $(function() {
     $('.notes-group').matchHeight();
     $('.related-group').matchHeight();
     $('.ed-group').matchHeight();
-    $('.drag-handle').removeClass('drag-handle');
   });
 });
