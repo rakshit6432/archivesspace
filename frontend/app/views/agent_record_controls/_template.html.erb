@@ -84,6 +84,10 @@
 <% end %>
 
 <% define_template "agent_record_control_merge_victim", jsonmodel_definition(:agent_record_control) do |form| %>
+  <h4 class="subrecord-form-heading">
+    <%= I18n.t("agent_record_control._singular") %>
+    <label class="append"><%= form.merge_checkbox('append') %><small><%= I18n.t("actions.merge_add") %></small></label>
+  </h4>
 
   <%= form.label_and_merge_select "maintenance_status_enum" %>
   <%= form.label_and_merge_select "publication_status_enum" %>

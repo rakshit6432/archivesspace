@@ -26,3 +26,31 @@
 
   <% end %>
 <% end %>
+
+<% define_template "agent_gender_merge_target", jsonmodel_definition(:agent_gender) do |form| %>
+  <% field_names = ["gender_enum"] %>
+  <% field_names.each do |field_name| %>
+    <%= form.label_and_readonly field_name %>
+  <% end %>
+  
+  <%= render_aspace_partial :partial => "structured_dates/show", :locals => { :dates => form.obj["dates"], :section_title => I18n.t("agent_gender.dates"), :section_id => "victim_gender_dates", :heading_size => "h4"} %>
+ 
+  <%= form.notes_preview %>
+ 
+<% end %>
+
+<% define_template "agent_gender_merge_victim", jsonmodel_definition(:agent_gender) do |form| %>
+    <h4 class="subrecord-form-heading">
+      <%= I18n.t("agent_gender._plural") %>
+      <label class="append"><%= form.merge_checkbox('append') %><small><%= I18n.t("actions.merge_add") %></small></label>
+    </h4>
+  <% field_names = ["gender_enum"] %>
+  <% field_names.each do |field_name| %>
+    <%= form.label_and_readonly field_name %>
+  <% end %>
+
+  <%= render_aspace_partial :partial => "structured_dates/show", :locals => { :dates => form.obj["dates"], :section_title => I18n.t("agent_gender.dates"), :section_id => "victim_gender_dates", :heading_size => "h4"} %>
+ 
+  <%= form.notes_preview %>
+   
+<% end %>

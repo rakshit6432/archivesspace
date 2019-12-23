@@ -198,7 +198,27 @@ class ArchivesSpaceService < Sinatra::Base
         path_fix.push(part)
       end
       path_fix_length = path_fix.length
-      if path_fix[0] != 'related_agents' && path_fix[0] != 'external_documents' && path_fix[0] != 'notes' && path_fix[0] != 'dates_of_existence'
+      if path_fix[0] != 'agent_record_identifiers' &&
+         path_fix[0] != 'agent_record_controls' &&
+         path_fix[0] != 'agent_other_agency_codes' &&
+         path_fix[0] != 'agent_conventions_declarations' &&
+         path_fix[0] != 'agent_maintenance_histories' &&
+         path_fix[0] != 'agent_sources' &&
+         path_fix[0] != 'agent_alternate_sets' &&
+         path_fix[0] != 'agent_identifiers' &&
+         path_fix[0] != 'names' &&
+         path_fix[0] != 'dates_of_existence' &&
+         path_fix[0] != 'agent_genders' &&
+         path_fix[0] != 'agent_places' &&
+         path_fix[0] != 'agent_occupations' &&
+         path_fix[0] != 'agent_functions' &&
+         path_fix[0] != 'agent_topics' &&
+         path_fix[0] != 'used_languages' &&
+         path_fix[0] != 'agent_contacts' &&
+         path_fix[0] != 'notes' && 
+         path_fix[0] != 'external_documents' && 
+         path_fix[0] != 'agent_resources' && 
+         path_fix[0] != 'related_agents' 
         case path_fix_length
           when 1
             target[path_fix[0]] = victim[path_fix[0]]
@@ -228,12 +248,48 @@ class ArchivesSpaceService < Sinatra::Base
               end
             end
         end
-      elsif path_fix[0] === 'external_documents'
-        target['external_documents'].push(victim['external_documents'][path_fix[1]])
-      elsif path_fix[0] === 'notes'
-        target['notes'].push(victim['notes'][path_fix[1]])
+      elsif path_fix[0] === 'agent_record_identifiers'
+        target['agent_record_identifiers'].push(victim['agent_record_identifiers'][path_fix[1]])
+      elsif path_fix[0] === 'agent_record_controls'
+        target['agent_record_controls'].push(victim['agent_record_controls'][path_fix[1]])
+      elsif path_fix[0] === 'agent_other_agency_codes'
+        target['agent_other_agency_codes'].push(victim['agent_other_agency_codes'][path_fix[1]])
+      elsif path_fix[0] === 'agent_conventions_declarations'
+        target['agent_conventions_declarations'].push(victim['agent_conventions_declarations'][path_fix[1]])
+      elsif path_fix[0] === 'agent_maintenance_histories'
+        target['agent_maintenance_histories'].push(victim['agent_maintenance_histories'][path_fix[1]])
+      elsif path_fix[0] === 'agent_sources'
+        target['agent_sources'].push(victim['agent_sources'][path_fix[1]])
+      elsif path_fix[0] === 'agent_alternate_sets'
+        target['agent_alternate_sets'].push(victim['agent_alternate_sets'][path_fix[1]])
+      elsif path_fix[0] === 'agent_identifiers'
+        target['agent_identifiers'].push(victim['agent_identifiers'][path_fix[1]])
+      elsif path_fix[0] === 'names'
+        target['names'].push(victim['names'][path_fix[1]])
       elsif path_fix[0] === 'dates_of_existence'
         target['dates_of_existence'].push(victim['dates_of_existence'][path_fix[1]])
+      elsif path_fix[0] === 'agent_genders'
+        target['agent_genders'].push(victim['agent_genders'][path_fix[1]])
+      elsif path_fix[0] === 'agent_places'
+        target['agent_places'].push(victim['agent_places'][path_fix[1]])
+      elsif path_fix[0] === 'agent_occupations'
+        target['agent_occupations'].push(victim['agent_occupations'][path_fix[1]])
+      elsif path_fix[0] === 'agent_functions'
+        target['agent_functions'].push(victim['agent_functions'][path_fix[1]])
+      elsif path_fix[0] === 'agent_topics'
+        target['agent_topics'].push(victim['agent_topics'][path_fix[1]])
+      elsif path_fix[0] === 'used_languages'
+        target['used_languages'].push(victim['used_languages'][path_fix[1]])
+      elsif path_fix[0] === 'agent_contacts'
+        target['agent_contacts'].push(victim['agent_contacts'][path_fix[1]])
+      elsif path_fix[0] === 'notes'
+        target['notes'].push(victim['notes'][path_fix[1]])
+      elsif path_fix[0] === 'external_documents'
+        target['external_documents'].push(victim['external_documents'][path_fix[1]])
+      elsif path_fix[0] === 'agent_resources'
+        target['agent_resources'].push(victim['agent_resources'][path_fix[1]])
+      elsif path_fix[0] === 'related_agents'
+        target['related_agents'].push(victim['related_agents'][path_fix[1]])
       end
       target['title'] = target['names'][0]['sort_name']
     end

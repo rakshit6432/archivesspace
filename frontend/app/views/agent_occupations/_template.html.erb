@@ -3,7 +3,7 @@
     <div class="agent-record-control-container">
 			<%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "subjects", :template_erb => "subjects/template", :template => "subrecord_subject_agent_occupation", :heading_text => "Occupation Subject", :heading_size => "h4"} %>
 
-			<%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "occupations", :template_erb => "subjects/template", :template => "subrecord_subject_agent_occupation_occupation", :heading_text => "occupation Subject", :heading_size => "h4"} %>
+      <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "occupations", :template_erb => "subjects/template", :template => "subrecord_subject_agent_occupation_occupation", :heading_text => "occupation Subject", :heading_size => "h4"} %>
 			
 	    <%= render_aspace_partial :partial => "notes/form", :locals => {:form => form, :all_note_types => note_types_for("agent_occupation"), :section_id => "agent_occupation_notes", :nested_note_jsonmodel => "agent_occupation", :header_size => "h4", :show_apply_note_order_action => false} %>
 
@@ -14,7 +14,34 @@
 
 <% define_template "agent_occupation_required", jsonmodel_definition(:agent_occupation) do |form| %>
     <%= form.label_and_disabled_checkbox "Occupation" %>
-    <%= form.label_and_disabled_checkbox "Place" %>
+    <%= form.label_and_disabled_checkbox "occupation" %>
     <%= form.label_and_disabled_checkbox "Notes" %>
     <%= form.label_and_disabled_checkbox "Dates" %>
+<% end %>
+
+<% define_template "agent_occupation_merge_target", jsonmodel_definition(:agent_occupation) do |form| %>
+
+  <%= render_aspace_partial :partial => "subjects/show_inline", :locals => {:subjects => form.obj['subjects'], :section_id => "target_occupation_subjects_", :section_title => I18n.t("agent_occupation.subjects"), :heading_size => "h4"} %>
+
+  <%= render_aspace_partial :partial => "subjects/show_inline", :locals => {:places => form.obj['places'], :section_id => "victim_occupation_places_", :section_title => I18n.t("agent_occupation.places"), :heading_size => "h4"} %>
+  
+  <%= form.notes_preview %>
+
+  <%= render_aspace_partial :partial => "structured_dates/show", :locals => { :dates => form.obj["dates"], :section_title => I18n.t("agent_occupation.dates"), :section_id => "target_occupation_dates", :heading_size => "h4"} %>
+<% end %>
+
+<% define_template "agent_occupation_merge_victim", jsonmodel_definition(:agent_occupation) do |form| %>
+  <h4 class="subrecord-form-heading">
+    <%= I18n.t("agent_occupation._plural") %>
+    <label class="append"><%= form.merge_checkbox('append') %><small><%= I18n.t("actions.merge_add") %></small></label>
+  </h4>
+ 
+  <%= render_aspace_partial :partial => "subjects/show_inline", :locals => {:subjects => form.obj['subjects'], :section_id => "victim_occupation_subjects_", :section_title => I18n.t("agent_occupation.subjects"), :heading_size => "h4"} %>
+
+  <%= render_aspace_partial :partial => "subjects/show_inline", :locals => {:subjects => form.obj['places'], :section_id => "victim_occupation_places_", :section_title => I18n.t("agent_occupation.places"), :heading_size => "h4"} %>
+
+  <%= form.notes_preview %>
+
+  <%= render_aspace_partial :partial => "structured_dates/show", :locals => { :dates => form.obj["dates"], :section_title => I18n.t("agent_occupation.dates"), :section_id => "victim_occupation_dates", :heading_size => "h4"} %>
+
 <% end %>

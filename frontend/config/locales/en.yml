@@ -826,6 +826,7 @@ en:
         raw_title: The raw note content
         parsed: Formatted
         parsed_title: How the note will be rendered in the Public application
+        content: Content
       messages:
         select_a_note_type: "<em>Please select a Note Type</em>"
       action:
@@ -1549,6 +1550,7 @@ en:
 
   agent_record_control: &agent_record_control_attributes
     _plural: Record Info
+    _singular: Record Info
     _frontend:
       action:
         add: Add Record Info
@@ -1587,8 +1589,19 @@ en:
       action:
         add: Add Gender Info
     gender_enum: Gender
+    note: Note
+    dates: Dates
+
+  agent_genders:
+    <<: *agent_gender_attributes
 
   agent_gender_required:
+    <<: *agent_gender_attributes
+
+  agent_gender_merge_target:
+    <<: *agent_gender_attributes
+
+  agent_gender_merge_victim:
     <<: *agent_gender_attributes
 
   used_language: &used_language_attributes
@@ -1601,6 +1614,15 @@ en:
     script: Script
 
   used_language_required:
+    <<: *used_language_attributes
+
+  used_languages:
+    <<: *used_language_attributes
+
+  used_language_merge_victim:
+    <<: *used_language_attributes
+
+  used_languages_merge_target:
     <<: *used_language_attributes
  
   agent_identifier: &agent_identifier_attributes
@@ -1640,6 +1662,15 @@ en:
   agent_place_required:
     <<: *agent_place_attributes
 
+  agent_places:
+    <<: *agent_place_attributes
+
+  agent_place_merge_target:
+    <<: *agent_place_attributes
+
+  agent_place_merge_victim:
+    <<: *agent_place_attributes
+
   agent_occupation: &agent_occupation_attributes
     _frontend:
       action:
@@ -1654,6 +1685,15 @@ en:
     places: Places
 
   agent_occupation_required:
+    <<: *agent_occupation_attributes
+
+  agent_occupations:
+    <<: *agent_occupation_attributes
+
+  agent_occupation_merge_target:
+    <<: *agent_occupation_attributes
+
+  agent_occupation_merge_victim:
     <<: *agent_occupation_attributes
 
   agent_function: &agent_function_attributes
@@ -1672,6 +1712,15 @@ en:
   agent_function_required:
     <<: *agent_function_attributes
 
+  agent_functions:
+    <<: *agent_function_attributes
+
+  agent_function_merge_target:
+    <<: *agent_function_attributes
+
+  agent_function_merge_victim:
+    <<: *agent_function_attributes
+
   agent_topic: &agent_topic_attributes
     _frontend:
       action:
@@ -1686,6 +1735,15 @@ en:
     places: Places
 
   agent_topic_required:
+    <<: *agent_topic_attributes
+    
+  agent_topics:
+    <<: *agent_topic_attributes
+
+  agent_topic_merge_target:
+    <<: *agent_topic_attributes
+
+  agent_topic_merge_victim:
     <<: *agent_topic_attributes
 
   place:
@@ -1848,6 +1906,9 @@ en:
     _plural: Parallel Names
     use_dates: Use Dates
 
+  agent_name:
+    use_dates: Use Dates
+
   agent_resource: &agent_resource_attributes
     _frontend:
       action:
@@ -1874,5 +1935,15 @@ en:
 
   agent_resource_required:
     <<: *agent_resource_attributes
+
+  agent_resource_merge_victim:
+    <<: *agent_resource_attributes
+
+  agent_resource_merge_target:
+    <<: *agent_resource_attributes
+
+  subsections:
+    notes: Notes
+    dates: Dates
 
 

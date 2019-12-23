@@ -1,6 +1,10 @@
 <% define_template "name_family", jsonmodel_definition(:name_family) do |form| %>
   <div class="subrecord-form-fields">
     <h4 class="subrecord-form-heading">
+      <%= I18n.t("agent._frontend.section.name") %>
+      <label class="append"><%= form.merge_checkbox('append') %><small><%= I18n.t("actions.merge_add") %></small></label>
+    </h4>
+    <h4 class="subrecord-form-heading">
       <span class="badge badge-info is-authoritive-label"><%= I18n.t("name_family.authorized") %></span>
       <span class="badge badge-info is-display-name-label"><%= I18n.t("name_family.is_display_name") %></span>
     </h4>
@@ -18,6 +22,9 @@
     <hr/>
     <%= form.label_and_merge_select "qualifier" %>
     <%= form.label_and_readonly "sort_name" %>
-    <%= render_aspace_partial :partial => "shared/subrecord_form_merge", :locals => {:form => form, :name => "use_dates", :template_erb => "dates/template_merge", :template => "date", :heading_text => I18n.t("name._frontend.section.use_date"), :heading_size => "h4", :template_overrides => "agents/name_forms/date_labels"} %>
+    
+    <%= render_aspace_partial :partial => "structured_dates/show", :locals => { :dates => form.obj["use_dates"], :section_title => I18n.t("agent_name.use_dates"), :section_id => "victim_name_use_dates", :heading_size => "h4"} %>
+
+    <%= render_aspace_partial :partial => "agent_parallel_names/show", :locals => { :names => form.obj['parallel_names'], :section_id => "victim_parallel_names_#{rand(100000)}"} %>
   </div>
 <% end %>

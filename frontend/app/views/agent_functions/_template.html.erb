@@ -18,3 +18,30 @@
     <%= form.label_and_disabled_checkbox "Notes" %>
     <%= form.label_and_disabled_checkbox "Dates" %>
 <% end %>
+
+<% define_template "agent_function_merge_target", jsonmodel_definition(:agent_function) do |form| %>
+
+  <%= render_aspace_partial :partial => "subjects/show_inline", :locals => {:subjects => form.obj['subjects'], :section_id => "target_function_subjects_", :section_title => I18n.t("agent_function.subjects"), :heading_size => "h4"} %>
+
+  <%= render_aspace_partial :partial => "subjects/show_inline", :locals => {:places => form.obj['places'], :section_id => "victim_function_places_", :section_title => I18n.t("agent_function.places"), :heading_size => "h4"} %>
+  
+  <%= form.notes_preview %>
+
+  <%= render_aspace_partial :partial => "structured_dates/show", :locals => { :dates => form.obj["dates"], :section_title => I18n.t("agent_function.dates"), :section_id => "target_function_dates", :heading_size => "h4"} %>
+<% end %>
+
+<% define_template "agent_function_merge_victim", jsonmodel_definition(:agent_function) do |form| %>
+  <h4 class="subrecord-form-heading">
+    <%= I18n.t("agent_function._plural") %>
+    <label class="append"><%= form.merge_checkbox('append') %><small><%= I18n.t("actions.merge_add") %></small></label>
+  </h4>
+ 
+  <%= render_aspace_partial :partial => "subjects/show_inline", :locals => {:subjects => form.obj['subjects'], :section_id => "victim_function_subjects_", :section_title => I18n.t("agent_function.subjects"), :heading_size => "h4"} %>
+
+  <%= render_aspace_partial :partial => "subjects/show_inline", :locals => {:subjects => form.obj['places'], :section_id => "victim_function_places_", :section_title => I18n.t("agent_function.places"), :heading_size => "h4"} %>
+
+  <%= form.notes_preview %>
+
+  <%= render_aspace_partial :partial => "structured_dates/show", :locals => { :dates => form.obj["dates"], :section_title => I18n.t("agent_function.dates"), :section_id => "victim_function_dates", :heading_size => "h4"} %>
+
+<% end %>

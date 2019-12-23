@@ -769,7 +769,50 @@ module AspaceFormHelper
 
       control_group.html_safe
     end
-  end
+
+    # ANW-429
+    # Generates HTML for a very stripped down summary of a note for use in the agents merge preview.
+    # TODO: Eventually we'll want to use the notes partials in place of this code. This code was created because the current notes show takes up a lot of space, and work needs to be done to figure out the exact setup/context needed to get those views to render properly.
+    # T
+    def notes_preview(notes_index = "notes", content_index = "content")
+      content_label = I18n.t("note._frontend.preview.content")
+      html = ""
+
+      if obj[notes_index] && obj[notes_index].length > 0 
+
+        html << "<div class='subrecord-form-container'>"
+        html << "<h4 class='subrecord-form-heading'>#{I18n.t("subsections.notes")}</h4>"
+
+        obj[notes_index].each_with_index do |o, i|
+          notes_heading = I18n.t("note.#{o['jsonmodel_type'].to_s}")
+
+          if o[content_index].is_a?(Array)
+            notes_content = o[content_index].join(" : ")
+          else
+            notes_content = o[content_index]
+          end
+
+          html << "<section>"
+            html << "<h5>#{notes_heading}</h5>"
+            html << "<div class='panel panel-default'>"
+              html << "<div class=\"form-group\">"
+                html << "<label class='control-label col-sm-2'>#{content_label}</label>"
+                html << "<div class='col-sm-9 label-only'>"
+                  html << "#{notes_content}"
+                html << "</div>"
+              html << "</div>"
+            html << "</div>"
+          html << "</section>"
+        end
+
+        html << "</div>"
+
+      html.html_safe
+
+      end
+    end
+
+  end #of FormContext
 
   def merge_victim_view(hash, opts = {})
     jsonmodel_type = hash["jsonmodel_type"]
@@ -992,6 +1035,7 @@ module AspaceFormHelper
       options
       #options.sort {|a,b| a[0] <=> b[0]}
     end
+
 
     private
 

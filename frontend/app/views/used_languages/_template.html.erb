@@ -28,3 +28,22 @@
 
   <%= form.label_and_disabled_checkbox "Notes" %>
 <% end %>
+
+<% define_template "used_language_merge_target", jsonmodel_definition(:used_language) do |form| %>
+  <% field_names = ["language", "script"] %>
+  <% field_names.each do |field_name| %>
+    <%= form.label_and_readonly field_name %>
+  <% end %>
+<% end %>
+
+<% define_template "used_language_merge_victim", jsonmodel_definition(:used_language) do |form| %>
+  <h4 class="subrecord-form-heading">
+    <%= I18n.t("used_language._plural") %>
+    <label class="append"><%= form.merge_checkbox('append') %><small><%= I18n.t("actions.merge_add") %></small></label>
+  </h4>
+ 
+  <% field_names = ["language", "script"] %>
+  <% field_names.each do |field_name| %>
+    <%= form.label_and_readonly field_name %>
+  <% end %>
+<% end %>
