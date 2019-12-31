@@ -34,10 +34,8 @@
 <% end %>
 
 <% define_template "agent_maintenance_history_merge_victim", jsonmodel_definition(:agent_maintenance_history) do |form| %>
-  <h4 class="subrecord-form-heading">
-    <%= I18n.t("agent_maintenance_history._plural") %>
-    <label class="append"><%= form.merge_checkbox('append') %><small><%= I18n.t("actions.merge_add") %></small></label>
-  </h4>
+ 
+  <%= form.record_level_merge_controls(form, "agent_maintenance_history") %>
 
   <%= form.label_and_readonly "maintenance_event_type_enum" %>
   <%= form.label_and_readonly "event_date" %>

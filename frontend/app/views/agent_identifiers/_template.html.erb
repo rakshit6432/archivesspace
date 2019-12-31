@@ -33,10 +33,8 @@
 
 <% define_template "agent_identifier_merge_victim", jsonmodel_definition(:agent_identifier) do |form| %>
 
-  <h4 class="subrecord-form-heading">
-    <%= I18n.t("agent_identifiers._plural") %>
-    <label class="append"><%= form.merge_checkbox('append') %><small><%= I18n.t("actions.merge_add") %></small></label>
-  </h4>
+  <%= form.record_level_merge_controls(form, "agent_identifier") %>
+  
   <%= form.label_and_readonly "entity_identifier" %>
   <%= form.label_and_readonly "identifier_type_enum" %>
   

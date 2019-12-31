@@ -39,10 +39,9 @@
 <% end %>
 
 <% define_template "agent_record_identifier_merge_victim", jsonmodel_definition(:agent_record_identifier) do |form| %>
-  <h4 class="subrecord-form-heading">
-    <%= I18n.t("agent_record_identifier._singular") %>
-    <label class="append"><%= form.merge_checkbox('append') %><small><%= I18n.t("actions.merge_add") %></small></label>
-  </h4>
+
+  <%= form.record_level_merge_controls(form, "agent_record_identifier") %>
+
   <%= form.label_and_readonly "record_identifier" %>
   <%= form.label_and_readonly "source_enum" %>
   <%= form.label_and_readonly "identifier_type_enum" %>

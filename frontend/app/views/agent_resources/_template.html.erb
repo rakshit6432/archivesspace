@@ -69,10 +69,8 @@
 <% end %>
 
 <% define_template "agent_resource_merge_victim", jsonmodel_definition(:agent_resource) do |form| %>
-  <h4 class="subrecord-form-heading">
-    <%= I18n.t("agent_occupation._plural") %>
-    <label class="append"><%= form.merge_checkbox('append') %><small><%= I18n.t("actions.merge_add") %></small></label>
-  </h4>
+
+  <%= form.record_level_merge_controls(form, "agent_resource") %>
  
   <% field_names = ["linked_agent_role", "linked_resource", "linked_resource_description","file_uri", "file_version_xlink_actuate_attribute", "file_version_xlink_show_attribute", "xlink_title_attribute", "xlink_role_attribute", "last_verified_date"] %>
   <% field_names.each do |field_name| %>

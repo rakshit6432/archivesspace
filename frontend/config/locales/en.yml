@@ -1592,6 +1592,10 @@ en:
     note: Note
     dates: Dates
 
+  dates_of_existence:
+    _singular: Date of Existence
+    _plural: Dates of Existence
+
   agent_genders:
     <<: *agent_gender_attributes
 

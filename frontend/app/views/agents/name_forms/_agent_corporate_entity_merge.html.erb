@@ -1,9 +1,7 @@
 <% define_template "name_corporate_entity", jsonmodel_definition(:name_corporate_entity) do |form| %>
   <div class="subrecord-form-fields">
-    <h4 class="subrecord-form-heading">
-      <%= I18n.t("agent._frontend.section.name") %>
-      <label class="append"><%= form.merge_checkbox('append') %><small><%= I18n.t("actions.merge_add") %></small></label>
-    </h4>
+    <%= form.record_level_merge_controls(form, "name_corporate_entity") %>
+
     <h4 class="subrecord-form-heading">
       <span class="badge badge-info is-authoritive-label"><%= I18n.t("name_corporate_entity.authorized") %></span>
       <span class="badge badge-info is-display-name-label"><%= I18n.t("name_corporate_entity.is_display_name") %></span>
