@@ -65,7 +65,7 @@
 
   <%= render_aspace_partial :partial => "subjects/show_inline", :locals => {:subjects => form.obj['places'], :section_id => "victim_occupation_places_", :section_title => I18n.t("agent_occupation.places"), :heading_size => "h4"} %>
 
-  <%= render_aspace_partial :partial => "structured_dates/show", :locals => { :dates => form.obj["dates"], :section_title => I18n.t("agent_occupation.dates"), :section_id => "victim_occupation_dates", :heading_size => "h4"} %>
+  <%= render_aspace_partial :partial => "structured_dates/show_inline", :locals => { :dates => form.obj["dates"], :section_title => I18n.t("agent_occupation.dates"), :section_id => "victim_occupation_dates", :heading_size => "h4"} %>
 <% end %>
 
 <% define_template "agent_resource_merge_victim", jsonmodel_definition(:agent_resource) do |form| %>
@@ -79,5 +79,5 @@
 
   <%= render_aspace_partial :partial => "subjects/show_inline", :locals => {:subjects => form.obj['places'], :section_id => "victim_occupation_places_", :section_title => I18n.t("agent_occupation.places"), :heading_size => "h4"} %>
 
-  <%= render_aspace_partial :partial => "structured_dates/show", :locals => { :dates => form.obj["dates"], :section_title => I18n.t("agent_occupation.dates"), :section_id => "victim_occupation_dates", :heading_size => "h4"} %>
+  <%= render_aspace_partial :partial => "structured_dates/show_inline", :locals => { :dates => form.obj["dates"], :section_title => I18n.t("agent_occupation.dates"), :section_id => "victim_occupation_dates", :heading_size => "h4"} %>
 <% end %>

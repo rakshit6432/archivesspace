@@ -27,7 +27,7 @@
   
   <%= form.notes_preview %>
 
-  <%= render_aspace_partial :partial => "structured_dates/show", :locals => { :dates => form.obj["dates"], :section_title => I18n.t("agent_function.dates"), :section_id => "target_function_dates", :heading_size => "h4"} %>
+  <%= render_aspace_partial :partial => "structured_dates/show_inline", :locals => { :dates => form.obj["dates"], :section_title => I18n.t("agent_function.dates"), :section_id => "target_function_dates", :heading_size => "h4"} %>
 <% end %>
 
 <% define_template "agent_function_merge_victim", jsonmodel_definition(:agent_function) do |form| %>
@@ -40,6 +40,6 @@
 
   <%= form.notes_preview %>
 
-  <%= render_aspace_partial :partial => "structured_dates/show", :locals => { :dates => form.obj["dates"], :section_title => I18n.t("agent_function.dates"), :section_id => "victim_function_dates", :heading_size => "h4"} %>
+  <%= render_aspace_partial :partial => "structured_dates/show_inline", :locals => { :dates => form.obj["dates"], :section_title => I18n.t("agent_function.dates"), :section_id => "victim_function_dates", :heading_size => "h4"} %>
 
 <% end %>

@@ -33,7 +33,7 @@
     <%= form.label_and_readonly field_name %>
   <% end %>
   
-  <%= render_aspace_partial :partial => "structured_dates/show", :locals => { :dates => form.obj["dates"], :section_title => I18n.t("agent_gender.dates"), :section_id => "victim_gender_dates", :heading_size => "h4"} %>
+  <%= render_aspace_partial :partial => "structured_dates/show_inline", :locals => { :dates => form.obj["dates"], :section_title => I18n.t("agent_gender.dates"), :section_id => "target_gender_dates", :heading_size => "h4"} %>
  
   <%= form.notes_preview %>
  
@@ -48,7 +48,7 @@
     <%= form.label_and_readonly field_name %>
   <% end %>
 
-  <%= render_aspace_partial :partial => "structured_dates/show", :locals => { :dates => form.obj["dates"], :section_title => I18n.t("agent_gender.dates"), :section_id => "victim_gender_dates", :heading_size => "h4"} %>
+  <%= render_aspace_partial :partial => "structured_dates/show_inline", :locals => { :dates => form.obj["dates"], :section_title => I18n.t("agent_gender.dates"), :section_id => "victim_gender_dates", :heading_size => "h4"} %>
  
   <%= form.notes_preview %>
    
