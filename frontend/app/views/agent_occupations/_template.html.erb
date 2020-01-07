@@ -3,7 +3,7 @@
     <div class="agent-record-control-container">
 			<%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "subjects", :template_erb => "subjects/template", :template => "subrecord_subject_agent_occupation", :heading_text => "Occupation Subject", :heading_size => "h4"} %>
 
-      <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "occupations", :template_erb => "subjects/template", :template => "subrecord_subject_agent_occupation_occupation", :heading_text => "occupation Subject", :heading_size => "h4"} %>
+      <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "places", :template_erb => "subjects/template", :template => "subrecord_subject_agent_occupation_place", :heading_text => "Place Subject", :heading_size => "h4"} %>
 			
 	    <%= render_aspace_partial :partial => "notes/form", :locals => {:form => form, :all_note_types => note_types_for("agent_occupation"), :section_id => "agent_occupation_notes", :nested_note_jsonmodel => "agent_occupation", :header_size => "h4", :show_apply_note_order_action => false} %>
 
@@ -20,6 +20,8 @@
 <% end %>
 
 <% define_template "agent_occupation_merge_target", jsonmodel_definition(:agent_occupation) do |form| %>
+
+  <%= form.record_level_merge_controls(form, "agent_occupation", false) %>
 
   <%= render_aspace_partial :partial => "subjects/show_inline", :locals => {:subjects => form.obj['subjects'], :section_id => "target_occupation_subjects_", :section_title => I18n.t("agent_occupation.subjects"), :heading_size => "h4"} %>
 

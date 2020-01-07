@@ -1626,7 +1626,7 @@ en:
   used_language_merge_victim:
     <<: *used_language_attributes
 
-  used_languages_merge_target:
+  used_language_merge_target:
     <<: *used_language_attributes
  
   agent_identifier: &agent_identifier_attributes

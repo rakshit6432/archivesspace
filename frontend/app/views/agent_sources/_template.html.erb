@@ -50,6 +50,9 @@
 
 
 <% define_template "agent_source_merge_target", jsonmodel_definition(:agent_sources) do |form| %>
+
+  <%= form.record_level_merge_controls(form, "agent_sources", false) %>
+
   <% field_names = ["source_entry", "descriptive_note", "file_uri", "file_version_xlink_actuate_attribute", "file_version_xlink_show_attribute", "xlink_title_attribute", "xlink_role_attribute", "last_verified_date"] %>
   <% field_names.each do |field_name| %>
     <%= form.label_and_readonly field_name %>

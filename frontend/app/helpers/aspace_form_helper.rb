@@ -814,25 +814,27 @@ module AspaceFormHelper
 
     # ANW-429
     # outputs HTML for checkboxes for record-level add and replace for agents merge
-    def record_level_merge_controls(form, name = "undefined")
+    def record_level_merge_controls(form, name = "undefined", controls = "true")
       html = ""
 
       html << '<h4 class="subrecord-form-heading">'
         html << I18n.t("#{name}._singular").to_s
 
-        html << '<label class="append">'
-          html << form.merge_checkbox('replace')
-          html << '<small>'
-            html << I18n.t("actions.merge_replace").to_s
-          html << '</small>'
-        html << '</label>'
+        if controls
+          html << '<label class="append">'
+            html << form.merge_checkbox('replace') 
+            html << '<small>'
+              html << I18n.t("actions.merge_replace").to_s
+            html << '</small>'
+          html << '</label>'
 
-        html << '<label class="append">'
-          html << form.merge_checkbox('append')
-          html << '<small>'
-            html << I18n.t("actions.merge_add").to_s
-          html << '</small>'
-        html << '</label>'
+          html << '<label class="append">'
+            html << form.merge_checkbox('append')
+            html << '<small>'
+              html << I18n.t("actions.merge_add").to_s
+            html << '</small>'
+          html << '</label>'
+        end
 
       html << '</h4>'
 

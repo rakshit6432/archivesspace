@@ -3,6 +3,9 @@
 
 <% define_template "agent_contact", jsonmodel_definition(:agent_contact) do |form| %>
   <div class="subrecord-form-fields">
+
+    <%= form.record_level_merge_controls(form, "agent_contact", false) %>
+
     <%= form.label_and_readonly "name" %>
     <%= form.label_and_readonly "salutation" %>
     <%= form.label_and_readonly "address_1" %>

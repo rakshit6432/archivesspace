@@ -25,6 +25,9 @@
 <% end %>
 
 <% define_template "agent_identifier_merge_target", jsonmodel_definition(:agent_identifier) do |form| %>
+
+  <%= form.record_level_merge_controls(form, "agent_identifier", false) %>
+
   <% field_names = ["entity_identifier", "identifier_type_enum"] %>
   <% field_names.each do |field_name| %>
     <%= form.label_and_readonly field_name %>
