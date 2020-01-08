@@ -60,16 +60,18 @@
 <% end %>
 
 <% define_template "agent_source_merge_victim", jsonmodel_definition(:agent_sources) do |form| %>
- 
-  <%= form.record_level_merge_controls(form, "agent_sources") %>
 
-  <%= form.label_and_merge_select "source_entry" %>
-  <%= form.label_and_merge_select "descriptive_note" %>
-  <%= form.label_and_merge_select "file_uri" %>
-  <%= form.label_and_merge_select "file_version_xlink_actuate_attribute" %>
-  <%= form.label_and_merge_select "file_version_xlink_show_attribute" %>
-  <%= form.label_and_merge_select "xlink_title_attribute" %>
-  <%= form.label_and_merge_select "xlink_role_attribute" %>
-  <%= form.label_and_merge_select "last_verified_date" %>
+  <% disable_replace = true %>
+
+  <%= form.record_level_merge_controls(form, "agent_sources", true, !disable_replace) %>
+
+  <%= form.label_and_merge_select("source_entry", "", {:disable_replace => disable_replace}) %>
+  <%= form.label_and_merge_select("descriptive_note", "", {:disable_replace => disable_replace}) %>
+  <%= form.label_and_merge_select("file_uri", "", {:disable_replace => disable_replace}) %>
+  <%= form.label_and_merge_select("file_version_xlink_actuate_attribute", "", {:disable_replace => disable_replace}) %>
+  <%= form.label_and_merge_select("file_version_xlink_show_attribute", "", {:disable_replace => disable_replace}) %>
+  <%= form.label_and_merge_select("xlink_title_attribute", "", {:disable_replace => disable_replace}) %>
+  <%= form.label_and_merge_select("xlink_role_attribute", "", {:disable_replace => disable_replace}) %>
+  <%= form.label_and_merge_select("last_verified_date", "", {:disable_replace => disable_replace}) %>
 
 <% end %>

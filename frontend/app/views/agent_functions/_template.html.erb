@@ -33,8 +33,9 @@
 <% end %>
 
 <% define_template "agent_function_merge_victim", jsonmodel_definition(:agent_function) do |form| %>
+  <% disable_replace = true %>
 
-  <%= form.record_level_merge_controls(form, "agent_function") %>
+  <%= form.record_level_merge_controls(form, "agent_function", true, !disable_replace) %>
  
   <%= render_aspace_partial :partial => "subjects/show_inline", :locals => {:subjects => form.obj['subjects'], :section_id => "victim_function_subjects_", :section_title => I18n.t("agent_function.subjects"), :heading_size => "h4"} %>
 

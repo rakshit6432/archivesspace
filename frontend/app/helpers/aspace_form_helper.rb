@@ -404,16 +404,23 @@ module AspaceFormHelper
       if value.blank?
         label_with_field(name, value.blank? ? default : value , opts)
       else
-        label_with_field(name, merge_select(name, value, opts[:field_opts] || {}), opts)
+        label_with_field(name, merge_select(name, value, opts), opts)
       end
     end
-    def merge_select(name, value, opts = {})
-      value += "<label>".html_safe
-      value += merge_checkbox("#{name}", {
-        :class => "merge-toggle"}, false, false)
-      value += "&#160;<small>".html_safe
-      value += I18n.t("actions.merge_replace")
-      value += "</small></label>".html_safe
+
+    # ANW-429: Modified this method so that a disable_replace can be passed in, which will skip the creation of the "replace" checkboxes.
+    # This can be used to not render them in case a replace in inappropriate, e.g., the target record has nothing to replace with.
+    def merge_select(name, value, opts)
+      unless opts[:disable_replace] == true
+        value += "<label>".html_safe
+        value += merge_checkbox("#{name}", {
+          :class => "merge-toggle"}, false, false)
+        value += "&#160;<small>".html_safe
+        value += I18n.t("actions.merge_replace")
+        value += "</small></label>".html_safe
+      else
+        value += ""
+      end
     end
 
     def combobox(name, options, opts = {})
@@ -814,19 +821,21 @@ module AspaceFormHelper
 
     # ANW-429
     # outputs HTML for checkboxes for record-level add and replace for agents merge
-    def record_level_merge_controls(form, name = "undefined", controls = "true")
+    def record_level_merge_controls(form, name = "undefined", controls = true, replace = true)
       html = ""
 
       html << '<h4 class="subrecord-form-heading">'
         html << I18n.t("#{name}._singular").to_s
 
         if controls
-          html << '<label class="append">'
-            html << form.merge_checkbox('replace') 
-            html << '<small>'
-              html << I18n.t("actions.merge_replace").to_s
-            html << '</small>'
-          html << '</label>'
+          if replace
+            html << '<label class="append">'
+              html << form.merge_checkbox('replace') 
+              html << '<small>'
+                html << I18n.t("actions.merge_replace").to_s
+              html << '</small>'
+            html << '</label>'
+          end
 
           html << '<label class="append">'
             html << form.merge_checkbox('append')

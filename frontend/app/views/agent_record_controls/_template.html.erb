@@ -87,22 +87,24 @@
 <% end %>
 
 <% define_template "agent_record_control_merge_victim", jsonmodel_definition(:agent_record_control) do |form| %>
- 
-  <%= form.record_level_merge_controls(form, "agent_record_control") %>
 
-  <%= form.label_and_merge_select "maintenance_status_enum" %>
-  <%= form.label_and_merge_select "publication_status_enum" %>
-  <%= form.label_and_merge_select "maintenance_agency" %>
-  <%= form.label_and_merge_select "agency_name" %>
-  <%= form.label_and_merge_select "maintenance_agency_note" %>
-  <%= form.label_and_merge_select "language" %>
-  <%= form.label_and_merge_select "script" %>
-  <%= form.label_and_merge_select "language_note" %>
-  <%= form.label_and_merge_select "romanization_enum" %>
-  <%= form.label_and_merge_select "government_agency_type_enum" %>
-  <%= form.label_and_merge_select "reference_evaluation_enum" %>
-  <%= form.label_and_merge_select "name_type_enum" %>
-  <%= form.label_and_merge_select "level_of_detail_enum" %>
-  <%= form.label_and_merge_select "modified_record_enum" %>
-  <%= form.label_and_merge_select "cataloging_source_enum" %>
+  <% disable_replace = true %>
+  
+  <%= form.record_level_merge_controls(form, "agent_record_control", true, !disable_replace) %>
+
+  <%= form.label_and_merge_select("maintenance_status_enum", "", {:disable_replace => disable_replace}) %>
+  <%= form.label_and_merge_select("publication_status_enum", "", {:disable_replace => disable_replace}) %>
+  <%= form.label_and_merge_select("maintenance_agency", "", {:disable_replace => disable_replace}) %>
+  <%= form.label_and_merge_select("agency_name", "", {:disable_replace => disable_replace}) %>
+  <%= form.label_and_merge_select("maintenance_agency_note", "", {:disable_replace => disable_replace}) %>
+  <%= form.label_and_merge_select("language", "", {:disable_replace => disable_replace}) %>
+  <%= form.label_and_merge_select("script", "", {:disable_replace => disable_replace}) %>
+  <%= form.label_and_merge_select("language_note", "", {:disable_replace => disable_replace}) %>
+  <%= form.label_and_merge_select("romanization_enum", "", {:disable_replace => disable_replace}) %>
+  <%= form.label_and_merge_select("government_agency_type_enum", "", {:disable_replace => disable_replace}) %>
+  <%= form.label_and_merge_select("reference_evaluation_enum", "", {:disable_replace => disable_replace}) %>
+  <%= form.label_and_merge_select("name_type_enum", "", {:disable_replace => disable_replace}) %>
+  <%= form.label_and_merge_select("level_of_detail_enum", "", {:disable_replace => disable_replace}) %>
+  <%= form.label_and_merge_select("modified_record_enum", "", {:disable_replace => disable_replace}) %>
+  <%= form.label_and_merge_select("cataloging_source_enum", "", {:disable_replace => disable_replace}) %>
 <% end %>

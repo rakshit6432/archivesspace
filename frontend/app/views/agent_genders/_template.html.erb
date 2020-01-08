@@ -42,8 +42,9 @@
 <% end %>
 
 <% define_template "agent_gender_merge_victim", jsonmodel_definition(:agent_gender) do |form| %>
+  <% disable_replace = true %>
 
-  <%= form.record_level_merge_controls(form, "agent_gender") %>
+  <%= form.record_level_merge_controls(form, "agent_gender", true, !disable_replace) %>
   
   <% field_names = ["gender_enum"] %>
   <% field_names.each do |field_name| %>

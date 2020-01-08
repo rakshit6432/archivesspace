@@ -34,7 +34,9 @@
 
 <% define_template "agent_other_agency_code_merge_victim", jsonmodel_definition(:agent_other_agency_codes) do |form| %>
 
-  <%= form.record_level_merge_controls(form, "agent_other_agency_code") %>
+  <% disable_replace = true %>
+
+  <%= form.record_level_merge_controls(form, "agent_other_agency_code", true, !disable_replace) %>
 
   <%= form.label_and_readonly "maintenance_agency" %>
   <%= form.label_and_readonly "agency_code_type_enum" %>
