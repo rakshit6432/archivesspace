@@ -265,6 +265,11 @@ class ArchivesSpaceService < Sinatra::Base
       elsif path_fix[0] === 'agent_identifiers'
         target['agent_identifiers'].push(victim['agent_identifiers'][path_fix[1]])
       elsif path_fix[0] === 'names'
+        # an agent can only have one authorized or display name.
+        # make sure the name being merged in doesn't conflict with this
+        victim['names'][path_fix[1]]['authorized'] = false
+        victim['names'][path_fix[1]]['is_display_name'] = false
+
         target['names'].push(victim['names'][path_fix[1]])
       elsif path_fix[0] === 'dates_of_existence'
         target['dates_of_existence'].push(victim['dates_of_existence'][path_fix[1]])
