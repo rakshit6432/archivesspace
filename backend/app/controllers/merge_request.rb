@@ -177,6 +177,33 @@ class ArchivesSpaceService < Sinatra::Base
     return all_values
   end
 
+  # when merging, set the agent id foreign key (e.g, agent_person_id, agent_family_id...) from the victim to the target
+  def set_agent_id(target, victim, subrec, ind)
+    if victim[subrec][ind]['agent_person_id']
+      victim[subrec][ind]['agent_person_id'] = target['id']
+
+    elsif victim[subrec][ind]['agent_family_id']
+      victim[subrec][ind]['agent_family_id'] = target['id']
+
+    elsif victim[subrec][ind]['agent_corporate_entity_id']
+      victim[subrec][ind]['agent_corporate_entity_id'] = target['id']
+
+    elsif victim[subrec][ind]['agent_software_id']
+      victim[subrec][ind]['agent_software_id'] = target['id']
+
+    # this section updates related_agents ids
+    elsif victim[subrec][ind]['agent_person_id_0']
+      victim[subrec][ind]['agent_person_id_0'] = target['id']
+      
+    elsif victim[subrec][ind]['agent_family_id_0']
+      victim[subrec][ind]['agent_family_id_0'] = target['id']
+
+    elsif victim[subrec][ind]['agent_corporate_entity_id_0']
+      victim[subrec][ind]['agent_corporate_entity_id_0'] = target['id']
+    end
+    
+  end
+
   def merge_details(target, victim, selections, dry_run)
     STDERR.puts "IN MERGE DETAILS"
     STDERR.puts "target: " + target.inspect
@@ -198,6 +225,8 @@ class ArchivesSpaceService < Sinatra::Base
         path_fix.push(part)
       end
       path_fix_length = path_fix.length
+
+      # This if statement skips replace for the following types
       if path_fix[0] != 'agent_record_identifiers' &&
          path_fix[0] != 'agent_record_controls' &&
          path_fix[0] != 'agent_other_agency_codes' &&
@@ -219,6 +248,7 @@ class ArchivesSpaceService < Sinatra::Base
          path_fix[0] != 'external_documents' && 
          path_fix[0] != 'agent_resources' && 
          path_fix[0] != 'related_agents' 
+        # REPLACE code
         case path_fix_length
           when 1
             target[path_fix[0]] = victim[path_fix[0]]
@@ -248,54 +278,118 @@ class ArchivesSpaceService < Sinatra::Base
               end
             end
         end
+      # This code runs subrecord ADD
       elsif path_fix[0] === 'agent_record_identifiers'
+        set_agent_id(target, victim, 'agent_record_identifiers', path_fix[1])
+
         target['agent_record_identifiers'].push(victim['agent_record_identifiers'][path_fix[1]])
+
       elsif path_fix[0] === 'agent_record_controls'
+        set_agent_id(target, victim, 'agent_record_controls', path_fix[1])
+
         target['agent_record_controls'].push(victim['agent_record_controls'][path_fix[1]])
+
       elsif path_fix[0] === 'agent_other_agency_codes'
+        set_agent_id(target, victim, 'agent_other_agency_codes', path_fix[1])
+
         target['agent_other_agency_codes'].push(victim['agent_other_agency_codes'][path_fix[1]])
+
       elsif path_fix[0] === 'agent_conventions_declarations'
+        set_agent_id(target, victim, 'agent_conventions_declarations', path_fix[1])
+
         target['agent_conventions_declarations'].push(victim['agent_conventions_declarations'][path_fix[1]])
+
       elsif path_fix[0] === 'agent_maintenance_histories'
+        set_agent_id(target, victim, 'agent_maintenance_histories', path_fix[1])
+
         target['agent_maintenance_histories'].push(victim['agent_maintenance_histories'][path_fix[1]])
+
       elsif path_fix[0] === 'agent_sources'
+        set_agent_id(target, victim, 'agent_sources', path_fix[1])
+
         target['agent_sources'].push(victim['agent_sources'][path_fix[1]])
+
       elsif path_fix[0] === 'agent_alternate_sets'
+        set_agent_id(target, victim, 'agent_alternate_sets', path_fix[1])
+
         target['agent_alternate_sets'].push(victim['agent_alternate_sets'][path_fix[1]])
+
       elsif path_fix[0] === 'agent_identifiers'
+        set_agent_id(target, victim, 'agent_identifiers', path_fix[1])
+
         target['agent_identifiers'].push(victim['agent_identifiers'][path_fix[1]])
+
       elsif path_fix[0] === 'names'
+        set_agent_id(target, victim, 'names', path_fix[1])
+
         # an agent can only have one authorized or display name.
         # make sure the name being merged in doesn't conflict with this
         victim['names'][path_fix[1]]['authorized'] = false
         victim['names'][path_fix[1]]['is_display_name'] = false
 
         target['names'].push(victim['names'][path_fix[1]])
+
       elsif path_fix[0] === 'dates_of_existence'
+        set_agent_id(target, victim, 'dates_of_existence', path_fix[1])
+
         target['dates_of_existence'].push(victim['dates_of_existence'][path_fix[1]])
+
       elsif path_fix[0] === 'agent_genders'
+        set_agent_id(target, victim, 'agent_genders', path_fix[1])
+
         target['agent_genders'].push(victim['agent_genders'][path_fix[1]])
+
       elsif path_fix[0] === 'agent_places'
+        set_agent_id(target, victim, 'agent_places', path_fix[1])
+
         target['agent_places'].push(victim['agent_places'][path_fix[1]])
+
       elsif path_fix[0] === 'agent_occupations'
+        set_agent_id(target, victim, 'agent_occupations', path_fix[1])
+
         target['agent_occupations'].push(victim['agent_occupations'][path_fix[1]])
+
       elsif path_fix[0] === 'agent_functions'
+        set_agent_id(target, victim, 'agent_functions', path_fix[1])
+
         target['agent_functions'].push(victim['agent_functions'][path_fix[1]])
+
       elsif path_fix[0] === 'agent_topics'
+        set_agent_id(target, victim, 'agent_topics', path_fix[1])
+
         target['agent_topics'].push(victim['agent_topics'][path_fix[1]])
+
       elsif path_fix[0] === 'used_languages'
+        set_agent_id(target, victim, 'used_languages', path_fix[1])
+
         target['used_languages'].push(victim['used_languages'][path_fix[1]])
+
       elsif path_fix[0] === 'agent_contacts'
+        set_agent_id(target, victim, 'agent_contacts', path_fix[1])
+
         target['agent_contacts'].push(victim['agent_contacts'][path_fix[1]])
+
       elsif path_fix[0] === 'notes'
+        set_agent_id(target, victim, 'notes', path_fix[1])
+
         target['notes'].push(victim['notes'][path_fix[1]])
+
       elsif path_fix[0] === 'external_documents'
+        set_agent_id(target, victim, 'external_documents', path_fix[1])
+
         target['external_documents'].push(victim['external_documents'][path_fix[1]])
+
       elsif path_fix[0] === 'agent_resources'
+        set_agent_id(target, victim, 'agent_resources', path_fix[1])
+
         target['agent_resources'].push(victim['agent_resources'][path_fix[1]])
+
       elsif path_fix[0] === 'related_agents'
+        set_agent_id(target, victim, 'related_agents', path_fix[1])
+
         target['related_agents'].push(victim['related_agents'][path_fix[1]])
       end
+
       target['title'] = target['names'][0]['sort_name']
     end
     if dry_run == true

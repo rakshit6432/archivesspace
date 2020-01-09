@@ -34,7 +34,7 @@
 
       <% disable_replace = true %>
 
-      <%= form.record_level_merge_controls(form, "#{relationship_type}", true, !disable_replace) %>
+      <%= form.record_level_merge_controls(form, "related_agents", true, !disable_replace) %>
       
       <div class="subrecord-form-container">
         <%= form.hidden_input(:jsonmodel_type, "#{relationship_type}") %>

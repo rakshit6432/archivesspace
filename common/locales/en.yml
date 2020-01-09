@@ -897,10 +897,13 @@ en:
     type_tooltip: |
       <p>The type of note for the content.  Note types are used for guiding export of note contents to certain elements in specific data formats.</p>
 
-  related_agent:
+  related_agent: &related_agent_attributes
     relationship_type: Relationship Type
     _singular: Related Agent
     _plural: Related Agents
+
+  related_agents: 
+    <<: *related_agent_attributes
 
   agent_relationship_parentchild:
     relator: Relationship Type
