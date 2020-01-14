@@ -294,15 +294,16 @@ AppConfig[:plugins_directory] = "plugins"
 
 # URL to direct the feedback link
 # You can remove this from the footer by making the value blank.
-AppConfig[:feedback_url] = "http://archivesspace.org/feedback"
+AppConfig[:feedback_url] = "https://archivesspace.org/contact"
 
 # Allow an unauthenticated user to create an account
 AppConfig[:allow_user_registration] = true
 
 # Help Configuration
 AppConfig[:help_enabled] = true
-AppConfig[:help_url] = "http://docs.archivesspace.org"
+AppConfig[:help_url] = "https://archivesspace.atlassian.net/wiki/spaces/ArchivesSpaceUserManual/overview"
 AppConfig[:help_topic_prefix] = "/Default_CSH.htm#"
+AppConfig[:help_topic_base_url] = "https://archivesspace.atlassian.net/wiki/spaces/ArchivesSpaceUserManual/pages/"
 
 
 AppConfig[:shared_storage] = proc { File.join(AppConfig[:data_directory], "shared") }
@@ -653,7 +654,7 @@ AppConfig[:show_source_in_subject_listing] = false
 AppConfig[:arks_enabled] = false
 
 # If you are planning on using ARKs, change this to a valid, registered NAAN.
-# Institutional NAAN value to use in ARK URLs. 
+# Institutional NAAN value to use in ARK URLs.
 AppConfig[:ark_naan] = "99999"
 
 # URL prefix to use in ARK URLs.
