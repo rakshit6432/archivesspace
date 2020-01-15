@@ -31,8 +31,46 @@ $(function() {
     $("form:eq( 4 )").submit();
   });
 
-  // this is basically a rewrite of JQuery's matchHeight() function. Not sure why it's not working in some cases
+  // run target side code to color replaceable items
   $(function() {
+    // disable reorder handle, but only for target side
+    $('.merge-group-left .drag-handle').removeClass('drag-handle');
+
+    // set first element of all target lists to color coordinate
+    $('.merge-group-left li:nth-of-type(1)').addClass('merge-group-first');
+  });
+
+  // run victim side code to color replaceable items
+  $(function() {
+
+    var enableReplace = function(items) {
+      items.each(function() {
+        $(this).addClass('merge-group-first');
+        $(this).find('.replace-control').show();
+      });
+    };
+
+    var disableReplace = function(items) {
+      items.each(function() {
+        $(this).removeClass('merge-group-first');
+        $(this).find('.replace-control').hide();
+      });
+    };
+
+    // for victim lists, only first item in list should have replace boxes and colors
+    disableReplace($('.merge-group-right li'));
+    enableReplace($('.merge-group-right .merge-replace-enabled li:nth-of-type(1)'));
+
+    $('.merge-group-right .merge-replace-enabled .subrecord-form-list').on("mergesubformchanged.aspace", function(event) {
+      disableReplace($(this).find('li'));
+      enableReplace($(this).find('li:nth-of-type(1)'));
+    });
+  });
+
+
+  // run code to match up section heights
+  $(function() {
+    // this is basically a rewrite of JQuery's matchHeight() function. Not sure why it's not working in some cases
     var equalHeightId = function(div1, div2) {
       var div1h = div1.height();
       var div2h = div2.height();

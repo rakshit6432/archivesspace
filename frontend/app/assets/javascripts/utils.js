@@ -689,6 +689,11 @@ AS.initSubRecordSorting = function($list) {
     $list.off("sortupdate").on("sortupdate", function() {
       $("form.aspace-record-form").triggerHandler("formchanged.aspace");
     });
+
+    // ANW-429: trigger special event for agents merge form
+    $list.off("sortupdate").on("sortupdate", function() {
+      $($list).triggerHandler("mergesubformchanged.aspace");
+    });
   }
 }
 

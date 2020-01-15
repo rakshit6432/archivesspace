@@ -88,7 +88,7 @@
 
 <% define_template "agent_record_control_merge_victim", jsonmodel_definition(:agent_record_control) do |form| %>
 
-  <% disable_replace = true %>
+  <% disable_replace = false %>
   
   <%= form.record_level_merge_controls(form, "agent_record_control", true, !disable_replace) %>
 
