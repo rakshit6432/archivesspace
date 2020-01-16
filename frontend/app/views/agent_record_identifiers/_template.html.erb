@@ -39,10 +39,6 @@
   <% field_names.each do |field_name| %>
     <%= form.label_and_readonly field_name %>
   <% end %>
-  
-  <%= form.hidden_input "record_identifier", form.obj["record_identifier"] %>
-  <%= form.hidden_input "source_enum", form.obj["source_enum"] %>
-  <%= form.hidden_input "identifier_type_enum", form.obj["identifier_type_enum"] %>
 <% end %>
 
 <% define_template "agent_record_identifier_merge_victim", jsonmodel_definition(:agent_record_identifier) do |form| %>
@@ -55,8 +51,6 @@
   <%= form.label_and_readonly "source_enum" %>
   <%= form.label_and_readonly "identifier_type_enum" %>
 
-  <%= form.hidden_input "record_identifier", form.obj["record_identifier"] %>
-  <%= form.hidden_input "source_enum", form.obj["source_enum"] %>
-  <%= form.hidden_input "identifier_type_enum", form.obj["identifier_type_enum"] %>
+  <%= form.hidden_input "id", form.obj["id"] %>
 
 <% end %>

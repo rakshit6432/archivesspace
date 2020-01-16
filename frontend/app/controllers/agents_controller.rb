@@ -256,6 +256,8 @@ class AgentsController < ApplicationController
           flash[:success] = I18n.t("agent._frontend.messages.merged")
           resolver = Resolver.new(request.target["ref"])
           redirect_to(resolver.view_uri)
+        else
+          STDERR.puts response.inspect
         end
       rescue ValidationException => e
         flash[:error] = e.errors.to_s

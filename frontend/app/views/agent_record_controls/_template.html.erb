@@ -107,4 +107,6 @@
   <%= form.label_and_merge_select("level_of_detail_enum", "", {:disable_replace => disable_replace}) %>
   <%= form.label_and_merge_select("modified_record_enum", "", {:disable_replace => disable_replace}) %>
   <%= form.label_and_merge_select("cataloging_source_enum", "", {:disable_replace => disable_replace}) %>
+  
+  <%= form.hidden_input "id", form.obj["id"] %>
 <% end %>

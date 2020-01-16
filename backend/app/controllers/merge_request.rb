@@ -93,14 +93,8 @@ class ArchivesSpaceService < Sinatra::Base
   .permissions([:merge_agent_record])
   .returns([200, :updated]) \
   do
-    STDERR.puts "++++++++++++++++++++++++++++++"
-    STDERR.puts "IN BACKEND CONTROLLER"
-    STDERR.puts params.inspect
-
     target, victims = parse_references(params[:merge_request_detail])
     selections = parse_selections(params[:merge_request_detail].selections)
-
-    STDERR.puts selections.inspect
 
     if (victims.map {|r| r[:type]} + [target[:type]]).any? {|type| !AgentManager.known_agent_type?(type)}
       raise BadParamsException.new(:merge_request_detail => ["Agent merge request can only merge agent records"])
@@ -111,18 +105,28 @@ class ArchivesSpaceService < Sinatra::Base
     if params[:dry_run]
       target = agent_model.to_jsonmodel(target)
       victim = agent_model.to_jsonmodel(victim)
-      new_target = merge_details(target, victim, selections, true)
+      new_target = merge_details(target, victim, selections, params, true)
       result = new_target
+
+      result
     else
       target_json = agent_model.to_jsonmodel(target)
       victim_json = agent_model.to_jsonmodel(victim)
-      new_target = merge_details(target_json, victim_json, selections, false)
+      new_target = merge_details(target_json, victim_json, selections, params, false)
+
       target.assimilate((victims.map {|v|
                                        AgentManager.model_for(v[:type]).get_or_die(v[:id])
                                      }))
+
       if selections != {}
-        target.update_from_json(new_target)
+        begin
+          target.update_from_json(new_target)
+        rescue => e
+          STDERR.puts "EXCEPTION!"
+          STDERR.puts e.message
+        end
       end
+
       json_response(:status => "OK")
     end
     json_response(resolve_references(result, ['related_agents']))
@@ -222,41 +226,48 @@ class ArchivesSpaceService < Sinatra::Base
   end
 
   # when merging, set the agent id foreign key (e.g, agent_person_id, agent_family_id...) from the victim to the target
-  def set_agent_id(target, victim, subrec, ind)
-    if victim[subrec][ind]['agent_person_id']
-      victim[subrec][ind]['agent_person_id'] = target['id']
+  def set_agent_id(target_id, subrecord)
+    if subrecord['agent_person_id']
+      subrecord['agent_person_id'] = target_id
 
-    elsif victim[subrec][ind]['agent_family_id']
-      victim[subrec][ind]['agent_family_id'] = target['id']
+    elsif subrecord['agent_family_id']
+      subrecord['agent_family_id'] = target_id
 
-    elsif victim[subrec][ind]['agent_corporate_entity_id']
-      victim[subrec][ind]['agent_corporate_entity_id'] = target['id']
+    elsif subrecord['agent_corporate_entity_id']
+      subrecord['agent_corporate_entity_id'] = target_id
 
-    elsif victim[subrec][ind]['agent_software_id']
-      victim[subrec][ind]['agent_software_id'] = target['id']
+    elsif subrecord['agent_software_id']
+      subrecord['agent_software_id'] = target_id
 
     # this section updates related_agents ids
-    elsif victim[subrec][ind]['agent_person_id_0']
-      victim[subrec][ind]['agent_person_id_0'] = target['id']
+    elsif subrecord['agent_person_id_0']
+      subrecord['agent_person_id_0'] = target_id
       
-    elsif victim[subrec][ind]['agent_family_id_0']
-      victim[subrec][ind]['agent_family_id_0'] = target['id']
+    elsif subrecord['agent_family_id_0']
+      subrecord['agent_family_id_0'] = target_id
 
-    elsif victim[subrec][ind]['agent_corporate_entity_id_0']
-      victim[subrec][ind]['agent_corporate_entity_id_0'] = target['id']
+    elsif subrecord['agent_corporate_entity_id_0']
+      subrecord['agent_corporate_entity_id_0'] = target_id
     end
     
   end
 
-  def merge_details(target, victim, selections, dry_run)
-    STDERR.puts "IN MERGE DETAILS"
-    STDERR.puts "target: " + target.inspect
-    STDERR.puts "victim: " + victim.inspect
-    STDERR.puts "selections: " + selections.inspect
-
-
+  def merge_details(target, victim, selections, params, dry_run)
     target[:linked_events] = []
     victim[:linked_events] = []
+
+    subrec_add_replacements = []
+    field_replacements = []
+    victim_values = {}
+    values_from_params = params[:merge_request_detail].selections
+
+    # this code breaks selections into arrays like this:
+    # ["agent_record_identifiers", 1, "append"] // add entire subrec
+    # ["agent_record_controls", 0, "replace"] // replace entire subrec
+    # ["agent_record_controls", 0, "maintenance_status_enum"] // replace field
+    # ["agent_record_controls", 0, "publication_status_enum"] // replace field
+    # ["agent_record_controls", 0, "maintenance_agency"]
+    # and then creates data structures for the subrecords to append, replace entirely, and replace by field.
     selections.each_key do |key|
       path = key.split(".")
       path_fix = []
@@ -268,182 +279,122 @@ class ArchivesSpaceService < Sinatra::Base
         end
         path_fix.push(part)
       end
-      path_fix_length = path_fix.length
 
-      # This if statement skips replace for the following types
-      if path_fix[0] != 'agent_record_identifiers' &&
-         path_fix[0] != 'agent_record_controls' &&
-         path_fix[0] != 'agent_other_agency_codes' &&
-         path_fix[0] != 'agent_conventions_declarations' &&
-         path_fix[0] != 'agent_maintenance_histories' &&
-         path_fix[0] != 'agent_sources' &&
-         path_fix[0] != 'agent_alternate_sets' &&
-         path_fix[0] != 'agent_identifiers' &&
-         path_fix[0] != 'names' &&
-         path_fix[0] != 'dates_of_existence' &&
-         path_fix[0] != 'agent_genders' &&
-         path_fix[0] != 'agent_places' &&
-         path_fix[0] != 'agent_occupations' &&
-         path_fix[0] != 'agent_functions' &&
-         path_fix[0] != 'agent_topics' &&
-         path_fix[0] != 'used_languages' &&
-         path_fix[0] != 'agent_contacts' &&
-         path_fix[0] != 'notes' && 
-         path_fix[0] != 'external_documents' && 
-         path_fix[0] != 'agent_resources' && 
-         path_fix[0] != 'related_agents' 
-        # REPLACE code
-        case path_fix_length
-          when 1
-            target[path_fix[0]] = victim[path_fix[0]]
-          when 2
-            target[path_fix[0]][path_fix[1]] = victim[path_fix[0]][path_fix[1]]
-          when 3
-            begin
-              if target[path_fix[0]].length <= path_fix[1]
-                target[path_fix[0]].push(victim[path_fix[0]][path_fix[1]])
-              end
-              target[path_fix[0]][path_fix[1]][path_fix[2]] = victim[path_fix[0]][path_fix[1]][path_fix[2]]
-            rescue
-              if target[path_fix[0]] === []
-                target[path_fix[0]].push(victim[path_fix[0]][path_fix[1]])
-              end
-            end
-          when 4
-            target[path_fix[0]][path_fix[1]][path_fix[2]][path_fix[3]] = victim[path_fix[0]][path_fix[1]][path_fix[2]][path_fix[3]]
-          when 5
-            begin
-              target[path_fix[0]][path_fix[1]][path_fix[2]][path_fix[3]][path_fix[4]] = victim[path_fix[0]][path_fix[1]][path_fix[2]][path_fix[3]][path_fix[4]]
-            rescue
-              if target[path_fix[0]] === []
-                target[path_fix[0]].push(victim[path_fix[0]][path_fix[1]])
-              elsif target[path_fix[0]][path_fix[1]][path_fix[2]] === []
-                target[path_fix[0]][path_fix[1]][path_fix[2]].push(victim[path_fix[0]][path_fix[1]][path_fix[2]][path_fix[3]])
-              end
-            end
-        end
-      # This code runs subrecord ADD
-      elsif path_fix[0] === 'agent_record_identifiers'
-        set_agent_id(target, victim, 'agent_record_identifiers', path_fix[1])
+      subrec_name = path_fix[0]
+      victim_values[subrec_name] = values_from_params[subrec_name]
 
-        target['agent_record_identifiers'].push(victim['agent_record_identifiers'][path_fix[1]])
+      # subrec level add/replace 
+      if path_fix[2] == "append" || path_fix[2] == "replace"
+        subrec_add_replacements.push(path_fix)
 
-      elsif path_fix[0] === 'agent_record_controls'
-        set_agent_id(target, victim, 'agent_record_controls', path_fix[1])
-
-        target['agent_record_controls'].push(victim['agent_record_controls'][path_fix[1]])
-
-      elsif path_fix[0] === 'agent_other_agency_codes'
-        set_agent_id(target, victim, 'agent_other_agency_codes', path_fix[1])
-
-        target['agent_other_agency_codes'].push(victim['agent_other_agency_codes'][path_fix[1]])
-
-      elsif path_fix[0] === 'agent_conventions_declarations'
-        set_agent_id(target, victim, 'agent_conventions_declarations', path_fix[1])
-
-        target['agent_conventions_declarations'].push(victim['agent_conventions_declarations'][path_fix[1]])
-
-      elsif path_fix[0] === 'agent_maintenance_histories'
-        set_agent_id(target, victim, 'agent_maintenance_histories', path_fix[1])
-
-        target['agent_maintenance_histories'].push(victim['agent_maintenance_histories'][path_fix[1]])
-
-      elsif path_fix[0] === 'agent_sources'
-        set_agent_id(target, victim, 'agent_sources', path_fix[1])
-
-        target['agent_sources'].push(victim['agent_sources'][path_fix[1]])
-
-      elsif path_fix[0] === 'agent_alternate_sets'
-        set_agent_id(target, victim, 'agent_alternate_sets', path_fix[1])
-
-        target['agent_alternate_sets'].push(victim['agent_alternate_sets'][path_fix[1]])
-
-      elsif path_fix[0] === 'agent_identifiers'
-        set_agent_id(target, victim, 'agent_identifiers', path_fix[1])
-
-        target['agent_identifiers'].push(victim['agent_identifiers'][path_fix[1]])
-
-      elsif path_fix[0] === 'names'
-        set_agent_id(target, victim, 'names', path_fix[1])
-
-        # an agent can only have one authorized or display name.
-        # make sure the name being merged in doesn't conflict with this
-        victim['names'][path_fix[1]]['authorized'] = false
-        victim['names'][path_fix[1]]['is_display_name'] = false
-
-        target['names'].push(victim['names'][path_fix[1]])
-
-      elsif path_fix[0] === 'dates_of_existence'
-        set_agent_id(target, victim, 'dates_of_existence', path_fix[1])
-
-        target['dates_of_existence'].push(victim['dates_of_existence'][path_fix[1]])
-
-      elsif path_fix[0] === 'agent_genders'
-        set_agent_id(target, victim, 'agent_genders', path_fix[1])
-
-        target['agent_genders'].push(victim['agent_genders'][path_fix[1]])
-
-      elsif path_fix[0] === 'agent_places'
-        set_agent_id(target, victim, 'agent_places', path_fix[1])
-
-        target['agent_places'].push(victim['agent_places'][path_fix[1]])
-
-      elsif path_fix[0] === 'agent_occupations'
-        set_agent_id(target, victim, 'agent_occupations', path_fix[1])
-
-        target['agent_occupations'].push(victim['agent_occupations'][path_fix[1]])
-
-      elsif path_fix[0] === 'agent_functions'
-        set_agent_id(target, victim, 'agent_functions', path_fix[1])
-
-        target['agent_functions'].push(victim['agent_functions'][path_fix[1]])
-
-      elsif path_fix[0] === 'agent_topics'
-        set_agent_id(target, victim, 'agent_topics', path_fix[1])
-
-        target['agent_topics'].push(victim['agent_topics'][path_fix[1]])
-
-      elsif path_fix[0] === 'used_languages'
-        set_agent_id(target, victim, 'used_languages', path_fix[1])
-
-        target['used_languages'].push(victim['used_languages'][path_fix[1]])
-
-      elsif path_fix[0] === 'agent_contacts'
-        set_agent_id(target, victim, 'agent_contacts', path_fix[1])
-
-        target['agent_contacts'].push(victim['agent_contacts'][path_fix[1]])
-
-      elsif path_fix[0] === 'notes'
-        set_agent_id(target, victim, 'notes', path_fix[1])
-
-        target['notes'].push(victim['notes'][path_fix[1]])
-
-      elsif path_fix[0] === 'external_documents'
-        set_agent_id(target, victim, 'external_documents', path_fix[1])
-
-        target['external_documents'].push(victim['external_documents'][path_fix[1]])
-
-      elsif path_fix[0] === 'agent_resources'
-        set_agent_id(target, victim, 'agent_resources', path_fix[1])
-
-        target['agent_resources'].push(victim['agent_resources'][path_fix[1]])
-
-      elsif path_fix[0] === 'related_agents'
-        set_agent_id(target, victim, 'related_agents', path_fix[1])
-
-        target['related_agents'].push(victim['related_agents'][path_fix[1]])
+      # field level replace
+      else
+        field_replacements.push(path_fix)
       end
+    end
 
-      target['title'] = target['names'][0]['sort_name']
-    end
-    if dry_run == true
-      target['title'] = preview_sort_name(target['names'][0])
-      target['names'][0]['sort_name'] = target['title']
-      target['related_agents'] = (target['related_agents'] + victim['related_agents']).uniq
-    end
+    merge_details_subrec(target, victim, subrec_add_replacements, victim_values)
+    merge_details_replace_field(target, victim, field_replacements, victim_values)
+
+    target['title'] = target['names'][0]['sort_name']
     target
+  rescue => e
+    STDERR.puts "EXCEPTION!"
+    STDERR.puts e.inspect
+
   end
 
+  # do field replace operations
+  def merge_details_replace_field(target, victim, selections, values)
+    selections.each do |path_fix|
+      subrec_name = path_fix[0]
+      ind         = path_fix[1]
+      field       = path_fix[2]
+
+      subrec_id = values[subrec_name][ind]["id"]
+      subrec_index = find_subrec_index_in_victim(victim, subrec_name, subrec_id)
+
+      target[subrec_name][0][field] = victim[subrec_name][subrec_index][field]
+    end
+  end
+
+
+  # do subrec replace operations
+  def merge_details_subrec(target, victim, selections, values)
+    selections.each do |path_fix|
+      subrec_name = path_fix[0]
+      ind         = path_fix[1]
+      mode        = path_fix[2]
+
+      subrec_id = values[subrec_name][ind]["id"]
+      subrec_index = find_subrec_index_in_victim(victim, subrec_name, subrec_id)
+
+      replacer = victim[subrec_name][subrec_index]
+
+      if mode == "replace"
+        target[subrec_name][0] = process_subrecord_for_merge(target['id'], replacer, subrec_name)
+      elsif mode == "append"
+        target[subrec_name].push(process_subrecord_for_merge(target['id'], replacer, subrec_name))
+      end
+
+      # replace all value fields in target with values from victim
+      # target[subrec_name][0].each_key do |field_key|
+      #   next if skippable_record_key?(field_key)
+
+      #   target[subrec_name][0][field_key] = victim[subrec_name][victim_subrec_index][field_key]
+      # end
+
+    end
+  end
+
+  # we don't know how the user reordered the subrecords on the merge form,
+  # so find the index with the right data given the ID of the right thing to replace/add by searching for it.
+  def find_subrec_index_in_victim(victim, subrec_name, subrec_id)
+    ind = nil
+    victim[subrec_name].each_with_index do |subrec, i|
+      if subrec["id"] == subrec_id
+        ind = i
+        break
+      end
+    end
+
+    return ind
+  end
+
+  # before we can merge a subrecord, we need to update the IDs, tweak things to prevent validation issues, etc
+  def process_subrecord_for_merge(target_id, subrecord, jsonmodel_type)
+    if jsonmodel_type === 'names'
+       # an agent name can only have one authorized or display name.
+       # make sure the name being merged in doesn't conflict with this
+       subrecord['authorized']      = false
+       subrecord['is_display_name'] = false
+
+    elsif jsonmodel_type === 'agent_record_identifiers'
+      # same with agent_record_identifiers being marked as primary, we can only have one
+      subrecord['primary_identifer'] = false
+    end
+
+    set_agent_id(target_id, subrecord)
+
+    return subrecord
+  end
+
+  # don't try to replace these values from victim to target when merging, ever!
+  def skippable_record_key?(k)
+    k == "agent_person_id" ||
+    k == "agent_family_id" ||
+    k == "agent_corporate_entity_id" ||
+    k == "agent_software_id" ||
+    k == "created_by" ||
+    k == "last_modified_by" ||
+    k == "create_time" ||
+    k == "system_mtime" ||
+    k == "user_mtime" ||
+    k == "lock_version" ||
+    k == "primary_identifer" || # only one primary identifier allowed in set 
+    k == "jsonmodel_type"
+  end
+  
   # NOTE: this code is a duplicate of the auto_generate code for creating sort name
   # in the name_person, name_family, name_software, name_corporate_entity models
   # Consider refactoring when continued work done on the agents model enhancements
