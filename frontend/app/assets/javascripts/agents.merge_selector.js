@@ -73,9 +73,11 @@ $(function() {
         left_li  = $(this);
         right_li = $(right_group_parent_id.concat(" li:nth-of-type(", i + 1, ")"))
 
-        left_li.addClass(gclass);
-        right_li.addClass(gclass);
-        enableReplace(right_li);
+        if(right_li.length > 0) {
+          left_li.addClass(gclass);
+          right_li.addClass(gclass);
+          enableReplace(right_li);
+        }
       });
     };
 

@@ -308,13 +308,14 @@ class ArchivesSpaceService < Sinatra::Base
   def merge_details_replace_field(target, victim, selections, values)
     selections.each do |path_fix|
       subrec_name = path_fix[0]
+      # this is the index of the order the user arranged the subrecs in the form, not the order of the subrecords in the DB.
       ind         = path_fix[1]
       field       = path_fix[2]
 
       subrec_id = values[subrec_name][ind]["id"]
       subrec_index = find_subrec_index_in_victim(victim, subrec_name, subrec_id)
 
-      target[subrec_name][0][field] = victim[subrec_name][subrec_index][field]
+      target[subrec_name][ind][field] = victim[subrec_name][subrec_index][field]
     end
   end
 
@@ -323,7 +324,8 @@ class ArchivesSpaceService < Sinatra::Base
   def merge_details_subrec(target, victim, selections, values)
     selections.each do |path_fix|
       subrec_name = path_fix[0]
-      ind         = path_fix[1]
+      # this is the index of the order the user arranged the subrecs in the form, not the order of the subrecords in the DB.
+      ind         = path_fix[1] 
       mode        = path_fix[2]
 
       subrec_id = values[subrec_name][ind]["id"]
@@ -332,17 +334,10 @@ class ArchivesSpaceService < Sinatra::Base
       replacer = victim[subrec_name][subrec_index]
 
       if mode == "replace"
-        target[subrec_name][0] = process_subrecord_for_merge(target['id'], replacer, subrec_name)
+        target[subrec_name][ind] = process_subrecord_for_merge(target, replacer, subrec_name, mode, ind)
       elsif mode == "append"
-        target[subrec_name].push(process_subrecord_for_merge(target['id'], replacer, subrec_name))
+        target[subrec_name].push(process_subrecord_for_merge(target, replacer, subrec_name, mode, ind))
       end
-
-      # replace all value fields in target with values from victim
-      # target[subrec_name][0].each_key do |field_key|
-      #   next if skippable_record_key?(field_key)
-
-      #   target[subrec_name][0][field_key] = victim[subrec_name][victim_subrec_index][field_key]
-      # end
 
     end
   end
@@ -362,16 +357,31 @@ class ArchivesSpaceService < Sinatra::Base
   end
 
   # before we can merge a subrecord, we need to update the IDs, tweak things to prevent validation issues, etc
-  def process_subrecord_for_merge(target_id, subrecord, jsonmodel_type)
-    if jsonmodel_type === 'names'
-       # an agent name can only have one authorized or display name.
-       # make sure the name being merged in doesn't conflict with this
-       subrecord['authorized']      = false
-       subrecord['is_display_name'] = false
+  def process_subrecord_for_merge(target, subrecord, jsonmodel_type, mode, ind)
+    target_id = target['id']
 
-    elsif jsonmodel_type === 'agent_record_identifiers'
+    if jsonmodel_type == 'names'
+      # an agent name can only have one authorized or display name.
+      # make sure the name being merged in doesn't conflict with this
+
+      # if appending, always disable fields that validate across a set. If replacing, always keep values from target 
+      if mode == "append"
+        subrecord['authorized']      = false
+        subrecord['is_display_name'] = false
+      elsif mode == "replace"
+        subrecord['authorized']      = target['names'][ind]['authorized']
+        subrecord['is_display_name'] = target['names'][ind]['is_display_name']
+      end
+
+    elsif jsonmodel_type == 'agent_record_identifiers'
       # same with agent_record_identifiers being marked as primary, we can only have one
-      subrecord['primary_identifer'] = false
+
+      if mode == "append"
+        subrecord['primary_identifier'] = false
+
+      elsif mode == "replace"
+        subrecord['primary_identifier'] = target['agent_record_identifiers'][ind]['primary_identifier']
+      end
     end
 
     set_agent_id(target_id, subrecord)
@@ -391,7 +401,7 @@ class ArchivesSpaceService < Sinatra::Base
     k == "system_mtime" ||
     k == "user_mtime" ||
     k == "lock_version" ||
-    k == "primary_identifer" || # only one primary identifier allowed in set 
+    k == "primary_identifier" || # only one primary identifier allowed in set 
     k == "jsonmodel_type"
   end
   
