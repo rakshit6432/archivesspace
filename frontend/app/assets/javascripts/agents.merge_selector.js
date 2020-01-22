@@ -36,34 +36,61 @@ $(function() {
     // disable reorder handle, but only for target side
     $('.merge-group-left .drag-handle').removeClass('drag-handle');
 
-    // set first element of all target lists to color coordinate
-    $('.merge-group-left li:nth-of-type(1)').addClass('merge-group-first');
   });
 
   // run victim side code to color replaceable items
   $(function() {
-
     var enableReplace = function(items) {
       items.each(function() {
-        $(this).addClass('merge-group-first');
         $(this).find('.replace-control').show();
       });
     };
 
     var disableReplace = function(items) {
       items.each(function() {
-        $(this).removeClass('merge-group-first');
+        $(this).find('.replace-control input').prop("checked", false);
         $(this).find('.replace-control').hide();
       });
     };
 
-    // for victim lists, only first item in list should have replace boxes and colors
-    disableReplace($('.merge-group-right li'));
-    enableReplace($('.merge-group-right .merge-replace-enabled li:nth-of-type(1)'));
+    var clear_replace = function(section) {
+      section.find("li").each(function() {
+        $(this).removeClass("merge-group-even");
+        $(this).removeClass("merge-group-odd");
+        disableReplace($(this));
+      });
+    };
 
+    // for each li element in section on left (target), enable replace and color corrsponding element in section on right (victim)
+    var find_replace_elements = function(section) {
+      var left_group_parent_id  = section.attr('id');
+      var right_group_parent_id = "#".concat(left_group_parent_id.replace("left", "right"));
+
+      clear_replace($(right_group_parent_id));
+
+      section.find("li").each(function(i) {
+        gclass = (i % 2 == 0) ? "merge-group-even" : "merge-group-odd";
+        left_li  = $(this);
+        right_li = $(right_group_parent_id.concat(" li:nth-of-type(", i + 1, ")"))
+
+        left_li.addClass(gclass);
+        right_li.addClass(gclass);
+        enableReplace(right_li);
+      });
+    };
+
+    // run for first time for all merge groups to color and enable all replacements
+    $(".merge-group-left").each(function() {
+      find_replace_elements($(this));
+    });
+
+
+    // run for section anytime order is shifted in a group
     $('.merge-group-right .merge-replace-enabled .subrecord-form-list').on("mergesubformchanged.aspace", function(event) {
-      disableReplace($(this).find('li'));
-      enableReplace($(this).find('li:nth-of-type(1)'));
+      parent_section_id = $(this).parents("section").parents("section").attr("id");
+      parent_section_id_left = "#".concat(parent_section_id.replace("right", "left"));
+
+      find_replace_elements($(parent_section_id_left));
     });
   });
 
