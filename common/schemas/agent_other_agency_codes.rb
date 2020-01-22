@@ -16,6 +16,7 @@
           "required" => true,
           "ifmissing" => "error",
       },
+      "id"                        => {"type" => "integer", "required" => false},
       "agent_person_id"           => {"type" => "integer", "required" => false},
       "agent_family_id"           => {"type" => "integer", "required" => false},
       "agent_corporate_entity_id" => {"type" => "integer", "required" => false},

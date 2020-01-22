@@ -60,7 +60,7 @@
 
 <% define_template "agent_alternate_set_merge_victim", jsonmodel_definition(:agent_alternate_set) do |form| %>
 
-  <% disable_replace = true %>
+  <% disable_replace = false %>
 
   <%= form.record_level_merge_controls(form, "agent_alternate_set", true, !disable_replace) %>
 
@@ -72,5 +72,7 @@
   <%= form.label_and_merge_select("xlink_title_attribute", "", {:disable_replace => disable_replace}) %>
   <%= form.label_and_merge_select("xlink_role_attribute", "", {:disable_replace => disable_replace}) %>
   <%= form.label_and_merge_select("last_verified_date", "", {:disable_replace => disable_replace}) %>
+
+  <%= form.hidden_input "id", form.obj["id"] %>
 
 <% end %>

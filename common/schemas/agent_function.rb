@@ -34,6 +34,7 @@
           }
         }
       },
+      "id"                        => {"type" => "integer", "required" => false},
       "places" => {
         "type" => "array",
         "items" => {

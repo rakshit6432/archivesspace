@@ -18,6 +18,7 @@
                                {"type" => "JSONModel(:note_citation) object"}]},
       },
 
+      "id"                        => {"type" => "integer", "required" => false},
       "subjects" => {
         "type" => "array",
         "items" => {

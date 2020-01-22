@@ -58,6 +58,15 @@ $(function() {
         $(this).removeClass("merge-group-even");
         $(this).removeClass("merge-group-odd");
         disableReplace($(this));
+
+        $(this).find(".subrecord-form-fields").each(function() {
+          $(this).removeClass(gclass);
+        });
+
+        $(this).find(".subrecord-form-fields").each(function() {
+          $(this).removeClass(gclass);
+        });
+
       });
     };
 
@@ -66,6 +75,9 @@ $(function() {
       var left_group_parent_id  = section.attr('id');
       var right_group_parent_id = "#".concat(left_group_parent_id.replace("left", "right"));
 
+      console.log(left_group_parent_id);
+      console.log(right_group_parent_id);
+
       clear_replace($(right_group_parent_id));
 
       section.find("li").each(function(i) {
@@ -73,9 +85,22 @@ $(function() {
         left_li  = $(this);
         right_li = $(right_group_parent_id.concat(" li:nth-of-type(", i + 1, ")"))
 
+        console.log(left_li);
+        console.log(right_li);
+
         if(right_li.length > 0) {
           left_li.addClass(gclass);
           right_li.addClass(gclass);
+
+          //some elements have div children that cover the whole background... color this too
+          left_li.find(".subrecord-form-fields").each(function() {
+            $(this).addClass(gclass);
+          });
+
+          right_li.find(".subrecord-form-fields").each(function() {
+            $(this).addClass(gclass);
+          });
+
           enableReplace(right_li);
         }
       });
