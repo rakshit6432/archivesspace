@@ -60,11 +60,13 @@ $(function() {
         disableReplace($(this));
 
         $(this).find(".subrecord-form-fields").each(function() {
-          $(this).removeClass(gclass);
+          $(this).removeClass("merge-group-even");
+          $(this).removeClass("merge-group-odd");
         });
 
         $(this).find(".subrecord-form-fields").each(function() {
-          $(this).removeClass(gclass);
+          $(this).removeClass("merge-group-even");
+          $(this).removeClass("merge-group-odd");
         });
 
       });
