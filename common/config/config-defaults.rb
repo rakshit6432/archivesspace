@@ -302,9 +302,7 @@ AppConfig[:allow_user_registration] = true
 # Help Configuration
 AppConfig[:help_enabled] = true
 AppConfig[:help_url] = "https://archivesspace.atlassian.net/wiki/spaces/ArchivesSpaceUserManual/overview"
-AppConfig[:help_topic_prefix] = "/Default_CSH.htm#"
 AppConfig[:help_topic_base_url] = "https://archivesspace.atlassian.net/wiki/spaces/ArchivesSpaceUserManual/pages/"
-
 
 AppConfig[:shared_storage] = proc { File.join(AppConfig[:data_directory], "shared") }
 
@@ -620,9 +618,6 @@ AppConfig[:pui_page_custom_actions] = []
 #   'erb_partial' => 'shared/my_special_action',
 # }
 
-# For Accessions browse set if accession date year filter values should be sorted ascending rather than descending (default)
-AppConfig[:sort_accession_date_filter_asc] = false
-
 # Human-Readable URLs options
 # use_human_readable_urls: determines whether fields and options related to human-readable URLs appear in the staff interface
 
@@ -645,6 +640,9 @@ AppConfig[:generate_resource_slugs_with_eadid] = false
 # For archival objects: if this option and auto_generate_slugs_with_id are both enabled, then slugs for archival resources will be generated with Component Unique Identifier instead of the identifier.
 AppConfig[:generate_archival_object_slugs_with_cuid] = false
 
+# For Accessions browse set if accession date year filter values should be sorted ascending rather than descending (default)
+AppConfig[:sort_accession_date_filter_asc] = false
+
 # Determines if the subject source is shown along with the subject heading in records' subject listings
 # This can help differentiate between subjects with the same heading
 AppConfig[:show_source_in_subject_listing] = false
@@ -663,3 +661,6 @@ AppConfig[:ark_url_prefix] = proc { AppConfig[:public_proxy_url] }
 
 # Specifies if the fields that show up in csv should be limited to those in search results
 AppConfig[:limit_csv_fields] = true
+
+# Use to specify the maximum number of columns to display when searching or browsing
+AppConfig[:max_search_columns] = 7
