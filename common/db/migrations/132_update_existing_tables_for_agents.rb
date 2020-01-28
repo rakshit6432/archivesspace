@@ -39,6 +39,8 @@ Sequel.migration do
       add_column(:agent_place_id, Integer, :null => true)
       add_column(:agent_occupation_id, Integer, :null => true)
       add_column(:agent_function_id, Integer, :null => true)
+      add_column(:agent_gender_id, Integer, :null => true)
+      add_column(:used_language_id, Integer, :null => true)
     end
 
     alter_table(:agent_contact) do
