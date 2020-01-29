@@ -64,7 +64,7 @@ $(function() {
 
                 $this.tokenInput("add", {
                   id: response.uri,
-                  name: response.display_string || response.title,
+                  name: (response.display_string || response.title) + (['resource', 'accession'].includes(response.primary_type) ? " --- " + response.identifier : ""),
                   json: response
                 });
                 $this.triggerHandler("change");
@@ -209,7 +209,7 @@ $(function() {
           $.each(currentlySelected, function(uri, object) {
             $this.tokenInput("add", {
               id: uri,
-              name: object.display_string || object.title,
+              name: (object.display_string || object.title) + (['resource', 'accession'].includes(object.primary_type) ? " --- " + object.identifier : ""),
               json: object
             });
           });
@@ -237,7 +237,7 @@ $(function() {
 
           if ($.inArray(obj.uri, currentlySelectedIds) === -1) {
             formattedResults.push({
-              name: obj.display_string || obj.title,
+              name: (obj.display_string || obj.title) + (['resource', 'accession'].includes(obj.primary_type) ? " --- " + obj.identifier : ""),
               id: obj.id,
               json: obj
             });
@@ -287,9 +287,12 @@ $(function() {
           if ($.isEmptyObject($this.data("selected"))) {
             return [];
           }
+          // TODO: this doesn't work because $this.data("selected").identifier is null
+          // This causes the identifier not to show up when the blue box is rendered for an already
+          // linked resource or accession
           return [{
               id: $this.data("selected").uri,
-              name: $this.data("selected").display_string || $this.data("selected").title,
+              name: ($this.data("selected").display_string || $this.data("selected").title) + (['resource', 'accession'].includes($this.data("selected").primary_type) ? " --- " + $this.data("selected").identifier : ""),
               json: $this.data("selected")
           }];
         } else {
@@ -303,7 +306,7 @@ $(function() {
             }
             return {
               id: item.uri,
-              name: item.display_string || item.title,
+              name: (item.display_string || item.title) + (['resource', 'accession'].includes(item.primary_type) ? " --- " + item.identifier : ""),
               json: item
             };
           });
