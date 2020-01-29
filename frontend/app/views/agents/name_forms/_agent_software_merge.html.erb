@@ -1,6 +1,6 @@
 <% define_template "name_software", jsonmodel_definition(:name_software) do |form| %>
   <div class="subrecord-form-fields">
-    <% disable_replace = true %>
+    <% disable_replace = false %>
 
     <%= form.record_level_merge_controls(form, "name_software", true, !disable_replace) %>
     
@@ -10,6 +10,8 @@
     </h4>
 
     <%= render_aspace_partial :partial => "agents/name_forms/authority_fields_merge", :locals => {:form => form} %>
+
+    <%= form.hidden_input "id", form.obj["id"] %>
 
     <%= form.label_and_merge_select("software_name", "", {:disable_replace => disable_replace}) %>
     <%= form.label_and_merge_select("version", "", {:disable_replace => disable_replace}) %>

@@ -321,7 +321,7 @@
           <% if @agent.names.length > 0 || @victim.names.length > 0 %>
             <h3><%= I18n.t("agent_name._plural") %></h3>
             <section id="agent_names_right" class="merge-group merge-group-right">
-                  <%= render_aspace_partial :partial => "shared/subrecord_form_merge", :locals => {:form => form, :name => "names", :section_id => "#{@agent.agent_type}_names", :template_erb => "agents/name_forms/#{@agent.agent_type}_merge", :template => "name_#{@agent.agent_type.to_s.gsub("agent_","")}", :help_topic => "#{@agent.agent_type}_names"} %>
+                  <%= render_aspace_partial :partial => "shared/subrecord_form_merge", :locals => {:form => form, :name => "names", :section_id => "#{@agent.agent_type}_names", :template_erb => "agents/name_forms/#{@agent.agent_type}_merge", :template => "name_#{@agent.agent_type.to_s.gsub("agent_","")}", :help_topic => "#{@agent.agent_type}_names", :replace => (@agent.names.length > 0)} %>
             </section>
           <% end %>
  
