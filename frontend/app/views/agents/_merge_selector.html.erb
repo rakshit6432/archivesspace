@@ -115,7 +115,7 @@
           <% end %>
 
          
-          <% if @agent.agent_genders.length > 0 || @victim.agent_genders.length > 0 %>
+          <% if @agent.agent_type == "agent_person" && (@agent.agent_genders.length > 0 || @victim.agent_genders.length > 0) %>
             <h3><%= I18n.t("agent_genders._plural") %></h3>
             <section id="agent_agent_gender_left" class="merge-group merge-group-left">
                   <% if @agent.agent_genders.length > 0 %>
@@ -335,8 +335,7 @@
             </section>
           <% end %>
 
-         
-          <% if @agent.agent_genders.length > 0 || @victim.agent_genders.length > 0 %>
+          <% if @agent.agent_type == "agent_person" && (@agent.agent_genders.length > 0 || @victim.agent_genders.length > 0) %>
             <h3><%= I18n.t("agent_genders._plural") %></h3>
             <section id="agent_agent_gender_right" class="merge-group merge-group-right">
                   <% if @victim.agent_genders.length > 0 %>

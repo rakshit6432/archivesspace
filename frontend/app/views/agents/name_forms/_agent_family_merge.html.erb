@@ -24,7 +24,7 @@
     <%= form.label_and_merge_select("romanization_enum", "", {:disable_replace => disable_replace}) %>
     <hr/>
     <%= form.label_and_merge_select("qualifier", "", {:disable_replace => disable_replace}) %>
-    <%= form.label_and_readonly "sort_name" %>
+    <%= form.label_and_readonly("sort_name") %>
     
     <%= render_aspace_partial :partial => "structured_dates/show_inline", :locals => { :dates => form.obj["use_dates"], :section_title => I18n.t("agent_name.use_dates"), :section_id => "victim_name_use_dates", :heading_size => "h4"} %>
 
