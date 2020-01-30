@@ -182,7 +182,7 @@
 
           <% if @agent.notes.length > 0 || @victim.notes.length > 0 %>
             <h3><%= I18n.t("note._plural") %></h3>
-            <section id="agent_notes_left" class="merge-group merge-group-left">
+            <section id="agent_notes_left" class="merge-group">
                   <% if @agent.notes.length > 0 %>
                     <%= render_aspace_partial :partial => "notes/form_merge_target", :locals => {:form => form, :all_note_types => note_types_for(form['jsonmodel_type']), :section_id => "#{@agent.agent_type}_notes"} %>
                   <% end %>
@@ -192,7 +192,7 @@
           <% if @agent.agent_type != "agent_software" %>
             <% if @agent.related_agents.length > 0 || @victim.related_agents.length > 0 %>
               <h3><%= I18n.t("related_agent._plural") %></h3>
-              <section id="agent_related_agents_left" class="merge-group merge-group-left">
+              <section id="agent_related_agents_left" class="merge-group">
                     <% if !@agent['related_agents'].blank? %>
                       <%= render_aspace_partial :partial => "related_agents/show_merge_target", :locals => { :context => form } %>
                     <% end %>
@@ -393,7 +393,7 @@
            <h3><%= I18n.t("agent_contact._plural") %></h3>
            <section id="agent_contact_details_right" class="merge-group merge-group-right">
                  <% if @victim.agent_contacts.length > 0 %>
-                   <%= render_aspace_partial :partial => "shared/subrecord_form_merge", :locals => {:form => form, :name => "agent_contacts", :section_id => "#{@agent.agent_type}_contact_details", :template_erb => "agents/contact_details_merge", :template => "agent_contact", :help_topic => "#{@agent.agent_type}_contact_details"} %>
+                   <%= render_aspace_partial :partial => "shared/subrecord_form_merge", :locals => {:form => form, :name => "agent_contacts", :section_id => "#{@agent.agent_type}_contact_details", :template_erb => "agents/contact_details_merge", :template => "agent_contact", :help_topic => "#{@agent.agent_type}_contact_details", :replace => (@agent.agent_contacts.length > 0)} %>
                  <% end %>
            </section>
           <% end %>
@@ -402,7 +402,7 @@
            <h3><%= I18n.t("note._plural") %></h3>
            <section id="agent_notes_right" class="merge-group merge-group-right">
                  <% if @victim.notes.length > 0 %>
-                   <%= render_aspace_partial :partial => "notes/form_merge", :locals => {:form => form, :all_note_types => note_types_for(form['jsonmodel_type']), :section_id => "#{@agent.agent_type}_notes"} %>
+                   <%= render_aspace_partial :partial => "notes/form_merge", :locals => {:form => form, :all_note_types => note_types_for(form['jsonmodel_type']), :section_id => "#{@agent.agent_type}_notes", :replace => false} %>
                  <% end %>
            </section>
           <% end %>
@@ -422,7 +422,7 @@
             <h3><%= I18n.t("external_document._plural") %></h3>
             <section id="agent_external_documents_right" class="merge-group merge-group-right">
                   <% if @victim.external_documents.length > 0 %>
-                    <%= render_aspace_partial :partial => "shared/subrecord_form_merge", :locals => {:form => form, :name => "external_documents", :section_id => "#{@agent.agent_type}_external_documents", :template_erb => "external_documents/template_merge"} %>
+                    <%= render_aspace_partial :partial => "shared/subrecord_form_merge", :locals => {:form => form, :name => "external_documents", :section_id => "#{@agent.agent_type}_external_documents", :template_erb => "external_documents/template_merge", :replace => (@agent.external_documents.length > 0)} %>
                   <% end %>
             </section>
           <% end %>
@@ -431,7 +431,7 @@
             <h3><%= I18n.t("agent_resource._plural") %></h3>
             <section id="agent_agent_resources_right" class="merge-group merge-group-right">
                   <% if @victim.agent_resources.length > 0 %>
-                    <%= render_aspace_partial :partial => "shared/subrecord_form_merge", :locals => {:form => form, :name => "agent_resources", :section_id => "#{@agent.agent_type}_agent_resources", :template_erb => "agent_resources/template", :template => "agent_resource_merge_victim"} %>
+                    <%= render_aspace_partial :partial => "shared/subrecord_form_merge", :locals => {:form => form, :name => "agent_resources", :section_id => "#{@agent.agent_type}_agent_resources", :template_erb => "agent_resources/template", :template => "agent_resource_merge_victim", :replace => (@agent.agent_resources.length > 0)} %>
                   <% end %>
             </section>
           <% end %>

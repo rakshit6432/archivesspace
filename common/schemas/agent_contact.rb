@@ -18,6 +18,7 @@
         "type" => "array",
         "items" => {"type" => "JSONModel(:telephone) object"}
       },
+      "id" => {"type" => "integer", "required" => false},
       "fax" => {"type" => "string", "maxLength" => 65000},
       "email" => {"type" => "string", "maxLength" => 65000},
       "email_signature" => {"type" => "string", "maxLength" => 65000},
