@@ -106,7 +106,7 @@ class ArchivesSpaceService < Sinatra::Base
       target = agent_model.to_jsonmodel(target)
       victim = agent_model.to_jsonmodel(victim)
       new_target = merge_details(target, victim, selections, params, true)
-      result = new_target
+      result = resolve_references(new_target, resolve_list)
 
       result
     else
@@ -129,7 +129,7 @@ class ArchivesSpaceService < Sinatra::Base
 
       json_response(:status => "OK")
     end
-    json_response(resolve_references(result, ['related_agents']))
+    json_response(resolve_references(result, resolve_list))
   end
 
   Endpoint.post('/merge_requests/resource')
@@ -403,6 +403,11 @@ class ArchivesSpaceService < Sinatra::Base
     k == "lock_version" ||
     k == "primary_identifier" || # only one primary identifier allowed in set 
     k == "jsonmodel_type"
+  end
+
+  # needs to be passed into resolve_references.
+  def resolve_list
+    ["subjects", "related_resources", "linked_agents", "revision_statements", "container_locations", "digital_object", "classifications", "related_agents", "resource", "parent", "creator", "linked_instances", "linked_records", "related_accessions", "linked_events", "linked_events::linked_records", "linked_events::linked_agents", "top_container", "container_profile", "location_profile", "owner_repo", "agent_places", "agent_occupations", "agent_functions", "agent_topics", "agent_resources", "places"]
   end
   
   # NOTE: this code is a duplicate of the auto_generate code for creating sort name

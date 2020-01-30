@@ -28,11 +28,16 @@
             </div>
           <% end %>
           <div class="col-md-8 token-list">
-            <%= render_token :object => subject['_resolved'],
-                             :label => subject['_resolved']['title'],
-                             :type => "subject",
-                             :uri => subject['ref'],
-                             :icon_class => get_subject_icon_class(subject) %>
+            <% if subject['_resolved'] %>
+              <%= render_token :object => subject['_resolved'],
+                               :label => subject['_resolved']['title'],
+                               :type => "subject",
+                               :uri => subject['ref'],
+                               :icon_class => get_subject_icon_class(subject) %>
+
+            <% else %>
+              <p><%= subject.inspect %></p>
+            <% end %>
           </div>
         </div>
       <% end %>
