@@ -43,13 +43,18 @@ $(function() {
     var enableReplace = function(items) {
       items.each(function() {
         $(this).find('.replace-control').show();
+        $(this).find('.subreplace-control').show();
       });
     };
 
     var disableReplace = function(items) {
       items.each(function() {
         $(this).find('.replace-control input').prop("checked", false);
+        $(this).find('.subreplace-control input').prop("checked", false);
+        $(this).find('.append-control input').prop("checked", false);
+
         $(this).find('.replace-control').hide();
+        $(this).find('.subreplace-control').hide();
       });
     };
 
@@ -94,15 +99,6 @@ $(function() {
           left_li.addClass(gclass);
           right_li.addClass(gclass);
 
-          //some elements have div children that cover the whole background... color this too
-          left_li.find(".subrecord-form-fields").each(function() {
-            $(this).addClass(gclass);
-          });
-
-          right_li.find(".subrecord-form-fields").each(function() {
-            $(this).addClass(gclass);
-          });
-
           enableReplace(right_li);
         }
       });
@@ -111,6 +107,39 @@ $(function() {
     // run for first time for all merge groups to color and enable all replacements
     $(".merge-group-left").each(function() {
       find_replace_elements($(this));
+    });
+
+    // clicking on add hides replace and vice versa
+    $(".merge-group-right li").each(function() {
+      var li_parent = $(this)
+
+      $(this).find(".append-control").click(function() {
+        li_parent.find(".replace-control input").each(function() {
+          $(this).prop("checked", false)
+        });
+
+        li_parent.find(".subreplace-control input").each(function() {
+          $(this).prop("checked", false);
+          $(this).prop("disabled", false); 
+        });
+      });
+
+      $(this).find(".replace-control").click(function() {
+        li_parent.find(".append-control input").each(function() {
+          $(this).prop("checked", false)
+        });
+
+        li_parent.find(".subreplace-control input").each(function() {
+          $(this).prop("checked", function(i, val) {
+            return !val;
+          });
+
+          $(this).prop("disabled", function(i, val) {
+            return !val;
+          });
+        });
+      });
+
     });
 
 

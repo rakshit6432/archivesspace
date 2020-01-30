@@ -412,7 +412,7 @@ module AspaceFormHelper
     # This can be used to not render them in case a replace in inappropriate, e.g., the target record has nothing to replace with.
     def merge_select(name, value, opts)
       unless opts[:disable_replace] == true
-        value += "<label class='replace-control'>".html_safe
+        value += "<label class='subreplace-control'>".html_safe
         value += merge_checkbox("#{name}", {
           :class => "merge-toggle"}, false, false)
         value += "&#160;<small>".html_safe
@@ -829,7 +829,7 @@ module AspaceFormHelper
 
         if controls
           if replace
-            html << '<label class="append replace-control">'
+            html << '<label class="replace-control">'
               html << form.merge_checkbox('replace') 
               html << '<small>'
                 html << I18n.t("actions.merge_replace").to_s
@@ -837,7 +837,7 @@ module AspaceFormHelper
             html << '</label>'
           end
 
-          html << '<label class="append">'
+          html << '<label class="append-control">'
             html << form.merge_checkbox('append')
             html << '<small>'
               html << I18n.t("actions.merge_add").to_s
