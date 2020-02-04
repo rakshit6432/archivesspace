@@ -17,6 +17,8 @@
   required = form.required?(name) if required.blank?
 
   cardinality = :zero_to_many if cardinality.blank?
+
+  list_limited_to_one = false if list_limited_to_one.blank?
 %>
 
 <%= render_aspace_partial :partial => template_erb, :locals => {:form => form} %>
@@ -40,7 +42,7 @@
   <% end %>
 
   <div class="subrecord-form-container">
-    <% if cardinality === :zero_to_one %>
+    <% if cardinality === :zero_to_one && list_limited_to_one == false %>
       <%= form.list_for([form[name]].compact, name) do |item| %>
         <% form.emit_template(template, item) %>
       <% end %>

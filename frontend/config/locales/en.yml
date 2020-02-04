@@ -1943,11 +1943,11 @@ en:
     <<: *agent_alternate_set_attributes
   
   agent_conventions_declaration: &agent_conventions_declaration_attributes
-    _plural: Conventions Declarations
-    _singular: Conventions Declaration
+    _plural: Convention Declarations
+    _singular: Convention Declaration
     _frontend:
       action:
-        add: Add Convention
+        add: Add Convention Declaration
     name_rule: Convention
     citation: Citation
     descriptive_note: Descriptive Note

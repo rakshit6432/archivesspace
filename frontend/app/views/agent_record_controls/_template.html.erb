@@ -89,8 +89,9 @@
 <% define_template "agent_record_control_merge_victim", jsonmodel_definition(:agent_record_control) do |form| %>
 
   <% disable_replace = false %>
+  <% disable_append = !(@agent.agent_record_controls.length > 0) %>
   
-  <%= form.record_level_merge_controls(form, "agent_record_control", true, !disable_replace) %>
+  <%= form.record_level_merge_controls(form, "agent_record_control", true, !disable_replace, disable_append) %>
 
   <%= form.label_and_merge_select("maintenance_status_enum", "", {:disable_replace => disable_replace}) %>
   <%= form.label_and_merge_select("publication_status_enum", "", {:disable_replace => disable_replace}) %>

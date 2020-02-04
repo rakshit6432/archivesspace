@@ -29,7 +29,7 @@
 
    <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "agent_record_identifiers", :section_id => "#{@agent.agent_type}_agent_record_identifier", :template => "agent_record_identifiers", help_topic: "agent_record_identifiers"} %>
 
-   <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "agent_record_controls", :section_id => "#{@agent.agent_type}_agent_record_control", :template => "agent_record_control", help_topic: "agent_record_controls"} %>
+   <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "agent_record_controls", :section_id => "#{@agent.agent_type}_agent_record_control", :template => "agent_record_control", help_topic: "agent_record_controls", :cardinality => :zero_to_one, :list_limited_to_one => true} %>
 
    <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "agent_other_agency_codes", :section_id => "#{@agent.agent_type}_agent_other_agency_codes", :template => "agent_other_agency_codes", help_topic: "agent_other_agency_codes"} %>
 

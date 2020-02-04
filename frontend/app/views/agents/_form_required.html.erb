@@ -6,7 +6,7 @@
 
    <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "agent_record_identifiers", :section_id => "#{@agent.agent_type}_agent_record_identifier_required", :template => "agent_record_identifier_required", help_topic: "agent_record_identifiers", :action_button_override => "agent_record_identifier_required" } %>
 
-   <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "agent_record_controls", :section_id => "#{@agent.agent_type}_agent_record_control_required", :template => "agent_record_control_required", help_topic: "agent_record_controls", :action_button_override => "agent_record_control_required" } %>
+   <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "agent_record_controls", :section_id => "#{@agent.agent_type}_agent_record_control_required", :template => "agent_record_control_required", help_topic: "agent_record_controls", :action_button_override => "agent_record_control_required", :cardinality => :zero_to_one, :list_limited_to_one => true } %>
 
    <%= render_aspace_partial :partial => "shared/subrecord_form", :locals => {:form => form, :name => "agent_other_agency_codes", :section_id => "#{@agent.agent_type}_agent_other_agency_code_required", :template => "agent_other_agency_code_required", help_topic: "agent_other_agency_codes", :action_button_override => "agent_other_agency_code_required" } %>
 
