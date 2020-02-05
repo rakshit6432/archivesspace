@@ -3,10 +3,8 @@
 
     <%= form.record_level_merge_controls(form, "name_family", false) %>
 
-    <h4 class="subrecord-form-heading">
-      <span class="badge badge-info is-authoritive-label"><%= I18n.t("name_family.authorized") %></span>
-      <span class="badge badge-info is-display-name-label"><%= I18n.t("name_family.is_display_name") %></span>
-    </h4>
+    <% if form.obj['authorized'] %><span class="badge"><%= I18n.t("name_family.authorized") %></span><% end %>
+    <% if form.obj['is_display_name'] %><span class="badge badge-info"><%= I18n.t("name_family.is_display_name") %></span><% end %>
 
     <%= render_aspace_partial :partial => "agents/name_forms/authority_fields_merge_target", :locals => {:form => form} %>
 

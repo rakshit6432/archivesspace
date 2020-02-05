@@ -2024,6 +2024,7 @@ en:
     identifier_type_enum: Identifier Type
     source_enum: Source
     primary_identifier: Is Primary Identifier?
+    primary: Primary
     record_identifier: Record Identifier
 
   agent_record_identifiers:
