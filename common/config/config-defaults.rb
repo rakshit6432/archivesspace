@@ -661,3 +661,6 @@ AppConfig[:ark_url_prefix] = proc { AppConfig[:public_proxy_url] }
 
 # Specifies if the fields that show up in csv should be limited to those in search results
 AppConfig[:limit_csv_fields] = true
+
+#Use Agents Full
+AppConfig[:agents_display_full] = false

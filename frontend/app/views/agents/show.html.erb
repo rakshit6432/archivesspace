@@ -96,6 +96,10 @@
         <% if @agent.notes.length > 0 %>
           <%= render_aspace_partial :partial => "notes/show", :locals => { :notes => @agent.notes, :context => readonly, :section_id => "#{@agent.agent_type}_notes" } %>
         <% end %>
+
+        <% if @agent.external_documents.length > 0 %>
+          <%= render_aspace_partial :partial => "external_documents/show", :locals => { :external_documents => @agent.external_documents, :section_id => "#{@agent.agent_type}_external_documents" } %>
+        <% end %>
         
         <% if @agent.agent_resources.length > 0 %>
           <%= render_aspace_partial :partial => "agent_resources/show", :locals => { :agent_resources => @agent.agent_resources, :section_id => "#{@agent.agent_type}_agent_resource", :context => readonly } %>
@@ -105,11 +109,6 @@
         <% if !@agent['related_agents'].blank? %>
           <%= render_aspace_partial :partial => "related_agents/show", :locals => { :related_agents => @agent.related_agents, :context => readonly, :section_id => "related_agents" } %>
         <% end %>
-
-        <% if @agent.external_documents.length > 0 %>
-          <%= render_aspace_partial :partial => "external_documents/show", :locals => { :external_documents => @agent.external_documents, :section_id => "#{@agent.agent_type}_external_documents" } %>
-        <% end %>
-
 
         <%= show_plugins_for(@agent, readonly) %>
 
