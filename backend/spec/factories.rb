@@ -351,6 +351,13 @@ FactoryBot.define do
     used_languages { [build(:json_used_language)] }
   end
 
+  factory :json_agent_person_merge_victim, class: JSONModel(:agent_person) do
+    agent_type { 'agent_person' }
+    names { [build(:json_name_person)] }
+    dates_of_existence { [build(:json_structured_date_label)] }
+    agent_conventions_declarations { [build(:agent_conventions_declaration), build(:agent_conventions_declaration)] }
+  end
+
   factory :json_agent_corporate_entity_full_subrec, class: JSONModel(:agent_corporate_entity) do
     agent_type { 'agent_corporate_entity' }
     names { [build(:json_name_corporate_entity)] }
