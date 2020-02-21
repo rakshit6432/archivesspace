@@ -129,7 +129,9 @@ class ArchivesSpaceService < Sinatra::Base
 
       json_response(:status => "OK")
     end
-    json_response(resolve_references(result, resolve_list))
+    #json_response(resolve_references(result, resolve_list))
+    resolve_references(result, resolve_list)
+    json_response(:status => "OK")
   end
 
   Endpoint.post('/merge_requests/resource')

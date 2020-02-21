@@ -174,38 +174,211 @@ describe 'Merge request controller' do
       }.to raise_error(RecordNotFound)
     end
 
+    # In the tests below, selection hash order will determine which subrec in target is replaced
+    # For example, in a replace operation the contents of selection[n] will replace target[subrecord][n]
+    # Some of these tests simulate a replacement of selection[0] to target[subrecord][0]
+    # Others simulate selection[1] to target[subrecord][1]
+
     it "can replace entire subrecord on merge" do
-      target = create(:json_agent_person)
+      target = create(:json_agent_person_merge_target)
       victim = create(:json_agent_person_merge_victim)
       subrecord = victim["agent_conventions_declarations"][0]
 
       selections = {
-        'lock_version' => 0,
         'agent_conventions_declarations' => [
           {
-            'lock_version' => 0,
             'replace' => "REPLACE",
             'id' => subrecord["id"].to_i
-          },
-          {
-            'lock_version' => 0,
-            'id' => victim["agent_conventions_declarations"][1]["id"].to_i
           }
-        ],
-        "is_linked_to_published_record" => false, 
-        "system_generated" => false, 
-        "publish" => false, 
-        "is_slug_auto" => false
+        ]
       }
 
       merge_request = get_merge_request_detail_json(target, victim, selections)
-      puts merge_request.inspect
-
       merge_request.save(:record_type => 'agent_detail')
 
       target_record = JSONModel(:agent_person).find(target.id)
+      replaced_subrecord = target_record['agent_conventions_declarations'][0]
 
-      #puts target_record["agent_conventions_declarations"].inspect
+      replaced_subrecord.each_key do |k|
+        next if k == "id" || k == "agent_person_id" || k =~ /time/
+        expect(replaced_subrecord[k]).to eq(subrecord[k])
+      end
+
+      expect {
+        JSONModel(:agent_person).find(victim.id)
+      }.to raise_error(RecordNotFound)
+    end
+
+    it "can append entire subrecord on merge" do
+      target = create(:json_agent_person_merge_target)
+      victim = create(:json_agent_person_merge_victim)
+      subrecord = victim["agent_conventions_declarations"][0]
+      target_subrecord_count = target['agent_conventions_declarations'].length
+
+      selections = {
+        'agent_conventions_declarations' => [
+          {
+            'append' => "REPLACE",
+            'id' => subrecord["id"].to_i
+          },
+        ]
+      }
+
+      merge_request = get_merge_request_detail_json(target, victim, selections)
+      merge_request.save(:record_type => 'agent_detail')
+
+      target_record = JSONModel(:agent_person).find(target.id)
+      appended_subrecord = target_record['agent_conventions_declarations'].last
+
+      expect(target_record['agent_conventions_declarations'].length).to eq(target_subrecord_count += 1)
+
+      appended_subrecord.each_key do |k|
+        next if k == "id" || k == "agent_person_id" || k =~ /time/
+        expect(appended_subrecord[k]).to eq(subrecord[k])
+      end
+
+      expect {
+        JSONModel(:agent_person).find(victim.id)
+      }.to raise_error(RecordNotFound)     
+    end
+
+    it "can replace field in subrecord on merge" do
+      target = create(:json_agent_person_merge_target)
+      victim = create(:json_agent_person_merge_victim)
+      target_subrecord = target["agent_record_controls"][0]
+      victim_subrecord = victim["agent_record_controls"][0]
+
+      selections = {
+        'agent_record_controls' => [
+          {
+            'maintenance_agency' => "REPLACE",
+            'id' => victim_subrecord["id"].to_i
+          }
+        ]
+      }
+
+      merge_request = get_merge_request_detail_json(target, victim, selections)
+      merge_request.save(:record_type => 'agent_detail')
+
+      target_record = JSONModel(:agent_person).find(target.id)
+      replaced_subrecord = target_record['agent_record_controls'][0]
+
+      # replaced field
+      expect(replaced_subrecord['maintenance_agency']).to eq(victim_subrecord['maintenance_agency'])
+
+      # other fields in subrec should stay the same as before
+      replaced_subrecord.each_key do |k|
+        next if k == "id" || k == "maintenance_agency" || k =~ /time/
+        expect(replaced_subrecord[k]).to eq(target_subrecord[k])
+      end
+
+      expect {
+        JSONModel(:agent_person).find(victim.id)
+      }.to raise_error(RecordNotFound)
+    end
+
+    it "can replace entire subrecord on merge when order is changed" do
+      target = create(:json_agent_person_merge_target)
+      victim = create(:json_agent_person_merge_victim)
+      subrecord = victim["agent_conventions_declarations"][0]
+
+ 
+      selections = {
+        'agent_conventions_declarations' => [
+          {
+            'id' => victim["agent_conventions_declarations"][1]["id"]
+          },
+          {
+            'replace' => "REPLACE",
+            'id' => subrecord["id"].to_i
+          }
+        ]
+      }
+
+      merge_request = get_merge_request_detail_json(target, victim, selections)
+      merge_request.save(:record_type => 'agent_detail')
+
+      target_record = JSONModel(:agent_person).find(target.id)
+      replaced_subrecord = target_record['agent_conventions_declarations'][1]
+
+      replaced_subrecord.each_key do |k|
+        next if k == "id" || k == "agent_person_id" || k =~ /time/
+        expect(replaced_subrecord[k]).to eq(subrecord[k])
+      end
+
+      expect {
+        JSONModel(:agent_person).find(victim.id)
+      }.to raise_error(RecordNotFound)
+    end
+
+    it "can append entire subrecord on merge when order is changed" do
+      target = create(:json_agent_person_merge_target)
+      victim = create(:json_agent_person_merge_victim)
+      subrecord = victim["agent_conventions_declarations"][0]
+      target_subrecord_count = target['agent_conventions_declarations'].length
+
+      selections = {
+        'agent_conventions_declarations' => [
+          {
+            'id' => victim["agent_conventions_declarations"][1]["id"].to_i
+          },
+          {
+            'append' => "REPLACE",
+            'id' => subrecord["id"].to_i
+          },
+        ]
+      }
+
+      merge_request = get_merge_request_detail_json(target, victim, selections)
+      merge_request.save(:record_type => 'agent_detail')
+
+      target_record = JSONModel(:agent_person).find(target.id)
+      appended_subrecord = target_record['agent_conventions_declarations'].last
+
+      expect(target_record['agent_conventions_declarations'].length).to eq(target_subrecord_count += 1)
+
+      appended_subrecord.each_key do |k|
+        next if k == "id" || k == "agent_person_id" || k =~ /time/
+        expect(appended_subrecord[k]).to eq(subrecord[k])
+      end
+
+      expect {
+        JSONModel(:agent_person).find(victim.id)
+      }.to raise_error(RecordNotFound)
+    end
+
+    it "can replace field in subrecord on merge when order is changed" do
+      target = create(:json_agent_person_merge_target)
+      victim = create(:json_agent_person_merge_victim)
+      target_subrecord = target["agent_conventions_declarations"][1]
+      victim_subrecord = victim["agent_conventions_declarations"][0]
+
+      selections = {
+        'agent_conventions_declarations' => [
+          {
+            'id' => victim["agent_conventions_declarations"][1]["id"].to_i
+          },
+          {
+            'descriptive_note' => "REPLACE",
+            'id' => victim_subrecord["id"].to_i
+          }
+        ]
+      }
+
+      merge_request = get_merge_request_detail_json(target, victim, selections)
+      merge_request.save(:record_type => 'agent_detail')
+
+      target_record = JSONModel(:agent_person).find(target.id)
+      replaced_subrecord = target_record['agent_conventions_declarations'][1]
+
+      # replaced field
+      expect(replaced_subrecord['descriptive_note']).to eq(victim_subrecord['descriptive_note'])
+
+      # other fields in subrec should stay the same as before
+      replaced_subrecord.each_key do |k|
+        next if k == "id" || k == "descriptive_note" || k =~ /time/
+        expect(replaced_subrecord[k]).to eq(target_subrecord[k])
+      end
 
       expect {
         JSONModel(:agent_person).find(victim.id)
