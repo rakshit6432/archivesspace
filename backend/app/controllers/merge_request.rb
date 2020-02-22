@@ -108,7 +108,7 @@ class ArchivesSpaceService < Sinatra::Base
       new_target = merge_details(target, victim, selections, params, true)
       result = resolve_references(new_target, resolve_list)
 
-      result
+      json_response(resolve_references(result, resolve_list))
     else
       target_json = agent_model.to_jsonmodel(target)
       victim_json = agent_model.to_jsonmodel(victim)
@@ -129,9 +129,6 @@ class ArchivesSpaceService < Sinatra::Base
 
       json_response(:status => "OK")
     end
-    #json_response(resolve_references(result, resolve_list))
-    resolve_references(result, resolve_list)
-    json_response(:status => "OK")
   end
 
   Endpoint.post('/merge_requests/resource')
