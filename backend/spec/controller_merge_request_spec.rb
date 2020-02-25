@@ -10,33 +10,6 @@ describe 'Merge request controller' do
     request.selections = selections
 
     return request
-
-   # {
-   #   "jsonmodel_type" => "merge_request_detail", 
-   #   "victims" => [{
-   #     "ref" => "/agents/people/1291"}], 
-   #   "target" => {
-   #     "ref" => "/agents/people/1290"}, 
-   #   "selections" => {
-   #     "lock_version" => "0", 
-   #     "agent_conventions_declarations" => [
-   #       {
-   #         "lock_version" => "0",
-   #         "replace" => "REPLACE",
-   #         "id" => 104
-   #       }, 
-   #       {
-   #         "lock_version" => "0",
-   #         "id" => 105
-   #       }
-   #     ], 
-   #     "is_linked_to_published_record" => false, 
-   #     "system_generated" => false, 
-   #     "publish" => false, 
-   #     "is_slug_auto" => false
-   #   }
-   # }
-
   end
 
   it "can merge two subjects" do

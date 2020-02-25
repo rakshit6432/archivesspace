@@ -238,19 +238,7 @@ module JSONModel::Validations
     errors << ["date_standardized", "or date expression is required"] unless has_expr_date || has_std_date
 
     if has_std_date
-      matches_y          = (hash["date_standardized"] =~ /^[\d]{1}$/) == 0
-      matches_y_mm       = (hash["date_standardized"] =~ /^[\d]{1}-[\d]{2}$/) == 0
-      matches_yy         = (hash["date_standardized"] =~ /^[\d]{2}$/) == 0
-      matches_yy_mm      = (hash["date_standardized"] =~ /^[\d]{2}-[\d]{2}$/) == 0
-      matches_yyy        = (hash["date_standardized"] =~ /^[\d]{3}$/) == 0
-      matches_yyy_mm     = (hash["date_standardized"] =~ /^[\d]{3}-[\d]{2}$/) == 0
-      matches_yyyy       = (hash["date_standardized"] =~ /^[\d]{4}$/) == 0
-      matches_yyyy_mm    = (hash["date_standardized"] =~ /^[\d]{4}-[\d]{2}$/) == 0
-      matches_yyyy_mm_dd = (hash["date_standardized"] =~ /^[\d]{4}-[\d]{2}-[\d]{2}$/) == 0
-      matches_mm_yyyy    = (hash["date_standardized"] =~ /^[\d]{2}-[\d]{4}$/) == 0
-      matches_mm_dd_yyyy = (hash["date_standardized"] =~ /^[\d]{4}-[\d]{2}-[\d]{2}$/) == 0
-
-      errors << ["date_standardized", "must be in YYYY[YYY][YY][Y], YYYY[YYY][YY][Y]-MM, or YYYY-MM-DD format"] unless matches_yyyy || matches_yyyy_mm || matches_yyyy_mm_dd || matches_yyy || matches_yy || matches_y || matches_yyy_mm || matches_yy_mm || matches_y_mm || matches_mm_yyyy || matches_mm_dd_yyyy
+      errors = check_standard_date(hash["date_standardized"], errors)
     end
 
     return errors
@@ -280,35 +268,11 @@ module JSONModel::Validations
     errors << ["end_date_standardized", "requires begin_date_standardized to be defined"] if (!has_begin_std_date && has_end_std_date)
 
     if has_begin_std_date
-      matches_y          = (hash["begin_date_standardized"] =~ /^[\d]{1}$/) == 0
-      matches_y_mm       = (hash["begin_date_standardized"] =~ /^[\d]{1}-[\d]{2}$/) == 0
-      matches_yy         = (hash["begin_date_standardized"] =~ /^[\d]{2}$/) == 0
-      matches_yy_mm      = (hash["begin_date_standardized"] =~ /^[\d]{2}-[\d]{2}$/) == 0
-      matches_yyy        = (hash["begin_date_standardized"] =~ /^[\d]{3}$/) == 0
-      matches_yyy_mm     = (hash["begin_date_standardized"] =~ /^[\d]{3}-[\d]{2}$/) == 0
-      matches_yyyy       = (hash["begin_date_standardized"] =~ /^[\d]{4}$/) == 0
-      matches_yyyy_mm    = (hash["begin_date_standardized"] =~ /^[\d]{4}-[\d]{2}$/) == 0
-      matches_yyyy_mm_dd = (hash["begin_date_standardized"] =~ /^[\d]{4}-[\d]{2}-[\d]{2}$/) == 0
-      matches_mm_yyyy    = (hash["begin_date_standardized"] =~ /^[\d]{2}-[\d]{4}$/) == 0
-      matches_mm_dd_yyyy = (hash["begin_date_standardized"] =~ /^[\d]{4}-[\d]{2}-[\d]{2}$/) == 0
-
-      errors << ["begin_date_standardized", "must be in YYYY[YYY][YY][Y], YYYY[YYY][YY][Y]-MM, or YYYY-MM-DD format"] unless matches_yyyy || matches_yyyy_mm || matches_yyyy_mm_dd || matches_yyy || matches_yy || matches_y || matches_yyy_mm || matches_yy_mm || matches_y_mm || matches_mm_yyyy || matches_mm_dd_yyyy
+      errors = check_standard_date(hash["begin_date_standardized"], errors, "begin_date_standardized")
     end
 
     if has_end_std_date
-      matches_y          = (hash["end_date_standardized"] =~ /^[\d]{1}$/) == 0
-      matches_y_mm       = (hash["end_date_standardized"] =~ /^[\d]{1}-[\d]{2}$/) == 0
-      matches_yy         = (hash["end_date_standardized"] =~ /^[\d]{2}$/) == 0
-      matches_yy_mm      = (hash["end_date_standardized"] =~ /^[\d]{2}-[\d]{2}$/) == 0
-      matches_yyy        = (hash["end_date_standardized"] =~ /^[\d]{3}$/) == 0
-      matches_yyy_mm     = (hash["end_date_standardized"] =~ /^[\d]{3}-[\d]{2}$/) == 0
-      matches_yyyy       = (hash["end_date_standardized"] =~ /^[\d]{4}$/) == 0
-      matches_yyyy_mm    = (hash["end_date_standardized"] =~ /^[\d]{4}-[\d]{2}$/) == 0
-      matches_yyyy_mm_dd = (hash["end_date_standardized"] =~ /^[\d]{4}-[\d]{2}-[\d]{2}$/) == 0
-      matches_mm_yyyy    = (hash["end_date_standardized"] =~ /^[\d]{2}-[\d]{4}$/) == 0
-      matches_mm_dd_yyyy = (hash["end_date_standardized"] =~ /^[\d]{4}-[\d]{2}-[\d]{2}$/) == 0
-
-      errors << ["end_date_standardized", "must be in YYYY[YYY][YY][Y], YYYY[YYY][YY][Y]-MM, or YYYY-MM-DD format"] unless matches_yyyy || matches_yyyy_mm || matches_yyyy_mm_dd || matches_yyy || matches_yy || matches_y || matches_yyy_mm || matches_yy_mm || matches_y_mm || matches_mm_yyyy || matches_mm_dd_yyyy
+      errors = check_standard_date(hash["end_date_standardized"], errors, "end_date_standardized")
     end
 
     if errors.length == 0 && hash["begin_date_standardized"] && hash["end_date_standardized"]
@@ -830,6 +794,24 @@ module JSONModel::Validations
     end
 
     errors
+  end
+
+  def self.check_standard_date(date_standardized, errors, field_name = "date_standardized")
+    matches_y          = (date_standardized =~ /^[\d]{1}$/) == 0
+    matches_y_mm       = (date_standardized =~ /^[\d]{1}-[\d]{2}$/) == 0
+    matches_yy         = (date_standardized =~ /^[\d]{2}$/) == 0
+    matches_yy_mm      = (date_standardized =~ /^[\d]{2}-[\d]{2}$/) == 0
+    matches_yyy        = (date_standardized =~ /^[\d]{3}$/) == 0
+    matches_yyy_mm     = (date_standardized =~ /^[\d]{3}-[\d]{2}$/) == 0
+    matches_yyyy       = (date_standardized =~ /^[\d]{4}$/) == 0
+    matches_yyyy_mm    = (date_standardized =~ /^[\d]{4}-[\d]{2}$/) == 0
+    matches_yyyy_mm_dd = (date_standardized =~ /^[\d]{4}-[\d]{2}-[\d]{2}$/) == 0
+    matches_mm_yyyy    = (date_standardized =~ /^[\d]{2}-[\d]{4}$/) == 0
+    matches_mm_dd_yyyy = (date_standardized =~ /^[\d]{4}-[\d]{2}-[\d]{2}$/) == 0
+
+    errors << [field_name, "must be in YYYY[YYY][YY][Y], YYYY[YYY][YY][Y]-MM, or YYYY-MM-DD format"] unless matches_yyyy || matches_yyyy_mm || matches_yyyy_mm_dd || matches_yyy || matches_yy || matches_y || matches_yyy_mm || matches_yy_mm || matches_y_mm || matches_mm_yyyy || matches_mm_dd_yyyy
+
+    return errors  
   end
 
 

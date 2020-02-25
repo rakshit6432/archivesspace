@@ -372,7 +372,6 @@ module ASModel
 
         obj.refresh
         obj.create_ark_name if AppConfig[:arks_enabled]
-
         obj
       end
 

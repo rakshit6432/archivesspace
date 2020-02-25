@@ -1,5 +1,7 @@
 class ArchivesSpaceService < Sinatra::Base
 
+  RESOLVE_LIST = ["subjects", "related_resources", "linked_agents", "revision_statements", "container_locations", "digital_object", "classifications", "related_agents", "resource", "parent", "creator", "linked_instances", "linked_records", "related_accessions", "linked_events", "linked_events::linked_records", "linked_events::linked_agents", "top_container", "container_profile", "location_profile", "owner_repo", "agent_places", "agent_occupations", "agent_functions", "agent_topics", "agent_resources", "places"]
+
   Endpoint.post('/merge_requests/subject')
     .description("Carry out a merge request against Subject records")
     .params(["merge_request",
@@ -105,14 +107,14 @@ class ArchivesSpaceService < Sinatra::Base
     if params[:dry_run]
       target = agent_model.to_jsonmodel(target)
       victim = agent_model.to_jsonmodel(victim)
-      new_target = merge_details(target, victim, selections, params, true)
-      result = resolve_references(new_target, resolve_list)
+      new_target = merge_details(target, victim, selections, params)
+      result = resolve_references(new_target, RESOLVE_LIST)
 
-      json_response(resolve_references(result, resolve_list))
+      json_response(resolve_references(result, RESOLVE_LIST))
     else
       target_json = agent_model.to_jsonmodel(target)
       victim_json = agent_model.to_jsonmodel(victim)
-      new_target = merge_details(target_json, victim_json, selections, params, false)
+      new_target = merge_details(target_json, victim_json, selections, params)
 
       target.assimilate((victims.map {|v|
                                        AgentManager.model_for(v[:type]).get_or_die(v[:id])
@@ -251,7 +253,7 @@ class ArchivesSpaceService < Sinatra::Base
     
   end
 
-  def merge_details(target, victim, selections, params, dry_run)
+  def merge_details(target, victim, selections, params)
     target[:linked_events] = []
     victim[:linked_events] = []
 
@@ -404,11 +406,6 @@ class ArchivesSpaceService < Sinatra::Base
     k == "jsonmodel_type"
   end
 
-  # needs to be passed into resolve_references.
-  def resolve_list
-    ["subjects", "related_resources", "linked_agents", "revision_statements", "container_locations", "digital_object", "classifications", "related_agents", "resource", "parent", "creator", "linked_instances", "linked_records", "related_accessions", "linked_events", "linked_events::linked_records", "linked_events::linked_agents", "top_container", "container_profile", "location_profile", "owner_repo", "agent_places", "agent_occupations", "agent_functions", "agent_topics", "agent_resources", "places"]
-  end
-  
   # NOTE: this code is a duplicate of the auto_generate code for creating sort name
   # in the name_person, name_family, name_software, name_corporate_entity models
   # Consider refactoring when continued work done on the agents model enhancements
