@@ -334,7 +334,13 @@ class ArchivesSpaceService < Sinatra::Base
 
       replacer = victim[subrec_name][subrec_index]
 
-      if mode == "replace"
+      # notes are a special case because of the way they store JSON in a db field. So Reordering is not supported, and we can assume the position in the merge request is the position in the victims notes subrecord JSON.
+      if subrec_name == "notes"
+        replacer = victim["notes"][ind]
+        to_append = process_subrecord_for_merge(target, replacer, subrec_name, mode, ind)
+
+        target[subrec_name].push(process_subrecord_for_merge(target, replacer, subrec_name, mode, ind))
+      elsif mode == "replace"
         target[subrec_name][ind] = process_subrecord_for_merge(target, replacer, subrec_name, mode, ind)
       elsif mode == "append"
         target[subrec_name].push(process_subrecord_for_merge(target, replacer, subrec_name, mode, ind))
