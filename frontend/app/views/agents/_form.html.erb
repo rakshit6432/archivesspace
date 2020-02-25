@@ -2,7 +2,7 @@
 
 <%= render_aspace_partial :partial => "agents/contact_details", :locals => {:form => form} %>
 
-<% if AppConfig[:agents_display_full] == false %>
+<% if AppConfig[:agents_display_full] == false || !@full_mode %>
   <% invisible = true %>
 <% else %>
   <% invisible = false %>

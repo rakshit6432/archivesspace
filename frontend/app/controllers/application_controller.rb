@@ -158,10 +158,6 @@ class ApplicationController < ActionController::Base
     begin
       request.save(:record_type => merge_type)
 
-      puts "++++++++++++++++++++++++++++++"
-      puts "IN APPLICATION CONTROLLER"
-      puts request.inspect
-      
       flash[:success] = I18n.t("#{merge_type}._frontend.messages.merged")
 
       resolver = Resolver.new(target_uri)
