@@ -12,7 +12,6 @@
 //= require embedded_search
 
 $(function() {
-  console.log($(this))
   $("button.preview-merge").on("click", function() {
     var $form = $( "form:eq( 4 )" )
     AS.openCustomModal("mergePreviewModal", $(this).text(), "<div class='alert alert-info'>Loading...</div>", {}, this);
@@ -82,18 +81,12 @@ $(function() {
       var left_group_parent_id  = section.attr('id');
       var right_group_parent_id = "#".concat(left_group_parent_id.replace("left", "right"));
 
-      console.log(left_group_parent_id);
-      console.log(right_group_parent_id);
-
       clear_replace($(right_group_parent_id));
 
       section.find("li").each(function(i) {
         gclass = (i % 2 == 0) ? "merge-group-even" : "merge-group-odd";
         left_li  = $(this);
         right_li = $(right_group_parent_id.concat(" li:nth-of-type(", i + 1, ")"))
-
-        console.log(left_li);
-        console.log(right_li);
 
         if(right_li.length > 0) {
           left_li.addClass(gclass);
@@ -113,33 +106,55 @@ $(function() {
     $(".merge-group-right li").each(function() {
       var li_parent = $(this)
 
-      $(this).find(".append-control").click(function() {
+      var append_box = $(this).find(".append-control input").first();
+      append_box.click(function() {
+
+        var append_box_checked = append_box.is(":checked");
+
         li_parent.find(".replace-control input").each(function() {
           $(this).prop("checked", false)
         });
 
         li_parent.find(".subreplace-control input").each(function() {
           $(this).prop("checked", false);
-          $(this).prop("disabled", false); 
+
+          if (append_box_checked == true) {
+            $(this).prop("disabled", true); 
+          }
+          else {
+            $(this).prop("disabled", false); 
+          }
         });
       });
 
-      $(this).find(".replace-control").click(function() {
+      var replace_box = $(this).find(".replace-control input").first();
+      replace_box.click(function() {
+        var replace_box_checked = replace_box.is(":checked");
+
         li_parent.find(".append-control input").each(function() {
           $(this).prop("checked", false)
         });
 
         li_parent.find(".subreplace-control input").each(function() {
           $(this).prop("checked", function(i, val) {
-            return !val;
+            if(replace_box_checked == true) {
+              return true;
+            }
+            else {
+              return false;
+            }
           });
 
           $(this).prop("disabled", function(i, val) {
-            return !val;
+            if(replace_box_checked == true) {
+              return true;
+            }
+            else {
+              return false;
+            }
           });
         });
       });
-
     });
 
 
