@@ -1,0 +1,62 @@
+  <dl class="dl-horizontal">
+    <dt><%= I18n.t('structured_date_label.date_label') %></dt>
+    <dd><%= result['date_label'] %></dd>
+
+    <dt><%= I18n.t('structured_date_label.date_type_enum') %></dt>
+    <dd><%= I18n.t('enumerations.date_type_enum.' + result['date_type_enum']) %></dd>
+
+    <% if result['date_certainty'] %>
+    	<dt><%= I18n.t('structured_date_label.date_certainty') %></dt>
+    	<dd><%= I18n.t('enumerations.date_certainty.' + result['date_certainty']) %></dd>
+    <% end %>
+
+    <% if result['date_era'] %>
+      <dt><%= I18n.t('structured_date_label.date_era') %></dt>
+      <dd><%= I18n.t('enumerations.date_era.' + result['date_era']) %></dd>
+    <% end %>
+
+    <% if result['date_calendar'] %>
+      <dt><%= I18n.t('structured_date_label.date_calendar') %></dt>
+      <dd><%= I18n.t('enumerations.date_calendar.' + result['date_calendar']) %></dd>
+    <% end %>
+
+    <% if result['structured_date_single'] %>
+    	<% sds = result['structured_date_single'] %>
+	    <dt><%= I18n.t('structured_date_single.date_role_enum') %></dt>
+      <dd><%= I18n.t('enumerations.date_role_enum.' + sds['date_role_enum']) %></dd>
+
+	    <dt><%= I18n.t('structured_date_single.date_expression') %></dt>
+	    <dd><%= sds['date_expression'] %></dd>
+
+	    <dt><%= I18n.t('structured_date_single.date_standardized') %></dt>
+	    <dd><%= sds['date_standardized'] %></dd>
+
+	    <dt><%= I18n.t('structured_date_single.date_standardized_type_enum') %></dt>
+      <dd><%= I18n.t('enumerations.date_standardized_type_enum.' + sds['date_standardized_type_enum']) %></dd>
+    <% end %>
+
+    <% if result['structured_date_range'] %>
+    	<% sdr = result['structured_date_range'] %>
+
+	    <dt><%= I18n.t('structured_date_range.begin_date_expression') %></dt>
+	    <dd><%= sdr['begin_date_expression'] %></dd>
+
+	    <dt><%= I18n.t('structured_date_range.begin_date_standardized') %></dt>
+	    <dd><%= sdr['begin_date_standardized'] %></dd>
+	    
+	    <dt><%= I18n.t('structured_date_range.begin_date_standardized_type_enum') %></dt>
+      <dd><%= I18n.t('enumerations.begin_date_standardized_type_enum.' + sdr['begin_date_standardized_type_enum']) %></dd>
+
+      <dt><%= I18n.t('structured_date_range.end_date_expression') %></dt>
+	    <dd><%= sdr['end_date_expression'] %></dd>
+
+	    <dt><%= I18n.t('structured_date_range.end_date_standardized') %></dt>
+	    <dd><%= sdr['end_date_standardized'] %></dd>
+	    
+	    <dt><%= I18n.t('structured_date_range.end_date_standardized_type_enum') %></dt>
+      <dd><%= I18n.t('enumerations.end_date_standardized_type_enum.' + sdr['end_date_standardized_type_enum']) %></dd>
+    <% end %>
+  </dl>
+
+
+ 

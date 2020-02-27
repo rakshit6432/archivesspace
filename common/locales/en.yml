@@ -535,6 +535,8 @@ en:
 
   parallel_name_person:
     <<: *agent_name_attributes
+    _singular: Parallel Name
+    _plural: Parallel Names
 
   name_family: &agent_family_attributes
     <<: *agent_name_attributes

@@ -9,26 +9,77 @@
     </div>
   </div>
 
+
 <div class="row">
   <div class="col-sm-9">
-    <% if !@result.dates.blank? %>
-      <h2><%= t('agent._public.section.dates_of_existence') %></h2>
-      <%= render partial: 'shared/dates', locals: {:dates => @result.dates} %>
+    <%# RECORD IDs %>
+    <% ari = render partial: 'agent_record_identifiers', locals: {:result => @result} %>
+    <% unless ari.blank? %>
+      <%= render partial: 'shared/accordion_panel', locals: 
+        {:p_title =>  I18n.t('agent_record_identifier._plural'),
+         :p_id => "agent_record_identifiers_panel",
+         :p_body => ari} %>
     <% end %>
 
-    <%= render partial: 'shared/display_notes' %>
+    <%# ENTITY IDs %>
+    <% ai = render partial: 'agent_identifiers', locals: {:result => @result} %>
+    <% unless ai.blank? %>
+      <%= render partial: 'shared/accordion_panel', locals: 
+        {:p_title =>  I18n.t('agent_identifier._plural'),
+         :p_id => "agent_identifiers_panel",
+         :p_body => ai} %>
+    <% end %>
 
- <% if !@results.blank? && @results['total_hits'] > 0 %>
-     <h2><%= t('found', {:count => @results['total_hits'], :type => @results['total_hits'] == 1? t('coll_obj._singular') : t('coll_obj._plural')}) %>:</h2>
-         <%= render partial: 'shared/pagination', locals: {:pager  => @pager}  %>
-         <% @results.records.each do |result| %>
-           <%= render partial: 'shared/result', locals: {:result => result, :props => {:full => false}} %>
-         <% end %>
-         <%= render partial: 'shared/pagination', locals: {:pager  => @pager}  %>
+    <%# NAMES %>
+    <% if @result.json['jsonmodel_type'] == "agent_person" %>
 
-   <% end %>
+      <% n = render partial: 'name_person', locals: {:result => @result} %>
 
+      <%= render partial: 'shared/accordion_panel', locals: 
+        {:p_title =>  I18n.t('name_person._plural'),
+         :p_id => "names_panel",
+         :p_body => n } %>
+
+    <% elsif @result.json['jsonmodel_type'] == "agent_family" %>
+    <% elsif @result.json['jsonmodel_type'] == "agent_corporate_entity" %>
+    <% elsif @result.json['jsonmodel_type'] == "agent_software" %>
+    <% end %>
+
+    <%# DATES OF EXISTENCE %> 
+    <% if @result.json['dates_of_existence'].any? %>
+
+      <% de = "" %>     
+      <% @result.json['dates_of_existence'].each do |d| %>
+        <% de += render partial: 'structured_date', locals: {:result => d} %>
+      <% end %>
+
+      <%= render partial: 'shared/accordion_panel', locals: 
+        {:p_title =>  I18n.t('dates_of_existence._plural'),
+         :p_id => "dates_of_existence_panel",
+         :p_body => de.html_safe } %>
+ 
+    <% end %>
+
+    <%# CONTACT DETAILS %>
+    <% cd = render partial: 'contact_details', locals: {:result => @result} %>
+    <% unless cd.blank? %>
+      <%= render partial: 'shared/accordion_panel', locals: 
+        {:p_title =>  I18n.t('agent_contact._plural'),
+         :p_id => "contact_details_panel",
+         :p_body => cd} %>
+    <% end %>
+
+
+    <%# NOTES %>
+    <% n = render partial: 'agent_notes', locals: {:result => @result} %>
+    <% unless n.blank? %>
+      <%= render partial: 'shared/accordion_panel', locals: 
+        {:p_title =>  I18n.t('agent_notes._plural'),
+         :p_id => "agent_notes_panel",
+         :p_body => n} %>
+    <% end %>
   </div>
+
   <div id="sidebar" class="col-sm-3 sidebar sidebar-container">
     <% if @result.json['names'].length > 1 ||
           (@result.respond_to?(:related_agents) && !ASUtils.wrap(@result.related_agents).empty?) ||
@@ -60,8 +111,7 @@
   <% end %>
 
   <% if !@facets.blank? || !@filters.blank? %>
-  <%= render partial: 'shared/facets' %>
+    <%= render partial: 'shared/facets' %>
   <% end %>
   </div>
-</div>
 </div>

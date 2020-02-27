@@ -75,7 +75,7 @@ class AgentPerson < Record
       out
     end
 
-    md.delete_if { |key,value| value.empty? }
+    md.delete_if { |key,value| value.nil? ? false : value.empty? }
   end
 
 
