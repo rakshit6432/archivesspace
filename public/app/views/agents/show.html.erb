@@ -85,7 +85,7 @@
           <%= render partial: 'shared/accordion_panel', locals: {:p_title => t('agent._public.section.other_names'), :p_id => 'other_names_list', :p_body => x.html_safe} %>
         <% end %>
         <% if @result.respond_to?(:related_agents) && !ASUtils.wrap(@result.related_agents).empty? %>
-          <% x = render partial: 'agents/related_agents', locals: {:related_agents => @result.related_agents, :list_clss => 'related_agents'} %>
+          <% x = render partial: 'agents/related_agents', locals: {:related_agents => @result.json['related_agents'], :list_clss => 'related_agents'} %>
           <%= render partial: 'shared/accordion_panel', locals: {:p_title => t('agent._public.section.related_agents'), :p_id => 'related_agents_list', :p_body => x} %>
         <% end %>
         <% unless @result.external_documents.blank? %>

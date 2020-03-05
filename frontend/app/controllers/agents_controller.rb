@@ -62,6 +62,8 @@ class AgentsController < ApplicationController
   end
 
   def create
+    @full_mode = user_can?("show_full_agents") || user_can?("administer_system")
+    
     if @required.class == RequiredFields
       required_values = @required.values
     else
@@ -96,6 +98,8 @@ class AgentsController < ApplicationController
   end
 
   def update
+    @full_mode = user_can?("show_full_agents") || user_can?("administer_system")
+
     handle_crud(:instance => :agent,
                 :model => JSONModel(@agent_type),
                 :obj => JSONModel(@agent_type).find(params[:id], find_opts),

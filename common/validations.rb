@@ -122,9 +122,12 @@ module JSONModel::Validations
 
   [:name_person, :name_family, :name_corporate_entity, :name_software].each do |type|
     if JSONModel(type)
-      JSONModel(type).add_validation("#{type}_check_source") do |hash|
-        check_source(hash)
-      end
+      # ANW-429: make source and rules completely optional. Is this (check_source) the right validation to change? See:
+      # https://docs.google.com/spreadsheets/d/1fL44mUxo8D9o45NHsjKd21ljbvWJzNBQCIm4_Q_tcTU/edit#gid=0 
+      # ^^ Cell 85
+      #JSONModel(type).add_validation("#{type}_check_source") do |hash|
+        #check_source(hash)
+      #end
       JSONModel(type).add_validation("#{type}_check_name") do |hash|
         check_name(hash)
       end

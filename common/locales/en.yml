@@ -504,6 +504,8 @@ en:
     use_dates: Usage Dates
     use_dates_tooltip: |
         <p>Dates in which this name was used for the agent.</p>
+    parallel_names_tooltip: |
+        <p>Can be used to record a parallel form of the name in different languages and/or scripts or transliterated forms of the name.</p>
     qualifier: Qualifier
     qualifier_tooltip: |
         <p>A term or phrase for distinguishing two name forms identical in all other respects but identifying two different entities.  The term may be a date, a place, or any other suitable descriptor.</p>
@@ -900,7 +902,7 @@ en:
       <p>The type of note for the content.  Note types are used for guiding export of note contents to certain elements in specific data formats.</p>
 
   related_agent: &related_agent_attributes
-    relationship_type: Relationship Type
+    relationship_type: General Relationship Type
     _singular: Related Agent
     _plural: Related Agents
 
@@ -908,7 +910,8 @@ en:
     <<: *related_agent_attributes
 
   agent_relationship_parentchild:
-    relator: Relationship Type
+    relator: Specific Relationship Type
+    relator_tooltip: A specific qualifier that describes the relationship.
     description: Description
     ref: Related Agent
     date: Date
@@ -916,7 +919,8 @@ en:
     _singular: Parent/Child Relationship
 
   agent_relationship_earlierlater:
-    relator: Relationship Type
+    relator: Specific Relationship Type
+    relator_tooltip: A specific qualifier that describes the relationship.
     description: Description
     ref: Related Agent
     date: Date
@@ -924,7 +928,8 @@ en:
     _singular: Earlier/Later Relationship
 
   agent_relationship_subordinatesuperior:
-    relator: Relationship Type
+    relator: Specific Relationship Type
+    relator_tooltip: A specific qualifier that describes the relationship.
     description: Description
     ref: Related Agent
     date: Date
@@ -932,7 +937,8 @@ en:
     _singular: Subordinate/Superior Relationship
 
   agent_relationship_associative:
-    relator: Relationship Type
+    relator: Specific Relationship Type
+    relator_tooltip: A specific qualifier that describes the relationship.
     description: Description
     date: Date
     dates: Dates
@@ -940,7 +946,8 @@ en:
     _singular: Associative Relationship
 
   agent_relationship_identity:
-    relator: Relationship Type
+    relator: Specific Relationship Type
+    relator_tooltip: A specific qualifier that describes the relationship.
     description: Description
     date: Date
     dates: Dates
@@ -948,16 +955,17 @@ en:
     _singular: Identity Relationship
 
   agent_relationship_hierarchical:
-    relator: Relationship Type
+    relator: Specific Relationship Type
+    relator_tooltip: A specific qualifier that describes the relationship.
     description: Description
     date: Date
     dates: Dates
     ref: Related Agent
     _singular: Hierarchical Relationship
 
-
   agent_relationship_temporal:
-    relator: Relationship Type
+    relator: Specific Relationship Type
+    relator_tooltip: A specific qualifier that describes the relationship.
     description: Description
     date: Date
     dates: Dates
@@ -965,7 +973,8 @@ en:
     _singular: Temporal Relationship
 
   agent_relationship_family:
-    relator: Relationship Type
+    relator: Specific Relationship Type
+    relator_tooltip: A specific qualifier that describes the relationship.
     description: Description
     date: Date
     dates: Dates
@@ -1622,6 +1631,8 @@ en:
     notes: Notes
     notes_tooltip: |
         <p>Records additional descriptive information about an Agent, such as a biographical note or an administrative history.</p>
+    agent_contact_notes_tooltip: |
+        <p>Notes about interactions with the agent.</p>
     related_agents_tooltip: |
         <p>Allows links from this Agent record to another in associative, hierarchical, or parent/child relationships.</p>
     external_documents_tooltip: |
@@ -1648,15 +1659,16 @@ en:
         <p>A source used in the formulation of the Agent record content.</p>
     agent_identifiers_tooltip: |
         <p>Identifiers associated with an entity, such as legal identifiers assigned by an authoritative agency. Examples include an ORCID identifier for a person or a MARC Repository Code for a corporate entity.</p>
-    agent_genders_tooltip: Agent Genders Tooltip
-    agent_places_tooltip: Agent Places Tooltip
-    agent_occupations_tooltip: Agent Occupations Tooltip
-    agent_functions_tooltip: Agent Functions Tooltip
-    agent_topics_tooltip: Agent Topics Tooltip
+    agent_genders_tooltip: Gender of the subject.
+    agent_places_tooltip: Place information associated with the agent.
+    agent_occupations_tooltip: Occupation information associated with the agent.
+    agent_functions_tooltip: Terms used to identify the functions, processes, tasks, activities or transactions performed by the agent.
+    agent_topics_tooltip: A subject associated with the agent.
     agent_contacts_tooltip: Agent Contacts Tooltip
-    used_languages_tooltip: Languages Tooltip 
+    used_languages_tooltip: "The language(s) associated with the agent. Example: English."
     related_agents_tooltip: Other agents associated with the agent.
     agent_resources_tooltip: Resources and other records associated with the agent.
+    related_agent_tooltip: Used to link other agents with a relationship to the agent and indicate the nature of the relationship.
 
 
   agent_person:

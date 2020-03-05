@@ -12,8 +12,10 @@
       <dt><%= I18n.t('name_person.source') %></dt>
       <dd><%= r['source'] %></dd>
 
-      <dt><%= I18n.t('name_person.rules') %></dt>
-      <dd><%= I18n.t('enumerations.name_rule.' + r['rules']) %></dd>
+      <% if r['rules'] %>
+        <dt><%= I18n.t('name_person.rules') %></dt>
+        <dd><%= I18n.t('enumerations.name_rule.' + r['rules']) %></dd>
+      <% end %>
 
       <dt><%= I18n.t('name_person.name_order') %></dt>
       <dd><%= r['name_order'] %></dd>
