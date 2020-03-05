@@ -1,0 +1,81 @@
+<% if result.json['names'].any? %>
+  
+  <% result.json['names'].each do |r| %>
+    <dl class="dl-horizontal">
+
+      <dt><%= I18n.t('name_corporate_entity.is_display_name') %></dt>
+      <dd><%= r['is_display_name'] %></dd>
+
+      <dt><%= I18n.t('name_corporate_entity.authorized') %></dt>
+      <dd><%= r['authorized'] %></dd>
+
+      <dt><%= I18n.t('name_corporate_entity.source') %></dt>
+      <dd><%= r['source'] %></dd>
+
+      <% if r['rules'] %>
+        <dt><%= I18n.t('name_corporate_entity.rules') %></dt>
+        <dd><%= I18n.t('enumerations.name_rule.' + r['rules']) %></dd>
+      <% end %>
+
+      <dt><%= I18n.t('name_corporate_entity.primary_name') %></dt>
+      <dd><%= r['primary_name'] %></dd>
+
+      <dt><%= I18n.t('name_corporate_entity.subordinate_name_1') %></dt>
+      <dd><%= r['subordinate_name_1'] %></dd>
+
+      <dt><%= I18n.t('name_corporate_entity.subordinate_name_2') %></dt>
+      <dd><%= r['subordinate_name_2'] %></dd>
+
+      <dt><%= I18n.t('name_corporate_entity.number') %></dt>
+      <dd><%= r['number'] %></dd>
+
+      <dt><%= I18n.t('name_corporate_entity.dates') %></dt>
+      <dd><%= r['dates'] %></dd>
+      
+      <dt><%= I18n.t('name_corporate_entity.location') %></dt>
+      <dd><%= r['location'] %></dd>
+
+      <dt><%= I18n.t('name_corporate_entity.conference_meeting') %></dt>
+      <dd><%= r['conference_meeting'] %></dd>
+      
+      <dt><%= I18n.t('name_corporate_entity.jurisdiction') %></dt>
+      <dd><%= r['jurisdiction'] %></dd>
+
+      <dt><%= I18n.t('name_corporate_entity.language') %></dt>
+      <dd><%= r['language'] %></dd>
+
+      <dt><%= I18n.t('name_corporate_entity.script') %></dt>
+      <dd><%= r['script'] %></dd>
+
+      <dt><%= I18n.t('name_corporate_entity.qualifier') %></dt>
+      <dd><%= r['qualifier'] %></dd>
+
+      <dt><%= I18n.t('name_corporate_entity.sort_name') %></dt>
+      <dd><%= r['sort_name'] %></dd>
+    </dl>
+
+    <% if r['parallel_names'].any? %>
+
+	  	<% pn = render partial: 'parallel_name_corporate_entity', locals: {:result => r['parallel_names']} %>
+    	<%= render partial: 'shared/accordion_panel', locals: 
+				{:p_title =>  t('parallel_name_corporate_entity._plural'),
+		 		 :p_id => "parallel_names_#{r['id']}",
+		 		 :p_body => pn} %>
+	  <% end %>
+
+	  <% if r['use_dates'].any? %>
+
+			<% ud = "" %>	  	
+      <% r['use_dates'].each do |u| %>
+		  	<% ud += render partial: 'structured_date', locals: {:result => u} %>
+		  <% end %>
+
+    	<%= render partial: 'shared/accordion_panel', locals: 
+				{:p_title =>  I18n.t('use_date._plural'),
+		 		 :p_id => "use_dates_#{r['id']}",
+		 		 :p_body => ud.html_safe } %>
+	  <% end %>
+  <% end %>
+<% end %>
+
+

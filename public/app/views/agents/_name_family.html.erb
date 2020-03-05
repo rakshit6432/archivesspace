@@ -1,0 +1,72 @@
+<% if result.json['names'].any? %>
+  
+  <% result.json['names'].each do |r| %>
+    <dl class="dl-horizontal">
+
+      <dt><%= I18n.t('name_family.is_display_name') %></dt>
+      <dd><%= r['is_display_name'] %></dd>
+
+      <dt><%= I18n.t('name_family.authorized') %></dt>
+      <dd><%= r['authorized'] %></dd>
+
+      <dt><%= I18n.t('name_family.source') %></dt>
+      <dd><%= r['source'] %></dd>
+
+      <% if r['rules'] %>
+        <dt><%= I18n.t('name_family.rules') %></dt>
+        <dd><%= I18n.t('enumerations.name_rule.' + r['rules']) %></dd>
+      <% end %>
+
+      <dt><%= I18n.t('name_family.prefix') %></dt>
+      <dd><%= r['prefix'] %></dd>
+
+      <dt><%= I18n.t('name_family.family_name') %></dt>
+      <dd><%= r['family_name'] %></dd>
+
+      <dt><%= I18n.t('name_family.dates') %></dt>
+      <dd><%= r['dates'] %></dd>
+
+      <dt><%= I18n.t('name_family.family_type') %></dt>
+      <dd><%= r['family_type'] %></dd>
+      
+      <dt><%= I18n.t('name_family.location') %></dt>
+      <dd><%= r['location'] %></dd>
+
+      <dt><%= I18n.t('name_family.language') %></dt>
+      <dd><%= r['language'] %></dd>
+
+      <dt><%= I18n.t('name_family.script') %></dt>
+      <dd><%= r['script'] %></dd>
+
+      <dt><%= I18n.t('name_family.qualifier') %></dt>
+      <dd><%= r['qualifier'] %></dd>
+
+      <dt><%= I18n.t('name_family.sort_name') %></dt>
+      <dd><%= r['sort_name'] %></dd>
+    </dl>
+
+    <% if r['parallel_names'].any? %>
+
+	  	<% pn = render partial: 'parallel_name_family', locals: {:result => r['parallel_names']} %>
+    	<%= render partial: 'shared/accordion_panel', locals: 
+				{:p_title =>  t('parallel_name_family._plural'),
+		 		 :p_id => "parallel_names_#{r['id']}",
+		 		 :p_body => pn} %>
+	  <% end %>
+
+	  <% if r['use_dates'].any? %>
+
+			<% ud = "" %>	  	
+      <% r['use_dates'].each do |u| %>
+		  	<% ud += render partial: 'structured_date', locals: {:result => u} %>
+		  <% end %>
+
+    	<%= render partial: 'shared/accordion_panel', locals: 
+				{:p_title =>  I18n.t('use_date._plural'),
+		 		 :p_id => "use_dates_#{r['id']}",
+		 		 :p_body => ud.html_safe } %>
+	  <% end %>
+  <% end %>
+<% end %>
+
+

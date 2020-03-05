@@ -34,15 +34,35 @@
     <% if @result.json['jsonmodel_type'] == "agent_person" %>
 
       <% n = render partial: 'name_person', locals: {:result => @result} %>
-
       <%= render partial: 'shared/accordion_panel', locals: 
         {:p_title =>  I18n.t('name_person._plural'),
          :p_id => "names_panel",
          :p_body => n } %>
 
     <% elsif @result.json['jsonmodel_type'] == "agent_family" %>
+
+      <% n = render partial: 'name_family', locals: {:result => @result} %>
+      <%= render partial: 'shared/accordion_panel', locals: 
+        {:p_title =>  I18n.t('name_family._plural'),
+         :p_id => "names_panel",
+         :p_body => n } %>
+
     <% elsif @result.json['jsonmodel_type'] == "agent_corporate_entity" %>
+
+      <% n = render partial: 'name_corporate_entity', locals: {:result => @result} %>
+      <%= render partial: 'shared/accordion_panel', locals: 
+        {:p_title =>  I18n.t('name_corporate_entity._plural'),
+         :p_id => "names_panel",
+         :p_body => n } %>
+ 
     <% elsif @result.json['jsonmodel_type'] == "agent_software" %>
+    
+      <% n = render partial: 'name_software', locals: {:result => @result} %>
+      <%= render partial: 'shared/accordion_panel', locals: 
+        {:p_title =>  I18n.t('name_software._plural'),
+         :p_id => "names_panel",
+         :p_body => n } %>
+ 
     <% end %>
 
     <%# DATES OF EXISTENCE %> 
