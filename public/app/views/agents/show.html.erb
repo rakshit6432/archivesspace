@@ -60,16 +60,6 @@
  
     <% end %>
 
-    <%# CONTACT DETAILS %>
-    <% cd = render partial: 'contact_details', locals: {:result => @result} %>
-    <% unless cd.blank? %>
-      <%= render partial: 'shared/accordion_panel', locals: 
-        {:p_title =>  I18n.t('agent_contact._plural'),
-         :p_id => "contact_details_panel",
-         :p_body => cd} %>
-    <% end %>
-
-
     <%# NOTES %>
     <% n = render partial: 'agent_notes', locals: {:result => @result} %>
     <% unless n.blank? %>
