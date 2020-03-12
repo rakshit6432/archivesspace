@@ -1,3 +1,5 @@
+<% json = @result.json %>
+
 <div id="main-content" class="agents">
 
   <div class="row" id="info_row">
@@ -12,82 +14,95 @@
 
 <div class="row">
   <div class="col-sm-9">
-    <%# RECORD IDs %>
-    <% ari = render partial: 'agent_record_identifiers', locals: {:result => @result} %>
-    <% unless ari.blank? %>
-      <%= render partial: 'shared/accordion_panel', locals: 
-        {:p_title =>  I18n.t('agent_record_identifier._plural'),
-         :p_id => "agent_record_identifiers_panel",
-         :p_body => ari} %>
+
+    <%# DATES %>
+    <% if json['dates_of_existence'] %>
+      <h3>Dates</h3>
+      <ul>
+        <% json['dates_of_existence'].each do |d| %>
+          <li>
+            <b>Existence:</b>
+            <%= render partial: 'structured_date', locals: {:date => d} %>
+          </li>
+
+        <% end %>
+      </ul>
     <% end %>
 
-    <%# ENTITY IDs %>
-    <% ai = render partial: 'agent_identifiers', locals: {:result => @result} %>
-    <% unless ai.blank? %>
-      <%= render partial: 'shared/accordion_panel', locals: 
-        {:p_title =>  I18n.t('agent_identifier._plural'),
-         :p_id => "agent_identifiers_panel",
-         :p_body => ai} %>
-    <% end %>
+    <%# BIOGRAPHY %>
+    <% bio_notes = json['notes'].select{ |n| n['jsonmodel_type'] == "note_bioghist" && n['publish'] == true} %>
 
-    <%# NAMES %>
-    <% if @result.json['jsonmodel_type'] == "agent_person" %>
+    <% if bio_notes.any? %>
+      <h3>Biography</h3>
+      <% bio_notes.each do |n| %>
+        <% sn = n['subnotes'] %>
 
-      <% n = render partial: 'name_person', locals: {:result => @result} %>
-      <%= render partial: 'shared/accordion_panel', locals: 
-        {:p_title =>  I18n.t('name_person._plural'),
-         :p_id => "names_panel",
-         :p_body => n } %>
-
-    <% elsif @result.json['jsonmodel_type'] == "agent_family" %>
-
-      <% n = render partial: 'name_family', locals: {:result => @result} %>
-      <%= render partial: 'shared/accordion_panel', locals: 
-        {:p_title =>  I18n.t('name_family._plural'),
-         :p_id => "names_panel",
-         :p_body => n } %>
-
-    <% elsif @result.json['jsonmodel_type'] == "agent_corporate_entity" %>
-
-      <% n = render partial: 'name_corporate_entity', locals: {:result => @result} %>
-      <%= render partial: 'shared/accordion_panel', locals: 
-        {:p_title =>  I18n.t('name_corporate_entity._plural'),
-         :p_id => "names_panel",
-         :p_body => n } %>
- 
-    <% elsif @result.json['jsonmodel_type'] == "agent_software" %>
-    
-      <% n = render partial: 'name_software', locals: {:result => @result} %>
-      <%= render partial: 'shared/accordion_panel', locals: 
-        {:p_title =>  I18n.t('name_software._plural'),
-         :p_id => "names_panel",
-         :p_body => n } %>
- 
-    <% end %>
-
-    <%# DATES OF EXISTENCE %> 
-    <% if @result.json['dates_of_existence'].any? %>
-
-      <% de = "" %>     
-      <% @result.json['dates_of_existence'].each do |d| %>
-        <% de += render partial: 'structured_date', locals: {:result => d} %>
+        <% if sn.first['publish'] == true %>
+          <p><%= sn.first['content'] %></p>
+        <% end %>
       <% end %>
-
-      <%= render partial: 'shared/accordion_panel', locals: 
-        {:p_title =>  I18n.t('dates_of_existence._plural'),
-         :p_id => "dates_of_existence_panel",
-         :p_body => de.html_safe } %>
- 
     <% end %>
 
-    <%# NOTES %>
-    <% n = render partial: 'agent_notes', locals: {:result => @result} %>
-    <% unless n.blank? %>
-      <%= render partial: 'shared/accordion_panel', locals: 
-        {:p_title =>  I18n.t('agent_notes._plural'),
-         :p_id => "agent_notes_panel",
-         :p_body => n} %>
+    <%# GENERAL CONTEXT %>
+    <% gn_notes = json['notes'].select{ |n| n['jsonmodel_type'] == "note_general_context" && n['publish'] == true} %>
+
+    <% if gn_notes.any? %>
+      <h3>General Context</h3>
+      <% gn_notes.each do |n| %>
+        <% sn = n['subnotes'] %>
+
+        <% if sn.first['publish'] == true %>
+          <p><%= sn.first['content'] %></p>
+        <% end %>
+      <% end %>
     <% end %>
+
+    <%# PARALLEL NAMES %>
+    <% names_with_primarys = json['names'].select{ |n| n['parallel_names'].any? } %>
+
+    <% if names_with_primarys.any? %>
+      <h3>Parallel Names</h3>
+      <ul>
+      <% names_with_primarys.each do |n| %>
+        <% p_names = n['parallel_names'] %>
+        <% p_names.each do |pn| %>
+          <li><%= pn['primary_name'] %></li>
+        <% end %>
+      <% end %>
+      </ul>
+    <% end %>
+
+    <%# PLACES %>
+    <% if json['agent_places'].any? %>
+      <h3>Places</h3>
+      <ul>
+      <% json['agent_places'].each do |n| %>
+        <% subjects = n['subjects'] %>
+
+        <% subjects.each do |s| %>
+          <li><%= s['_resolved']['title'] %></li>
+        <% end %>
+      <% end %>
+      </ul>
+    <% end %>
+
+    <%# OCCUPATIONS %>
+    <% if json['agent_occupations'].any? %>
+      <h3>Occupations</h3>
+      <ul>
+      <% json['agent_occupations'].each do |n| %>
+        <% subjects = n['subjects'] %>
+
+        <% subjects.each do |s| %>
+          <li><%= s['_resolved']['title'] %></li>
+        <% end %>
+      <% end %>
+      </ul>
+    <% end %>
+
+
+
+
   </div>
 
   <div id="sidebar" class="col-sm-3 sidebar sidebar-container">
@@ -98,20 +113,24 @@
     <h3><%= t('more_about') %> '<%= @result.display_string %>'</h3>
     <div class="acc_holder clear" >
       <div class="panel-group" id="agent_accordion">
-        <% if @result.json['names'].length > 1 %>
-          <% other_names = @result.json['names'].reject{|name| name['is_display_name']}.collect{|name| name['sort_name']} %>
-          <% x = "<p>#{t('agent._public.section.other_names_preamble')}</p>" %>
-          <% x += render partial: 'shared/present_list', locals: {:list =>  other_names, :list_clss => 'other_names'} %>
-          <%= render partial: 'shared/accordion_panel', locals: {:p_title => t('agent._public.section.other_names'), :p_id => 'other_names_list', :p_body => x.html_safe} %>
-        <% end %>
+
+        <% n = render partial: 'name', locals: {:result => @result} %>
+
+        <%= render partial: 'shared/accordion_panel', locals: 
+          {:p_title =>  I18n.t('name_person._plural'),
+            :p_id => "names_panel",
+            :p_body => n } %>
+ 
         <% if @result.respond_to?(:related_agents) && !ASUtils.wrap(@result.related_agents).empty? %>
           <% x = render partial: 'agents/related_agents', locals: {:related_agents => @result.json['related_agents'], :list_clss => 'related_agents'} %>
           <%= render partial: 'shared/accordion_panel', locals: {:p_title => t('agent._public.section.related_agents'), :p_id => 'related_agents_list', :p_body => x} %>
         <% end %>
+
         <% unless @result.external_documents.blank? %>
           <% x = render partial: 'shared/present_list_external_docs', locals: {:list =>  @result.external_documents, :list_clss => 'external_docs'} %>
           <%= render partial: 'shared/accordion_panel', locals: {:p_title => t('external_docs'), :p_id => 'ext_doc_list', :p_body => x} %>
         <% end %>
+        
       </div>
     </div>
     <script type="text/javascript" >
