@@ -51,3 +51,9 @@
     <%= render_aspace_partial :partial => "subjects/linker", :locals => { :form => form, :linker_label => "Place", :multiplicity => "one", :term_type_filter => "geographic", :name => "places" }%>
   </div>
 <% end %>
+
+<% define_template "related_agents_place", jsonmodel_definition(:abstract_agent_relationship) do |form| %>
+  <div class="subrecord-form-fields">
+    <%= render_aspace_partial :partial => "subjects/linker", :locals => { :form => form, :linker_label => "Place", :multiplicity => "one", :term_type_filter => "geographic", :name => "place" }%>
+  </div>
+<% end %>

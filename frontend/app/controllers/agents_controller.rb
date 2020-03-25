@@ -98,6 +98,8 @@ class AgentsController < ApplicationController
   end
 
   def update
+    puts "++++++++++++++++++++++++++++++"
+    puts "params: " + params.inspect
     @full_mode = user_can?("show_full_agents") || user_can?("administer_system")
 
     handle_crud(:instance => :agent,
