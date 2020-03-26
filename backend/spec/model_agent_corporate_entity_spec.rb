@@ -52,6 +52,10 @@ describe 'Agent model' do
       agent = AgentCorporateEntity.create_from_json(build(:json_agent_corporate_entity, test_opts))
      }.to raise_error(JSONModel::ValidationException)
   end
+  
+  it "includes use dates as part of the sort name string" do
+    pending
+  end
 
   it "returns the existing agent if an name authority id is already in place " do
     json =    build( :json_agent_corporate_entity,

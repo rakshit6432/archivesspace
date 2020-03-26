@@ -33,6 +33,9 @@ describe 'Agent model' do
     expect(AgentSoftware[agent[:id]].agent_contact[0][:name]).to eq(opts[:name])
   end
 
+  it "includes use dates as part of the sort name string" do
+    pending
+  end
 
   it "requires a source to be set if an authority id is provided" do
     n1 = build(:json_name_software, :authority_id => 'wooo')

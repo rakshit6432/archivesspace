@@ -57,6 +57,10 @@ describe 'Agent Family model' do
       agent = AgentFamily.create_from_json(build(:json_agent_family, test_opts))
      }.to raise_error(JSONModel::ValidationException)
   end
+  
+  it "includes use dates as part of the sort name string" do
+    pending
+  end
 
   it "returns the existing agent if an name authority id is already in place " do
     json =    build( :json_agent_family,
