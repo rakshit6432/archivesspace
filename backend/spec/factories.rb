@@ -346,7 +346,6 @@ FactoryBot.define do
     agent_functions { [build(:json_agent_function)] }
     agent_topics { [build(:json_agent_topic)] }
     agent_identifiers { [build(:json_agent_identifier)] }
-    agent_genders { [build(:json_agent_gender)] }
     agent_resources { [build(:json_agent_resource)] }
     used_languages { [build(:json_used_language)] }
   end

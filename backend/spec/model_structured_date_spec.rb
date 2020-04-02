@@ -141,4 +141,103 @@ describe 'Structured Date model' do
     errs = JSONModel::Validations.check_structured_date_range(sdr)
     expect(errs.length > 0).to eq(true)
   end
+
+  describe "agent sort name updating from dates_of_existence" do
+    it "adds a substring of the date to people agents sort name if a date of existence on date create" do
+      agent = build(:json_agent_person_full_subrec) 
+      agent.save
+
+      ar = AgentPerson.to_jsonmodel(agent.id)
+
+      year = ar["dates_of_existence"].first["structured_date_single"]["date_standardized"].split("-")[0]
+ 
+      expect(ar["names"].first["sort_name"] =~ Regexp.new("#{year}")).to be_truthy
+    end
+
+    it "adds a substring of the date to people agents sort name if a date of existence on date update" do
+      agent = build(:json_agent_person_full_subrec) 
+      agent.save
+
+      ar = AgentPerson.to_jsonmodel(agent.id)
+      ar["dates_of_existence"].first["structured_date_single"]["date_standardized"] = nil
+      ar["dates_of_existence"].first["structured_date_single"]["date_expression"] = "Last Year"
+
+      ar.save
+
+      expect(ar["names"].first["sort_name"] =~ /Last Year/).to be_truthy
+    end
+
+    it "adds a substring of the date to famly agents sort name if a date of existence on date create" do
+      agent = build(:json_agent_family_full_subrec) 
+      agent.save
+
+      ar = AgentFamily.to_jsonmodel(agent.id)
+
+      year = ar["dates_of_existence"].first["structured_date_single"]["date_standardized"].split("-")[0]
+ 
+      expect(ar["names"].first["sort_name"] =~ Regexp.new("#{year}")).to be_truthy
+    end
+
+    it "adds a substring of the date to family agents sort name if a date of existence on date update" do
+      agent = build(:json_agent_family_full_subrec) 
+      agent.save
+
+      ar = AgentFamily.to_jsonmodel(agent.id)
+      ar["dates_of_existence"].first["structured_date_single"]["date_standardized"] = nil
+      ar["dates_of_existence"].first["structured_date_single"]["date_expression"] = "Last Year"
+
+      ar.save
+
+      expect(ar["names"].first["sort_name"] =~ /Last Year/).to be_truthy
+    end
+
+    it "adds a substring of the date to corporate_entity agents sort name if a date of existence on date create" do
+      agent = build(:json_agent_corporate_entity_full_subrec) 
+      agent.save
+
+      ar = AgentCorporateEntity.to_jsonmodel(agent.id)
+
+      year = ar["dates_of_existence"].first["structured_date_single"]["date_standardized"].split("-")[0]
+ 
+      expect(ar["names"].first["sort_name"] =~ Regexp.new("#{year}")).to be_truthy
+    end
+
+    it "adds a substring of the date to corporate_entity agents sort name if a date of existence on date update" do
+      agent = build(:json_agent_corporate_entity_full_subrec) 
+      agent.save
+
+      ar = AgentCorporateEntity.to_jsonmodel(agent.id)
+      ar["dates_of_existence"].first["structured_date_single"]["date_standardized"] = nil
+      ar["dates_of_existence"].first["structured_date_single"]["date_expression"] = "Last Year"
+
+      ar.save
+
+      expect(ar["names"].first["sort_name"] =~ /Last Year/).to be_truthy
+    end
+
+    it "adds a substring of the date to software agents sort name if a date of existence on date create" do
+      agent = build(:json_agent_software_full_subrec) 
+      agent.save
+
+      ar = AgentSoftware.to_jsonmodel(agent.id)
+
+      year = ar["dates_of_existence"].first["structured_date_single"]["date_standardized"].split("-")[0]
+ 
+      expect(ar["names"].first["sort_name"] =~ Regexp.new("#{year}")).to be_truthy
+    end
+
+    it "adds a substring of the date to software agents sort name if a date of existence on date update" do
+      agent = build(:json_agent_software_full_subrec) 
+      agent.save
+
+      ar = AgentSoftware.to_jsonmodel(agent.id)
+      ar["dates_of_existence"].first["structured_date_single"]["date_standardized"] = nil
+      ar["dates_of_existence"].first["structured_date_single"]["date_expression"] = "Last Year"
+
+      ar.save
+
+      expect(ar["names"].first["sort_name"] =~ /Last Year/).to be_truthy
+    end
+
+  end
 end
