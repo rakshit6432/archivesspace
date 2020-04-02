@@ -110,52 +110,6 @@ module AgentNames
       hash_fields
 
     end
-
-    # flatten down a structured date set to put in the sort name when agent is created or updated
-    def stringify_structured_dates_for_sort_name(use_dates)
-      use_date = use_dates.first
-      date_string = ""
-
-      if use_date
-        if use_date['date_type_enum'] == "single"
-          std = use_date['structured_date_single']['date_standardized']
-          exp = use_date['structured_date_single']['date_expression']
-
-          std = std.split("-")[0] unless std.nil?
-
-          # either the standardized date or expression should have some content
-          if std
-            date_string = std
-          elsif exp
-            date_string = exp
-          end
-              
-        elsif use_date['date_type_enum'] == "range"
-          b_std = use_date['structured_date_range']['begin_date_standardized']
-          b_exp = use_date['structured_date_range']['begin_date_expression']
-          e_std = use_date['structured_date_range']['end_date_standardized']
-          e_exp = use_date['structured_date_range']['end_date_expression']
-
-          b_std = b_std.split("-")[0] unless b_std.nil?
-          e_std = e_std.split("-")[0] unless e_std.nil?
-
-          if b_std && e_std
-            date_string = b_std + "-" + e_std
-          elsif b_exp && e_exp
-            date_string = b_exp + "-" + e_exp
-          end
-        end
-      end
-
-      return date_string
-    rescue => e
-      # if this blows up, output to the log so we know it happened.
-      # without an explicit catch exceptions here will generally be silent.
-      puts e.message
-      puts e.backtrace
-
-    end
-
   end
 
 end

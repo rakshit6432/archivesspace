@@ -46,8 +46,7 @@ class NameCorporateEntity < Sequel::Model(:name_corporate_entity)
 
                   grouped = [json["number"], json["dates"]].reject{|v| v.nil?}
                   result << " (#{grouped.join(" : ")})" if not grouped.empty?
-                  result << ", #{stringify_structured_dates_for_sort_name(json["use_dates"])}"
-
+                  result << ", #{json["sort_name_date_string"]}" if json["sort_name_date_string"]
 
                   result << " (#{json["qualifier"]})" if json["qualifier"]
 
