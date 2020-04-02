@@ -22,28 +22,9 @@ module RelatedAgents
   def self.set_up_date_record_handling(relationship_clz)
     relationship_clz.instance_eval do
       extend JSONModel
-      include ASModel
+      one_to_one :relationship_date, :class => "StructuredDateLabel", :key => :related_agents_rlshp_id
+
       include ASModel::SequelHooks
-
-      one_to_one :date, :class => "StructuredDateLabel", :key => :related_agents_rlshp_id
-
-      #def_nested_record(:the_property => :relationship_date,
-      #                  :contains_records_of_type => :structured_date_label,
-      #                  :corresponding_to_association => :structured_date_label)
-
-      one_to_one :subject, :class => "Subject", :key => :related_agents_rlshp_id
-
-      def_nested_record(:the_property => :place,
-                        :contains_records_of_type => :subject,
-                        :corresponding_to_association => :subject)
-
-      # FAILS WITH: (Unknown response: {"error":"method places= doesn't exist: /Users/manny/Dropbox/code/macCode/LibraryHost/archivesspace/build/gems/gems/sequel-4.20.0/lib/sequel/model/base.rb:2138
-
-
-      #define_relationship(:name => :subject_related_agents_rlshp_place,
-                          #:json_property => 'places',
-                          #:contains_references_to_types => proc {[Subject]})
-
 
       def self.create(values)
         date_values = values.delete('dates')
@@ -51,7 +32,7 @@ module RelatedAgents
 
         if date_values
           date = StructuredDateLabel.create_from_json(JSONModel(:structured_date_label).from_hash(date_values))
-          obj.date = date
+          obj.relationship_date = date
           obj.save
         end
 
@@ -61,7 +42,7 @@ module RelatedAgents
 
       alias_method :delete_orig, :delete
       define_method(:delete) do
-        date.delete if date
+        relationship_date.delete if relationship_date
         delete_orig
       end
 
@@ -70,8 +51,8 @@ module RelatedAgents
       define_method(:values) do
         result = values_orig
 
-        if self.date
-          result['date'] = StructuredDateLabel.to_jsonmodel(self.date).to_hash
+        if self.relationship_date
+          result['dates'] = StructuredDateLabel.to_jsonmodel(self.relationship_date).to_hash
         end
 
         result

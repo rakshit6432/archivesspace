@@ -6,8 +6,7 @@
     "subtype" => "ref",
     "properties" => {
       "description" => {"type" => "string", "maxLength" => 65000},
-      "date" => {"type" => "JSONModel(:structured_date_label) object"},
-      "place" => {"type" => "JSONModel(:subject) object"}
+      "dates" => {"type" => "JSONModel(:structured_date_label) object"}
     }
   }
 }
