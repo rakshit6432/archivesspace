@@ -239,5 +239,36 @@ describe 'Structured Date model' do
       expect(ar["names"].first["sort_name"] =~ /Last Year/).to be_truthy
     end
 
+    it "adds a substring of all dates to an agent's sortname on date create" do
+      dates = [build(:json_structured_date_label), 
+               build(:json_structured_date_label)]
+      agent = build(:json_agent_software_full_subrec, :dates_of_existence => dates) 
+      agent.save
+
+      ar = AgentSoftware.to_jsonmodel(agent.id)
+      year1 = ar["dates_of_existence"][0]["structured_date_single"]["date_standardized"].split("-")[0]
+      year2 = ar["dates_of_existence"][1]["structured_date_single"]["date_standardized"].split("-")[0]
+
+      expect(ar["names"].first["sort_name"] =~ Regexp.new("#{year1}")).to be_truthy
+      expect(ar["names"].first["sort_name"] =~ Regexp.new("#{year2}")).to be_truthy
+    end
+
+    it "adds a substring of all dates to an agent's sortname on date update" do
+      dates = [build(:json_structured_date_label), 
+               build(:json_structured_date_label)]
+      agent = build(:json_agent_software_full_subrec, :dates_of_existence => dates) 
+      agent.save
+
+      ar = AgentSoftware.to_jsonmodel(agent.id)
+      ar["dates_of_existence"][0]["structured_date_single"]["date_standardized"] = nil
+      ar["dates_of_existence"][0]["structured_date_single"]["date_expression"] = "Last Year"
+      ar["dates_of_existence"][1]["structured_date_single"]["date_standardized"] = nil
+      ar["dates_of_existence"][1]["structured_date_single"]["date_expression"] = "This Weekend"
+
+      ar.save
+
+      expect(ar["names"].first["sort_name"] =~ /Last Year/).to be_truthy
+      expect(ar["names"].first["sort_name"] =~ /This Weekend/).to be_truthy
+    end
   end
 end
