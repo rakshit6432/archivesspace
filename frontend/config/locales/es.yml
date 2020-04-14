@@ -319,10 +319,6 @@ es:
     repo_preferences: Preferencias de repositorio
     manage_user_access: Administrar el acceso de usuario
     logout: Salir
-    login: Iniciar sesión
-    login_expired_link: Por favor %{link} otra vez.
-    login_fail: Fallo de inicio de sesión
-    login_success: Inicio de sesión correcto. Redireccionando...
     register: Regístrese ahora
     register_prefix: ¿Necesita una cuenta?
     list_reports: Informes
@@ -361,6 +357,13 @@ es:
     heading: Bienvenido a ArchivesSpace
     message: Tu herramienta de administración de archivos.
     message_logged_in: Tu herramienta de administración de archivos.
+
+  login:
+    login: Registrarse
+    login_please: Por favor, registrese
+    login_expired_link: Por favor %{link} otra vez.
+    login_fail: Fallo de inicio de sesión
+    login_success: Inicio de sesión correcto. Redireccionando...
 
   breadcrumb:
     home: Página de inicio
@@ -1193,9 +1196,10 @@ es:
         updated: Contenedor Top actualizado
         filter_required: Por favor proporcionar un filtro
         max_results_limit_reached: No se han incluido todos los resultados. Por favor refine su búsqueda.
-        max_results_limit_details: "Mostrando <strong>% {visibles} </strong> de <strong> {% num_found} </strong> Resultados de la búsqueda"
-        results_summary: "Los resultados coinciden con: <strong> {% num_found} </strong>"
+        max_results_limit_details: "Mostrando <strong>% {visibles} </strong> de <strong> %{num_found} </strong> Resultados de la búsqueda"
+        results_summary: "Los resultados coinciden con: <strong> %{num_found} </strong>"
         bulk_selection_sort_help: Haga clic en una columna para establecer el orden de clasificación. Deja la tecla shift presionada para ordenar por varias columnas.
+        merged: Contenedor (es) superior (es) fusionados
         bulk_action_success: Contenedores Top actualizado
         bulk_action_success_info: Tenga en cuenta que antes de que los cambios se reflejen en los resultados de búsqueda puede pasar un rato.
         no_active_restrictions: Sin restricciones activas
@@ -1228,10 +1232,24 @@ es:
         rapid_barcode_entry: Entrada rápida de código de barras rápida
         rapid_barcode_entry_existing_barcode: Código de barras existente
         rapid_barcode_entry_new_barcode: Nuevo código de barras
+        batch_merge: Fusionar contenedores superiores
+        batch_merge_instructions: Seleccione el contenedor superior en el que se fusionarán todos los demás contenedores superiores enumerados. Los registros vinculados se volverán a vincular a este contenedor y se eliminará toda la información de los otros contenedores principales.
+        batch_merge_confirm: Confirmar combinación de contenedores superiores
+        batch_merge_confirm_question: ¿Está seguro de que desea fusionar los contenedores superiores como se enumeran a continuación? Esta acción es irreversible.
+        batch_merge_confirm_victims: "Combinar los siguientes contenedores superiores:"
+        batch_merge_confirm_target: "En este contenedor superior:"
         rapid_barcode_entry_help: Ingrese un código de barras para cada contenedor seleccionado. Deje en blanco el campo Nuevo código de barras para eliminar el código de barras actual sin reemplazarlo por un nuevo valor.
+        batch_merge: Fusionar contenedores superiores
+        batch_merge_instructions: Seleccione el contenedor superior en el que se fusionarán todos los demás contenedores superiores enumerados. Los registros vinculados se volverán a vincular a este contenedor y se eliminará toda la información de los otros contenedores principales.
+        batch_merge_confirm: Confirmar combinación de contenedores superiores
+        batch_merge_confirm_question: ¿Está seguro de que desea fusionar los contenedores superiores como se enumeran a continuación? Esta acción es irreversible.
+        batch_merge_confirm_victims: "Combinar los siguientes contenedores superiores:"
+        batch_merge_confirm_target: "En este contenedor superior:"
         batch_delete: Borrar Contenedores Top
         batch_delete_help: Borrar todos los contenedores seleccionados.
         update_n_records: "Actualizar %{n} registros"
+        select_merge_target: Seleccionar objetivo de fusión
+        merge_n_records: "Va %{n} registros"
         delete_n_records: "Borrar %{n} registros"
         update_locations_current_location: Ubicación actual
         update_locations_new_location: Nueva ubicación
@@ -1251,6 +1269,14 @@ es:
         merged: Container Profiles(s) Merged
       section:
         basic_information: Información básica
+      bulk_operations:
+        merge: Fusionar perfiles de contenedores
+        merge_instructions: Seleccione el perfil de contenedor en el que se fusionarán todos los demás perfiles de contenedor enumerados. Todos los registros vinculados se volverán a vincular a este perfil y se eliminará toda la información para los otros perfiles de contenedor.
+        merge_select_target: Seleccionar objetivo de fusión
+        confirm_merge: Confirmar perfiles de contenedor de fusión
+        confirm_merge_question: ¿Está seguro de que desea fusionar los perfiles del contenedor como se enumeran a continuación? Esta acción es irreversible.
+        confirm_merge_victims: "Combinar los siguientes perfiles de contenedor:" 
+        confirm_merge_target: "En este perfil de contenedor:"
     name: Nombre
     name_tooltip: |
         <p>CAMPO REQUERIDO. El nombre del perfil de contenedores. Pueden ser genéricos o específicos.</p>

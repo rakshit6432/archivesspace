@@ -317,10 +317,6 @@ fr:
     repo_preferences: Préférences de service d'archives
     manage_user_access: Gérer les accès utilisateurs
     logout: Déconnexion
-    login: Connexion
-    login_expired_link: Svp %{link} de nouveau.
-    login_fail: Echec de la tentative de connexion
-    login_success: Connexion réussie. Redirection...
     register: S'inscrire maintenant
     register_prefix: Créer un compte?
     list_reports: Rapports
@@ -359,6 +355,13 @@ fr:
     heading: Bienvenue sur ArchivesSpace
     message: Votre gestionnaire d'archives convivial.
     message_logged_in: Votre gestionnaire d'archives convivial.
+
+  login:
+    login: Connexion
+    login_please: Veuillez vous connecter
+    login_expired_link: Svp %{link} de nouveau.
+    login_fail: Echec de la tentative de connexion
+    login_success: Connexion réussie. Redirection...
 
   breadcrumb:
     home: Page d'accueil
@@ -1194,6 +1197,7 @@ fr:
         max_results_limit_details: "<strong>%{visible}</strong> résulats correspondants affichés sur <strong>%{num_found}</strong>"
         results_summary: "Résultats correspondants: <strong>%{num_found}</strong>"
         bulk_selection_sort_help: Cliquez sur une colonne pour définir la méthode de tri.  Maintenir la touche Maj pressée pour trier par colonnes multiples.
+        merged: Top conteneur (s) fusionné
         bulk_action_success: Top conditionnements actualisés avec succès
         bulk_action_success_info: Attention! Un certain temps peut s'écouler avant que les modifications ne soient répercutées dans les résultats de la recherche.
         no_active_restrictions: Pas de restrictions en vigueur
@@ -1226,10 +1230,24 @@ fr:
         rapid_barcode_entry: Saisie rapide de code-barres
         rapid_barcode_entry_existing_barcode: Code-barres existant
         rapid_barcode_entry_new_barcode: Nouveau code-barres
+        batch_merge: Fusionner les conteneurs
+        batch_merge_instructions: Sélectionnez le conteneur supérieur dans lequel tous les autres conteneurs répertoriés vont fusionner. Tous les enregistrements liés seront liés à ce conteneur et toutes les informations relatives au (x) autre (s) conteneur (s) supérieur (s) seront supprimées.
+        batch_merge_confirm: Confirmer la fusion des conteneurs supérieurs
+        batch_merge_confirm_question: Voulez-vous vraiment fusionner les conteneurs supérieurs comme indiqué ci-dessous? Cette action est irréversible.
+        batch_merge_confirm_victims: "Fusionner les conteneurs supérieurs suivants:"
+        batch_merge_confirm_target: "Dans ce conteneur supérieur:"
         rapid_barcode_entry_help: Entrez un code-barres pour chaque conteneur sélectionné. Laissez le champ Nouveau code-barres vide pour supprimer le code-barres actuel sans le remplacer par une nouvelle valeur.
+        batch_merge: Fusionner les conteneurs
+        batch_merge_instructions: Sélectionnez le conteneur supérieur dans lequel tous les autres conteneurs répertoriés vont fusionner. Tous les enregistrements liés seront liés à ce conteneur et toutes les informations relatives au (x) autre (s) conteneur (s) supérieur (s) seront supprimées.
+        batch_merge_confirm: Confirmer la fusion des conteneurs supérieurs
+        batch_merge_confirm_question: Voulez-vous vraiment fusionner les conteneurs supérieurs comme indiqué ci-dessous? Cette action est irréversible.
+        batch_merge_confirm_victims: "Fusionner les conteneurs supérieurs suivants:"
+        batch_merge_confirm_target: "Dans ce conteneur supérieur:"
         batch_delete: Supprimer Top conditionnements
         batch_delete_help: Supprimer tous les conditionnements sélectionnés.
         update_n_records: "Actualiser %{n} notices"
+        select_merge_target: Sélectionner la cible de fusion
+        merge_n_records: "Ça va %{n} enregistrements"
         delete_n_records: "Supprimer %{n} notices"
         update_locations_current_location: Localisation actuelle
         update_locations_new_location: Nouvelle localisation
@@ -1249,6 +1267,14 @@ fr:
         merged: Container Profiles(s) Merged
       section:
         basic_information: Information de base
+      bulk_operations:
+        merge: Fusionner les profils de conteneur
+        merge_instructions: Sélectionnez le profil de conteneur dans lequel tous les autres profils de conteneur répertoriés fusionneront. Tous les enregistrements liés seront à nouveau liés à ce profil et toutes les informations des autres profils de conteneur seront supprimées.
+        merge_select_target: Sélectionner la cible de fusion
+        confirm_merge: Confirmer les profils de conteneur de fusion
+        confirm_merge_question: Voulez-vous vraiment fusionner les profils de conteneur comme indiqué ci-dessous? Cette action est irréversible.
+        confirm_merge_victims: "Fusionner les profils de conteneur suivants:" 
+        confirm_merge_target: "Dans ce profil de conteneur:"
     name: Nom
     name_tooltip: |
         <p>CHAMP OBLIGATOIRE. Le nom d'un profil de conditionnements. Peut être générique ou spécifique.</p>
