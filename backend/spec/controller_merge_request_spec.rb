@@ -547,7 +547,8 @@ describe 'Merge request controller' do
       expect {
         JSONModel(:agent_person).find(victim.id)
       }.to raise_error(RecordNotFound)
-=======
+    end
+  end
 
   it "can merge two top containers" do
     target = create(:json_top_container)
@@ -658,7 +659,6 @@ describe 'Merge request controller' do
       expect(JSONModel(:"#{type}").find(parent1.id).instances.count).to eq(1)
       expect(JSONModel(:"#{type}").find(parent2.id).instances.count).to eq(1)
       expect(JSONModel(:"#{type}").find(parent2.id).instances).not_to include(victim)
->>>>>>> master
     end
   end
 end
