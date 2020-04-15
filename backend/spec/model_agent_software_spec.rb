@@ -34,7 +34,7 @@ describe 'Agent model' do
   end
 
   it "requires a source to be set if an authority id is provided" do
-    n1 = build(:json_name_software, :authority_id => 'wooo')
+    n1 = build(:json_name_software, :authority_id => 'wooo', :source => nil)
 
     expect {
       n1.to_hash

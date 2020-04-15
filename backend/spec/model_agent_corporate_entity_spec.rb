@@ -41,6 +41,7 @@ describe 'Agent model' do
 
     test_opts = {:names => [
                         {
+                          "source" => nil,
                           "authority_id" => "wooo",
                           "primary_name" => "Magus Magoo Inc",
                           "sort_name" => "Magus Magoo Inc"

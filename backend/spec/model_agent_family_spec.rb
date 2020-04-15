@@ -46,6 +46,7 @@ describe 'Agent Family model' do
 
     test_opts = {:names => [
                    {
+                     "source" => nil,
                      "authority_id" => "wooo",
                      "family_name" => "Magoo Family",
                      "sort_name" => "Family Magoo"
