@@ -36,17 +36,4 @@ describe 'AgentRecordControl model' do
 
     expect(arc.valid?).to eq(false)
   end
-
-  it "agent_record_control must point to unique agent record" do
-    a1  = AgentRecordControl.new(:maintenance_status_enum => "new",
-                                 :agent_person_id => 42)
-
-    a1.save
-
-    a2  = AgentRecordControl.new(:maintenance_status_enum => "new",
-                                 :agent_person_id => 42)
-
-    expect(a1.valid?).to eq(true)
-    expect(a2.valid?).to eq(false)
-  end
 end

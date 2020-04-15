@@ -53,12 +53,12 @@ describe 'Software agent controller' do
 
     agent = JSONModel(:agent_software).find(id)
 
-    expect(agent.names.first['sort_name']).to eq("ArchivesSpace")
+    expect(agent.names.first['sort_name']).to match("ArchivesSpace")
 
     agent.names.first['version'] = "1.0"
     agent.save
 
-    expect(JSONModel(:agent_software).find(id).names.first['sort_name']).to eq("ArchivesSpace 1.0")
+    expect(JSONModel(:agent_software).find(id).names.first['sort_name']).to match("ArchivesSpace 1.0")
 
   end
   
