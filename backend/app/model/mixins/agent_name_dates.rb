@@ -84,6 +84,6 @@ module AgentNameDates
       date_substrings.push(date_substring)
     end
 
-    return date_substrings.join("; ")
+    return date_substrings.join(", ")
   end
 end

@@ -55,8 +55,8 @@ class NamePerson < Sequel::Model(:name_person)
                   result << ", #{json["number"]}" if json["number"]
                   result << " (#{json["fuller_form"]})" if json["fuller_form"]
                   result << ", #{json["dates"]}" if json["dates"]
-                  result << ", #{json["sort_name_date_string"]}" if json["sort_name_date_string"]
                   result << " (#{json["qualifier"]})" if json["qualifier"]
+                  result << " (#{json["sort_name_date_string"]})" if json["sort_name_date_string"]
 
                   result.lstrip!
                   result.length > 255 ? result[0..254] : result

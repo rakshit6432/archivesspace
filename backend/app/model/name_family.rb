@@ -43,8 +43,8 @@ class NameFamily < Sequel::Model(:name_family)
                   result << json["family_name"] if json["family_name"]
                   result << ", #{json["prefix"]}" if json["prefix"]
                   result << ", #{json["dates"]}" if json["dates"]
-                  result << ", #{json["sort_name_date_string"]}" if json["sort_name_date_string"]
                   result << " (#{json["qualifier"]})" if json["qualifier"]
+                  result << " (#{json["sort_name_date_string"]})" if json["sort_name_date_string"]
 
                   result.length > 255 ? result[0..254] : result
                 },
