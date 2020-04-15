@@ -53,10 +53,6 @@ describe 'Agent model' do
      }.to raise_error(JSONModel::ValidationException)
   end
   
-  it "includes use dates as part of the sort name string" do
-    pending
-  end
-
   it "returns the existing agent if an name authority id is already in place " do
     json =    build( :json_agent_corporate_entity,
                      :names => [build(:json_name_corporate_entity,
@@ -92,7 +88,7 @@ describe 'Agent model' do
         )
 
         expected_slug = clean_slug(get_generated_name_for_agent(agent_corporate_entity))
-        expect(agent_corporate_entity[:slug]).to eq(expected_slug)
+        expect(agent_corporate_entity[:slug]).to match(expected_slug)
       end
 
       it "autogenerates a slug via identifier when configured to generate by id" do
@@ -107,7 +103,7 @@ describe 'Agent model' do
 
         expected_slug = clean_slug(agent_name_corporate_entity[:authority_id])
 
-        expect(agent_corporate_entity[:slug]).to eq(expected_slug)
+        expect(agent_corporate_entity[:slug]).to match(expected_slug)
       end
 
       it "turns off autogen if slug is blank" do
@@ -128,7 +124,7 @@ describe 'Agent model' do
         )
 
         expected_slug = clean_slug(get_generated_name_for_agent(agent_corporate_entity))
-        expect(agent_corporate_entity[:slug]).to eq(expected_slug)
+        expect(agent_corporate_entity[:slug]).to match(expected_slug)
       end
 
       it "dedupes slug when autogenerating by name" do
@@ -147,8 +143,8 @@ describe 'Agent model' do
               :names => [agent_name_corporate_entity2])
         )
 
-        expect(agent_corporate_entity1[:slug]).to eq("foo")
-        expect(agent_corporate_entity2[:slug]).to eq("foo_1")
+        expect(agent_corporate_entity1[:slug]).to match("foo")
+        expect(agent_corporate_entity2[:slug]).to match("foo_2")
       end
 
 
@@ -161,7 +157,7 @@ describe 'Agent model' do
               :is_slug_auto => true,
               :names => [agent_name_corporate_entity])
         )
-        expect(agent_corporate_entity[:slug]).to eq("foo_bar_baz")
+        expect(agent_corporate_entity[:slug]).to match("foo_bar_baz")
       end
 
       it "dedupes slug when autogenerating by id" do
@@ -181,8 +177,8 @@ describe 'Agent model' do
               :names => [agent_name_corporate_entity2])
         )
 
-        expect(agent_corporate_entity1[:slug]).to eq("foo")
-        expect(agent_corporate_entity2[:slug]).to eq("foo_1")
+        expect(agent_corporate_entity1[:slug]).to match("foo")
+        expect(agent_corporate_entity2[:slug]).to match("foo_1")
       end
     end
     

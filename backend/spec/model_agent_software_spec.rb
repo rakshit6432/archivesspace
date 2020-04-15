@@ -33,10 +33,6 @@ describe 'Agent model' do
     expect(AgentSoftware[agent[:id]].agent_contact[0][:name]).to eq(opts[:name])
   end
 
-  it "includes use dates as part of the sort name string" do
-    pending
-  end
-
   it "requires a source to be set if an authority id is provided" do
     n1 = build(:json_name_software, :authority_id => 'wooo')
 
@@ -88,7 +84,7 @@ describe 'Agent model' do
 
           expected_slug = clean_slug(get_generated_name_for_agent(agent_software))
 
-          expect(agent_software[:slug]).to eq(expected_slug)
+          expect(agent_software[:slug]).to match(expected_slug)
         end
 
         it "autogenerates a slug via identifier when configured to generate by id" do
@@ -126,7 +122,7 @@ describe 'Agent model' do
           )
 
           expected_slug = clean_slug(get_generated_name_for_agent(agent_software))
-          expect(agent_software[:slug]).to eq(expected_slug)
+          expect(agent_software[:slug]).to match(expected_slug)
         end
 
         it "dedupes slug when autogenerating by name" do

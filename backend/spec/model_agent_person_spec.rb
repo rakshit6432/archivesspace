@@ -23,9 +23,6 @@ describe 'Agent model' do
     expect(AgentPerson[agent[:id]].name_person.first[:sort_name]).to match(Regexp.new("^#{n1.primary_name}.*"))
   end
 
-  it "includes use dates as part of the sort name string" do
-  end
-
   it "allows agents to have a linked contact details" do
 
     c1 = build(:json_agent_contact)
@@ -117,7 +114,6 @@ describe 'Agent model' do
 
 
   it "can merge one agent into another" do
-    pending
     victim_agent = AgentPerson.create_from_json(build(:json_agent_person))
     target_agent = AgentPerson.create_from_json(build(:json_agent_person))
 
@@ -136,7 +132,6 @@ describe 'Agent model' do
 
 
   it "handles related agents when merging" do
-    pending
     victim_agent = AgentPerson.create_from_json(build(:json_agent_person))
     target_agent = AgentPerson.create_from_json(build(:json_agent_person))
 
@@ -152,7 +147,6 @@ describe 'Agent model' do
 
 
   it "can merge different agent types into another" do
-    pending
     victim_agent = AgentFamily.create_from_json(build(:json_agent_family))
     target_agent = AgentPerson.create_from_json(build(:json_agent_person))
 
@@ -170,7 +164,6 @@ describe 'Agent model' do
 
 
   it "can merge different agent types into another, even if they have the same DB id" do
-    pending
     victim_agent = AgentFamily.create_from_json(build(:json_agent_family))
     target_agent = AgentPerson.create_from_json(build(:json_agent_person))
 
@@ -481,7 +474,7 @@ describe 'Agent model' do
 
           expected_slug = clean_slug(get_generated_name_for_agent(agent_person))
 
-          expect(agent_person[:slug]).to eq(expected_slug)
+          expect(agent_person[:slug]).to match(expected_slug)
         end
 
         it "autogenerates a slug via identifier when configured to generate by id" do
@@ -496,7 +489,7 @@ describe 'Agent model' do
 
           expected_slug = clean_slug(agent_name_person[:authority_id])
 
-          expect(agent_person[:slug]).to eq(expected_slug)
+          expect(agent_person[:slug]).to match(expected_slug)
         end
 
         it "turns off autogen if slug is blank" do
@@ -526,7 +519,7 @@ describe 'Agent model' do
 
           expected_slug = clean_slug(get_generated_name_for_agent(agent_person))
 
-          expect(agent_person[:slug]).to eq(expected_slug)
+          expect(agent_person[:slug]).to match(expected_slug)
         end
 
         it "dedupes slug when autogenerating by name" do
@@ -546,8 +539,8 @@ describe 'Agent model' do
                 :names => [agent_name_person2])
           )
 
-          expect(agent_person1[:slug]).to eq("foo")
-          expect(agent_person2[:slug]).to eq("foo_1")
+          expect(agent_person1[:slug]).to match("foo_1")
+          expect(agent_person2[:slug]).to match("foo_2")
         end
 
 
