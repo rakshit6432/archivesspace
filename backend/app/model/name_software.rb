@@ -45,7 +45,7 @@ class NameSoftware < Sequel::Model(:name_software)
                   result << " #{json["version"]}" if json["version"]
                   result << " (#{json["qualifier"]})" if json["qualifier"]
 
-                  result << ", #{json["sort_name_date_string"]}" if json["sort_name_date_string"]
+                  result << " (#{json["sort_name_date_string"]})" if json["sort_name_date_string"]
 
 
                   result.length > 255 ? result[0..254] : result
