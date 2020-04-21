@@ -34,10 +34,17 @@ describe 'Agent model' do
   end
 
   it "requires a source to be set if an authority id is provided" do
-    n1 = build(:json_name_software, :authority_id => 'wooo', :source => nil)
+    test_opts = {:names => [
+                   {
+                     "authority_id" => "itsame",
+                     "software_name" => "Mario Teaches Typing",
+                     "sort_name" => "Mario Teaches Typing"
+                   }
+                 ]
+                }
 
     expect {
-      n1.to_hash
+      AgentSoftware.create_from_json(build(:json_agent_software, test_opts))
      }.to raise_error(JSONModel::ValidationException)
   end
 
@@ -88,7 +95,6 @@ describe 'Agent model' do
         end
 
         it "autogenerates a slug via identifier when configured to generate by id" do
-          pending "failing due to a validation error that is not showing any validation messages when generating agent_software json"
           AppConfig[:auto_generate_slugs_with_id] = true
 
           agent_name_software = build(:json_name_software, :authority_id => rand(100000).to_s)
@@ -98,7 +104,7 @@ describe 'Agent model' do
                 :names => [agent_name_software])
           )
 
-          expected_slug = clean_slug(agent_name_software[:software_name])
+          expected_slug = clean_slug(agent_name_software[:authority_id])
 
           expect(agent_software[:slug]).to eq(expected_slug)
 
@@ -126,9 +132,8 @@ describe 'Agent model' do
         end
 
         it "dedupes slug when autogenerating by name" do
-          pending "failing due to a validation error that is not showing any validation messages when generating agent_software json"
           AppConfig[:auto_generate_slugs_with_id] = false
-          agent_name_software1 = build(:json_name_software, :authority_id => "foo")
+          agent_name_software1 = build(:json_name_software, :software_name => "foo")
           agent_software1 = AgentSoftware.create_from_json(
             build(:json_agent_software,
                 :is_slug_auto => true,
@@ -142,13 +147,12 @@ describe 'Agent model' do
                 :names => [agent_name_software2])
           )
 
-          expect(agent_software1[:slug]).to eq("foo")
-          expect(agent_software2[:slug]).to eq("foo_1")
+          expect(agent_software1[:slug]).to eq("foo_1")
+          expect(agent_software2[:slug]).to eq("foo_2")
         end
 
 
         it "cleans slug when autogenerating by id" do
-          pending "failing due to a validation error that is not showing any validation messages when generating agent_software json"
           AppConfig[:auto_generate_slugs_with_id] = true
 
           agent_name_software = build(:json_name_software, :authority_id => "Foo Bar Baz&&&&")
@@ -162,7 +166,6 @@ describe 'Agent model' do
         end
 
         it "dedupes slug when autogenerating by id" do
-          pending "failing due to a validation error that is not showing any validation messages when generating agent_software json"
           AppConfig[:auto_generate_slugs_with_id] = true
 
           agent_name_software1 = build(:json_name_software, :authority_id => "foo")
