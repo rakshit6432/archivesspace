@@ -45,7 +45,7 @@
     <%= I18n.t("agent_conventions_declaration.file_version_xlink_actuate_attribute") %>
   </div>
   <div class='label-only col-sm-8'>
-    <%= I18n.t("enumerations.file_version_xlink_actuate_attribute." + agent_conventions_declaration["file_version_xlink_actuate_attribute"]) %>
+    <%= I18n.t("enumerations.file_version_xlink_actuate_attribute." + agent_conventions_declaration["file_version_xlink_actuate_attribute"]) if agent_conventions_declaration["file_version_xlink_actuate_attribute"] %>
   </div>
 </div>
 
@@ -54,7 +54,7 @@
     <%= I18n.t("agent_conventions_declaration.file_version_xlink_show_attribute") %>
   </div>
   <div class='label-only col-sm-8'>
-    <%= I18n.t("enumerations.file_version_xlink_show_attribute." + agent_conventions_declaration["file_version_xlink_show_attribute"]) %>
+    <%= I18n.t("enumerations.file_version_xlink_show_attribute." + agent_conventions_declaration["file_version_xlink_show_attribute"]) if agent_conventions_declaration["file_version_xlink_show_attribute"] %>
   </div>
 </div>
 
