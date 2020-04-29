@@ -194,6 +194,12 @@
             :obj => :name_person,
             :rel => :names,
             :map => {
+              "self::nameEntry[@lang]" => Proc.new {|name, node|
+                name[:language] = node.attr("lang")
+              },
+              "self::nameEntry[@scriptCode]" => Proc.new {|name, node|
+                name[:script] = node.attr("scriptCode")
+              },
               "descendant::part[@localType='prefix']" => Proc.new {|name, node|
                 val = node.inner_text
                 name[:prefix] = val
@@ -240,11 +246,16 @@
                 name[:source] = val
                 name[:authorized] = false
               },
-              "descendant::part[@localType='']" => Proc.new {|name, node|
+              "descendant::part[not(@localType)]" => Proc.new {|name, node|
                 val = node.inner_text
                 name[:primary_name] = val
                 name[:dates] = val.scan(/[0-9]{4}-[0-9]{4}/).flatten[0]
-              },
+              }, # if localType attr is not defined, assume primary_name
+              "descendant::part[not(@localType='prefix') and not(@localType='prefix') and not(@localType='suffix') and not(@localType='title')  and not(@localType='surname')  and not(@localType='forename') and not(@localType='numeration') and not(@localType='fuller_form') and not(@localType='dates') and not(@localType='qualifier')]" => Proc.new {|name, node|
+                val = node.inner_text
+                name[:primary_name] = val
+                name[:dates] = val.scan(/[0-9]{4}-[0-9]{4}/).flatten[0]
+              }, # if localType attr is something else
             },
             :defaults => {
               :source => 'local',
@@ -264,10 +275,39 @@
             :obj => :name_corporate_entity,
             :rel => :names,
             :map => {
-              "descendant::part" => Proc.new {|name, node|
+              "self::nameEntry[@lang]" => Proc.new {|name, node|
+                name[:language] = node.attr("lang")
+              },
+              "self::nameEntry[@scriptCode]" => Proc.new {|name, node|
+                name[:script] = node.attr("scriptCode")
+              },
+              "descendant::part[@localType='primary_name']" => Proc.new {|name, node|
                 val = node.inner_text
                 name[:primary_name] = val
-                name[:dates] = val.scan(/[0-9]{4}-[0-9]{4}/).flatten[0]
+              },
+              "descendant::part[@localType='subordinate_name_1']" => Proc.new {|name, node|
+                val = node.inner_text
+                name[:subordinate_name_1] = val
+              },
+              "descendant::part[@localType='subordinate_name_2']" => Proc.new {|name, node|
+                val = node.inner_text
+                name[:subordinate_name_2] = val
+              },
+              "descendant::part[@localType='numeration']" => Proc.new {|name, node|
+                val = node.inner_text
+                name[:number] = val
+              },
+              "descendant::part[@localType='location']" => Proc.new {|name, node|
+                val = node.inner_text
+                name[:location] = val
+              },
+              "descendant::part[@localType='dates']" => Proc.new {|name, node|
+                val = node.inner_text
+                name[:dates] = val
+              },
+              "descendant::part[@localType='qualifier']" => Proc.new {|name, node|
+                val = node.inner_text
+                name[:qualifier] = val
               },
               "descendant::authorizedForm" => Proc.new {|name, node|
                 val = node.inner_text
@@ -279,6 +319,16 @@
                 name[:source] = val
                 name[:authorized] = false
               },
+              "descendant::part[not(@localType)]" => Proc.new {|name, node|
+                val = node.inner_text
+                name[:primary_name] = val
+                name[:dates] = val.scan(/[0-9]{4}-[0-9]{4}/).flatten[0]
+              }, # if localType attr is not defined, assume primary_name
+              "descendant::part[not(@localType='primary_name') and not(@localType='subordinate_name_1') and not(@localType='subordinate_name_2') and not(@localType='numeration') and not(@localType='location') and not(@localType='dates') and not(@localType='qualifier')]" => Proc.new {|name, node|
+                val = node.inner_text
+                name[:primary_name] = val
+                name[:dates] = val.scan(/[0-9]{4}-[0-9]{4}/).flatten[0]
+              }, # if localType attr is something else
             },
             :defaults => {
               :source => 'local',
@@ -293,15 +343,40 @@
       "//eac-cpf//cpfDescription[child::identity/child::entityType='family']" => {
         :obj => :agent_family,
         :map => {
-          # NAMES (PERSON)
+          # NAMES (FAMILY)
           "descendant::nameEntry" => {
             :obj => :name_family,
             :rel => :names,
             :map => {
-              "descendant::part" => Proc.new {|name, node|
+              "self::nameEntry[@lang]" => Proc.new {|name, node|
+                name[:language] = node.attr("lang")
+              },
+              "self::nameEntry[@scriptCode]" => Proc.new {|name, node|
+                name[:script] = node.attr("scriptCode")
+              },
+              "descendant::part[@localType='prefix']" => Proc.new {|name, node|
+                val = node.inner_text
+                name[:prefix] = val
+              },
+              "descendant::part[@localType='surname']" => Proc.new {|name, node|
                 val = node.inner_text
                 name[:family_name] = val
-                name[:dates] = val.scan(/[0-9]{4}-[0-9]{4}/).flatten[0]
+              },
+              "descendant::part[@localType='family_type']" => Proc.new {|name, node|
+                val = node.inner_text
+                name[:family_type] = val
+              },
+              "descendant::part[@localType='location']" => Proc.new {|name, node|
+                val = node.inner_text
+                name[:location] = val
+              },
+              "descendant::part[@localType='dates']" => Proc.new {|name, node|
+                val = node.inner_text
+                name[:dates] = val
+              },
+              "descendant::part[@localType='qualifier']" => Proc.new {|name, node|
+                val = node.inner_text
+                name[:qualifier] = val
               },
               "descendant::authorizedForm" => Proc.new {|name, node|
                 val = node.inner_text
@@ -313,6 +388,16 @@
                 name[:source] = val
                 name[:authorized] = false
               },
+              "descendant::part[not(@localType)]" => Proc.new {|name, node|
+                val = node.inner_text
+                name[:family_name] = val
+                name[:dates] = val.scan(/[0-9]{4}-[0-9]{4}/).flatten[0]
+              }, # if localType attr is not defined, assume primary_name
+              "descendant::part[not(@localType='prefix') and not(@localType='surname') and not(@localType='family_type') and not(@localType='location') and not(@localType='dates') and not(@localType='qualifier')]" => Proc.new {|name, node|
+                val = node.inner_text
+                name[:family_name] = val
+                name[:dates] = val.scan(/[0-9]{4}-[0-9]{4}/).flatten[0]
+              }, # if localType attr is something else, assume primary_name
             },
             :defaults => {
               :source => 'local',

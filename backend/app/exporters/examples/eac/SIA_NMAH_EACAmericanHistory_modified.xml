@@ -40,9 +40,19 @@
    <cpfDescription>
       <identity>
          <entityType>corporateBody</entityType>
-         <nameEntry localType="http://www.loc.gov/MARC21/">
-            <part>National Museum of American History (U.S.)</part>
+         <nameEntry xml:lang="eng" scriptCode="Latn">
+            <part localType="primary_name">National Museum of American History (U.S.)</part>
+            <part localType="subordinate_name_1">sub1</part>
+            <part localType="subordinate_name_2">sub2</part>
+            <part localType="dates">1906-1975</part>
+            <part localType="numeration">number</part>
+            <part localType="location">location</part>
+            <part localType="qualifier">qualifier</part>
             <authorizedForm>unknown</authorizedForm>
+         </nameEntry>
+         <nameEntry localType="http://www.loc.gov/MARC21/">
+            <part>NMAH</part>
+            <alternativeForm>local</alternativeForm>
          </nameEntry>
       </identity>
       <description>

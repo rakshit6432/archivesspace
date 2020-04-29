@@ -67,7 +67,11 @@
         <identity>
             <entityType>family</entityType>
             <nameEntry scriptCode="Latn" xml:lang="eng">
-                <part>Boswell family</part>
+                <part localType="surname">Boswell family</part>
+                <part localType="family_type">family_type</part>
+                <part localType="dates">1906-1975</part>
+                <part localType="location">location</part>
+                <part localType="qualifier">qualifier</part>
                 <authorizedForm>lcnaf</authorizedForm>
             </nameEntry>
             <nameEntry scriptCode="Latn" xml:lang="eng">

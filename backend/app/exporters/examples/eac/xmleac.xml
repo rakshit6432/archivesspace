@@ -80,6 +80,13 @@
             <authorizedForm>OAC</authorizedForm> 
             <alternativeForm>VIAF</alternativeForm>
          </nameEntry>
+
+         <nameEntry>
+            <part>short</part>
+            <alternativeForm>VIAF</alternativeForm>
+         </nameEntry>
+
+
          <nameEntry>
             <part>Arendt, Hannah (1906-1975)</part>
          </nameEntry>
