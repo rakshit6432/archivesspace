@@ -79,6 +79,9 @@
             <part localType="qualifier">qualifier</part>
             <authorizedForm>OAC</authorizedForm> 
             <alternativeForm>VIAF</alternativeForm>
+            <useDates>
+               <date standardDate="1802-12-27">1802 December 27</date>
+            </useDates>
          </nameEntry>
 
          <nameEntry>
@@ -177,6 +180,13 @@
                </descriptiveNote>
             </localDescription>
          </localDescriptions>
+         <existDates>
+             <dateRange>
+                 <fromDate standardDate="1742-11-12">1742 November 12</fromDate>
+                 <toDate standardDate="1802-12-27">1802 December 27</toDate>
+             </dateRange>
+             <date standardDate="1802-12-27">1802 December 27</date>
+         </existDates>
          <places>
             <place>
                <placeRole>Geburtsort</placeRole>

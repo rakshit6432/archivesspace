@@ -166,6 +166,148 @@
       :defaults => {
       }
     },
+    "//eac-cpf/cpfDescription/description/existDates/date" => {
+      :obj => :structured_date_label,
+      :rel => :dates_of_existence,
+      :map => {
+        "self::date" => Proc.new {|date, node|
+          exp = node.inner_text
+          role = "begin"
+          label = "existence"
+          type = "single"
+
+          if node.attr("standardDate")
+            std = node.attr("standardDate")
+
+            if node.attr("notBefore")
+              std_type = node.attr("notBefore")
+            elsif node.attr("notAfter")
+              std_type = node.attr("notAfter")
+            else
+              std_type = nil
+            end
+          else
+            std = nil
+            std_type = nil
+          end
+
+          sds = ASpaceImport::JSONModel(:structured_date_single).new({
+            :date_role_enum => role,
+            :date_expression => exp,
+            :date_standardized => std,
+            :date_standardized_type_enum => std_type
+          })
+
+          date[:date_label] = label
+          date[:date_type_enum] = type
+          date[:structured_date_single] = sds
+        }
+      },
+      :defaults => {
+      }
+    },
+    "//eac-cpf/cpfDescription/description/existDates/dateRange" => {
+      :obj => :structured_date_label,
+      :rel => :dates_of_existence,
+      :map => {
+        "self::dateRange" => Proc.new {|date, node|
+          label = "existence"
+          type = "range"
+
+          begin_node = node.search("//fromDate")
+          end_node = node.search("//toDate")
+
+          #STDERR.puts node.inspect
+          #STDERR.puts begin_node.inspect
+
+          begin_exp = begin_node.inner_text
+          end_exp = end_node.inner_text
+
+          begin_std = begin_node.attr("standardDate") ? begin_node.attr("standardDate").value : nil
+          end_std = end_node.attr("standardDate") ? end_node.attr("standardDate").value : nil
+
+          if begin_std
+            if begin_node.attr("notBefore")
+              begin_std_type = begin_node.attr("notBefore").value
+            elsif begin_node.attr("notAfter")
+              begin_std_type = begin_node.attr("notAfter").value
+            else
+              begin_std_type = nil
+            end
+          else
+            begin_std_type = nil
+          end
+
+          if end_std
+            if end_node.attr("notBefore")
+              end_std_type = end_node.attr("notBefore").value
+            elsif end_node.attr("notAfter")
+              end_std_type = end_node.attr("notAfter").value
+            else
+              end_std_type = nil
+            end
+          else
+            end_std_type = nil
+          end
+
+          #STDERR.puts "++++++++++++++++++++++++++++++"
+          #STDERR.puts begin_exp.inspect
+          #STDERR.puts begin_std.inspect
+          #STDERR.puts begin_std_type.inspect
+
+          sdr = ASpaceImport::JSONModel(:structured_date_range).new({
+            :begin_date_expression => begin_exp,
+            :begin_date_standardized => begin_std,
+            :begin_date_standardized_type_enum => begin_std_type,
+            :end_date_expression => end_exp,
+            :end_date_standardized => end_std,
+            :end_date_standardized_type_enum => end_std_type
+          })
+
+          date[:date_label] = label
+          date[:date_type_enum] = type
+          date[:structured_date_range] = sdr
+        }
+      },
+      :defaults => {
+      }
+    },
+    #"//places/place" => {
+    #  :obj => :agent_place,
+    #  :rel => :agent_places,
+    #  :map => {
+    #    "descendant::placeRole" => Proc.new {|apl, node|
+    #      val = node.inner_text
+    #      apl[:place_role_enum] = val
+    #    },
+    #    "descendant::placeEntry" => Proc.new {|apl, node|
+    #      term = node.inner_text
+    #      source = node.attr("vocabularySource")
+
+    #      STDERR.puts "++++++++++++++++++++++++++++++"
+
+    #     # make :subject, {
+    #     #   :terms => {'term' => term, 'term_type' => 'geographic', 'vocabulary' => '/vocabularies/1'},
+    #     #   :vocabulary => '/vocabularies/1',
+    #     #   :source => source
+    #     # } do |subject|
+    #     #     STDERR.puts subject.inspect
+    #     #     #set apl, :subjects, {'ref' => subject.uri}
+    #     #     apl[:subjects].push({'ref' => subject.uri})
+    #     #   end
+    #     s = ASpaceImport::JSONModel(:subject).new({
+    #        :terms => {'term' => term, 'term_type' => 'geographic', 'vocabulary' => '/vocabularies/1'},
+    #        :vocabulary => '/vocabularies/1',
+    #        :source => source
+    #     })
+
+    #     STDERR.puts s.inspect
+    #     apl[:subjects].push(s.uri)
+    #    },
+    #  },
+    #  :defaults => {
+    #  }
+    #},
     "//eac-cpf//biogHist" => {
       :obj => :note_bioghist,
       :rel => :notes,
@@ -329,15 +471,54 @@
                 name[:primary_name] = val
                 name[:dates] = val.scan(/[0-9]{4}-[0-9]{4}/).flatten[0]
               }, # if localType attr is something else
-            },
-            :defaults => {
+             "descendant::useDates/date" => {
+               :obj => :structured_date_label,
+               :rel => :use_dates,
+               :map => {
+                 "self::date" => Proc.new {|date, node|
+                   exp = node.inner_text
+                   role = "begin"
+                   label = "usage"
+                   type = "single"
+
+                   if node.attr("standardDate")
+                     std = node.attr("standardDate")
+
+                     if node.attr("notBefore")
+                       std_type = node.attr("notBefore")
+                     elsif node.attr("notAfter")
+                       std_type = node.attr("notAfter")
+                     else
+                       std_type = nil
+                     end
+                   else
+                     std = nil
+                     std_type = nil
+                   end
+
+                   sds = ASpaceImport::JSONModel(:structured_date_single).new({
+                     :date_role_enum => role,
+                     :date_expression => exp,
+                     :date_standardized => std,
+                     :date_standardized_type_enum => std_type
+                   })
+
+                   date[:date_label] = label
+                   date[:date_type_enum] = type
+                   date[:structured_date_single] = sds
+                 },
+               }  
+             },
+             
+            }, # end of map
+           :defaults => {
               :source => 'local',
               :rules => 'local',
               :primary_name => 'primary name',
               :name_order => 'direct',
-            }
+           }
           }
-        }.merge(EAC_BASE_MAP_SUBFIELDS)
+        }.merge(EAC_BASE_MAP_SUBFIELDS),
       },
       # AGENT FAMILY
       "//eac-cpf//cpfDescription[child::identity/child::entityType='family']" => {
