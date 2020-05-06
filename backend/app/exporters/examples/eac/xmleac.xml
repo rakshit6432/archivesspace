@@ -87,6 +87,12 @@
          <nameEntry>
             <part>short</part>
             <alternativeForm>VIAF</alternativeForm>
+            <useDates>
+               <dateRange localType="123">
+                 <fromDate standardDate="1742-11-12">1742 November 12</fromDate>
+                 <toDate standardDate="1802-12-27">1802 December 27</toDate>
+             </dateRange>
+            </useDates>
          </nameEntry>
 
 
@@ -181,23 +187,28 @@
             </localDescription>
          </localDescriptions>
          <existDates>
-             <dateRange>
+             <dateRange localType="123">
                  <fromDate standardDate="1742-11-12">1742 November 12</fromDate>
                  <toDate standardDate="1802-12-27">1802 December 27</toDate>
              </dateRange>
-             <date standardDate="1802-12-27">1802 December 27</date>
+             <date standardDate="1802-12-27" localType="456">1802 December 27</date>
          </existDates>
          <places>
             <place>
-               <placeRole>Geburtsort</placeRole>
+               <placeRole>place_of_birth</placeRole>
                <placeEntry vocabularySource="GND" localType="DE-588-4099668-2">Linden</placeEntry>
+               <date standardDate="1802-12-27" localType="DE-588-4099668-2">1802 December 27</date>
             </place>
             <place>
-               <placeRole>Wirkungsort</placeRole>
+               <placeRole>place_of_birth</placeRole>
                <placeEntry vocabularySource="GND" localType="DE-588-4031541-1">Königsberg</placeEntry>
+               <dateRange localType="DE-588-4031541-1">
+                 <fromDate standardDate="1742-11-12">1742 November 12</fromDate>
+                 <toDate standardDate="1802-12-27">1802 December 27</toDate>
+             </dateRange>
             </place>
             <place>
-               <placeRole>Sterbeort</placeRole>
+               <placeRole>place_of_birth</placeRole>
                <placeEntry vocabularySource="GND" localType="DE-588-4042011-5">New York, NY</placeEntry>
             </place>
          </places>

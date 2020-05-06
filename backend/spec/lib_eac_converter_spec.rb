@@ -47,14 +47,14 @@ describe 'EAC converter' do
 
   describe "people agents" do
     it "imports primary_name" do
-      record = convert(person_agent_1).first
+      record = convert(person_agent_1).select {|r| r['jsonmodel_type'] == "agent_person"}.first
 
       expect(record).not_to be_nil
       expect(record['names'][0]['primary_name']).to eq("Feynman, Richard Phillips, 1918-1988.")
     end
 
     it "imports bioghist notes" do
-      record = convert(person_agent_2).first
+      record = convert(person_agent_2).select {|r| r['jsonmodel_type'] == "agent_person"}.first
       note = record["notes"].first["subnotes"].first
 
 
@@ -65,7 +65,7 @@ describe 'EAC converter' do
     end
 
     it "imports recordId as primary agent_record_identifier" do
-      record = convert(person_agent_2).first
+      record = convert(person_agent_2).select {|r| r['jsonmodel_type'] == "agent_person"}.first
 
       ari = record["agent_record_identifiers"].first
 
@@ -77,7 +77,7 @@ describe 'EAC converter' do
     end
 
     it "imports otherRecordId as not primary agent_record_identifier" do
-      record = convert(person_agent_3).first
+      record = convert(person_agent_3).select {|r| r['jsonmodel_type'] == "agent_person"}.first
 
       ars = record["agent_record_identifiers"]
 
@@ -92,7 +92,7 @@ describe 'EAC converter' do
     end
 
     it "imports agent_record_control tags" do
-      record = convert(person_agent_3).first
+      record = convert(person_agent_3).select {|r| r['jsonmodel_type'] == "agent_person"}.first
 
       arc = record["agent_record_controls"].first
 
@@ -107,7 +107,7 @@ describe 'EAC converter' do
     end
 
     it "imports agent_conventions_declaration tags" do
-      record = convert(person_agent_3).first
+      record = convert(person_agent_3).select {|r| r['jsonmodel_type'] == "agent_person"}.first
 
       acd = record["agent_conventions_declarations"].first
 
@@ -123,7 +123,7 @@ describe 'EAC converter' do
     end
 
     it "imports agent_maintenance_history tags" do
-      record = convert(person_agent_3).first
+      record = convert(person_agent_3).select {|r| r['jsonmodel_type'] == "agent_person"}.first
 
       mh = record["agent_maintenance_histories"].first
 
@@ -137,7 +137,7 @@ describe 'EAC converter' do
     end
 
     it "imports agent_source tags" do
-      record = convert(person_agent_3).first
+      record = convert(person_agent_3).select {|r| r['jsonmodel_type'] == "agent_person"}.first
 
       s = record["agent_sources"].first
 
@@ -152,7 +152,7 @@ describe 'EAC converter' do
     end
 
     it "imports agent_identifier tags" do
-      record = convert(person_agent_3).first
+      record = convert(person_agent_3).select {|r| r['jsonmodel_type'] == "agent_person"}.first
 
       id = record["agent_identifiers"].first
 
@@ -161,14 +161,14 @@ describe 'EAC converter' do
     end
 
     it "imports part with no attrs as primary_name" do
-      record = convert(person_agent_3).first
+      record = convert(person_agent_3).select {|r| r['jsonmodel_type'] == "agent_person"}.first
 
       expect(record).not_to be_nil
       expect(record['names'][1]['primary_name']).to eq("short")
     end
 
     it "imports other parts of name" do
-      record = convert(person_agent_3).first
+      record = convert(person_agent_3).select {|r| r['jsonmodel_type'] == "agent_person"}.first
 
       expect(record['names'][0]['title']).to eq("Dr.")
       expect(record['names'][0]['prefix']).to eq("Mrs.")
@@ -181,28 +181,70 @@ describe 'EAC converter' do
       expect(record['names'][0]['qualifier']).to eq("qualifier")
       expect(record['names'][0]['language']).to eq("eng")
       expect(record['names'][0]['script']).to eq("Latn")
+    end
+
+    it "imports name use dates" do
+      record = convert(person_agent_3).select {|r| r['jsonmodel_type'] == "agent_person"}.first
+
+      expect(record['names'][0]['use_dates'].length).to eq(1)
+      expect(record['names'][1]['use_dates'].length).to eq(1)
+
+      expect(record["names"][0]["use_dates"][0]["date_label"]).to eq("usage")
+      expect(record["names"][0]["use_dates"][0]["structured_date_single"]["date_expression"]).to match(/1802 December 27/)
+
+      expect(record["names"][1]["use_dates"][0]["date_label"]).to eq("usage")
+      expect(record["names"][1]["use_dates"][0]["structured_date_range"]["begin_date_expression"]).to match(/1742 November 12/)
 
     end
 
     it "imports alternative names" do
-      record = convert(person_agent_3).first
+      record = convert(person_agent_3).select {|r| r['jsonmodel_type'] == "agent_person"}.first
 
       expect(record).not_to be_nil
       expect(record['names'][1]['authorized']).to eq(false)
       expect(record['names'][1]['source']).to eq("VIAF")
     end
+
+    it "imports dates of existence" do
+      record = convert(person_agent_3).select {|r| r['jsonmodel_type'] == "agent_person"}.first
+
+      expect(record).not_to be_nil
+      expect(record['dates_of_existence'].length).to eq(2)
+
+      expect(record['dates_of_existence'][0]['structured_date_single']["date_expression"]).to match(/1802 December 27/)
+      expect(record['dates_of_existence'][0]['date_label']).to eq("existence")
+      expect(record['dates_of_existence'][1]['structured_date_range']["begin_date_expression"]).to match(/1742 November 12/)
+      expect(record['dates_of_existence'][1]['date_label']).to eq("existence")
+    end
+
+    it "imports places" do
+      full_record = convert(person_agent_3)
+
+      agent_record = full_record.select {|r| r['jsonmodel_type'] == "agent_person"}.first
+      subject_records = full_record.select {|r| r['jsonmodel_type'] == "subject"}
+
+      expect(subject_records.length).to eq(3)
+      expect(agent_record["agent_places"].length).to eq(3)
+      expect(agent_record["agent_places"][0]["subjects"][0]["ref"]).to eq(subject_records[2]["uri"])
+
+      expect(agent_record["agent_places"][0]["dates"][0]["date_label"]).to eq("DE-588-4099668-2")
+      expect(agent_record["agent_places"][0]["dates"][0]["structured_date_single"]["date_expression"]).to match(/1802 December 27/)
+      expect(agent_record["agent_places"][1]["dates"][0]["date_label"]).to eq("DE-588-4031541-1")
+      expect(agent_record["agent_places"][1]["dates"][0]["structured_date_range"]["begin_date_expression"]).to match(/1742 November 12/)
+
+    end
   end
 
   describe "corporate agents" do
     it "imports part with no attrs as primary_name" do
-      record = convert(corp_agent_1).first
+      record = convert(corp_agent_1).select {|r| r['jsonmodel_type'] == "agent_corporate_entity"}.first
 
       expect(record).not_to be_nil
       expect(record['names'][0]['primary_name']).to eq("National Museum of American History (U.S.)")
     end
 
     it "imports other parts of name" do
-      record = convert(corp_agent_2).first
+      record = convert(corp_agent_2).select {|r| r['jsonmodel_type'] == "agent_corporate_entity"}.first
 
       expect(record).not_to be_nil
 
@@ -220,7 +262,7 @@ describe 'EAC converter' do
     end
 
     it "imports alternative names" do
-      record = convert(corp_agent_2).first
+      record = convert(corp_agent_2).select {|r| r['jsonmodel_type'] == "agent_corporate_entity"}.first
 
       expect(record).not_to be_nil
       expect(record['names'][1]['authorized']).to eq(false)
@@ -230,14 +272,14 @@ describe 'EAC converter' do
 
   describe "family agents" do
     it "imports part with no attrs as primary_name" do
-      record = convert(family_agent_1).first
+      record = convert(family_agent_1).select {|r| r['jsonmodel_type'] == "agent_family"}.first
 
       expect(record).not_to be_nil
       expect(record['names'][0]['family_name']).to eq("Boswell family")
     end
 
     it "imports other parts of name" do
-      record = convert(family_agent_2).first
+      record = convert(family_agent_2).select {|r| r['jsonmodel_type'] == "agent_family"}.first
 
       expect(record).not_to be_nil
 
@@ -253,7 +295,7 @@ describe 'EAC converter' do
     end
 
     it "imports alternative names" do
-      record = convert(family_agent_2).first
+      record = convert(family_agent_2).select {|r| r['jsonmodel_type'] == "agent_family"}.first
 
       expect(record).not_to be_nil
       expect(record['names'][1]['authorized']).to eq(false)

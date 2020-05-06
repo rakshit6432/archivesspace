@@ -89,6 +89,10 @@ module EACBaseMap
             name[:primary_name] = val
             name[:dates] = val.scan(/[0-9]{4}-[0-9]{4}/).flatten[0]
           }, # if localType attr is something else
+          "descendant::useDates/date" => agent_date_single_map("usage", :use_dates),
+          "descendant::useDates/dateRange" => agent_date_range_map("usage", :use_dates),
+
+           
         },
         :defaults => {
           :source => 'local',
@@ -161,44 +165,8 @@ module EACBaseMap
             name[:primary_name] = val
             name[:dates] = val.scan(/[0-9]{4}-[0-9]{4}/).flatten[0]
           }, # if localType attr is something else
-         "descendant::useDates/date" => {
-           :obj => :structured_date_label,
-           :rel => :use_dates,
-           :map => {
-             "self::date" => Proc.new {|date, node|
-               exp = node.inner_text
-               role = "begin"
-               label = "usage"
-               type = "single"
-
-               if node.attr("standardDate")
-                 std = node.attr("standardDate")
-
-                 if node.attr("notBefore")
-                   std_type = node.attr("notBefore")
-                 elsif node.attr("notAfter")
-                   std_type = node.attr("notAfter")
-                 else
-                   std_type = nil
-                 end
-               else
-                 std = nil
-                 std_type = nil
-               end
-
-               sds = ASpaceImport::JSONModel(:structured_date_single).new({
-                 :date_role_enum => role,
-                 :date_expression => exp,
-                 :date_standardized => std,
-                 :date_standardized_type_enum => std_type
-               })
-
-               date[:date_label] = label
-               date[:date_type_enum] = type
-               date[:structured_date_single] = sds
-              }
-            }  
-          }
+          "descendant::useDates/date" => agent_date_single_map("usage", :use_dates),
+          "descendant::useDates/dateRange" => agent_date_range_map("usage", :use_dates),
         }, # end of :map
        :defaults => {
           :source => 'local',
@@ -267,6 +235,9 @@ module EACBaseMap
              name[:family_name] = val
              name[:dates] = val.scan(/[0-9]{4}-[0-9]{4}/).flatten[0]
            }, # if localType attr is something else, assume primary_name
+           "descendant::useDates/date" => agent_date_single_map("usage", :use_dates),
+           "descendant::useDates/dateRange" => agent_date_range_map("usage", :use_dates),
+          
          },
          :defaults => {
            :source => 'local',
@@ -288,9 +259,9 @@ module EACBaseMap
       "//eac-cpf/control/maintenanceHistory/maintenanceEvent" => agent_maintenance_history_map,
       "//eac-cpf/control/sources/source" => agent_sources_map,
       "//eac-cpf/cpfDescription/identity/entityId" => agent_identifier_map,
-      "//eac-cpf/cpfDescription/description/existDates/date" => agent_existence_date_single_map,
-      "//eac-cpf/cpfDescription/description/existDates/dateRange" => agent_existence_date_map_range,
-      #"//places/place" => agent_place_map,
+      "//eac-cpf/cpfDescription/description/existDates/date" => agent_date_single_map("existence", :dates_of_existence),
+      "//eac-cpf/cpfDescription/description/existDates/dateRange" => agent_date_range_map("existence", :dates_of_existence),
+      "//places/place" => agent_place_map,
       "//eac-cpf//biogHist" => agent_bioghist_note_map
     }
   end
@@ -480,16 +451,18 @@ module EACBaseMap
     }
   end
 
-  def agent_existence_date_single_map
+  def agent_date_single_map(label = nil, rel = :dates)
     {
       :obj => :structured_date_label,
-      :rel => :dates_of_existence,
+      :rel => rel,
       :map => {
         "self::date" => Proc.new {|date, node|
           exp = node.inner_text
           role = "begin"
-          label = "existence"
           type = "single"
+
+          label = node.attr("localType") if label.nil?
+          label = "other" if label.nil?
 
           if node.attr("standardDate")
             std = node.attr("standardDate")
@@ -523,13 +496,16 @@ module EACBaseMap
     }
   end
 
-  def agent_existence_date_map_range
+  def agent_date_range_map(label = nil, rel = :dates)
     {
       :obj => :structured_date_label,
-      :rel => :dates_of_existence,
+      :rel => rel,
       :map => {
         "self::dateRange" => Proc.new {|date, node|
-          label = "existence"
+          label = node.attr("localType") if label.nil?
+          label = "other" if label.nil?
+
+
           type = "range"
 
           begin_node = node.search("//fromDate")
@@ -584,6 +560,7 @@ module EACBaseMap
     }
   end
 
+
   def agent_place_map
     {
     :obj => :agent_place,
@@ -593,34 +570,16 @@ module EACBaseMap
         val = node.inner_text
         apl[:place_role_enum] = val
       },
-      "descendant::placeEntry" => Proc.new {|apl, node|
-        term = node.inner_text
-        source = node.attr("vocabularySource")
 
-        STDERR.puts "++++++++++++++++++++++++++++++"
+      "descendant::placeEntry" => subject_map("self::placeEntry",
+                                              subject_terms_map("geographic"), 
+                                              subject_source_map),
 
-       # make :subject, {
-       #   :terms => {'term' => term, 'term_type' => 'geographic', 'vocabulary' => '/vocabularies/1'},
-       #   :vocabulary => '/vocabularies/1',
-       #   :source => source
-       # } do |subject|
-       #     STDERR.puts subject.inspect
-       #     #set apl, :subjects, {'ref' => subject.uri}
-       #     apl[:subjects].push({'ref' => subject.uri})
-       #   end
-       s = ASpaceImport::JSONModel(:subject).new({
-          :terms => {'term' => term, 'term_type' => 'geographic', 'vocabulary' => '/vocabularies/1'},
-          :vocabulary => '/vocabularies/1',
-          :source => source
-       })
+      "descendant::date" => agent_date_single_map,
 
-       STDERR.puts s.inspect
-       apl[:subjects].push(s.uri)
+      "descendant::dateRange" => agent_date_range_map
       },
-    },
-    :defaults => {
     }
-  }
   end
 
   def agent_bioghist_note_map
@@ -637,6 +596,36 @@ module EACBaseMap
       },
       :defaults => {
         :label => 'default label'
+      }
+    }
+  end
+
+  def subject_terms_map(term_type)
+    Proc.new {|node|
+      [{:term_type => term_type, 
+       :term => node.inner_text, 
+       :vocabulary => '/vocabularies/1'}]
+    }
+  end
+
+  def subject_source_map
+    Proc.new {|node|
+      source = node.attr("vocabularySource") 
+    }
+  end
+
+  # usually, rel will be :subjects, but in some cases it will be :places
+  def subject_map(xpath, terms, source, rel = :subjects)
+    {
+      :obj => :subject,
+      :rel => rel,
+      :map => {
+        xpath => Proc.new{|subject, node|
+          subject.publish = true
+          subject.terms = terms.call(node)
+          subject.source = source.call(node)
+          subject.vocabulary = '/vocabularies/1'
+        }
       }
     }
   end
