@@ -183,6 +183,16 @@ describe 'EAC converter' do
       expect(record['names'][0]['script']).to eq("Latn")
     end
 
+    it "imports parallel names" do
+      record = convert(person_agent_3).select {|r| r['jsonmodel_type'] == "agent_person"}.first
+
+      expect(record["names"].count).to eq(4)
+      expect(record["names"][3]["parallel_names"].count).to eq(24)
+
+      expect(record["names"][3]["parallel_names"].first["primary_name"]).to match(/Johanna/)
+      expect(record["names"][3]["parallel_names"].last["primary_name"]).to match(/阿伦特/)
+    end
+
     it "imports name use dates" do
       record = convert(person_agent_3).select {|r| r['jsonmodel_type'] == "agent_person"}.first
 
@@ -217,22 +227,62 @@ describe 'EAC converter' do
       expect(record['dates_of_existence'][1]['date_label']).to eq("existence")
     end
 
-    it "imports places" do
+    it "imports places as subjects" do
       full_record = convert(person_agent_3)
 
       agent_record = full_record.select {|r| r['jsonmodel_type'] == "agent_person"}.first
       subject_records = full_record.select {|r| r['jsonmodel_type'] == "subject"}
+      geo_subjects = subject_records.select {|r| r['terms'].first['term_type'] == "geographic"}
 
-      expect(subject_records.length).to eq(3)
+      expect(geo_subjects.length).to eq(3)
+      expect(geo_subjects.first["authority_id"]).to eq("GND")
+
       expect(agent_record["agent_places"].length).to eq(3)
-      expect(agent_record["agent_places"][0]["subjects"][0]["ref"]).to eq(subject_records[2]["uri"])
+      expect(agent_record["agent_places"][0]["subjects"][0]["ref"]).to eq(geo_subjects[2]["uri"])
 
       expect(agent_record["agent_places"][0]["dates"][0]["date_label"]).to eq("DE-588-4099668-2")
       expect(agent_record["agent_places"][0]["dates"][0]["structured_date_single"]["date_expression"]).to match(/1802 December 27/)
+      expect(agent_record["agent_places"][0]["notes"][0]["content"]).to match(/text note/)
+
       expect(agent_record["agent_places"][1]["dates"][0]["date_label"]).to eq("DE-588-4031541-1")
       expect(agent_record["agent_places"][1]["dates"][0]["structured_date_range"]["begin_date_expression"]).to match(/1742 November 12/)
+      expect(agent_record["agent_places"][1]["notes"][0]["content"].first).to match(/citation/)
 
     end
+
+    it "imports occupations as subjects" do
+      full_record = convert(person_agent_3)
+
+      agent_record = full_record.select {|r| r['jsonmodel_type'] == "agent_person"}.first
+      subject_records = full_record.select {|r| r['jsonmodel_type'] == "subject"}
+      occupation_subjects = subject_records.select {|r| r['terms'].first['term_type'] == "occupation"}
+
+      expect(occupation_subjects.length).to eq(6)
+      expect(agent_record["agent_occupations"].length).to eq(6)
+    end
+
+    it "imports functions as subjects" do
+      full_record = convert(person_agent_3)
+
+      agent_record = full_record.select {|r| r['jsonmodel_type'] == "agent_person"}.first
+      subject_records = full_record.select {|r| r['jsonmodel_type'] == "subject"}
+      function_subjects = subject_records.select {|r| r['terms'].first['term_type'] == "function"}
+
+      expect(function_subjects.length).to eq(3)
+      expect(agent_record["agent_functions"].length).to eq(3)
+    end
+
+    it "imports topics as subjects" do
+      full_record = convert(person_agent_3)
+
+      agent_record = full_record.select {|r| r['jsonmodel_type'] == "agent_person"}.first
+      subject_records = full_record.select {|r| r['jsonmodel_type'] == "subject"}
+      topic_subjects = subject_records.select {|r| r['terms'].first['term_type'] == "topical"}
+
+      expect(topic_subjects.length).to eq(1)
+      expect(agent_record["agent_topics"].length).to eq(1)
+    end
+
   end
 
   describe "corporate agents" do

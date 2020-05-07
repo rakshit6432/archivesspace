@@ -23,230 +23,25 @@ module EACBaseMap
   # agent person name attrs, followed by agent subrecs common to all types
   def agent_person_base
     {
-      "descendant::nameEntry" => {
-        :obj => :name_person,
-        :rel => :names,
-        :map => {
-          "self::nameEntry[@lang]" => Proc.new {|name, node|
-            name[:language] = node.attr("lang")
-          },
-          "self::nameEntry[@scriptCode]" => Proc.new {|name, node|
-            name[:script] = node.attr("scriptCode")
-          },
-          "descendant::part[@localType='prefix']" => Proc.new {|name, node|
-            val = node.inner_text
-            name[:prefix] = val
-          },
-          "descendant::part[@localType='suffix']" => Proc.new {|name, node|
-            val = node.inner_text
-            name[:suffix] = val
-          },
-          "descendant::part[@localType='title']" => Proc.new {|name, node|
-            val = node.inner_text
-            name[:title] = val
-          },
-          "descendant::part[@localType='surname']" => Proc.new {|name, node|
-            val = node.inner_text
-            name[:primary_name] = val
-          },
-          "descendant::part[@localType='forename']" => Proc.new {|name, node|
-            val = node.inner_text
-            name[:rest_of_name] = val
-          },
-          "descendant::part[@localType='numeration']" => Proc.new {|name, node|
-            val = node.inner_text
-            name[:number] = val
-          },
-          "descendant::part[@localType='fuller_form']" => Proc.new {|name, node  |
-            val = node.inner_text
-            name[:fuller_form] = val
-          },
-          "descendant::part[@localType='dates']" => Proc.new {|name, node|
-            val = node.inner_text
-            name[:dates] = val
-          },
-          "descendant::part[@localType='qualifier']" => Proc.new {|name, node|
-            val = node.inner_text
-            name[:qualifier] = val
-          },
-          "descendant::authorizedForm" => Proc.new {|name, node|
-            val = node.inner_text
-            name[:source] = val
-            name[:authorized] = true
-          },
-          "descendant::alternativeForm" => Proc.new {|name, node|
-            val = node.inner_text
-            name[:source] = val
-            name[:authorized] = false
-          },
-          "descendant::part[not(@localType)]" => Proc.new {|name, node|
-            val = node.inner_text
-            name[:primary_name] = val
-            name[:dates] = val.scan(/[0-9]{4}-[0-9]{4}/).flatten[0]
-          }, # if localType attr is not defined, assume primary_name
-          "descendant::part[not(@localType='prefix') and   not(@localType='prefix') and not(@localType='suffix') and   not(@localType='title')  and not(@localType='surname')  and   not(@localType='forename') and not(@localType='numeration') and   not(@localType='fuller_form') and not(@localType='dates') and   not(@localType='qualifier')]" => Proc.new {|name, node|
-            val = node.inner_text
-            name[:primary_name] = val
-            name[:dates] = val.scan(/[0-9]{4}-[0-9]{4}/).flatten[0]
-          }, # if localType attr is something else
-          "descendant::useDates/date" => agent_date_single_map("usage", :use_dates),
-          "descendant::useDates/dateRange" => agent_date_range_map("usage", :use_dates),
-
-           
-        },
-        :defaults => {
-          :source => 'local',
-          :rules => 'local',
-          :primary_name => 'primary name',
-          :name_order => 'direct',
-        }
-      }
+      "//identity/nameEntry" => agent_person_name_map(:name_person, :names),
+      "//identity/nameEntryParallel/nameEntry[1]" => agent_person_name_with_parallel_map(:name_person, :names),
     }.merge(base_map_subfields)
   end
 
   # agent corporate name attrs, followed by agent subrecs common to all types
   def agent_corporate_entity_base
     {
-      "descendant::nameEntry" => {
-        :obj => :name_corporate_entity,
-        :rel => :names,
-        :map => {
-          "self::nameEntry[@lang]" => Proc.new {|name, node|
-            name[:language] = node.attr("lang")
-          },
-          "self::nameEntry[@scriptCode]" => Proc.new {|name, node|
-            name[:script] = node.attr("scriptCode")
-          },
-          "descendant::part[@localType='primary_name']" => Proc.new {|name, node|
-            val = node.inner_text
-            name[:primary_name] = val
-          },
-          "descendant::part[@localType='subordinate_name_1']" => Proc.new {|name, node|
-            val = node.inner_text
-            name[:subordinate_name_1] = val
-          },
-          "descendant::part[@localType='subordinate_name_2']" => Proc.new {|name, node|
-            val = node.inner_text
-            name[:subordinate_name_2] = val
-          },
-          "descendant::part[@localType='numeration']" => Proc.new {|name, node|
-            val = node.inner_text
-            name[:number] = val
-          },
-          "descendant::part[@localType='location']" => Proc.new {|name, node|
-            val = node.inner_text
-            name[:location] = val
-          },
-          "descendant::part[@localType='dates']" => Proc.new {|name, node|
-            val = node.inner_text
-            name[:dates] = val
-          },
-          "descendant::part[@localType='qualifier']" => Proc.new {|name, node|
-            val = node.inner_text
-            name[:qualifier] = val
-          },
-          "descendant::authorizedForm" => Proc.new {|name, node|
-            val = node.inner_text
-            name[:source] = val
-            name[:authorized] = true
-          },
-          "descendant::alternativeForm" => Proc.new {|name, node|
-            val = node.inner_text
-            name[:source] = val
-            name[:authorized] = false
-          },
-          "descendant::part[not(@localType)]" => Proc.new {|name, node|
-            val = node.inner_text
-            name[:primary_name] = val
-            name[:dates] = val.scan(/[0-9]{4}-[0-9]{4}/).flatten[0]
-          }, # if localType attr is not defined, assume primary_name
-          "descendant::part[not(@localType='primary_name') and not(@localType='subordinate_name_1') and not(@localType='subordinate_name_2') and not(@localType='numeration') and not(@localType='location') and not(@localType='dates') and not(@localType='qualifier')]" => Proc.new {|name, node|
-            val = node.inner_text
-            name[:primary_name] = val
-            name[:dates] = val.scan(/[0-9]{4}-[0-9]{4}/).flatten[0]
-          }, # if localType attr is something else
-          "descendant::useDates/date" => agent_date_single_map("usage", :use_dates),
-          "descendant::useDates/dateRange" => agent_date_range_map("usage", :use_dates),
-        }, # end of :map
-       :defaults => {
-          :source => 'local',
-          :rules => 'local',
-          :primary_name => 'primary name',
-          :name_order => 'direct',
-       }
-      }
-   }.merge(base_map_subfields)
+      "//identity/nameEntry" => agent_corporate_entity_name_map(:name_corporate_entity, :names),
+      "//identity/nameEntryParallel/nameEntry[1]" => agent_corporate_entity_name_with_parallel_map(:name_corporate_entity, :names),
+    }.merge(base_map_subfields)
   end
 
   # agent family name attrs, followed by agent subrecs common to all types
   def agent_family_base
     {
-      "descendant::nameEntry" => {
-         :obj => :name_family,
-         :rel => :names,
-         :map => {
-           "self::nameEntry[@lang]" => Proc.new {|name, node|
-             name[:language] = node.attr("lang")
-           },
-           "self::nameEntry[@scriptCode]" => Proc.new {|name, node|
-             name[:script] = node.attr("scriptCode")
-           },
-           "descendant::part[@localType='prefix']" => Proc.new {|name, node|
-             val = node.inner_text
-             name[:prefix] = val
-           },
-           "descendant::part[@localType='surname']" => Proc.new {|name, node|
-             val = node.inner_text
-             name[:family_name] = val
-           },
-           "descendant::part[@localType='family_type']" => Proc.new {|name, node|
-             val = node.inner_text
-             name[:family_type] = val
-           },
-           "descendant::part[@localType='location']" => Proc.new {|name, node|
-             val = node.inner_text
-             name[:location] = val
-           },
-           "descendant::part[@localType='dates']" => Proc.new {|name, node|
-             val = node.inner_text
-             name[:dates] = val
-           },
-           "descendant::part[@localType='qualifier']" => Proc.new {|name, node|
-             val = node.inner_text
-             name[:qualifier] = val
-           },
-           "descendant::authorizedForm" => Proc.new {|name, node|
-             val = node.inner_text
-             name[:source] = val
-             name[:authorized] = true
-           },
-           "descendant::alternativeForm" => Proc.new {|name, node|
-             val = node.inner_text
-             name[:source] = val
-             name[:authorized] = false
-           },
-           "descendant::part[not(@localType)]" => Proc.new {|name, node|
-             val = node.inner_text
-             name[:family_name] = val
-             name[:dates] = val.scan(/[0-9]{4}-[0-9]{4}/).flatten[0]
-           }, # if localType attr is not defined, assume primary_name
-           "descendant::part[not(@localType='prefix') and not(@localType='surname') and not(@localType='family_type') and not(@localType='location') and not(@localType='dates') and not(@localType='qualifier')]" => Proc.new {|name, node|
-             val = node.inner_text
-             name[:family_name] = val
-             name[:dates] = val.scan(/[0-9]{4}-[0-9]{4}/).flatten[0]
-           }, # if localType attr is something else, assume primary_name
-           "descendant::useDates/date" => agent_date_single_map("usage", :use_dates),
-           "descendant::useDates/dateRange" => agent_date_range_map("usage", :use_dates),
-          
-         },
-         :defaults => {
-           :source => 'local',
-           :rules => 'local',
-           :primary_name => 'primary name',
-           :name_order => 'direct',
-         }
-       }
-     }.merge(base_map_subfields)
+      "//identity/nameEntry" => agent_family_name_map(:name_family, :names),
+      "//identity/nameEntryParallel/nameEntry[1]" => agent_family_name_with_parallel_map(:name_family, :names),
+    }.merge(base_map_subfields)
   end
 
   # These fields are common to all agent types and imported the same way
@@ -262,7 +57,287 @@ module EACBaseMap
       "//eac-cpf/cpfDescription/description/existDates/date" => agent_date_single_map("existence", :dates_of_existence),
       "//eac-cpf/cpfDescription/description/existDates/dateRange" => agent_date_range_map("existence", :dates_of_existence),
       "//places/place" => agent_place_map,
+      "//occupations/occupation" => agent_occupation_map,
+      "//functions/function" => agent_function_map,
+      "//localDescriptions/localDescription[@localType='associatedSubject']" => agent_topic_map,
       "//eac-cpf//biogHist" => agent_bioghist_note_map
+    }
+  end
+
+  def agent_person_name_map(obj, rel)
+    {
+      :obj => obj,
+      :rel => rel,
+      :map => agent_person_name_components_map,
+      :defaults => {
+        :source => 'local',
+        :rules => 'local',
+        :primary_name => 'primary name',
+        :name_order => 'direct',
+      }
+    }
+  end
+
+  def agent_person_name_with_parallel_map(obj, rel)
+    {
+      :obj => obj,
+      :rel => rel,
+      :map => agent_person_name_components_map.merge({
+        "following-sibling::nameEntry" => agent_person_name_map(:parallel_name_person, :parallel_names),
+      }),
+      :defaults => {
+        :source => 'local',
+        :rules => 'local',
+        :primary_name => 'primary name',
+        :name_order => 'direct',
+      }
+    }
+  end
+
+  def agent_corporate_entity_name_map(obj, rel)
+    {
+      :obj => obj,
+      :rel => rel,
+      :map => agent_corporate_entity_name_components_map,
+      :defaults => {
+        :source => 'local',
+        :rules => 'local',
+        :primary_name => 'primary name',
+        :name_order => 'direct',
+      }
+    }
+  end
+
+  def agent_corporate_entity_name_with_parallel_map(obj, rel)
+    {
+      :obj => obj,
+      :rel => rel,
+      :map => agent_corporate_entity_name_components_map.merge({
+        "following-sibling::nameEntry" => agent_corporate_entity_name_map(:parallel_name_corporate_entity, :parallel_names),
+      }),
+      :defaults => {
+        :source => 'local',
+        :rules => 'local',
+        :primary_name => 'primary name',
+        :name_order => 'direct',
+      }
+    }
+  end
+
+  def agent_family_name_map(obj, rel)
+    {
+      :obj => obj,
+      :rel => rel,
+      :map => agent_family_name_components_map,
+      :defaults => {
+        :source => 'local',
+        :rules => 'local',
+        :primary_name => 'primary name',
+        :name_order => 'direct',
+      }
+    }
+  end
+
+  def agent_family_name_with_parallel_map(obj, rel)
+    {
+      :obj => obj,
+      :rel => rel,
+      :map => agent_family_name_components_map.merge({
+        "following-sibling::nameEntry" => agent_family_name_map(:parallel_name_family, :parallel_names),
+      }),
+      :defaults => {
+        :source => 'local',
+        :rules => 'local',
+        :primary_name => 'primary name',
+        :name_order => 'direct',
+      }
+    }
+  end
+
+  def agent_person_name_components_map
+    {
+       "self::nameEntry[@lang]" => Proc.new {|name, node|
+         name[:language] = node.attr("lang")
+       },
+       "self::nameEntry[@scriptCode]" => Proc.new {|name, node|
+         name[:script] = node.attr("scriptCode")
+       },
+       "descendant::part[@localType='prefix']" => Proc.new {|name, node|
+         val = node.inner_text
+         name[:prefix] = val
+       },
+       "descendant::part[@localType='suffix']" => Proc.new {|name, node|
+         val = node.inner_text
+         name[:suffix] = val
+       },
+       "descendant::part[@localType='title']" => Proc.new {|name, node|
+         val = node.inner_text
+         name[:title] = val
+       },
+       "descendant::part[@localType='surname']" => Proc.new {|name, node|
+         val = node.inner_text
+         name[:primary_name] = val
+       },
+       "descendant::part[@localType='forename']" => Proc.new {|name, node|
+         val = node.inner_text
+         name[:rest_of_name] = val
+       },
+       "descendant::part[@localType='numeration']" => Proc.new {|name, node|
+         val = node.inner_text
+         name[:number] = val
+       },
+       "descendant::part[@localType='fuller_form']" => Proc.new {|name, node  |
+         val = node.inner_text
+         name[:fuller_form] = val
+       },
+       "descendant::part[@localType='dates']" => Proc.new {|name, node|
+         val = node.inner_text
+         name[:dates] = val
+       },
+       "descendant::part[@localType='qualifier']" => Proc.new {|name, node|
+         val = node.inner_text
+         name[:qualifier] = val
+       },
+       "descendant::authorizedForm" => Proc.new {|name, node|
+         val = node.inner_text
+         name[:source] = val
+         name[:authorized] = true
+       },
+       "descendant::alternativeForm" => Proc.new {|name, node|
+         val = node.inner_text
+         name[:source] = val
+         name[:authorized] = false
+       },
+       "descendant::part[not(@localType)]" => Proc.new {|name, node|
+         val = node.inner_text
+         name[:primary_name] = val
+         name[:dates] = val.scan(/[0-9]{4}-[0-9]{4}/).flatten[0]
+       }, # if localType attr is not defined, assume primary_name
+       "descendant::part[not(@localType='prefix') and   not(@localType='prefix') and not(@localType='suffix') and   not(@localType='title')  and not(@localType='surname')  and   not(@localType='forename') and not(@localType='numeration') and   not(@localType='fuller_form') and not(@localType='dates') and   not(@localType='qualifier')]" => Proc.new {|name, node|
+         val = node.inner_text
+         name[:primary_name] = val
+         name[:dates] = val.scan(/[0-9]{4}-[0-9]{4}/).flatten[0]
+       }, # if localType attr is something else
+       "descendant::useDates/date" => agent_date_single_map("usage", :use_dates),
+       "descendant::useDates/dateRange" => agent_date_range_map("usage", :use_dates)
+     }
+  end
+
+  def agent_corporate_entity_name_components_map
+    {
+      "self::nameEntry[@lang]" => Proc.new {|name, node|
+        name[:language] = node.attr("lang")
+      },
+      "self::nameEntry[@scriptCode]" => Proc.new {|name, node|
+        name[:script] = node.attr("scriptCode")
+      },
+      "descendant::part[@localType='primary_name']" => Proc.new {|name, node|
+        val = node.inner_text
+        name[:primary_name] = val
+      },
+      "descendant::part[@localType='subordinate_name_1']" => Proc.new {|name, node|
+        val = node.inner_text
+        name[:subordinate_name_1] = val
+      },
+      "descendant::part[@localType='subordinate_name_2']" => Proc.new {|name, node|
+        val = node.inner_text
+        name[:subordinate_name_2] = val
+      },
+      "descendant::part[@localType='numeration']" => Proc.new {|name, node|
+        val = node.inner_text
+        name[:number] = val
+      },
+      "descendant::part[@localType='location']" => Proc.new {|name, node|
+        val = node.inner_text
+        name[:location] = val
+      },
+      "descendant::part[@localType='dates']" => Proc.new {|name, node|
+        val = node.inner_text
+        name[:dates] = val
+      },
+      "descendant::part[@localType='qualifier']" => Proc.new {|name, node|
+        val = node.inner_text
+        name[:qualifier] = val
+      },
+      "descendant::authorizedForm" => Proc.new {|name, node|
+        val = node.inner_text
+        name[:source] = val
+        name[:authorized] = true
+      },
+      "descendant::alternativeForm" => Proc.new {|name, node|
+        val = node.inner_text
+        name[:source] = val
+        name[:authorized] = false
+      },
+      "descendant::part[not(@localType)]" => Proc.new {|name, node|
+        val = node.inner_text
+        name[:primary_name] = val
+        name[:dates] = val.scan(/[0-9]{4}-[0-9]{4}/).flatten[0]
+      }, # if localType attr is not defined, assume primary_name
+      "descendant::part[not(@localType='primary_name') and not(@localType='subordinate_name_1') and not(@localType='subordinate_name_2') and not(@localType='numeration') and not(@localType='location') and not(@localType='dates') and not(@localType='qualifier')]" => Proc.new {|name, node|
+        val = node.inner_text
+        name[:primary_name] = val
+        name[:dates] = val.scan(/[0-9]{4}-[0-9]{4}/).flatten[0]
+      }, # if localType attr is something else
+      "descendant::useDates/date" => agent_date_single_map("usage", :use_dates),
+      "descendant::useDates/dateRange" => agent_date_range_map("usage", :use_dates),
+    }
+  end
+
+  def agent_family_name_components_map
+    {
+      "self::nameEntry[@lang]" => Proc.new {|name, node|
+        name[:language] = node.attr("lang")
+      },
+      "self::nameEntry[@scriptCode]" => Proc.new {|name, node|
+        name[:script] = node.attr("scriptCode")
+      },
+      "descendant::part[@localType='prefix']" => Proc.new {|name, node|
+        val = node.inner_text
+        name[:prefix] = val
+      },
+      "descendant::part[@localType='surname']" => Proc.new {|name, node|
+        val = node.inner_text
+        name[:family_name] = val
+      },
+      "descendant::part[@localType='family_type']" => Proc.new {|name, node|
+        val = node.inner_text
+        name[:family_type] = val
+      },
+      "descendant::part[@localType='location']" => Proc.new {|name, node|
+        val = node.inner_text
+        name[:location] = val
+      },
+      "descendant::part[@localType='dates']" => Proc.new {|name, node|
+        val = node.inner_text
+        name[:dates] = val
+      },
+      "descendant::part[@localType='qualifier']" => Proc.new {|name, node|
+        val = node.inner_text
+        name[:qualifier] = val
+      },
+      "descendant::authorizedForm" => Proc.new {|name, node|
+        val = node.inner_text
+        name[:source] = val
+        name[:authorized] = true
+      },
+      "descendant::alternativeForm" => Proc.new {|name, node|
+        val = node.inner_text
+        name[:source] = val
+        name[:authorized] = false
+      },
+      "descendant::part[not(@localType)]" => Proc.new {|name, node|
+        val = node.inner_text
+        name[:family_name] = val
+        name[:dates] = val.scan(/[0-9]{4}-[0-9]{4}/).flatten[0]
+      }, # if localType attr is not defined, assume primary_name
+      "descendant::part[not(@localType='prefix') and not(@localType='surname') and not(@localType='family_type') and not(@localType='location') and not(@localType='dates') and not(@localType='qualifier')]" => Proc.new {|name, node|
+        val = node.inner_text
+        name[:family_name] = val
+        name[:dates] = val.scan(/[0-9]{4}-[0-9]{4}/).flatten[0]
+      }, # if localType attr is something else, assume primary_name
+      "descendant::useDates/date" => agent_date_single_map("usage", :use_dates),
+      "descendant::useDates/dateRange" => agent_date_range_map("usage", :use_dates)
     }
   end
 
@@ -577,7 +652,74 @@ module EACBaseMap
 
       "descendant::date" => agent_date_single_map,
 
-      "descendant::dateRange" => agent_date_range_map
+      "descendant::dateRange" => agent_date_range_map,
+
+      "descendant::descriptiveNote" => agent_text_note_map("self::descriptiveNote"),
+
+      "descendant::citation" => agent_citation_note_map("self::citation")
+      },
+    }
+  end
+
+  def agent_occupation_map
+    {
+    :obj => :agent_occupation,
+    :rel => :agent_occupations,
+    :map => {
+   
+      "descendant::term" => subject_map("self::term",
+                                         subject_terms_map("occupation"), 
+                                         subject_source_map),
+
+      "descendant::date" => agent_date_single_map,
+
+      "descendant::dateRange" => agent_date_range_map,
+
+      "descendant::descriptiveNote" => agent_text_note_map("self::descriptiveNote"),
+
+      "descendant::citation" => agent_citation_note_map("self::citation")
+      },
+    }
+  end
+
+  def agent_function_map
+    {
+    :obj => :agent_function,
+    :rel => :agent_functions,
+    :map => {
+   
+      "descendant::term" => subject_map("self::term",
+                                         subject_terms_map("function"), 
+                                         subject_source_map),
+
+      "descendant::date" => agent_date_single_map,
+
+      "descendant::dateRange" => agent_date_range_map,
+
+      "descendant::descriptiveNote" => agent_text_note_map("self::descriptiveNote"),
+
+      "descendant::citation" => agent_citation_note_map("self::citation")
+      },
+    }
+  end
+
+  def agent_topic_map
+    {
+    :obj => :agent_topic,
+    :rel => :agent_topics,
+    :map => {
+   
+      "descendant::term" => subject_map("self::term",
+                                         subject_terms_map("topical"), 
+                                         subject_source_map),
+
+      "descendant::date" => agent_date_single_map,
+
+      "descendant::dateRange" => agent_date_range_map,
+
+      "descendant::descriptiveNote" => agent_text_note_map("self::descriptiveNote"),
+
+      "descendant::citation" => agent_citation_note_map("self::citation")
       },
     }
   end
@@ -596,6 +738,34 @@ module EACBaseMap
       },
       :defaults => {
         :label => 'default label'
+      }
+    }
+  end
+
+  def agent_text_note_map(xpath)
+    {
+      :obj => :note_text,
+      :rel => :notes,
+      :map => {
+        xpath => Proc.new {|note, node|
+          note.content = node.inner_text
+        }
+      },
+      :defaults => {
+      }
+    }
+  end
+
+  def agent_citation_note_map(xpath)
+    {
+      :obj => :note_citation,
+      :rel => :notes,
+      :map => {
+        xpath => Proc.new {|note, node|
+          note.content << node.inner_text
+        }
+      },
+      :defaults => {
       }
     }
   end
@@ -622,10 +792,14 @@ module EACBaseMap
       :map => {
         xpath => Proc.new{|subject, node|
           subject.publish = true
+          subject.authority_id = node.attr("vocabularySource")
           subject.terms = terms.call(node)
           subject.source = source.call(node)
           subject.vocabulary = '/vocabularies/1'
         }
+      },
+      :defaults => {
+        :source => "Source not specified"
       }
     }
   end

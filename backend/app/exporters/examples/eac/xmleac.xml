@@ -179,7 +179,7 @@
       </identity>
       <description>
          <localDescriptions localType="GND">
-            <localDescription localType="Geschlechtsangabe">
+            <localDescription localType="associatedSubject">
                <term>2</term>
                <descriptiveNote>
                   <p>weiblich</p>
@@ -196,20 +196,22 @@
          <places>
             <place>
                <placeRole>place_of_birth</placeRole>
-               <placeEntry vocabularySource="GND" localType="DE-588-4099668-2">Linden</placeEntry>
+               <placeEntry vocabularySource="GND" localType="DE-588-4099668-2">Lindentown</placeEntry>
                <date standardDate="1802-12-27" localType="DE-588-4099668-2">1802 December 27</date>
+               <descriptiveNote>text note</descriptiveNote>
             </place>
             <place>
                <placeRole>place_of_birth</placeRole>
-               <placeEntry vocabularySource="GND" localType="DE-588-4031541-1">Königsberg</placeEntry>
+               <placeEntry vocabularySource="GND" localType="DE-588-4031541-1">Königsbergs</placeEntry>
                <dateRange localType="DE-588-4031541-1">
                  <fromDate standardDate="1742-11-12">1742 November 12</fromDate>
                  <toDate standardDate="1802-12-27">1802 December 27</toDate>
              </dateRange>
+             <citation>citation</citation>
             </place>
             <place>
                <placeRole>place_of_birth</placeRole>
-               <placeEntry vocabularySource="GND" localType="DE-588-4042011-5">New York, NY</placeEntry>
+               <placeEntry vocabularySource="GND" localType="DE-588-4042011-5">New York City, NY</placeEntry>
             </place>
          </places>
          <occupations>
@@ -232,6 +234,17 @@
                <term>Prof. Dr.</term>
             </occupation>
          </occupations>
+         <functions>
+            <function>
+               <term xml:id="DE-588-4393865-A">Function A</term>
+            </function>
+            <function>
+               <term xml:id="DE-588-4629643-B">Function B</term>
+            </function>
+            <function>
+               <term xml:id="DE-588-4174285-C">Function C</term>
+            </function>
+         </functions>
          <biogHist>
             <list>
                <item>Deutsch-amerikanische Soziologin, Politologin, Historikerin</item>
