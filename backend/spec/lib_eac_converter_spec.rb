@@ -118,6 +118,7 @@ describe 'EAC converter' do
       expect(acd["file_version_xlink_show_attribute"]).to eq("new")
       expect(acd["xlink_title_attribute"]).to eq("xlink title")
       expect(acd["xlink_role_attribute"]).to eq("xlink role")
+      expect(acd["xlink_arcrole_attribute"]).to eq("xlink arcrole")
       expect(acd["descriptive_note"]).to eq("Convention Note")
       expect(acd["last_verified_date"]).to eq("2000-07-01")
     end
@@ -147,6 +148,7 @@ describe 'EAC converter' do
       expect(s["file_version_xlink_show_attribute"]).to eq("new")
       expect(s["xlink_title_attribute"]).to eq("xlink title")
       expect(s["xlink_role_attribute"]).to eq("xlink role")
+      expect(s["xlink_arcrole_attribute"]).to eq("xlink arcrole")
       expect(s["descriptive_note"]).to eq("Source Note")
       expect(s["last_verified_date"]).to eq("2001-07-01")
     end
@@ -313,6 +315,7 @@ describe 'EAC converter' do
       expect(agent_record["agent_alternate_sets"][0]["file_uri"]).to eq("href")
       expect(agent_record["agent_alternate_sets"][0]["xlink_title_attribute"]).to eq("title")
       expect(agent_record["agent_alternate_sets"][0]["xlink_role_attribute"]).to eq("role")
+      expect(agent_record["agent_alternate_sets"][0]["xlink_arcrole_attribute"]).to eq("arcrole")
       expect(agent_record["agent_alternate_sets"][0]["file_version_xlink_show_attribute"]).to eq("new")
 
       expect(agent_record["agent_alternate_sets"][0]["file_version_xlink_actuate_attribute"]).to eq("none")

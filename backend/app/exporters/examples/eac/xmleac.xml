@@ -22,7 +22,7 @@
       </languageDeclaration>
       <conventionDeclaration>
          <abbreviation>RDA</abbreviation>
-         <citation xlink:href="http://www.google.com" xlink:actuate="onRequest" xlink:show="new" xlink:title="xlink title" xlink:role="xlink role" lastDateTimeVerified="2000-07-01">The Citation</citation>
+         <citation xlink:href="http://www.google.com" xlink:actuate="onRequest" xlink:show="new" xlink:title="xlink title" xlink:role="xlink role" xlink:arcrole="xlink arcrole" lastDateTimeVerified="2000-07-01">The Citation</citation>
          <descriptiveNote>Convention Note</descriptiveNote>
       </conventionDeclaration>
       <maintenanceHistory>
@@ -42,7 +42,7 @@
          </maintenanceEvent>
       </maintenanceHistory>
       <sources>
-         <source xlink:href="http://www.googlew.com" xlink:actuate="onRequest" xlink:show="new" xlink:title="xlink title" xlink:role="xlink role" lastDateTimeVerified="2001-07-01">
+         <source xlink:href="http://www.googlew.com" xlink:actuate="onRequest" xlink:show="new" xlink:arcrole="xlink arcrole" xlink:title="xlink title" xlink:role="xlink role" lastDateTimeVerified="2001-07-01">
            <sourceEntry>Pressearchiv des Herder-Instituts Marburg</sourceEntry>
            <descriptiveNote>Source Note</descriptiveNote>
          </source>
@@ -65,7 +65,7 @@
    </control>
    <cpfDescription>
       <alternativeSet>
-         <setComponent xlink:href='href' xlink:arcrole='arcrole' xlink:title='title' xlink:actuate='none' xlink:role='role' xlink:show='new' lastDateTimeVerified='2008-10-01'>
+         <setComponent xlink:href='href' xlink:arcrole='arcrole' xlink:title='title' xlink:actuate='none' xlink:role='role' xlink:arcrole="arcrole" xlink:show='new' lastDateTimeVerified='2008-10-01'>
             <descriptiveNote>
                Note of description
             </descriptiveNote>

@@ -438,6 +438,7 @@ module EACBaseMap
           dec[:file_version_xlink_show_attribute] = node.attr("show")
           dec[:xlink_title_attribute] = node.attr("title")
           dec[:xlink_role_attribute] = node.attr("role")
+          dec[:xlink_arcrole_attribute] = node.attr("arcrole")
           dec[:last_verified_date] = node.attr("lastDateTimeVerified")
         },
         "descendant::descriptiveNote" => Proc.new {|dec, node|
@@ -463,6 +464,7 @@ module EACBaseMap
           as[:file_version_xlink_show_attribute] = node.attr("show")
           as[:xlink_title_attribute] = node.attr("title")
           as[:xlink_role_attribute] = node.attr("role")
+          as[:xlink_arcrole_attribute] = node.attr("arcrole")
           as[:last_verified_date] = node.attr("lastDateTimeVerified")
         },
         "descendant::descriptiveNote" => Proc.new {|as, node|
@@ -524,6 +526,7 @@ module EACBaseMap
           s[:file_version_xlink_show_attribute] = node.attr("show")
           s[:xlink_title_attribute] = node.attr("title")
           s[:xlink_role_attribute] = node.attr("role")
+          s[:xlink_arcrole_attribute] = node.attr("arcrole")
           s[:last_verified_date] = node.attr("lastDateTimeVerified")
         },
         "descendant::sourceEntry" => Proc.new {|s, node|
