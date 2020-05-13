@@ -660,6 +660,8 @@ en:
         <p>Title of the remote resources linked in the associated URI, which may be used as a caption.</p>
     xlink_role_attribute_tooltip: |
         <p>Type or nature of the remote resource linked in the associated URI.</p>
+    xlink_arcrole_attribute_tooltip: |
+        <p>Type or nature of the remote resource linked in the associated URI.</p>
     last_verified_date_tooltip: |
         <p>Last date or date and time the linked resource linked in the associated URI was verified.</p>
 
@@ -679,6 +681,8 @@ en:
     xlink_title_attribute_tooltip: |
         <p>Title of the remote resources linked in the associated URI, which may be used as a caption.</p>
     xlink_role_attribute_tooltip: |
+        <p>Type or nature of the remote resource linked in the associated URI.</p>
+    xlink_arcrole_attribute_tooltip: |
         <p>Type or nature of the remote resource linked in the associated URI.</p>
     last_verified_date_tooltip: |
         <p>Last date or date and time the linked resource linked in the associated URI was verified.</p>
@@ -716,6 +720,8 @@ en:
     xlink_title_attribute_tooltip: |
         <p>Title of the remote resources linked in the associated URI, which may be used as a caption.</p>
     xlink_role_attribute_tooltip: |
+        <p>Type or nature of the remote resource linked in the associated URI.</p>
+    xlink_arcrole_attribute_tooltip: |
         <p>Type or nature of the remote resource linked in the associated URI.</p>
     last_verified_date_tooltip: |
         <p>Last date or date and time the linked resource linked in the associated URI was verified.</p>
@@ -758,6 +764,8 @@ en:
         <p>Title of the remote resources linked in the associated URI, which may be used as a caption.</p>
     xlink_role_attribute_tooltip: |
         <p>Type or nature of the remote resource linked in the associated URI.</p>
+    xlink_arcrole_attribute_tooltip: |
+        <p>Type or nature of the remote resource linked in the associated URI.</p>   
     last_verified_date_tooltip: |
         <p>Last date or date and time the linked resource linked in the associated URI was verified.</p>
 

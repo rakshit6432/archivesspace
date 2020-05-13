@@ -24,7 +24,7 @@ Sequel.migration do
     create_enum("date_standardized_type_enum", ["standard", "not_before", "not_after"])
     create_enum("begin_date_standardized_type_enum", ["standard", "not_before", "not_after"])
     create_enum("end_date_standardized_type_enum", ["standard", "not_before", "not_after"])
-  	create_enum("place_role_enum", ["assoc_country", "residence", "other_assoc", "place_of_birth", "place_of_death"])
+  	create_editable_enum("place_role_enum", ["assoc_country", "residence", "other_assoc", "place_of_birth", "place_of_death"])
   	create_enum("agent_relationship_identity_relator", ["is_identified_with"])
   	create_enum("agent_relationship_hierarchical_relator", ["is_hierarchical_with"])
   	create_enum("agent_relationship_temporal_relator", ["is_temporal_with"])

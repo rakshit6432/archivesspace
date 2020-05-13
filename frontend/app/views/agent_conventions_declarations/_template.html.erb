@@ -33,6 +33,10 @@
         {:field_opts => {:size => 30, :class => "form-control"},
         :required => is_required_by_admin?(r, "agent_conventions_declarations", "xlink_role_attribute") }%>
 
+      <%= form.label_and_textfield "xlink_arcrole_attribute",  
+        {:field_opts => {:size => 30, :class => "form-control"},
+        :required => is_required_by_admin?(r, "agent_conventions_declarations", "xlink_arcrole_attribute") }%>
+
       <%= form.label_and_date "last_verified_date",
         :required => is_required_by_admin?(r, "agent_conventions_declarations", "last_verified_date") %>
     </div>
@@ -40,7 +44,7 @@
 <% end %>
 
 <% define_template "agent_conventions_declaration_required", jsonmodel_definition(:agent_conventions_declaration) do |form| %>
-  <% field_names = ["name_rule", "citation", "descriptive_note", "file_uri", "file_version_xlink_actuate_attribute", "file_version_xlink_show_attribute", "xlink_title_attribute", "xlink_role_attribute", "last_verified_date"] %>
+  <% field_names = ["name_rule", "citation", "descriptive_note", "file_uri", "file_version_xlink_actuate_attribute", "file_version_xlink_show_attribute", "xlink_title_attribute", "xlink_role_attribute", "xlink_arcrole_attribute", "last_verified_date"] %>
   <% field_names.each do |field_name| %>
     <% if form.required?(field_name) %>
       <%= form.label_and_readonly field_name %>
@@ -54,7 +58,7 @@
 
   <%= form.record_level_merge_controls(form, "agent_conventions_declaration", false) %>
 
-  <% field_names = ["name_rule", "citation", "descriptive_note", "file_uri", "file_version_xlink_actuate_attribute", "file_version_xlink_show_attribute", "xlink_title_attribute", "xlink_role_attribute", "last_verified_date"] %>
+  <% field_names = ["name_rule", "citation", "descriptive_note", "file_uri", "file_version_xlink_actuate_attribute", "file_version_xlink_show_attribute", "xlink_title_attribute", "xlink_role_attribute", "xlink_arcrole_attribute", "last_verified_date"] %>
   <% field_names.each do |field_name| %>
     <%= form.label_and_readonly field_name %>
   <% end %>
@@ -74,6 +78,7 @@
   <%= form.label_and_merge_select("file_version_xlink_show_attribute", "", {:disable_replace => disable_replace}) %>
   <%= form.label_and_merge_select("xlink_title_attribute", "", {:disable_replace => disable_replace}) %>
   <%= form.label_and_merge_select("xlink_role_attribute", "", {:disable_replace => disable_replace}) %>
+  <%= form.label_and_merge_select("xlink_arcrole_attribute", "", {:disable_replace => disable_replace}) %>
   <%= form.label_and_merge_select("last_verified_date", "", {:disable_replace => disable_replace}) %>
 
   <%= form.hidden_input "id", form.obj["id"] %>

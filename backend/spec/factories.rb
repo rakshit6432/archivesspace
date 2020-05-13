@@ -121,6 +121,7 @@ FactoryBot.define do
       file_uri { generate(:alphanumstr) }
       xlink_title_attribute { generate(:alphanumstr) }
       xlink_role_attribute { generate(:alphanumstr) }
+      xlink_arcrole_attribute { generate(:alphanumstr) }
       last_verified_date { generate(:yyyy_mm_dd) }
     end
 
@@ -133,6 +134,7 @@ FactoryBot.define do
       file_uri { generate(:alphanumstr) }
       xlink_title_attribute { generate(:alphanumstr) }
       xlink_role_attribute { generate(:alphanumstr) }
+      xlink_arcrole_attribute { generate(:alphanumstr) }
       last_verified_date { generate(:yyyy_mm_dd) }
     end
 
@@ -144,6 +146,7 @@ FactoryBot.define do
       file_uri { generate(:alphanumstr) }
       xlink_title_attribute { generate(:alphanumstr) }
       xlink_role_attribute { generate(:alphanumstr) }
+      xlink_arcrole_attribute { generate(:alphanumstr) }
       last_verified_date { generate(:yyyy_mm_dd) }
     end
 
@@ -202,6 +205,7 @@ FactoryBot.define do
       file_version_xlink_show_attribute { "other" }
       xlink_title_attribute { generate(:alphanumstr) }
       xlink_role_attribute { generate(:alphanumstr) }
+      xlink_arcrole_attribute { generate(:alphanumstr) }
       linked_resource { generate(:alphanumstr) }
       linked_resource_description { generate(:alphanumstr) }
       file_uri { generate(:alphanumstr) }

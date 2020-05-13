@@ -8,7 +8,7 @@
       "name_rule" => {
         "type" => "string",
         "dynamic_enum" => "name_rule",
-        "ifmissing" => "error"
+        "required" => "false"
       },
       "citation" => {"type" => "string", "maxLength" => 65000, "required" => false},
       "descriptive_note" => {"type" => "string", "maxLength" => 65000, "default" => ""},
@@ -25,6 +25,7 @@
       },
       "xlink_title_attribute" => {"type" => "string", "maxLength" => 65000},
       "xlink_role_attribute" => {"type" => "string", "maxLength" => 65000},
+      "xlink_arcrole_attribute" => {"type" => "string", "maxLength" => 65000},
       "last_verified_date" => {"type" => "date-time"},
       "id"                        => {"type" => "integer", "required" => false},
       "agent_person_id"           => {"type" => "integer", "required" => false},
