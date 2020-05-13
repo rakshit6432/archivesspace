@@ -196,11 +196,13 @@ describe 'EAC converter' do
     it "imports name use dates" do
       record = convert(person_agent_3).select {|r| r['jsonmodel_type'] == "agent_person"}.first
 
-      expect(record['names'][0]['use_dates'].length).to eq(1)
+      expect(record['names'][0]['use_dates'].length).to eq(2)
       expect(record['names'][1]['use_dates'].length).to eq(1)
 
       expect(record["names"][0]["use_dates"][0]["date_label"]).to eq("usage")
       expect(record["names"][0]["use_dates"][0]["structured_date_single"]["date_expression"]).to match(/1802 December 27/)
+      expect(record["names"][0]["use_dates"][1]["date_label"]).to eq("usage")
+      expect(record["names"][0]["use_dates"][1]["structured_date_range"]["begin_date_expression"]).to match(/1742 November 12/)
 
       expect(record["names"][1]["use_dates"][0]["date_label"]).to eq("usage")
       expect(record["names"][1]["use_dates"][0]["structured_date_range"]["begin_date_expression"]).to match(/1742 November 12/)
@@ -283,6 +285,24 @@ describe 'EAC converter' do
       expect(agent_record["agent_topics"].length).to eq(1)
     end
 
+    it "imports gender" do
+      full_record = convert(person_agent_3)
+
+      agent_record = full_record.select {|r| r['jsonmodel_type'] == "agent_person"}.first
+
+      expect(agent_record["agent_genders"].length).to eq(1)
+      expect(agent_record["agent_genders"][0]["gender_enum"]).to eq("Woman")
+
+      expect(agent_record["agent_genders"][0]["notes"][0]["content"]).to match(/d-note/)
+
+      expect(agent_record["agent_genders"][0]["dates"][0]["date_label"]).to eq("DE-588-4099668-2")
+      expect(agent_record["agent_genders"][0]["dates"][0]["structured_date_single"]["date_expression"]).to match(/1802 December 27/)
+
+      # date inside <dateSet>
+      expect(agent_record["agent_genders"][0]["dates"][1]["structured_date_range"]["begin_date_expression"]).to match(/1742 November 12/)
+
+    end
+
   end
 
   describe "corporate agents" do
@@ -318,6 +338,7 @@ describe 'EAC converter' do
       expect(record['names'][1]['authorized']).to eq(false)
       expect(record['names'][1]['source']).to eq("local")
     end
+
   end
 
   describe "family agents" do

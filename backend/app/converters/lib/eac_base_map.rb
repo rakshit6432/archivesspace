@@ -25,6 +25,7 @@ module EACBaseMap
     {
       "//identity/nameEntry" => agent_person_name_map(:name_person, :names),
       "//identity/nameEntryParallel/nameEntry[1]" => agent_person_name_with_parallel_map(:name_person, :names),
+      "//localDescriptions/localDescription[@localType='gender']" => agent_person_gender_map,
     }.merge(base_map_subfields)
   end
 
@@ -54,8 +55,8 @@ module EACBaseMap
       "//eac-cpf/control/maintenanceHistory/maintenanceEvent" => agent_maintenance_history_map,
       "//eac-cpf/control/sources/source" => agent_sources_map,
       "//eac-cpf/cpfDescription/identity/entityId" => agent_identifier_map,
-      "//eac-cpf/cpfDescription/description/existDates/date" => agent_date_single_map("existence", :dates_of_existence),
-      "//eac-cpf/cpfDescription/description/existDates/dateRange" => agent_date_range_map("existence", :dates_of_existence),
+      "//eac-cpf/cpfDescription/description/existDates//date" => agent_date_single_map("existence", :dates_of_existence),
+      "//eac-cpf/cpfDescription/description/existDates//dateRange" => agent_date_range_map("existence", :dates_of_existence),
       "//places/place" => agent_place_map,
       "//occupations/occupation" => agent_occupation_map,
       "//functions/function" => agent_function_map,
@@ -218,8 +219,8 @@ module EACBaseMap
          name[:primary_name] = val
          name[:dates] = val.scan(/[0-9]{4}-[0-9]{4}/).flatten[0]
        }, # if localType attr is something else
-       "descendant::useDates/date" => agent_date_single_map("usage", :use_dates),
-       "descendant::useDates/dateRange" => agent_date_range_map("usage", :use_dates)
+       "descendant::useDates//date" => agent_date_single_map("usage", :use_dates),
+       "descendant::useDates//dateRange" => agent_date_range_map("usage", :use_dates)
      }
   end
 
@@ -279,8 +280,8 @@ module EACBaseMap
         name[:primary_name] = val
         name[:dates] = val.scan(/[0-9]{4}-[0-9]{4}/).flatten[0]
       }, # if localType attr is something else
-      "descendant::useDates/date" => agent_date_single_map("usage", :use_dates),
-      "descendant::useDates/dateRange" => agent_date_range_map("usage", :use_dates),
+      "descendant::useDates//date" => agent_date_single_map("usage", :use_dates),
+      "descendant::useDates//dateRange" => agent_date_range_map("usage", :use_dates),
     }
   end
 
@@ -336,10 +337,11 @@ module EACBaseMap
         name[:family_name] = val
         name[:dates] = val.scan(/[0-9]{4}-[0-9]{4}/).flatten[0]
       }, # if localType attr is something else, assume primary_name
-      "descendant::useDates/date" => agent_date_single_map("usage", :use_dates),
-      "descendant::useDates/dateRange" => agent_date_range_map("usage", :use_dates)
+      "descendant::useDates//date" => agent_date_single_map("usage", :use_dates),
+      "descendant::useDates//dateRange" => agent_date_range_map("usage", :use_dates)
     }
   end
+
 
   def agent_record_identifiers_map
     {
@@ -634,6 +636,24 @@ module EACBaseMap
       }
     }
   end
+
+  def agent_person_gender_map
+    {
+      :obj => :agent_gender,
+      :rel => :agent_genders,
+      :map => {
+        "descendant::term" => Proc.new {|gender, node|
+          val = node.inner_text
+          gender[:gender_enum] = val
+        },
+        "descendant::date" => agent_date_single_map,
+        "descendant::dateRange" => agent_date_range_map,
+        "descendant::descriptiveNote" => agent_text_note_map("self::descriptiveNote"),
+      },
+      :defaults => {
+      }
+    }
+  end  
 
 
   def agent_place_map
