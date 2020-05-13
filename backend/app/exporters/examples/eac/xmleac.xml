@@ -64,6 +64,16 @@
       </sources>
    </control>
    <cpfDescription>
+      <alternativeSet>
+         <setComponent xlink:href='href' xlink:arcrole='arcrole' xlink:title='title' xlink:actuate='none' xlink:role='role' xlink:show='new' lastDateTimeVerified='2008-10-01'>
+            <descriptiveNote>
+               Note of description
+            </descriptiveNote>
+            <componentEntry>
+               set component
+            </componentEntry>
+         </setComponent>
+      </alternativeSet>
       <identity>
         <entityId localType="PPX">auto gen number</entityId>
          <entityType>person</entityType>

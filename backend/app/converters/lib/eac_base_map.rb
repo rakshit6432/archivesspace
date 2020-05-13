@@ -61,7 +61,8 @@ module EACBaseMap
       "//occupations/occupation" => agent_occupation_map,
       "//functions/function" => agent_function_map,
       "//localDescriptions/localDescription[@localType='associatedSubject']" => agent_topic_map,
-      "//eac-cpf//biogHist" => agent_bioghist_note_map
+      "//eac-cpf//biogHist" => agent_bioghist_note_map,
+      "//eac-cpf/cpfDescription/alternativeSet/setComponent" => agent_set_component_map
     }
   end
 
@@ -447,6 +448,33 @@ module EACBaseMap
       :defaults => {
         :citation => "citation",
         :name_rule => "local"
+      }
+    }
+  end
+
+  def agent_set_component_map
+    {
+      :obj => :agent_alternate_set,
+      :rel => :agent_alternate_sets,
+      :map => {
+        "self::setComponent" => Proc.new {|as, node|
+          as[:file_uri] = node.attr("href")
+          as[:file_version_xlink_actuate_attribute] = node.attr("actuate")
+          as[:file_version_xlink_show_attribute] = node.attr("show")
+          as[:xlink_title_attribute] = node.attr("title")
+          as[:xlink_role_attribute] = node.attr("role")
+          as[:last_verified_date] = node.attr("lastDateTimeVerified")
+        },
+        "descendant::descriptiveNote" => Proc.new {|as, node|
+          val = node.inner_text
+          as[:descriptive_note] = val
+        },
+        "descendant::componentEntry" => Proc.new {|as, node|
+          val = node.inner_text
+          as[:set_component] = val
+        },
+      },
+      :defaults => {
       }
     }
   end

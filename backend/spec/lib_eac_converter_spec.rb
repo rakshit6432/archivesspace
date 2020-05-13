@@ -300,7 +300,22 @@ describe 'EAC converter' do
 
       # date inside <dateSet>
       expect(agent_record["agent_genders"][0]["dates"][1]["structured_date_range"]["begin_date_expression"]).to match(/1742 November 12/)
+    end
 
+    it "imports alternate sets" do
+      full_record = convert(person_agent_3)
+
+      agent_record = full_record.select {|r| r['jsonmodel_type'] == "agent_person"}.first
+
+      expect(agent_record["agent_alternate_sets"].length).to eq(1)
+      expect(agent_record["agent_alternate_sets"][0]["set_component"]).to match(/set component/)
+      expect(agent_record["agent_alternate_sets"][0]["descriptive_note"]).to match(/Note of description/)
+      expect(agent_record["agent_alternate_sets"][0]["file_uri"]).to eq("href")
+      expect(agent_record["agent_alternate_sets"][0]["xlink_title_attribute"]).to eq("title")
+      expect(agent_record["agent_alternate_sets"][0]["xlink_role_attribute"]).to eq("role")
+      expect(agent_record["agent_alternate_sets"][0]["file_version_xlink_show_attribute"]).to eq("new")
+
+      expect(agent_record["agent_alternate_sets"][0]["file_version_xlink_actuate_attribute"]).to eq("none")
     end
 
   end
