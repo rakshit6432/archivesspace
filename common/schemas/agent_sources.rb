@@ -22,6 +22,7 @@
       "id"                        => {"type" => "integer", "required" => false},
       "xlink_title_attribute" => {"type" => "string", "maxLength" => 65000},
       "xlink_role_attribute" => {"type" => "string", "maxLength" => 65000},
+      "xlink_arcrole_attribute" => {"type" => "string", "maxLength" => 65000},
       "last_verified_date" => {"type" => "date-time"}
     }
   }

@@ -118,6 +118,7 @@ describe 'EAC converter' do
       expect(acd["file_version_xlink_show_attribute"]).to eq("new")
       expect(acd["xlink_title_attribute"]).to eq("xlink title")
       expect(acd["xlink_role_attribute"]).to eq("xlink role")
+      expect(acd["xlink_arcrole_attribute"]).to eq("xlink arcrole")
       expect(acd["descriptive_note"]).to eq("Convention Note")
       expect(acd["last_verified_date"]).to eq("2000-07-01")
     end
@@ -147,6 +148,7 @@ describe 'EAC converter' do
       expect(s["file_version_xlink_show_attribute"]).to eq("new")
       expect(s["xlink_title_attribute"]).to eq("xlink title")
       expect(s["xlink_role_attribute"]).to eq("xlink role")
+      expect(s["xlink_arcrole_attribute"]).to eq("xlink arcrole")
       expect(s["descriptive_note"]).to eq("Source Note")
       expect(s["last_verified_date"]).to eq("2001-07-01")
     end
@@ -181,6 +183,7 @@ describe 'EAC converter' do
       expect(record['names'][0]['qualifier']).to eq("qualifier")
       expect(record['names'][0]['language']).to eq("eng")
       expect(record['names'][0]['script']).to eq("Latn")
+      expect(record['names'][0]['romanization_enum']).to eq("int_std")
     end
 
     it "imports parallel names" do
@@ -196,11 +199,13 @@ describe 'EAC converter' do
     it "imports name use dates" do
       record = convert(person_agent_3).select {|r| r['jsonmodel_type'] == "agent_person"}.first
 
-      expect(record['names'][0]['use_dates'].length).to eq(1)
+      expect(record['names'][0]['use_dates'].length).to eq(2)
       expect(record['names'][1]['use_dates'].length).to eq(1)
 
       expect(record["names"][0]["use_dates"][0]["date_label"]).to eq("usage")
       expect(record["names"][0]["use_dates"][0]["structured_date_single"]["date_expression"]).to match(/1802 December 27/)
+      expect(record["names"][0]["use_dates"][1]["date_label"]).to eq("usage")
+      expect(record["names"][0]["use_dates"][1]["structured_date_range"]["begin_date_expression"]).to match(/1742 November 12/)
 
       expect(record["names"][1]["use_dates"][0]["date_label"]).to eq("usage")
       expect(record["names"][1]["use_dates"][0]["structured_date_range"]["begin_date_expression"]).to match(/1742 November 12/)
@@ -283,6 +288,58 @@ describe 'EAC converter' do
       expect(agent_record["agent_topics"].length).to eq(1)
     end
 
+    it "imports gender" do
+      full_record = convert(person_agent_3)
+
+      agent_record = full_record.select {|r| r['jsonmodel_type'] == "agent_person"}.first
+
+      expect(agent_record["agent_genders"].length).to eq(1)
+      expect(agent_record["agent_genders"][0]["gender_enum"]).to eq("Woman")
+
+      expect(agent_record["agent_genders"][0]["notes"][0]["content"]).to match(/d-note/)
+
+      expect(agent_record["agent_genders"][0]["dates"][0]["date_label"]).to eq("DE-588-4099668-2")
+      expect(agent_record["agent_genders"][0]["dates"][0]["structured_date_single"]["date_expression"]).to match(/1802 December 27/)
+
+      # date inside <dateSet>
+      expect(agent_record["agent_genders"][0]["dates"][1]["structured_date_range"]["begin_date_expression"]).to match(/1742 November 12/)
+    end
+
+    it "imports alternate sets" do
+      full_record = convert(person_agent_3)
+
+      agent_record = full_record.select {|r| r['jsonmodel_type'] == "agent_person"}.first
+
+      expect(agent_record["agent_alternate_sets"].length).to eq(1)
+      expect(agent_record["agent_alternate_sets"][0]["set_component"]).to match(/set component/)
+      expect(agent_record["agent_alternate_sets"][0]["descriptive_note"]).to match(/Note of description/)
+      expect(agent_record["agent_alternate_sets"][0]["file_uri"]).to eq("href")
+      expect(agent_record["agent_alternate_sets"][0]["xlink_title_attribute"]).to eq("title")
+      expect(agent_record["agent_alternate_sets"][0]["xlink_role_attribute"]).to eq("role")
+      expect(agent_record["agent_alternate_sets"][0]["xlink_arcrole_attribute"]).to eq("arcrole")
+      expect(agent_record["agent_alternate_sets"][0]["file_version_xlink_show_attribute"]).to eq("new")
+
+      expect(agent_record["agent_alternate_sets"][0]["file_version_xlink_actuate_attribute"]).to eq("none")
+    end
+
+    it "imports languages used" do
+      full_record = convert(person_agent_3)
+
+      agent_record = full_record.select {|r| r['jsonmodel_type'] == "agent_person"}.first
+
+      expect(agent_record["used_languages"].length).to eq(2)
+      expect(agent_record["used_languages"][0]["language"]).to eq("eng")
+      expect(agent_record["used_languages"][0]["script"]).to eq("Latn")
+
+      expect(agent_record["used_languages"][0]["notes"][0]["content"]).to match(/Published works in English and Spanish/)
+    end
+
+    xit "imports related agents" do
+      full_record = convert(person_agent_3)
+
+      puts full_record.inspect
+    end
+
   end
 
   describe "corporate agents" do
@@ -318,6 +375,7 @@ describe 'EAC converter' do
       expect(record['names'][1]['authorized']).to eq(false)
       expect(record['names'][1]['source']).to eq("local")
     end
+
   end
 
   describe "family agents" do

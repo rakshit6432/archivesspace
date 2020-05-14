@@ -25,6 +25,8 @@ module EACBaseMap
     {
       "//identity/nameEntry" => agent_person_name_map(:name_person, :names),
       "//identity/nameEntryParallel/nameEntry[1]" => agent_person_name_with_parallel_map(:name_person, :names),
+      "//localDescriptions/localDescription[@localType='gender']" => agent_person_gender_map,
+      #"//relations/cpfRelation" => related_agent_map,
     }.merge(base_map_subfields)
   end
 
@@ -54,13 +56,15 @@ module EACBaseMap
       "//eac-cpf/control/maintenanceHistory/maintenanceEvent" => agent_maintenance_history_map,
       "//eac-cpf/control/sources/source" => agent_sources_map,
       "//eac-cpf/cpfDescription/identity/entityId" => agent_identifier_map,
-      "//eac-cpf/cpfDescription/description/existDates/date" => agent_date_single_map("existence", :dates_of_existence),
-      "//eac-cpf/cpfDescription/description/existDates/dateRange" => agent_date_range_map("existence", :dates_of_existence),
+      "//eac-cpf/cpfDescription/description/existDates//date" => agent_date_single_map("existence", :dates_of_existence),
+      "//eac-cpf/cpfDescription/description/existDates//dateRange" => agent_date_range_map("existence", :dates_of_existence),
       "//places/place" => agent_place_map,
       "//occupations/occupation" => agent_occupation_map,
       "//functions/function" => agent_function_map,
       "//localDescriptions/localDescription[@localType='associatedSubject']" => agent_topic_map,
-      "//eac-cpf//biogHist" => agent_bioghist_note_map
+      "//eac-cpf//biogHist" => agent_bioghist_note_map,
+      "//eac-cpf/cpfDescription/alternativeSet/setComponent" => agent_set_component_map,
+      "//languagesUsed/languageUsed" => agent_languages_map
     }
   end
 
@@ -162,6 +166,9 @@ module EACBaseMap
        "self::nameEntry[@scriptCode]" => Proc.new {|name, node|
          name[:script] = node.attr("scriptCode")
        },
+       "self::nameEntry[@transliteration]" => Proc.new {|name, node|
+         name[:romanization_enum] = node.attr("transliteration")
+       },
        "descendant::part[@localType='prefix']" => Proc.new {|name, node|
          val = node.inner_text
          name[:prefix] = val
@@ -218,8 +225,8 @@ module EACBaseMap
          name[:primary_name] = val
          name[:dates] = val.scan(/[0-9]{4}-[0-9]{4}/).flatten[0]
        }, # if localType attr is something else
-       "descendant::useDates/date" => agent_date_single_map("usage", :use_dates),
-       "descendant::useDates/dateRange" => agent_date_range_map("usage", :use_dates)
+       "descendant::useDates//date" => agent_date_single_map("usage", :use_dates),
+       "descendant::useDates//dateRange" => agent_date_range_map("usage", :use_dates)
      }
   end
 
@@ -231,6 +238,9 @@ module EACBaseMap
       "self::nameEntry[@scriptCode]" => Proc.new {|name, node|
         name[:script] = node.attr("scriptCode")
       },
+      "self::nameEntry[@transliteration]" => Proc.new {|name, node|
+         name[:romanization_enum] = node.attr("transliteration")
+       },
       "descendant::part[@localType='primary_name']" => Proc.new {|name, node|
         val = node.inner_text
         name[:primary_name] = val
@@ -279,8 +289,8 @@ module EACBaseMap
         name[:primary_name] = val
         name[:dates] = val.scan(/[0-9]{4}-[0-9]{4}/).flatten[0]
       }, # if localType attr is something else
-      "descendant::useDates/date" => agent_date_single_map("usage", :use_dates),
-      "descendant::useDates/dateRange" => agent_date_range_map("usage", :use_dates),
+      "descendant::useDates//date" => agent_date_single_map("usage", :use_dates),
+      "descendant::useDates//dateRange" => agent_date_range_map("usage", :use_dates),
     }
   end
 
@@ -292,6 +302,9 @@ module EACBaseMap
       "self::nameEntry[@scriptCode]" => Proc.new {|name, node|
         name[:script] = node.attr("scriptCode")
       },
+      "self::nameEntry[@transliteration]" => Proc.new {|name, node|
+         name[:romanization_enum] = node.attr("transliteration")
+       },
       "descendant::part[@localType='prefix']" => Proc.new {|name, node|
         val = node.inner_text
         name[:prefix] = val
@@ -336,10 +349,11 @@ module EACBaseMap
         name[:family_name] = val
         name[:dates] = val.scan(/[0-9]{4}-[0-9]{4}/).flatten[0]
       }, # if localType attr is something else, assume primary_name
-      "descendant::useDates/date" => agent_date_single_map("usage", :use_dates),
-      "descendant::useDates/dateRange" => agent_date_range_map("usage", :use_dates)
+      "descendant::useDates//date" => agent_date_single_map("usage", :use_dates),
+      "descendant::useDates//dateRange" => agent_date_range_map("usage", :use_dates)
     }
   end
+
 
   def agent_record_identifiers_map
     {
@@ -435,6 +449,7 @@ module EACBaseMap
           dec[:file_version_xlink_show_attribute] = node.attr("show")
           dec[:xlink_title_attribute] = node.attr("title")
           dec[:xlink_role_attribute] = node.attr("role")
+          dec[:xlink_arcrole_attribute] = node.attr("arcrole")
           dec[:last_verified_date] = node.attr("lastDateTimeVerified")
         },
         "descendant::descriptiveNote" => Proc.new {|dec, node|
@@ -445,6 +460,34 @@ module EACBaseMap
       :defaults => {
         :citation => "citation",
         :name_rule => "local"
+      }
+    }
+  end
+
+  def agent_set_component_map
+    {
+      :obj => :agent_alternate_set,
+      :rel => :agent_alternate_sets,
+      :map => {
+        "self::setComponent" => Proc.new {|as, node|
+          as[:file_uri] = node.attr("href")
+          as[:file_version_xlink_actuate_attribute] = node.attr("actuate")
+          as[:file_version_xlink_show_attribute] = node.attr("show")
+          as[:xlink_title_attribute] = node.attr("title")
+          as[:xlink_role_attribute] = node.attr("role")
+          as[:xlink_arcrole_attribute] = node.attr("arcrole")
+          as[:last_verified_date] = node.attr("lastDateTimeVerified")
+        },
+        "descendant::descriptiveNote" => Proc.new {|as, node|
+          val = node.inner_text
+          as[:descriptive_note] = val
+        },
+        "descendant::componentEntry" => Proc.new {|as, node|
+          val = node.inner_text
+          as[:set_component] = val
+        },
+      },
+      :defaults => {
       }
     }
   end
@@ -494,6 +537,7 @@ module EACBaseMap
           s[:file_version_xlink_show_attribute] = node.attr("show")
           s[:xlink_title_attribute] = node.attr("title")
           s[:xlink_role_attribute] = node.attr("role")
+          s[:xlink_arcrole_attribute] = node.attr("arcrole")
           s[:last_verified_date] = node.attr("lastDateTimeVerified")
         },
         "descendant::sourceEntry" => Proc.new {|s, node|
@@ -635,6 +679,24 @@ module EACBaseMap
     }
   end
 
+  def agent_person_gender_map
+    {
+      :obj => :agent_gender,
+      :rel => :agent_genders,
+      :map => {
+        "descendant::term" => Proc.new {|gender, node|
+          val = node.inner_text
+          gender[:gender_enum] = val
+        },
+        "descendant::date" => agent_date_single_map,
+        "descendant::dateRange" => agent_date_range_map,
+        "descendant::descriptiveNote" => agent_text_note_map("self::descriptiveNote"),
+      },
+      :defaults => {
+      }
+    }
+  end  
+
 
   def agent_place_map
     {
@@ -724,6 +786,22 @@ module EACBaseMap
     }
   end
 
+  def agent_languages_map
+   {
+    :obj => :used_language,
+    :rel => :used_languages,
+    :map => {
+      "descendant::language" => Proc.new {|lang, node|
+         lang[:language] = node.attr("languageCode")
+      },
+      "descendant::script" => Proc.new {|lang, node|
+        lang[:script] = node.attr("scriptCode")
+      },
+      "descendant::descriptiveNote" => agent_text_note_map("self::descriptiveNote"),
+    }
+  }
+  end
+
   def agent_bioghist_note_map
     {
       :obj => :note_bioghist,
@@ -803,4 +881,38 @@ module EACBaseMap
       }
     }
   end
+
+  def related_agent_map
+    {
+      :obj => :agent_relationship_associative,
+      :rel => :related_agents,
+      :map => {
+        "self::cpfRelation" => Proc.new{|ra, node|
+          ra.relator = "is_associative_with"
+        },
+        "descendant::relationEntry" => related_agent_person_map
+      },
+      :defaults => {
+      }
+    }
+  end
+
+  def related_agent_person_map
+    {
+      :obj => :agent_person,
+      :rel => :ref,
+      :map => {
+        "self::relationEntry" => Proc.new{|ap, node|
+          name_person = ASpaceImport::JSONModel(:name_person).new({
+            :primary_name => node.inner_text,
+            :name_order => "direct"
+          })
+          ap.names = [name_person]
+        },
+      },
+      :defaults => {
+      }
+    }
+  end
+
 end

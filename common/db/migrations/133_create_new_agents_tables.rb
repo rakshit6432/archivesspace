@@ -44,6 +44,7 @@ Sequel.migration do
       String :file_uri, :null => true
       String :xlink_title_attribute, :null => true
       String :xlink_role_attribute, :null => true
+      String :xlink_arcrole_attribute, :null => true
       DateTime :last_verified_date, :null => true
 
       Integer :agent_person_id, :null => true
@@ -67,6 +68,7 @@ Sequel.migration do
       String :file_uri, :null => true
       String :xlink_title_attribute, :null => true
       String :xlink_role_attribute, :null => true
+      String :xlink_arcrole_attribute, :null => true
       DateTime :last_verified_date, :null => true
 
       Integer :agent_person_id, :null => true
@@ -143,6 +145,7 @@ Sequel.migration do
 
       String :xlink_title_attribute, :null => true
       String :xlink_role_attribute, :null => true
+      String :xlink_arcrole_attribute, :null => true
       
       DateTime :last_verified_date, :null => true
       
@@ -537,6 +540,7 @@ Sequel.migration do
 
       String :xlink_title_attribute, :null => true
       String :xlink_role_attribute, :null => true
+      String :xlink_arcrole_attribute, :null => true
       DateTime :last_verified_date, :null => true
 
 

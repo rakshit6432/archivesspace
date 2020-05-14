@@ -22,7 +22,7 @@
       </languageDeclaration>
       <conventionDeclaration>
          <abbreviation>RDA</abbreviation>
-         <citation xlink:href="http://www.google.com" xlink:actuate="onRequest" xlink:show="new" xlink:title="xlink title" xlink:role="xlink role" lastDateTimeVerified="2000-07-01">The Citation</citation>
+         <citation xlink:href="http://www.google.com" xlink:actuate="onRequest" xlink:show="new" xlink:title="xlink title" xlink:role="xlink role" xlink:arcrole="xlink arcrole" lastDateTimeVerified="2000-07-01">The Citation</citation>
          <descriptiveNote>Convention Note</descriptiveNote>
       </conventionDeclaration>
       <maintenanceHistory>
@@ -42,7 +42,7 @@
          </maintenanceEvent>
       </maintenanceHistory>
       <sources>
-         <source xlink:href="http://www.googlew.com" xlink:actuate="onRequest" xlink:show="new" xlink:title="xlink title" xlink:role="xlink role" lastDateTimeVerified="2001-07-01">
+         <source xlink:href="http://www.googlew.com" xlink:actuate="onRequest" xlink:show="new" xlink:arcrole="xlink arcrole" xlink:title="xlink title" xlink:role="xlink role" lastDateTimeVerified="2001-07-01">
            <sourceEntry>Pressearchiv des Herder-Instituts Marburg</sourceEntry>
            <descriptiveNote>Source Note</descriptiveNote>
          </source>
@@ -64,10 +64,20 @@
       </sources>
    </control>
    <cpfDescription>
+      <alternativeSet>
+         <setComponent xlink:href='href' xlink:arcrole='arcrole' xlink:title='title' xlink:actuate='none' xlink:role='role' xlink:arcrole="arcrole" xlink:show='new' lastDateTimeVerified='2008-10-01'>
+            <descriptiveNote>
+               Note of description
+            </descriptiveNote>
+            <componentEntry>
+               set component
+            </componentEntry>
+         </setComponent>
+      </alternativeSet>
       <identity>
         <entityId localType="PPX">auto gen number</entityId>
          <entityType>person</entityType>
-         <nameEntry xml:lang="eng" scriptCode="Latn">
+         <nameEntry xml:lang="eng" scriptCode="Latn" transliteration="int_std">
             <part localType="prefix">Mrs.</part>
             <part localType="title">Dr.</part>
             <part localType="surname">Arendt</part>
@@ -81,6 +91,12 @@
             <alternativeForm>VIAF</alternativeForm>
             <useDates>
                <date standardDate="1802-12-27">1802 December 27</date>
+               <dateSet>
+                 <dateRange localType="123">
+                   <fromDate standardDate="1742-11-12">1742 November 12</fromDate>
+                   <toDate standardDate="1802-12-27">1802 December 27</toDate>
+                 </dateRange>
+               </dateSet>
             </useDates>
          </nameEntry>
 
@@ -178,7 +194,32 @@
          </nameEntryParallel>
       </identity>
       <description>
+        <languagesUsed>
+          <languageUsed>
+             <language languageCode="eng">English</language>
+             <script scriptCode="Latn">Latin</script>
+             <descriptiveNote>
+               Published works in English and Spanish.
+             </descriptiveNote>
+          </languageUsed>
+          <languageUsed>
+            <language languageCode="spa">Spanish</language>
+            <script scriptCode="Latn">Latin</script>
+        </languageUsed>
+    
+        </languagesUsed>
          <localDescriptions localType="GND">
+            <localDescription localType="gender">
+               <term>Woman</term>
+               <descriptiveNote>d-note</descriptiveNote>
+               <date standardDate="1802-12-27" localType="DE-588-4099668-2">1802 December 27</date>
+               <dateSet>
+                 <dateRange localType="123">
+                   <fromDate standardDate="1742-11-12">1742 November 12</fromDate>
+                   <toDate standardDate="1802-12-27">1802 December 27</toDate>
+                 </dateRange>
+               </dateSet> 
+            </localDescription>
             <localDescription localType="associatedSubject">
                <term>2</term>
                <descriptiveNote>
@@ -187,11 +228,13 @@
             </localDescription>
          </localDescriptions>
          <existDates>
-             <dateRange localType="123">
-                 <fromDate standardDate="1742-11-12">1742 November 12</fromDate>
-                 <toDate standardDate="1802-12-27">1802 December 27</toDate>
-             </dateRange>
-             <date standardDate="1802-12-27" localType="456">1802 December 27</date>
+             <dateSet>
+               <dateRange localType="123">
+                   <fromDate standardDate="1742-11-12">1742 November 12</fromDate>
+                   <toDate standardDate="1802-12-27">1802 December 27</toDate>
+               </dateRange>
+               <date standardDate="1802-12-27" localType="456">1802 December 27</date>
+             </dateSet>
          </existDates>
          <places>
             <place>

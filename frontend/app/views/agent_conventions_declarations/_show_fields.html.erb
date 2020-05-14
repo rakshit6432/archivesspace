@@ -81,6 +81,19 @@
   </div>
 </div>
 
+
+<div class='form-group'>
+  <div class='control-label col-sm-2'>
+    <%= I18n.t("agent_conventions_declaration.xlink_arcrole_attribute") %>
+  </div>
+  <div class='label-only col-sm-8'>
+    <% if agent_conventions_declaration["xlink_arcrole_attribute"] %>
+      <%= agent_conventions_declaration["xlink_arcrole_attribute"] %>
+      <% end %>
+  </div>
+</div>
+
+
 <div class='form-group'>
   <div class='control-label col-sm-2'>
     <%= I18n.t("agent_conventions_declaration.last_verified_date") %>
