@@ -77,7 +77,7 @@
       <identity>
         <entityId localType="PPX">auto gen number</entityId>
          <entityType>person</entityType>
-         <nameEntry xml:lang="eng" scriptCode="Latn">
+         <nameEntry xml:lang="eng" scriptCode="Latn" transliteration="int_std">
             <part localType="prefix">Mrs.</part>
             <part localType="title">Dr.</part>
             <part localType="surname">Arendt</part>
@@ -194,6 +194,20 @@
          </nameEntryParallel>
       </identity>
       <description>
+        <languagesUsed>
+          <languageUsed>
+             <language languageCode="eng">English</language>
+             <script scriptCode="Latn">Latin</script>
+             <descriptiveNote>
+               Published works in English and Spanish.
+             </descriptiveNote>
+          </languageUsed>
+          <languageUsed>
+            <language languageCode="spa">Spanish</language>
+            <script scriptCode="Latn">Latin</script>
+        </languageUsed>
+    
+        </languagesUsed>
          <localDescriptions localType="GND">
             <localDescription localType="gender">
                <term>Woman</term>

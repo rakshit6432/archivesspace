@@ -183,6 +183,7 @@ describe 'EAC converter' do
       expect(record['names'][0]['qualifier']).to eq("qualifier")
       expect(record['names'][0]['language']).to eq("eng")
       expect(record['names'][0]['script']).to eq("Latn")
+      expect(record['names'][0]['romanization_enum']).to eq("int_std")
     end
 
     it "imports parallel names" do
@@ -319,6 +320,24 @@ describe 'EAC converter' do
       expect(agent_record["agent_alternate_sets"][0]["file_version_xlink_show_attribute"]).to eq("new")
 
       expect(agent_record["agent_alternate_sets"][0]["file_version_xlink_actuate_attribute"]).to eq("none")
+    end
+
+    it "imports languages used" do
+      full_record = convert(person_agent_3)
+
+      agent_record = full_record.select {|r| r['jsonmodel_type'] == "agent_person"}.first
+
+      expect(agent_record["used_languages"].length).to eq(2)
+      expect(agent_record["used_languages"][0]["language"]).to eq("eng")
+      expect(agent_record["used_languages"][0]["script"]).to eq("Latn")
+
+      expect(agent_record["used_languages"][0]["notes"][0]["content"]).to match(/Published works in English and Spanish/)
+    end
+
+    xit "imports related agents" do
+      full_record = convert(person_agent_3)
+
+      puts full_record.inspect
     end
 
   end

@@ -26,6 +26,7 @@ module EACBaseMap
       "//identity/nameEntry" => agent_person_name_map(:name_person, :names),
       "//identity/nameEntryParallel/nameEntry[1]" => agent_person_name_with_parallel_map(:name_person, :names),
       "//localDescriptions/localDescription[@localType='gender']" => agent_person_gender_map,
+      #"//relations/cpfRelation" => related_agent_map,
     }.merge(base_map_subfields)
   end
 
@@ -62,7 +63,8 @@ module EACBaseMap
       "//functions/function" => agent_function_map,
       "//localDescriptions/localDescription[@localType='associatedSubject']" => agent_topic_map,
       "//eac-cpf//biogHist" => agent_bioghist_note_map,
-      "//eac-cpf/cpfDescription/alternativeSet/setComponent" => agent_set_component_map
+      "//eac-cpf/cpfDescription/alternativeSet/setComponent" => agent_set_component_map,
+      "//languagesUsed/languageUsed" => agent_languages_map
     }
   end
 
@@ -164,6 +166,9 @@ module EACBaseMap
        "self::nameEntry[@scriptCode]" => Proc.new {|name, node|
          name[:script] = node.attr("scriptCode")
        },
+       "self::nameEntry[@transliteration]" => Proc.new {|name, node|
+         name[:romanization_enum] = node.attr("transliteration")
+       },
        "descendant::part[@localType='prefix']" => Proc.new {|name, node|
          val = node.inner_text
          name[:prefix] = val
@@ -233,6 +238,9 @@ module EACBaseMap
       "self::nameEntry[@scriptCode]" => Proc.new {|name, node|
         name[:script] = node.attr("scriptCode")
       },
+      "self::nameEntry[@transliteration]" => Proc.new {|name, node|
+         name[:romanization_enum] = node.attr("transliteration")
+       },
       "descendant::part[@localType='primary_name']" => Proc.new {|name, node|
         val = node.inner_text
         name[:primary_name] = val
@@ -294,6 +302,9 @@ module EACBaseMap
       "self::nameEntry[@scriptCode]" => Proc.new {|name, node|
         name[:script] = node.attr("scriptCode")
       },
+      "self::nameEntry[@transliteration]" => Proc.new {|name, node|
+         name[:romanization_enum] = node.attr("transliteration")
+       },
       "descendant::part[@localType='prefix']" => Proc.new {|name, node|
         val = node.inner_text
         name[:prefix] = val
@@ -775,6 +786,22 @@ module EACBaseMap
     }
   end
 
+  def agent_languages_map
+   {
+    :obj => :used_language,
+    :rel => :used_languages,
+    :map => {
+      "descendant::language" => Proc.new {|lang, node|
+         lang[:language] = node.attr("languageCode")
+      },
+      "descendant::script" => Proc.new {|lang, node|
+        lang[:script] = node.attr("scriptCode")
+      },
+      "descendant::descriptiveNote" => agent_text_note_map("self::descriptiveNote"),
+    }
+  }
+  end
+
   def agent_bioghist_note_map
     {
       :obj => :note_bioghist,
@@ -854,4 +881,38 @@ module EACBaseMap
       }
     }
   end
+
+  def related_agent_map
+    {
+      :obj => :agent_relationship_associative,
+      :rel => :related_agents,
+      :map => {
+        "self::cpfRelation" => Proc.new{|ra, node|
+          ra.relator = "is_associative_with"
+        },
+        "descendant::relationEntry" => related_agent_person_map
+      },
+      :defaults => {
+      }
+    }
+  end
+
+  def related_agent_person_map
+    {
+      :obj => :agent_person,
+      :rel => :ref,
+      :map => {
+        "self::relationEntry" => Proc.new{|ap, node|
+          name_person = ASpaceImport::JSONModel(:name_person).new({
+            :primary_name => node.inner_text,
+            :name_order => "direct"
+          })
+          ap.names = [name_person]
+        },
+      },
+      :defaults => {
+      }
+    }
+  end
+
 end
