@@ -340,6 +340,28 @@ describe 'EAC converter' do
       puts full_record.inspect
     end
 
+    it "imports related external resources" do
+      full_record = convert(person_agent_3)
+
+      agent_record = full_record.select {|r| r['jsonmodel_type'] == "agent_person"}.first
+
+      expect(agent_record["agent_resources"].length).to eq(1)
+
+      ar = agent_record['agent_resources'].first
+      expect(ar["file_uri"]).to eq("http://www.google.com")
+      expect(ar["file_version_xlink_actuate_attribute"]).to eq("onRequest")
+      expect(ar["file_version_xlink_show_attribute"]).to eq("new")
+      expect(ar["xlink_title_attribute"]).to eq("xlink title")
+      expect(ar["xlink_role_attribute"]).to eq("xlink role")
+      expect(ar["xlink_arcrole_attribute"]).to eq("xlink arcrole")
+      expect(ar["last_verified_date"]).to eq("2000-07-01")
+
+      expect(ar["linked_resource"]).to eq("Department of Romance Languages records")
+      expect(ar["linked_resource_description"]).to eq("note!")
+
+      expect(ar["dates"][0]["structured_date_range"]["begin_date_expression"]).to match(/1742 November 12/)
+    end
+
   end
 
   describe "corporate agents" do

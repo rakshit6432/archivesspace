@@ -64,7 +64,8 @@ module EACBaseMap
       "//localDescriptions/localDescription[@localType='associatedSubject']" => agent_topic_map,
       "//eac-cpf//biogHist" => agent_bioghist_note_map,
       "//eac-cpf/cpfDescription/alternativeSet/setComponent" => agent_set_component_map,
-      "//languagesUsed/languageUsed" => agent_languages_map
+      "//languagesUsed/languageUsed" => agent_languages_map,
+      "//relations/resourceRelation" => related_resource_map
     }
   end
 
@@ -802,6 +803,43 @@ module EACBaseMap
   }
   end
 
+  #"creatorOf" or "subjectOf" or "other"
+  def related_resource_map
+    {
+      :obj => :agent_resource,
+      :rel => :agent_resources,
+      :map => {
+        "self::resourceRelation" => Proc.new{|rr, node|
+          rr[:file_uri] = node.attr("href")
+          rr[:file_version_xlink_actuate_attribute] = node.attr("actuate")
+          rr[:file_version_xlink_show_attribute] = node.attr("show")
+          rr[:xlink_title_attribute] = node.attr("title")
+          rr[:xlink_role_attribute] = node.attr("role")
+          rr[:xlink_arcrole_attribute] = node.attr("arcrole")
+          rr[:last_verified_date] = node.attr("lastDateTimeVerified")
+
+          if node.attr("resourceRelationType") == "creatorOf"
+            rr[:linked_agent_role] = "creator"
+          elsif node.attr("resourceRelationType") == "subjectOf"
+            rr[:linked_agent_role] = "subject"
+          else
+            rr[:linked_agent_role] = "source"
+          end
+        },
+        "descendant::relationEntry" => Proc.new{|rr, node|
+          rr[:linked_resource] = node.inner_text
+        },
+        "descendant::descriptiveNote" => Proc.new {|rr, node|
+          rr[:linked_resource_description] = node.inner_text
+        },
+        "descendant::date" => agent_date_single_map,
+        "descendant::dateRange" => agent_date_range_map,
+      },
+      :defaults => {
+      }
+    }
+  end
+
   def agent_bioghist_note_map
     {
       :obj => :note_bioghist,
@@ -882,6 +920,8 @@ module EACBaseMap
     }
   end
 
+  # CPF allowed values for relType attr:
+  #{}"identity" or "hierarchical" or "hierarchical-parent" or "hierarchical-child" or "temporal" or "temporal-earlier" or "temporal-later" or "family" or "associative"
   def related_agent_map
     {
       :obj => :agent_relationship_associative,
@@ -914,5 +954,6 @@ module EACBaseMap
       }
     }
   end
+
 
 end
