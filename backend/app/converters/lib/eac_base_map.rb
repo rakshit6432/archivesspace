@@ -35,6 +35,9 @@ module EACBaseMap
     {
       "//identity/nameEntry" => agent_corporate_entity_name_map(:name_corporate_entity, :names),
       "//identity/nameEntryParallel/nameEntry[1]" => agent_corporate_entity_name_with_parallel_map(:name_corporate_entity, :names),
+      "//eac-cpf//mandates/mandate" => agent_mandate_note_map,
+      "//eac-cpf//legalStatuses/legalStatus" => agent_legal_status_note_map,
+      "//eac-cpf//structureOrGenealogy" => agent_structure_note_map,
     }.merge(base_map_subfields)
   end
 
@@ -43,6 +46,7 @@ module EACBaseMap
     {
       "//identity/nameEntry" => agent_family_name_map(:name_family, :names),
       "//identity/nameEntryParallel/nameEntry[1]" => agent_family_name_with_parallel_map(:name_family, :names),
+      "//eac-cpf//structureOrGenealogy" => agent_structure_note_map,
     }.merge(base_map_subfields)
   end
 
@@ -63,6 +67,7 @@ module EACBaseMap
       "//functions/function" => agent_function_map,
       "//localDescriptions/localDescription[@localType='associatedSubject']" => agent_topic_map,
       "//eac-cpf//biogHist" => agent_bioghist_note_map,
+      "//eac-cpf//generalContext" => agent_general_context_note_map,
       "//eac-cpf/cpfDescription/alternativeSet/setComponent" => agent_set_component_map,
       "//languagesUsed/languageUsed" => agent_languages_map,
       "//relations/resourceRelation" => related_resource_map
@@ -858,10 +863,94 @@ module EACBaseMap
     }
   end
 
-  def agent_text_note_map(xpath)
+  def agent_general_context_note_map
+    {
+      :obj => :note_general_context,
+      :rel => :notes,
+      :map => {
+        "self::generalContext" => Proc.new {|note, node|
+          note['subnotes'] << {
+            'jsonmodel_type' => 'note_text',
+            'content' => node.inner_text
+          }
+        }
+      },
+      :defaults => {
+        :label => 'default label'
+      }
+    }
+  end
+
+  def agent_structure_note_map
+    {
+      :obj => :note_structure_or_genealogy,
+      :rel => :notes,
+      :map => {
+        "self::structureOrGenealogy" => Proc.new {|note, node|
+          note['subnotes'] << {
+            'jsonmodel_type' => 'note_text',
+            'content' => node.inner_text
+          }
+        }
+      },
+      :defaults => {
+        :label => 'default label'
+      }
+    }
+  end
+
+  def agent_legal_status_note_map
+    {
+      :obj => :note_legal_status,
+      :rel => :notes,
+      :map => {
+        "descendant::citation" => Proc.new {|note, node|
+          note['subnotes'] << {
+            'jsonmodel_type' => 'note_citation',
+            'content' => [node.inner_text]
+          }
+        },
+        "descendant::descriptiveNote" => Proc.new {|note, node|
+          note['subnotes'] << {
+            'jsonmodel_type' => 'note_text',
+            'content' => node.inner_text
+          }
+        }
+      },
+      :defaults => {
+        :label => 'default label'
+      }
+    }
+  end
+
+  def agent_mandate_note_map
+    {
+      :obj => :note_mandate,
+      :rel => :notes,
+      :map => {
+        "descendant::citation" => Proc.new {|note, node|
+          note['subnotes'] << {
+            'jsonmodel_type' => 'note_citation',
+            'content' => [node.inner_text]
+          }
+        },
+        "descendant::descriptiveNote" => Proc.new {|note, node|
+          note['subnotes'] << {
+            'jsonmodel_type' => 'note_text',
+            'content' => node.inner_text
+          }
+        }
+      },
+      :defaults => {
+        :label => 'default label'
+      }
+    }
+  end
+
+  def agent_text_note_map(xpath, rel = :notes)
     {
       :obj => :note_text,
-      :rel => :notes,
+      :rel => rel,
       :map => {
         xpath => Proc.new {|note, node|
           note.content = node.inner_text
@@ -872,10 +961,10 @@ module EACBaseMap
     }
   end
 
-  def agent_citation_note_map(xpath)
+  def agent_citation_note_map(xpath, rel = :notes)
     {
       :obj => :note_citation,
-      :rel => :notes,
+      :rel => rel,
       :map => {
         xpath => Proc.new {|note, node|
           note.content << node.inner_text

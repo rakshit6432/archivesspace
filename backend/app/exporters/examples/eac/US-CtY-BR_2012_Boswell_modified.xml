@@ -108,6 +108,14 @@
             </nameEntry>
         </identity>
         <description>
+            <structureOrGenealogy>
+              <citation>citation</citation>
+              <list>
+                <item>one</item>
+                <item>two</item>
+                <item>three</item>
+              </list>
+            </structureOrGenealogy>
             <place>
                 <placeRole>family seat</placeRole>
                 <placeEntry vocabularySource="lcsh" latitude="55.4667" longitude="-4.3000"

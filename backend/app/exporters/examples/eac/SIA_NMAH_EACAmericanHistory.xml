@@ -58,6 +58,26 @@
          <localDescription localType="subject">
             <term>Historical museums.</term>
          </localDescription>
+         <mandates>
+            <mandate>
+              <descriptiveNote>dnote</descriptiveNote>
+              <citation>citation</citation>
+            </mandate>
+         </mandates>
+         <legalStatuses>
+            <legalStatus>
+              <descriptiveNote>dnote</descriptiveNote>
+              <citation>citation</citation>
+            </legalStatus>
+         </legalStatuses>
+         <structureOrGenealogy>
+           <citation>citation</citation>
+           <list>
+             <item>one</item>
+             <item>two</item>
+             <item>three</item>
+           </list>
+         </structureOrGenealogy>
          <biogHist>
             <p>The history of the National Museum of American History's (NMAH) collections dates from the very beginning of the Institution, when Secretary Joseph Henry began to amass a collection of scientific apparatus for historical and demonstration purposes. In 1849 the Institution made a major purchase of fine arts prints, which became the core of the graphic arts collections. In 1858, the United States Patent Office transferred to the Smithsonian the national collections, including specimens from the Wilkes Exploring Expedition, 1838-1842. In 1862, upon the demise of the National Institute, a local scientific and learned society, many of its collections came to the Smithsonian. And, most notably, after the Centennial Exposition of 1876, the Smithsonian received many objects from exhibitors at Philadelphia. Thus by the 1880s, rich collections from many different sources, some specific to natural history and geology, but many others relating to history and culture, had come to the Smithsonian.</p>
             <p>The creation of the Museum of History and Technology (MHT) within the United States National Museum on July 1, 1957, gathered the historical collections under one museum. Frank A. Taylor was appointed Director of MHT on April 16, 1958, and was primarily responsible for the planning and supervision of the construction of the museum building, which opened in 1964. With the creation of MHT, the old Departments of History and Engineering and Industries of the USNM were reconfigured as Departments of Civil History, Armed Forces History, Science and Technology, and Arts and Manufactures. John Canfield Ewers, Assistant Director of MHT, succeeded Taylor as Director,1964-1965, followed in 1966 by Robert P. Multhauf, Chairman of the Department of Science and Technology and Curator of Physical Sciences. USNM ceased to exist as an administrative entity in 1967, and at that time MHT became a separate museum within the Institution.</p>
