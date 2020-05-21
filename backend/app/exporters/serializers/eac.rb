@@ -12,7 +12,8 @@ class EACSerializer < ASpaceExport::Serializer
   
   private
   
-  def _eac(json, xml)  
+  def _eac(obj, xml)  
+    json = obj.json
     xml.send("eac-cpf", {'xmlns' => 'urn:isbn:1-931666-33-4',
                "xmlns:html" => "http://www.w3.org/1999/xhtml",
                "xmlns:xlink" => "http://www.w3.org/1999/xlink",
@@ -20,150 +21,420 @@ class EACSerializer < ASpaceExport::Serializer
                "xsi:schemaLocation" => "urn:isbn:1-931666-33-4 http://eac.staatsbibliothek-berlin.de/schema/cpf.xsd",
                "xml:lang" => "eng"}) {
       _control(json, xml)
-      _cpfdesc(json, xml)
+      _cpfdesc(json, xml, obj)
     }
   end
   
   def _control(json, xml)
     xml.control {
-      xml.recordId "#{json.uri.gsub(/\//, ':')}"
-      
-      xml.maintenanceStatus json.create_time == json.system_mtime ? "new" : "revised"
-    
-      xml.maintenanceAgency {
-        xml.agencyName json.maintenanceAgency.agencyName
-        if json.maintenanceAgency.agencyCode
-          xml.agencyCode json.maintenanceAgency.agencyCode
+      # AGENT_RECORD_IDENTIFIERS
+      if json['agent_record_identifiers']
+        json['agent_record_identifiers'].each do |ari|
+          if ari["primary_identifier"] == true
+            xml.recordId ari["record_identifier"]
+          else
+            xml.otherRecordId(:localType => ari["identifier_type_enum"]) {
+              xml.text(ari["record_identifier"])
+            }
+          end
         end
-      }
-    
-      xml.maintenanceHistory {
+      end
 
-        json.events.each do |event|
-        
-          xml.maintenanceEvent {
-            xml.eventType event.type
-            xml.eventDateTime(:standardDateTime => event.date_time) {
-              xml.text event.date_time
-            } 
-            event.agents.each do |agent|
-              xml.agentType agent[0]
-              xml.agent agent[1]
-            end
+      # AGENT_RECORD_CONTROLS
+      if json['agent_record_controls']
+        arc = json['agent_record_controls'].first
+  
+        xml.maintenanceStatus {
+          xml.text arc['maintenance_status_enum']
+        } 
+  
+        xml.publicationStatus {
+          xml.text arc['publication_status_enum']
+        } 
+  
+        xml.maintenanceAgency {
+          xml.agencyCode {
+            xml.text arc["maintenance_agency"]
+          }
+  
+          xml.agencyName {
+            xml.text arc["agency_name"]
+          }
+  
+          xml.descriptiveNote {
+            xml.text arc["maintenance_agency_note"]
+          }
+        }
+  
+        xml.languageDeclaration {
+          xml.language(:languageCode => arc["language"], :scriptCode => arc["script"]) {
+            xml.text arc["language"]
+          }
+  
+          xml.descriptiveNote {
+            xml.text arc["language_note"]
+          }
+        }
+      end
+
+      # AGENT_CONVENTIONS_DECLARATIONS
+      if json['agent_conventions_declarations']
+        json['agent_conventions_declarations'].each do |cd|
+          xml.conventionDeclaration {
+            xml.abbreviation {
+              xml.text cd["name_rule"]
+            }
+            xml.citation("xlink:href" => cd['file_uri'],
+                         "xlink:actuate" => cd['file_version_xlink_actuate_attribute'],
+                         "xlink:show" => cd['file_version_xlink_show_attribute'],
+                         "xlink:title" => cd['xlink_title_attribute'],
+                         "xlink:role" => cd['xlink_role_attribute'],
+                         "xlink:arcrole" => cd['xlink_arcrole_attribute'],
+                         "lastDateTimeVerified" => cd['last_verified_date']) {
+              xml.text cd['citation']
+            }
+            xml.descriptiveNote {
+              xml.text cd['descriptive_note']
+            }
           }
         end
-          
-        # xml.maintenanceEvent {
-        #   xml.eventType "created"
-        #   ctime = Time.mktime(json.create_time.to_s).utc.strftime '%Y-%m-%dT%H:%M:%S'
-        #   xml.eventDateTime(:standardDateTime => ctime) {
-        #     xml.text ctime
-        #   } 
-        #   xml.agentType "human"
-        #   xml.agent "unknown"
-        # }
-        
-        # xml.maintenanceEvent {
-        #   xml.eventType "revised"
-        #   ctime = Time.mktime(json.system_mtime.to_s).utc.strftime '%Y-%m-%dT%H:%M:%S'
-        #   xml.eventDateTime(:standardDateTime => ctime) {
-        #     xml.text ctime
-        #   } 
-        #   xml.agentType "human"
-        #   xml.agent "unknown"
-        # }
-      }
-    
-    } 
-        
-  end
+      end
+
+      # MAINTENANCE_HISTORY
+      if json['agent_maintenance_histories']
+        xml.maintenanceHistory {
+          json['agent_maintenance_histories'].each do |mh|
+            xml.maintenanceEvent {
+                xml.eventType {
+                  xml.text mh['maintenance_event_type_enum']
+                }
+
+                xml.eventDateTime(:standardDateTime => mh['event_date'])
+
+                xml.agentType {
+                  xml.text mh['maintenance_agent_type_enum']
+                }
+
+                xml.agent {
+                  xml.text mh['agent']
+                }
+
+                xml.eventDescription {
+                  xml.text mh['descriptive_note']
+                }
+            }
+          end  
+        }
+      end
+
+      #AGENT_SOURCES
+      if json['agent_sources']
+        xml.sources {
+          json['agent_sources'].each do |as|
+            xml.source("xlink:href" => as['file_uri'],
+                       "xlink:actuate" => as['file_version_xlink_actuate_attribute'],
+                       "xlink:show" => as['file_version_xlink_show_attribute'],
+                       "xlink:title" => as['xlink_title_attribute'],
+                       "xlink:role" => as['xlink_role_attribute'],
+                       "xlink:arcrole" => as['xlink_arcrole_attribute'],
+                       "lastDateTimeVerified" => as['last_verified_date']) {
+
+              xml.sourceEntry {
+                xml.text as['source_entry']
+              }
+
+              xml.descriptiveNote {
+                xml.text as['descriptive_note']
+              }
+            }
+
+          end
+        }
+      end
+    } # of xml.control
+  end # of #_control
   
-  def _cpfdesc(json, xml)
+  def _cpfdesc(json, xml, obj)
     xml.cpfDescription {
       
       xml.identity {
         
-        entity_type = json.jsonmodel_type.sub(/^agent_/, "").sub('corporate_entity', 'corporateBody')
+        # AGENT_IDENTIFIERS
+        if json['agent_identifiers']
+          json['agent_identifiers'].each do |ad|
+            xml.entityId(:localType => ad['identifier_type_enum']) {
+              xml.text ad['entity_identifier']
+            }
+          end
+        end
+
+        # ENTITY_TYPE
+        entity_type = json['jsonmodel_type'].sub(/^agent_/, "").sub('corporate_entity', 'corporateBody')
         
         xml.entityType entity_type
 
-        if json.names.length > 1
-          xml.nameEntryParallel {
-            _build_name_entries(json, xml)
-          }
-        elsif json.names
-          _build_name_entries(json, xml)
+        # NAMES
+        json['names'].each do |name|
+          # NAMES WITH PARALLEL
+          if name['parallel_names']
+            xml.nameEntryParallel {
+              _build_name_entry(name, xml, json, obj)
+
+              name['parallel_names'].each do |pname|
+                _build_name_entry(pname, xml, json, obj)
+              end
+            }
+
+          # NAMES NO PARALLEL
+          else
+            _build_name_entry(name, xml, json, obj)
+          end
         end
       }
 
       xml.description {
-        if json.dates_of_existence[0]
-          date = json.dates_of_existence[0]
-          xml.existDates(:localType =>  date['certainty']) {            
-            _build_date_ranges(date, xml)
-
-          }
-        end
-
-            
-        json.notes.reject {|n| n['jsonmodel_type'] != 'note_bioghist'}.each do |n|
-          next unless n['publish']
-          xml.biogHist {
-            n['subnotes'].each do |sn|
-              case sn['jsonmodel_type']
-              when 'note_abstract'
-                xml.abstract {
-                  xml.text sn['content'].join('--')
-                }
-              when 'note_citation'
-                atts = Hash[ sn['xlink'].map {|x, v| ["xlink:#{x}", v] }.reject{|a| a[1].nil?} ] 
-                xml.citation(atts) {
-                  xml.text sn['content'].join('--')
-                }
-
-              when 'note_definedlist'
-                xml.list(:localType => "defined:#{sn['title']}") {
-                  sn['items'].each do |item|
-                    xml.item(:localType => item['label']) {
-                      xml.text item['value']
-                    }
-                  end
-                }
-              when 'note_orderedlist'
-                xml.list(:localType => "ordered:#{sn['title']}") {
-                  sn['items'].each do |item|
-                    xml.item(:localType => sn['enumeration']) {
-                      xml.text item
-                    }
-                  end
-                }
-              when 'note_chronology'
-                atts = sn['title'] ? {:localType => sn['title']} : {} 
-                xml.chronList(atts) {
-                  sn['items'].map {|i| i['events'].map {|e| [i['event_date'], e] } }.flatten(1).each do |pair|
-                    date, event = pair
-                    atts = (date.nil? || date.empty?) ? {} : {:standardDate => date }
-                    xml.chronItem(atts) {
-                      xml.event event
-                    }
-                  end
-                }
-              when 'note_outline'
-                xml.outline {
-                  sn['levels'].each do |level|
-                    _expand_level(level, xml)
-                  end
-                }
+        # DATES_OF_EXISTENCE
+        if json['dates_of_existence']
+          xml.existDates {
+            json['dates_of_existence'].each do |date|
+              if date['date_type_enum'] == 'single'
+                _build_date_single(date, xml)
+              else
+                _build_date_range(date, xml)
               end
             end
           }
+        end
+
+        # PLACES
+        if json['agent_places']
+          xml.places {
+            json['agent_places'].each do |place|
+              subject = place['subjects'].first['_resolved']
+              xml.place {
+                xml.placeRole {
+                  xml.text place['place_role_enum']
+                }
+                xml.placeEntry(:vocabularySource => subject['source']) {
+                  xml.text subject['terms'].first['term']
+                }
+              place['dates'].each do |date|
+                if date['date_type_enum'] == 'single'
+                  _build_date_single(date, xml)
+                else
+                  _build_date_range(date, xml)
+                end
+              end
+
+              place['notes'].each do |n|
+                xml.descriptiveNote {
+                  xml.text n['content']
+                }
+              end
+              }
+
+             
+            end
+          }
+        end
+
+        # OCCUPATIONS
+        if json['agent_occupations']
+          xml.occupations {
+            json['agent_occupations'].each do |occupation|
+              subject = occupation['subjects'].first['_resolved']
+              xml.occupation {
+                xml.term {
+                  xml.text subject['terms'].first['term']
+                }
+
+              occupation['dates'].each do |date|
+                if date['date_type_enum'] == 'single'
+                  _build_date_single(date, xml)
+                else
+                  _build_date_range(date, xml)
+                end
+              end
+
+              occupation['notes'].each do |n|
+                xml.descriptiveNote {
+                  xml.text n['content']
+                }
+              end
+              }
+
+
+            
+            end
+          }
+        end
+
+        # FUNCTIONS
+        if json['agent_functions']
+          xml.functions {
+            json['agent_functions'].each do |function|
+
+              subject = function['subjects'].first['_resolved']
+
+              xml.function {
+                xml.term {
+                  xml.text subject['terms'].first['term']
+                }
+
+              function['dates'].each do |date|
+                if date['date_type_enum'] == 'single'
+                  _build_date_single(date, xml)
+                else
+                  _build_date_range(date, xml)
+                end
+              end
+
+              function['notes'].each do |n|
+                xml.descriptiveNote {
+                  xml.text n['content']
+                }
+              end
+              }
+
+             
+            end
+          }
+        end
+
+        xml.localDescriptions {
+
+          # TOPICS
+           if json['agent_topics']
+             json['agent_topics'].each do |topic|
+
+               subject = topic['subjects'].first['_resolved']
+
+               xml.localDescription(:localType => "associatedSubject") {
+                 xml.term {
+                   xml.text subject['terms'].first['term']
+                 }
+
+               topic['dates'].each do |date|
+                 if date['date_type_enum'] == 'single'
+                   _build_date_single(date, xml)
+                 else
+                   _build_date_range(date, xml)
+                 end
+               end
+
+               topic['notes'].each do |n|
+                 xml.descriptiveNote {
+                   xml.text n['content']
+                 }
+               end
+               }
+             end
+          end
+
+          # GENDERS
+          if json['agent_genders']
+            json['agent_genders'].each do |gender|
+              xml.localDescription(:localType => "gender") {
+                xml.term {
+                  xml.text gender['gender_enum']
+                }
+
+                gender['dates'].each do |date|
+                  if date['date_type_enum'] == 'single'
+                    _build_date_single(date, xml)
+                  else
+                    _build_date_range(date, xml)
+                  end
+                end
+
+                gender['notes'].each do |n|
+                  xml.descriptiveNote {
+                    xml.text n['content']
+                  }
+                end
+              }
+            end
+          end
+ 
+        }
+        
+       
+        # NOTES      
+        if json['notes']
+          json['notes'].each do |n|
+            if n['jsonmodel_type'] == "note_bioghist"
+              note_type = :biogHist
+            elsif n['jsonmodel_type'] == "note_general_context"
+              note_type = :generalContext
+            elsif n['jsonmodel_type'] == "note_mandate"
+              note_type = :mandate
+            elsif n['jsonmodel_type'] == "note_legal_status"
+              note_type = :legalStatus
+            elsif n['jsonmodel_type'] == "note_structure_or_genealogy"
+              note_type = :structureOrGenealogy
+            end
+
+            #next unless n['publish']
+            xml.send(note_type) {
+              n['subnotes'].each do |sn|
+                case sn['jsonmodel_type']
+                when 'note_abstract'
+                  xml.abstract {
+                    xml.text sn['content'].join('--')
+                  }
+                when 'note_citation'
+                  atts = Hash[ sn['xlink'].map {|x, v| ["xlink:#{x}", v] }.reject{|a| a[1].nil?} ] 
+                  xml.citation(atts) {
+                    xml.text sn['content'].join('--')
+                  }
+
+                when 'note_definedlist'
+                  xml.list(:localType => "defined:#{sn['title']}") {
+                    sn['items'].each do |item|
+                      xml.item(:localType => item['label']) {
+                        xml.text item['value']
+                      }
+                    end
+                  }
+                when 'note_orderedlist'
+                  xml.list(:localType => "ordered:#{sn['title']}") {
+                    sn['items'].each do |item|
+                      xml.item(:localType => sn['enumeration']) {
+                        xml.text item
+                      }
+                    end
+                  }
+                when 'note_chronology'
+                  atts = sn['title'] ? {:localType => sn['title']} : {} 
+                  xml.chronList(atts) {
+                    sn['items'].map {|i| i['events'].map {|e| [i['event_date'], e] } }.flatten(1).each do |pair|
+                      date, event = pair
+                      atts = (date.nil? || date.empty?) ? {} : {:standardDate => date }
+                      xml.chronItem(atts) {
+                        xml.event event
+                      }
+                    end
+                  }
+                when 'note_outline'
+                  xml.outline {
+                    sn['levels'].each do |level|
+                      _expand_level(level, xml)
+                    end
+                  }
+                when 'note_text'
+                  xml.p {
+                    xml.text sn['content']
+                  }
+                end
+              end
+            }
+          end
         end
       }
       
       xml.relations {
 
-        json.related_agents.each do |related_agent|
-
+        obj.related_agents.each do |related_agent|
           resolved = related_agent['_resolved']
           relator = related_agent['relator']
 
@@ -181,8 +452,7 @@ class EACSerializer < ASpaceExport::Serializer
           }
         end
 
-
-        json.related_records.each do |record|
+        obj.related_records.each do |record|
           role = record[:role] + "Of"
           record = record[:record]
           atts = {:resourceRelationType => role, "xlink:type" => "simple", 'xlink:href' => "#{AppConfig[:public_proxy_url]}#{record['uri']}"}
@@ -191,8 +461,7 @@ class EACSerializer < ASpaceExport::Serializer
           }
         end
 
-
-        json.external_documents.each do |document|
+        obj.external_documents do |document|
           next unless document['location'] =~ /^http[s]?:\/\/.+/
           atts = {:resourceRelationType => 'other', "xlink:type" => "simple", 'xlink:href' => "#{document['location']}"}
           xml.resourceRelation(atts) {
@@ -217,57 +486,48 @@ class EACSerializer < ASpaceExport::Serializer
   end
 
 
-  def _build_date_ranges(date, xml)
-    if date['expression']
-      xml.dateRange date['expression']
-    end
-    if date['begin'] || date['end']
-      xml.dateRange {
-        if date['date_type'] == 'single' && date['begin']
-          xml.date(:standardDate => date['begin']) {
-            xml.text date['begin']
-          }
-        else
-
-          if date['begin']
-            xml.fromDate(:standardDate => date['begin']) {
-              xml.text date['begin']
-            }
-          end
-
-          if date['end']
-            xml.toDate(:standardDate => date['end']) {
-              xml.text date['end']
-            }
-          end
-        end
-      }
-    end
+  def _build_date_single(date, xml)
+    xml.date(:standardDate => date['structured_date_single']['date_standardized'], :localType => date['date_label']) {
+      xml.text date['structured_date_single']['date_expression']
+    }
   end
 
+  def _build_date_range(date, xml)
+    xml.dateRange(:localType => date['date_label']) {
+      xml.fromDate(:standardDate => date['structured_date_range']['begin_date_standardized']) {
+        xml.text date['structured_date_range']['begin_date_expression']
+      }
+      xml.toDate(:standardDate => date['structured_date_range']['end_date_standardized']) {
+        xml.text date['structured_date_range']['end_date_expression']
+      }
+    }
+  end
 
+  def _build_name_entry(name, xml, json, obj)
+    xml.nameEntry("xml:lang" => name['language'], "scriptCode" => name['script'], "transliteration" => name['romanization_enum']) {
+      if name['authorized']
+        xml.authorizedForm name['source'] unless name['source'].empty?
+      else
+        xml.alternativeForm name['source'] unless name['source'].empty?
+      end
 
+      obj.name_part_fields.each do |field, localType|
+        localType = localType.nil? ? field : localType
+        next unless name[field]
+        xml.part(:localType => localType) {
+          xml.text name[field]
+        }
+      end
 
-  def _build_name_entries(json, xml)
-    json.names.each do |name|
-      xml.nameEntry {
-        xml.authorizedForm name['rules'] if name['rules']
-        xml.authorizedForm name['source'] if name['source']
-
-        json.name_part_fields.each do |field, localType|
-          localType = localType.nil? ? field : localType
-          next unless name[field]
-          xml.part(:localType => localType) {
-            xml.text name[field]
-          }
-        end
-
+      xml.useDates {
         name['use_dates'].each do |date|
-          xml.useDates {
-            _build_date_ranges(date, xml)
-          }
+            if date['date_type_enum'] == 'single'
+              _build_date_single(date, xml)
+            else
+              _build_date_range(date, xml)
+            end
         end
       }
-    end
+    }
   end
 end

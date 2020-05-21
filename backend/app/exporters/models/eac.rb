@@ -1,7 +1,9 @@
 class EACModel < ASpaceExport::ExportModel
   model_for :eac
 
-  attr_reader :related_records
+  attr_reader :related_records, :json
+
+  RESOLVE = ['subjects']
 
   
   @eac_event = Class.new do
@@ -60,7 +62,8 @@ class EACModel < ASpaceExport::ExportModel
    
 
   def initialize(obj, events, related_records, repo)
-    @json = obj
+    @type = obj.jsonmodel_type
+    @json = URIResolver.resolve_references(obj, RESOLVE)
     @events = events.map {|e| self.class.instance_variable_get(:@eac_event).new(e) }
     @related_records = related_records
     @repo = repo
@@ -110,24 +113,30 @@ class EACModel < ASpaceExport::ExportModel
 
   # maps name.{field} => EAC @localType attribute
   def name_part_fields
-    case @json.jsonmodel_type
+    case @type
     when 'agent_person'
       {
         "primary_name" => "surname",
-        "title" => nil,
-        "prefix" => nil,
+        "title" => "title",
+        "prefix" => "prefix",
         "rest_of_name" => "forename",
-        "suffix" => nil,
-        "fuller_form" => "fullerForm",
-        "number" => nil,
-        "qualifier" => nil,
+        "suffix" => "suffix",
+        "fuller_form" => "fuller_form",
+        "number" => "numeration",
+        "qualifier" => "qualifier",
+        "dates" => "dates",
       }
     when 'agent_family'
       {
-        "family_name" => 'familyName',
-        "prefix" => nil,
-        "qualifier" => nil,
+        "prefix" => "prefix",
+        "family_name" => 'surname',
+        "number" => "numeration",
+        "qualifier" => "qualifier",
+        "location" => "location",
+        "dates" => "dates",
+        "family_type" => "family_type",
       }
+    # TODO: Remove software?
     when 'agent_software'
       {
         "software_name" => nil,
@@ -136,11 +145,13 @@ class EACModel < ASpaceExport::ExportModel
       }
     when 'agent_corporate_entity'
       {
-        "primary_name" => "primaryPart", 
-        "subordinate_name_1" => "secondaryPart", 
-        "subordinate_name_2" => "tertiaryPart", 
-        "number" => nil,
-        "qualifier" => nil
+        "primary_name" => "primary_name", 
+        "subordinate_name_1" => "subordinate_name_1", 
+        "subordinate_name_2" => "subordinate_name_2", 
+        "number" => "numeration",
+        "qualifier" => "qualifier",
+        "location" => "location",
+        "dates" => "dates",
       }
     end
   end

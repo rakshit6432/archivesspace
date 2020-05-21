@@ -169,6 +169,9 @@ module EACBaseMap
        "self::nameEntry[@lang]" => Proc.new {|name, node|
          name[:language] = node.attr("lang")
        },
+       "descendant::part[@lang]" => Proc.new {|name, node|
+         name[:language] = node.attr("lang")
+       },
        "self::nameEntry[@scriptCode]" => Proc.new {|name, node|
          name[:script] = node.attr("scriptCode")
        },
@@ -241,6 +244,9 @@ module EACBaseMap
       "self::nameEntry[@lang]" => Proc.new {|name, node|
         name[:language] = node.attr("lang")
       },
+      "descendant::part[@lang]" => Proc.new {|name, node|
+         name[:language] = node.attr("lang")
+       },
       "self::nameEntry[@scriptCode]" => Proc.new {|name, node|
         name[:script] = node.attr("scriptCode")
       },
@@ -305,6 +311,9 @@ module EACBaseMap
       "self::nameEntry[@lang]" => Proc.new {|name, node|
         name[:language] = node.attr("lang")
       },
+      "descendant::part[@lang]" => Proc.new {|name, node|
+         name[:language] = node.attr("lang")
+       },
       "self::nameEntry[@scriptCode]" => Proc.new {|name, node|
         name[:script] = node.attr("scriptCode")
       },
@@ -629,7 +638,6 @@ module EACBaseMap
         "self::dateRange" => Proc.new {|date, node|
           label = node.attr("localType") if label.nil?
           label = "other" if label.nil?
-
 
           type = "range"
 

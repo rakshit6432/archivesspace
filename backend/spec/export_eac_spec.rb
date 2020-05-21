@@ -1,32 +1,98 @@
 require_relative 'export_spec_helper'
 
 describe 'EAC Export' do
+  describe "control tags" do
+    it "exports agent_record_identifiers as recordId and otherRecordId" do
+      r = create(:json_agent_person_full_subrec, 
+                   :agent_record_identifiers => [
+                      build(:agent_record_identifier, :primary_identifier => true),
+                      build(:agent_record_identifier, :primary_identifier => false)
+                   ]
+      )
 
-  describe "nameEntryParallel tag" do
-    it "wraps two or more name entries in a nameEntryParallel tag" do
-      rec = create(:json_agent_family,
-                    :names => [
-                               build(:json_name_family),
-                               build(:json_name_family)
-                              ]
-                    )
-      eac = get_eac(rec)
+      eac = get_eac(r)
 
-      expect(eac).to have_tag("identity/nameEntryParallel")
-      expect(eac).not_to have_tag("identity/nameEntry")
+      expect(eac).to have_tag("control/recordId")
+      expect(eac).to have_tag("control/otherRecordId")
     end
 
+    it "agent_record_control to control tags" do
+      r = create(:json_agent_person_full_subrec)
+      arc = r["agent_record_controls"].first
 
-    it "doesn't wrap one name entry in a nameEntryParallel tag" do
-      rec = create(:json_agent_family,
-                    :names => [
-                               build(:json_name_family),
-                              ]
-                    )
-      eac = get_eac(rec)
+      eac = get_eac(r)
 
-      expect(eac).to have_tag("identity/nameEntry")
-      expect(eac).not_to have_tag("identity/nameEntryParallel")
+      expect(eac).to have_tag "control/maintenanceStatus" => arc['maintenance_status_enum']
+      expect(eac).to have_tag "control/publicationStatus" => arc['publication_status_enum']
+      expect(eac).to have_tag "control/maintenanceAgency/agencyName" => arc['agency_name']
+      expect(eac).to have_tag "control/maintenanceAgency/agencyCode" => arc['maintenance_agency']
+      expect(eac).to have_tag "control/maintenanceAgency/descriptiveNote" => arc['maintenance_agency_note']
+      expect(eac).to have_tag "control/languageDeclaration/language" => arc['language']
+      expect(eac).to have_tag "control/languageDeclaration/descriptiveNote" => arc['language_note']
+    end
+
+    it "agent_conventions_dec to conventionDeclaration tag" do
+      r = create(:json_agent_person_full_subrec)
+      cd = r["agent_conventions_declarations"].first
+
+      eac = get_eac(r)
+
+      expect(eac).to have_tag "control/conventionDeclaration/abbreviation" => cd['name_rule']
+      expect(eac).to have_tag "control/conventionDeclaration/citation" => cd['citation']
+      expect(eac).to have_tag "control/conventionDeclaration/descriptiveNote" => cd['descriptive_note']
+ 
+    end
+
+    it "agent_maint_history to maintenanceHistory tag" do
+      r = create(:json_agent_person_full_subrec)
+      mh = r["agent_maintenance_histories"].first
+
+      eac = get_eac(r)
+
+      expect(eac).to have_tag "control/maintenanceHistory/maintenanceEvent/eventType" => mh['maintenance_event_type_enum']
+      expect(eac).to have_tag "control/maintenanceHistory/maintenanceEvent/eventDateTime"
+      expect(eac).to have_tag "control/maintenanceHistory/maintenanceEvent/agentType" => mh['maintenance_agent_type_enum']
+      expect(eac).to have_tag "control/maintenanceHistory/maintenanceEvent/eventDescription" => mh['descriptive_note']
+      expect(eac).to have_tag "control/maintenanceHistory/maintenanceEvent/agent" => mh['agent']
+ 
+    end
+
+    it "agent_sources to sources tag" do
+      r = create(:json_agent_person_full_subrec)
+      as = r["agent_sources"].first
+
+      eac = get_eac(r)
+
+      expect(eac).to have_tag "control/sources/source"
+      expect(eac).to have_tag "control/sources/source/sourceEntry" => as['source_entry']
+      expect(eac).to have_tag "control/sources/source/descriptiveNote" => as['descriptive_note']
+
+    end
+  end
+
+  describe "identity tags" do
+    it "agent_identifiers to entityId tag" do
+      r = create(:json_agent_person_full_subrec)
+      ad = r["agent_identifiers"].first
+
+      eac = get_eac(r)
+
+      expect(eac).to have_tag "identity/entityId" => ad['entity_identifier']
+    end
+  end
+
+
+  describe "nameEntryParallel tag" do
+    it "wraps names with parallel names in a nameEntryParallel tag" do
+
+      r = create(:json_agent_person_full_subrec, 
+                   :names => [build(:json_name_person, 
+                      :parallel_names => [build(:json_name_person_parallel)])])
+
+      eac = get_eac(r)
+      n = r["names"].first
+
+      expect(eac).to have_tag "identity/nameEntryParallel/nameEntry/part" => n['primary_name']
     end
   end
 
@@ -59,20 +125,9 @@ describe 'EAC Export' do
       })
     end
 
-
-    it "maps name.rules to authorizedForm" do
-      rule1 = @rec.names[0]['rules']
-      rule2 = @rec.names[1]['rules']
-      expect(@eac).to have_tag('nameEntry[1]/authorizedForm' => rule1)
-      expect(@eac).to have_tag('nameEntry[2]/authorizedForm' => rule2)
-    end
-
-
     it "maps name.source to authorizedForm" do
       source1 = @rec.names[0]['source']
-      source2 = @rec.names[1]['source']
       expect(@eac).to have_tag('nameEntry[1]/authorizedForm' => source1)
-      expect(@eac).to have_tag('nameEntry[2]/authorizedForm' => source2)
     end
 
 
@@ -127,16 +182,16 @@ describe 'EAC Export' do
     end
 
 
-    it "maps name.number to nameEntry/part[@localType='number']" do
+    it "maps name.number to nameEntry/part[@localType='numeration']" do
       val = @rec.names[0]['number']
-      tag = "nameEntry[1]/part[@localType='number']"
+      tag = "nameEntry[1]/part[@localType='numeration']"
       expect(@eac).to have_tag(tag => val)
     end
 
 
     it "maps name.fuller_form to nameEntry/part[@localType='fullerForm']" do
       val = @rec.names[0]['fuller_form']
-      tag = "nameEntry[1]/part[@localType='fullerForm']"
+      tag = "nameEntry[1]/part[@localType='fuller_form']"
       expect(@eac).to have_tag(tag => val)
     end
 
@@ -157,23 +212,14 @@ describe 'EAC Export' do
   describe "agent_corporate_entity" do
 
     before(:all) do
-      skip "updates to EAC imports for new agents module"
-      date1 = build(:json_date,
-                    :date_type => 'inclusive',
-                    :begin => '2010-01-01',
-                    :end => '2011-01-01'
-                    )
+      date1 = build(:json_structured_date_label_range)
+      date2 = build(:json_structured_date_label_range)
+      date3 = build(:json_structured_date_label)
+      note1 = build(:json_note_general_context)
+      note2 = build(:json_note_mandate)
+      note3 = build(:json_note_legal_status)
+      note4 = build(:json_note_structure_or_genealogy)
 
-      date2 = build(:json_date,
-                    :date_type => 'inclusive',
-                    :begin => '2012-01-01',
-                    :end => '2013-01-01'
-                    )
-
-      date3 = build(:json_date,
-                    :date_type => 'single',
-                    :begin => '2014-01-01',
-                    )
 
       @rec = create(:json_agent_corporate_entity,
                     :names => [
@@ -185,6 +231,12 @@ describe 'EAC Export' do
                                                     ]
                                      ),
                                build(:json_name_corporate_entity)
+                              ],
+                    :notes => [
+                                note1,
+                                note2,
+                                note3,
+                                note4
                               ]
                     )
 
@@ -195,40 +247,35 @@ describe 'EAC Export' do
       @rec.delete
     end
 
-    it "maps name.primary_name to nameEntry/part[@localType='primaryPart']" do
-      pending "updates to EAC imports for new agents module"
+    it "maps name.primary_name to nameEntry/part[@localType='primary_name']" do
       val = @rec.names[0]['primary_name']
-      tag = "nameEntry[1]/part[@localType='primaryPart']"
+      tag = "nameEntry[1]/part[@localType='primary_name']"
       expect(@eac).to have_tag(tag => val)
     end
 
 
-    it "maps name.subordinate_name_1 to nameEntry/part[@localType='secondaryPart']" do
-      pending "updates to EAC imports for new agents module"
+    it "maps name.subordinate_name_1 to nameEntry/part[@localType='subordinate_name_1']" do
       val = @rec.names[0]['subordinate_name_1']
-      tag = "nameEntry[1]/part[@localType='secondaryPart']"
+      tag = "nameEntry[1]/part[@localType='subordinate_name_1']"
       expect(@eac).to have_tag(tag => val)
     end
 
 
-    it "maps name.subordinate_name_2 to nameEntry/part[@localType='tertiaryPart']" do
-      pending "updates to EAC imports for new agents module"
+    it "maps name.subordinate_name_2 to nameEntry/part[@localType='subordinate_name_2']" do
       val = @rec.names[0]['subordinate_name_2']
-      tag = "nameEntry[1]/part[@localType='tertiaryPart']"
+      tag = "nameEntry[1]/part[@localType='subordinate_name_2']"
       expect(@eac).to have_tag(tag => val)
     end
 
 
-    it "maps name.number to nameEntry/part[@localType='number']" do
-      pending "updates to EAC imports for new agents module"
+    it "maps name.number to nameEntry/part[@localType='numeration']" do
       val = @rec.names[0]['number']
-      tag = "nameEntry[1]/part[@localType='number']"
+      tag = "nameEntry[1]/part[@localType='numeration']"
       expect(@eac).to have_tag(tag => val)
     end
 
 
     it "maps name qualifier to nameEntry/part[@localType='qualifier']" do
-      pending "updates to EAC imports for new agents module"
       val = @rec.names[0]['qualifier']
       tag = "nameEntry[1]/part[@localType='qualifier']"
       expect(@eac).to have_tag(tag => val)
@@ -236,48 +283,49 @@ describe 'EAC Export' do
 
 
     it "maps each name.use_dates[] to a useDates tag" do
-      pending "updates to EAC imports for new agents module"
-      expect(@eac).to have_tag("nameEntry[1]/useDates[3]")
-      expect(@eac).not_to have_tag("nameEntry[1]/useDates[4]")
+      expect(@eac).to have_tag("nameEntry[1]/useDates")
     end
 
+    it "creates a from- and to-Date for range dates" do
+      d = @rec.names[0]['use_dates'][0]['structured_date_range']
 
-    it "creates a from- and to-Date for 'bulk' dates" do
-      pending "updates to EAC imports for new agents module"
-         from = @rec.names[0]['use_dates'][0]['begin']
-         to = @rec.names[0]['use_dates'][0]['end']
-
-         expect(@eac).to have_tag("nameEntry[1]/useDates[1]/dateRange/fromDate[@standardDate=\"#{from}\"]" => "#{from}")
-         expect(@eac).to have_tag("nameEntry[1]/useDates[1]/dateRange/toDate[@standardDate=\"#{to}\"]" => "#{to}")
+      expect(@eac).to have_tag("nameEntry[1]/useDates/dateRange[1]/fromDate[@standardDate=\"#{d['begin_date_standardized']}\"]" => "#{d['begin_date_expression']}")
+      expect(@eac).to have_tag("nameEntry[1]/useDates/dateRange[1]/toDate[@standardDate=\"#{d['end_date_standardized']}\"]" => "#{d['end_date_expression']}")
     end
-
-
-    it "creates a from- and to-Date for 'inclusive' dates" do
-      pending "updates to EAC imports for new agents module"
-      from = @rec.names[0]['use_dates'][1]['begin']
-      to = @rec.names[0]['use_dates'][1]['end']
-
-      expect(@eac).to have_tag("nameEntry[1]/useDates[2]/dateRange/fromDate[@standardDate=\"#{from}\"]" => "#{from}")
-      expect(@eac).to have_tag("nameEntry[1]/useDates[2]/dateRange/toDate[@standardDate=\"#{to}\"]" => "#{to}")
-    end
-
-
-    it "does not create a from- or to-Date 'single' dates" do
-      pending "updates to EAC imports for new agents module"
-      expect(@eac).not_to have_tag("nameEntry[1]/useDates[3]/dateRange/fromDate")
-      expect(@eac).not_to have_tag("nameEntry[1]/useDates[3]/dateRange/toDate")
-    end
-
 
     it "creates a date tag for 'single' dates" do
-      pending "updates to EAC imports for new agents module"
-      expect(@eac).to have_tag("nameEntry[1]/useDates[3]/dateRange/date" => @rec.names[0]['use_dates'][2]['begin'])
+      d = @rec.names[0]['use_dates'][2]['structured_date_single']
+
+      expect(@eac).to have_tag("nameEntry[1]/useDates/date" => d['date_expression'])
+    end
+
+    it "maps general context notes to /generalContext" do
+      n = @rec['notes'][0]['subnotes'][1]['content']
+
+      expect(@eac).to have_tag("description/generalContext/p")
+    end
+
+    it "maps mandate notes to /mandate" do
+      n = @rec['notes'][1]['subnotes'][0]['content']
+
+      expect(@eac).to have_tag("description/mandate/p")
+    end
+
+    it "maps legal status notes to /legalStatus" do
+      n = @rec['notes'][2]['subnotes'][0]['content']
+
+      expect(@eac).to have_tag("description/legalStatus/p")
+    end
+
+    it "maps structure/genealogy notes to /structureOrGenealogy" do
+      n = @rec['notes'][3]['subnotes'][0]['content']
+
+      expect(@eac).to have_tag("description/structureOrGenealogy/p")
     end
 
   end
 
   describe "agent_family" do
-
     before(:all) do
       @repo = create(:json_repository)
       $old_repo_id = $repo_id
@@ -312,9 +360,9 @@ describe 'EAC Export' do
     end
 
 
-    it "maps name.family_name to nameEntry/part[@localType='familyName']" do
+    it "maps name.family_name to nameEntry/part[@localType='surname']" do
       val = @rec.names[0]['family_name']
-      tag = "nameEntry[1]/part[@localType='familyName']"
+      tag = "nameEntry[1]/part[@localType='surname']"
       if val
         expect(@eac).to have_tag(tag => val)
       else
@@ -326,14 +374,11 @@ describe 'EAC Export' do
 
   describe "dates of existence" do
     before(:all) do
-      skip "updates to EAC imports for new agents module"
-      @rec = create(:json_agent_person,
+      @rec = create(:json_agent_person_full_subrec,
                     :dates_of_existence => [
-                                            build(:json_date,
-                                                  :date_type => 'bulk',
-                                                  :label => 'existence'),
-                                            build(:json_date,
-                                                  :label => 'existence')
+                                            build(:json_structured_date_label),
+                                            build(:json_structured_date_label),
+                                            build(:json_structured_date_label_range),
                                             ]
                     )
       @eac = get_eac(@rec)
@@ -344,32 +389,30 @@ describe 'EAC Export' do
       @rec.delete
     end
 
-    it "creates an existDates tag for the first date of existence" do
-      pending "updates to EAC imports for new agents module"
-      expect(@eac).to have_tag("description/existDates[1]")
-      expect(@eac).not_to have_tag("description/existDates[2]")
+    it "creates an existDates/date tag for each date of existence" do
+      expect(@eac).to have_tag("description/existDates/date[1]")
+      expect(@eac).to have_tag("description/existDates/date[2]")
+      expect(@eac).to have_tag("description/existDates/dateRange")
     end
 
 
-    it "maps date.expression to dateRange" do
-      pending "updates to EAC imports for new agents module"
-      expect(@eac).to have_tag("description/existDates/dateRange" =>
-                           @rec.dates_of_existence[0]['expression'])
+    it "maps date.expression to date" do
+      expect(@eac).to have_tag("description/existDates/date[1]" =>
+                           @rec.dates_of_existence[0]['structured_date_single']['date_expression'])
     end
 
 
-    it "maps date.begin to fromDate" do
-      pending "updates to EAC imports for new agents module"
-      expect(@eac).to have_tag("existDates/dateRange[2]/fromDate[@standardDate=\"#{@rec.dates_of_existence[0]['begin']}\"]" =>
-                           @rec.dates_of_existence[0]['begin'])
+    it "maps date.begin_date_expression to fromDate" do
+      expect(@eac).to have_tag("existDates/dateRange/fromDate[@standardDate=\"#{@rec.dates_of_existence[2]['structured_date_range']['begin_date_standardized']}\"]" =>
+                           @rec.dates_of_existence[2]['structured_date_range']['begin_date_expression'])
+    end
+
+    it "maps date.end_date_expression to toDate" do
+      expect(@eac).to have_tag("existDates/dateRange/toDate[@standardDate=\"#{@rec.dates_of_existence[2]['structured_date_range']['end_date_standardized']}\"]" =>
+                           @rec.dates_of_existence[2]['structured_date_range']['end_date_expression'])
     end
 
 
-    it "maps date.end to toDate" do
-      pending "updates to EAC imports for new agents module"
-      expect(@eac).to have_tag("existDates/dateRange[2]/toDate[@standardDate=\"#{@rec.dates_of_existence[0]['end']}\"]" =>
-                           @rec.dates_of_existence[0]['end'])
-    end
   end
 
 
@@ -420,6 +463,7 @@ describe 'EAC Export' do
 
 
     it "ignores un-published notes" do
+      pending "descision"
       rec = create(:json_agent_person,
                    :notes => [ build(:json_note_bioghist,
                                    :publish => false) ]
@@ -592,6 +636,7 @@ describe 'EAC Export' do
     end
 
     it "maps related agents to cpfRelation" do
+      pending "implementation"
       expect(@eac).to have_tag("relations/cpfRelation[@cpfRelationType='is_parent_of'][@xlink:href='#{@linked_agent.uri}']/relationEntry" =>
 @linked_agent.names[0]['primary_name'])
     end
@@ -612,53 +657,10 @@ describe 'EAC Export' do
 
 
     it "maps external documents to resourceRelation" do
+      pending "implementation"
       expect(@eac).to have_tag("relations/resourceRelation[@resourceRelationType='other'][1]")
       # bad locations don't get exported
       expect(@eac).not_to have_tag("relations/resourceRelation[@resourceRelationType='other'][2]")
     end
   end
-
-
-  describe "maintenanceAgency" do
-
-    it "maps the repository name and org code" do
-      repo = create(:json_repository)
-
-      JSONModel.set_repository(repo.id)
-
-      rec = create(:json_agent_family)
-      eac = get_eac(rec, repo.id)
-
-      expect(eac).to have_tag "control/maintenanceAgency/agencyCode" => repo.org_code
-      expect(eac).to have_tag "control/maintenanceAgency/agencyName" => repo.name
-    end
-
-  end
-
-  # Ensure nil values don't mess things up, etc.
-  describe "miscellaneous" do
-
-    it "doesn't create any empty tags for dates missing expression" do
-      pending "updates to EAC imports for new agents module"
-      rec = create(:json_agent_person,
-                   :names => [build(:json_name_person,
-                                    :use_dates => [
-                                                   build(:json_date,
-                                                         :expression => nil
-                                                         )
-                                                   ]
-                                    )
-                             ],
-                   :dates_of_existence => [build(:json_date,
-                                                 :label => 'existence',
-                                                 :expression => nil
-                                                 )
-                                          ]
-                   )
-      eac = get_eac(rec)
-
-      expect(eac).not_to have_tag("dateRange" => "")
-    end
-  end
-
 end

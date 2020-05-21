@@ -106,11 +106,13 @@ FactoryBot.define do
 
     factory :agent_record_control, class: JSONModel(:agent_record_control) do
       maintenance_status_enum { "new" }
+      publication_status_enum { "approved" }
       maintenance_agency { generate(:alphanumstr) }
       agency_name { generate(:alphanumstr) }
       maintenance_agency_note { generate(:alphanumstr) }
       language { generate(:language) }
       script { generate(:script) }
+      language_note { generate(:alphanumstr) }
     end
 
     factory :agent_alternate_set, class: JSONModel(:agent_alternate_set) do
@@ -835,6 +837,19 @@ FactoryBot.define do
     suffix { [nil, generate(:alphanumstr)].sample }
     rest_of_name { [nil, generate(:alphanumstr)].sample }
     authority_id { generate(:url) }
+  end
+
+  factory :json_name_person_parallel, class: JSONModel(:parallel_name_person) do
+    primary_name { generate(:generic_name) }
+    name_order { %w(direct inverted).sample }
+    number { generate(:alphanumstr) }
+    dates { generate(:alphanumstr) }
+    qualifier { generate(:alphanumstr) }
+    fuller_form { generate(:alphanumstr) }
+    prefix { [nil, generate(:alphanumstr)].sample }
+    title { [nil, generate(:alphanumstr)].sample }
+    suffix { [nil, generate(:alphanumstr)].sample }
+    rest_of_name { [nil, generate(:alphanumstr)].sample }
   end
 
   factory :json_name_software, class: JSONModel(:name_software) do
