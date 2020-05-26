@@ -41,7 +41,7 @@ class EACSerializer < ASpaceExport::Serializer
       end
 
       # AGENT_RECORD_CONTROLS
-      if json['agent_record_controls']
+      if json['agent_record_controls'] && json['agent_record_controls'].any?
         arc = json['agent_record_controls'].first
   
         xml.maintenanceStatus {
@@ -128,7 +128,7 @@ class EACSerializer < ASpaceExport::Serializer
       end
 
       #AGENT_SOURCES
-      if json['agent_sources']
+      if json['agent_sources'] && json['agent_sources'].any?
         xml.sources {
           json['agent_sources'].each do |as|
             xml.source("xlink:href" => as['file_uri'],
@@ -160,7 +160,7 @@ class EACSerializer < ASpaceExport::Serializer
       xml.identity {
         
         # AGENT_IDENTIFIERS
-        if json['agent_identifiers']
+        if json['agent_identifiers'].any?
           json['agent_identifiers'].each do |ad|
             xml.entityId(:localType => ad['identifier_type_enum']) {
               xml.text ad['entity_identifier']
@@ -194,7 +194,7 @@ class EACSerializer < ASpaceExport::Serializer
 
       xml.description {
         # DATES_OF_EXISTENCE
-        if json['dates_of_existence']
+        if json['dates_of_existence'] && json['dates_of_existence'].any?
           xml.existDates {
             json['dates_of_existence'].each do |date|
               if date['date_type_enum'] == 'single'
@@ -207,7 +207,7 @@ class EACSerializer < ASpaceExport::Serializer
         end
 
         # PLACES
-        if json['agent_places']
+        if json['agent_places'] && json['agent_places'].any?
           xml.places {
             json['agent_places'].each do |place|
               subject = place['subjects'].first['_resolved']
@@ -239,7 +239,7 @@ class EACSerializer < ASpaceExport::Serializer
         end
 
         # OCCUPATIONS
-        if json['agent_occupations']
+        if json['agent_occupations'] && json['agent_occupations'].any?
           xml.occupations {
             json['agent_occupations'].each do |occupation|
               subject = occupation['subjects'].first['_resolved']
@@ -262,15 +262,12 @@ class EACSerializer < ASpaceExport::Serializer
                 }
               end
               }
-
-
-            
             end
           }
         end
 
         # FUNCTIONS
-        if json['agent_functions']
+        if json['agent_functions'] && json['agent_functions'].any?
           xml.functions {
             json['agent_functions'].each do |function|
 
@@ -295,8 +292,6 @@ class EACSerializer < ASpaceExport::Serializer
                 }
               end
               }
-
-             
             end
           }
         end
@@ -355,10 +350,8 @@ class EACSerializer < ASpaceExport::Serializer
               }
             end
           end
- 
         }
         
-       
         # NOTES      
         if json['notes']
           json['notes'].each do |n|

@@ -143,15 +143,12 @@ describe 'EAC Export' do
 
 
     it "maps name.title to nameEntry/part[@localType='title']" do
+      expect(@rec.names[0]['title']).to_not be_nil
       val = @rec.names[0]['title']
-      tag = "nameEntry[1]/part[@localType='title']"
-      if val
-        expect(@eac).to have_tag(tag => val)
-      else
-        expect(@eac).not_to have_tag(tag)
-      end
-    end
 
+      tag = "nameEntry[1]/part[@localType='title']"
+      expect(@eac).to have_tag(tag => val)
+    end
 
     it "maps name.primary_name to nameEntry/part[@localType='surname']" do
       val = @rec.names[0]['primary_name']

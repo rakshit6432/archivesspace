@@ -832,10 +832,10 @@ FactoryBot.define do
     dates { generate(:alphanumstr) }
     qualifier { generate(:alphanumstr) }
     fuller_form { generate(:alphanumstr) }
-    prefix { [nil, generate(:alphanumstr)].sample }
-    title { [nil, generate(:alphanumstr)].sample }
-    suffix { [nil, generate(:alphanumstr)].sample }
-    rest_of_name { [nil, generate(:alphanumstr)].sample }
+    prefix { generate(:alphanumstr) }
+    title { generate(:alphanumstr) }
+    suffix { generate(:alphanumstr) }
+    rest_of_name { generate(:alphanumstr) }
     authority_id { generate(:url) }
   end
 
