@@ -426,6 +426,43 @@ class EACSerializer < ASpaceExport::Serializer
       }
       
       xml.relations {
+        if json['agent_resources']
+          STDERR.puts json['agent_resources'].inspect
+          json['agent_resources'].each do |ar|
+            xml.resourceRelation("resourceRelationType" => "Resource Relation",
+                         "xlink:href" => ar['file_uri'],
+                         "xlink:actuate" => ar['file_version_xlink_actuate_attribute'],
+                         "xlink:show" => ar['file_version_xlink_show_attribute'],
+                         "xlink:title" => ar['xlink_title_attribute'],
+                         "xlink:role" => ar['xlink_role_attribute'],
+                         "xlink:arcrole" => ar['xlink_arcrole_attribute'],
+                         "lastDateTimeVerified" => ar['last_verified_date']) {             
+              xml.relationEntry {
+                xml.text ar['linked_resource']
+              }
+              if ar['places'] && ar['places'].any?
+                xml.places {
+                  ar['places'].each do |place|
+                    subject = place['_resolved']
+                    xml.place {
+                      xml.placeEntry(:vocabularySource => subject['source']) {
+                       xml.text subject['terms'].first['term']
+                      }
+                    }
+                   end
+                }
+              end
+
+              ar['dates'].each do |date|
+                if date['date_type_enum'] == 'single'
+                  _build_date_single(date, xml)
+                else
+                  _build_date_range(date, xml)
+                end
+              end
+            }
+          end
+        end
 
         obj.related_agents.each do |related_agent|
           resolved = related_agent['_resolved']
@@ -499,9 +536,9 @@ class EACSerializer < ASpaceExport::Serializer
   def _build_name_entry(name, xml, json, obj)
     xml.nameEntry("xml:lang" => name['language'], "scriptCode" => name['script'], "transliteration" => name['romanization_enum']) {
       if name['authorized']
-        xml.authorizedForm name['source'] unless name['source'].empty?
+        xml.authorizedForm name['source'] unless name['source'] && name['source'].empty?
       else
-        xml.alternativeForm name['source'] unless name['source'].empty?
+        xml.alternativeForm name['source'] unless name['source'] && name['source'].empty?
       end
 
       obj.name_part_fields.each do |field, localType|

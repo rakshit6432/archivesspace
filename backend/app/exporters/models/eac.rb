@@ -3,7 +3,7 @@ class EACModel < ASpaceExport::ExportModel
 
   attr_reader :related_records, :json
 
-  RESOLVE = ['subjects']
+  RESOLVE = ['subjects', 'places']
 
   
   @eac_event = Class.new do
