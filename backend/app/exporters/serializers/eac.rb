@@ -192,6 +192,31 @@ class EACSerializer < ASpaceExport::Serializer
         end
       }
 
+      # ALTERNATIVE SET
+      if json['agent_alternate_sets'] && json['agent_alternate_sets'].any?
+        xml.alternativeSet {
+          json['agent_alternate_sets'].each do |aas|
+            xml.setComponent("xlink:href" => aas['file_uri'],
+                         "xlink:actuate" => aas['file_version_xlink_actuate_attribute'],
+                         "xlink:show" => aas['file_version_xlink_show_attribute'],
+                         "xlink:title" => aas['xlink_title_attribute'],
+                         "xlink:role" => aas['xlink_role_attribute'],
+                         "xlink:arcrole" => aas['xlink_arcrole_attribute'],
+                         "lastDateTimeVerified" => aas['last_verified_date']) {
+              xml.componentEntry {
+                xml.text aas['set_component']
+              }
+
+              xml.descriptiveNote {
+                xml.text aas['descriptive_note']
+              }
+            }
+
+          end
+        }
+      end
+
+
       xml.description {
         # DATES_OF_EXISTENCE
         if json['dates_of_existence'] && json['dates_of_existence'].any?
@@ -201,6 +226,29 @@ class EACSerializer < ASpaceExport::Serializer
                 _build_date_single(date, xml)
               else
                 _build_date_range(date, xml)
+              end
+            end
+          }
+        end
+
+        # LANGUAGES USED
+        if json['used_languages'] && json['used_languages'].any?
+          xml.languagesUsed {
+            json['used_languages'].each do |lang|
+              xml.languageUsed {
+                xml.language("languageCode" => lang['language']) {
+                  xml.text I18n.t("enumerations.language_iso639_2.#{lang['language']}")
+                }
+
+                xml.script("scriptCode" => lang['script']) {
+                  xml.text I18n.t("enumerations.script_iso15924.#{lang['script']}")
+                }
+              }
+         
+              lang['notes'].each do |n|
+                xml.descriptiveNote {
+                  xml.text n['content']
+                }
               end
             end
           }
@@ -427,7 +475,6 @@ class EACSerializer < ASpaceExport::Serializer
       
       xml.relations {
         if json['agent_resources']
-          STDERR.puts json['agent_resources'].inspect
           json['agent_resources'].each do |ar|
             xml.resourceRelation("resourceRelationType" => "Resource Relation",
                          "xlink:href" => ar['file_uri'],
@@ -464,22 +511,33 @@ class EACSerializer < ASpaceExport::Serializer
           end
         end
 
-        obj.related_agents.each do |related_agent|
-          resolved = related_agent['_resolved']
-          relator = related_agent['relator']
 
-          name = case resolved['jsonmodel_type']
-                 when 'agent_software'
-                   resolved['display_name']['software_name']
-                 when 'agent_family'
-                   resolved['display_name']['family_name']
-                 else
-                   resolved['display_name']['primary_name']
-                 end
+        if json['related_agents']
+          json['related_agents'].each do |ra|
+              resolved = ra['_resolved']
+              relator = ra['relator']
 
-          xml.cpfRelation(:cpfRelationType => relator, 'xlink:type' => 'simple', 'xlink:href' => resolved['uri']) {
-            xml.relationEntry name
-          }
+              name = case resolved['jsonmodel_type']
+                     when 'agent_software'
+                       resolved['display_name']['software_name']
+                     when 'agent_family'
+                       resolved['display_name']['family_name']
+                     else
+                       resolved['display_name']['primary_name']
+                     end
+
+              xml.cpfRelation(:cpfRelationType => relator, 'xlink:type' => 'simple', 'xlink:href' => resolved['uri']) {
+                xml.relationEntry name
+
+                if ra['dates']
+                  if ra['dates']['date_type_enum'] == 'single'
+                    _build_date_single(ra['dates'], xml)
+                  else
+                    _build_date_range(ra['dates'], xml)
+                  end
+                end
+              }
+          end
         end
 
         obj.related_records.each do |record|
@@ -488,14 +546,6 @@ class EACSerializer < ASpaceExport::Serializer
           atts = {:resourceRelationType => role, "xlink:type" => "simple", 'xlink:href' => "#{AppConfig[:public_proxy_url]}#{record['uri']}"}
           xml.resourceRelation(atts) {
             xml.relationEntry record['title']
-          }
-        end
-
-        obj.external_documents do |document|
-          next unless document['location'] =~ /^http[s]?:\/\/.+/
-          atts = {:resourceRelationType => 'other', "xlink:type" => "simple", 'xlink:href' => "#{document['location']}"}
-          xml.resourceRelation(atts) {
-            xml.relationEntry document['title']
           }
         end
       }

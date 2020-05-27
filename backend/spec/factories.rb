@@ -217,7 +217,8 @@ FactoryBot.define do
     # NOTE: using this factory will fail unless values are added manually to the gender enum list. See agent_spec_helper.rb#add_gender_values
     factory :json_agent_gender, class: JSONModel(:agent_gender) do
       dates { [build(:json_structured_date_label)] }
-      gender_enum { "female" }
+      gender_enum { "not_specified" }
+      notes { [build(:json_note_text)] }
     end
 
     factory :json_agent_identifier, class: JSONModel(:agent_identifier) do
@@ -353,6 +354,7 @@ FactoryBot.define do
     agent_topics { [build(:json_agent_topic)] }
     agent_identifiers { [build(:json_agent_identifier)] }
     agent_resources { [build(:json_agent_resource)] }
+    agent_genders { [build(:json_agent_gender)] }
     used_languages { [build(:json_used_language)] }
   end
 

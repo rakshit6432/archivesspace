@@ -99,7 +99,7 @@ describe 'EAC Export' do
 
   describe 'agent_person' do
     before(:all) do
-      @rec = create(:json_agent_person,
+      @rec = create(:json_agent_person_full_subrec,
                     :names => [
                                build(:json_name_person,
                                      :prefix => 'abcdefg'
@@ -110,11 +110,6 @@ describe 'EAC Export' do
 
       @eac = get_eac(@rec)
     end
-
-    after(:all) do
-      @rec.delete
-    end
-
 
     it "exports EAC with the correct namespaces" do
       expect(@eac).to have_namespaces({
@@ -204,6 +199,12 @@ describe 'EAC Export' do
       expect(@eac).to have_tag('entityType' => 'person')
     end
 
+    it "exports agent_genders" do
+      expect(@eac).to have_tag("/description/localDescriptions/localDescription[@localType='gender']/term")
+      expect(@eac).to have_tag("/description/localDescriptions/localDescription[@localType='gender']/date")
+      expect(@eac).to have_tag("/description/localDescriptions/localDescription[@localType='gender']/descriptiveNote")
+    end
+
   end
 
   describe "agent_corporate_entity" do
@@ -238,10 +239,6 @@ describe 'EAC Export' do
                     )
 
       @eac = get_eac(@rec)
-    end
-
-    after(:all) do
-      @rec.delete
     end
 
     it "maps name.primary_name to nameEntry/part[@localType='primary_name']" do
@@ -342,10 +339,6 @@ describe 'EAC Export' do
       # puts "RESULT: #{@eac.to_xml}\n"
     end
 
-    after(:all) do
-      @rec.delete
-    end
-
     it "maps name.prefix to nameEntry/part[@localType='prefix']" do
       val = @rec.names[0]['prefix']
       tag = "nameEntry[1]/part[@localType='prefix']"
@@ -368,6 +361,74 @@ describe 'EAC Export' do
     end
   end
 
+  describe "alternative set subrecords" do
+    before(:all) do
+      @rec = create(:json_agent_person_full_subrec
+                    )
+      @eac = get_eac(@rec)
+    end
+
+    it "imports agent alternative set" do
+      expect(@eac).to have_tag("cpfDescription/alternativeSet/setComponent[@xlink:actuate]")
+      expect(@eac).to have_tag("cpfDescription/alternativeSet/setComponent[@xlink:arcrole]")
+      expect(@eac).to have_tag("cpfDescription/alternativeSet/setComponent[@xlink:href]")
+      expect(@eac).to have_tag("cpfDescription/alternativeSet/setComponent[@xlink:role]")
+      expect(@eac).to have_tag("cpfDescription/alternativeSet/setComponent[@xlink:show]")
+      expect(@eac).to have_tag("cpfDescription/alternativeSet/setComponent[@xlink:title]")
+      expect(@eac).to have_tag("cpfDescription/alternativeSet/setComponent/componentEntry")
+      expect(@eac).to have_tag("cpfDescription/alternativeSet/setComponent/descriptiveNote")
+    end
+  end
+
+  describe "subject linked subrecords" do
+    before(:all) do
+      @rec = create(:json_agent_person_full_subrec
+                    )
+      @eac = get_eac(@rec)
+    end
+
+
+
+    it "exports agent_places" do
+      expect(@eac).to have_tag("description/places/place/placeRole")
+      expect(@eac).to have_tag("description/places/place/placeEntry")
+      expect(@eac).to have_tag("description/places/place/date")
+      expect(@eac).to have_tag("description/places/place/descriptiveNote")
+    end
+
+    it "exports agent_occupations" do
+      expect(@eac).to have_tag("description/occupations/occupation/term")
+      expect(@eac).to have_tag("description/occupations/occupation/date")
+      expect(@eac).to have_tag("description/occupations/occupation/descriptiveNote")
+    end
+
+    it "exports agent_functions" do
+      expect(@eac).to have_tag("description/functions/function/term")
+      expect(@eac).to have_tag("description/functions/function/date")
+      expect(@eac).to have_tag("description/functions/function/descriptiveNote")
+    end
+
+    it "exports agent_topics" do
+      expect(@eac).to have_tag("description/localDescriptions/localDescription[@localType='associatedSubject']/term")
+      expect(@eac).to have_tag("description/localDescriptions/localDescription[@localType='associatedSubject']/date")
+      expect(@eac).to have_tag("description/localDescriptions/localDescription[@localType='associatedSubject']/descriptiveNote")
+    end
+  end
+
+  describe "used_languages" do
+    before(:all) do
+      @rec = create(:json_agent_person_full_subrec
+                    )
+      @eac = get_eac(@rec)
+    end
+
+    it "exports used_languages" do
+      expect(@eac).to have_tag("description/languagesUsed/languageUsed/language")
+      expect(@eac).to have_tag("description/languagesUsed/languageUsed/script")
+      expect(@eac).to have_tag("description/languagesUsed/descriptiveNote")
+    end
+  end
+
 
   describe "dates of existence" do
     before(:all) do
@@ -379,11 +440,6 @@ describe 'EAC Export' do
                                             ]
                     )
       @eac = get_eac(@rec)
-    end
-
-
-    after(:all) do
-      @rec.delete
     end
 
     it "creates an existDates/date tag for each date of existence" do
@@ -442,10 +498,6 @@ describe 'EAC Export' do
 
       # puts @rec.inspect
       # puts @eac.to_xml
-    end
-
-    after(:all) do
-      @rec.delete
     end
 
 
@@ -585,13 +637,8 @@ describe 'EAC Export' do
 
       JSONModel.set_repository($repo_id)
 
-      @rec = create(:json_agent_person,
-                    :external_documents => [
-                                            build(:json_external_document),
-                                            build(:json_external_document,
-                                                  :location => "not a url")
-                                           ]
-                    )
+      @rec = create(:json_agent_person_full_subrec)
+
       @resource, @digital_object = [:json_resource, :json_digital_object].map {|type|
         create(type,
                :linked_agents => [{
@@ -633,9 +680,22 @@ describe 'EAC Export' do
     end
 
     it "maps related agents to cpfRelation" do
-      pending "implementation"
       expect(@eac).to have_tag("relations/cpfRelation[@cpfRelationType='is_parent_of'][@xlink:href='#{@linked_agent.uri}']/relationEntry" =>
 @linked_agent.names[0]['primary_name'])
+    end
+
+    it "exports agent_resources" do
+      expect(@eac)
+
+      resource = @rec['agent_resources'].first
+
+      expect(@eac).to have_tag("relations/resourceRelation[@resourceRelationType]")
+      expect(@eac).to have_tag("relations/resourceRelation[@xlink:arcrole]")
+      expect(@eac).to have_tag("relations/resourceRelation[@xlink:role]")
+      expect(@eac).to have_tag("relations/resourceRelation[@xlink:href]")
+      expect(@eac).to have_tag("relations/resourceRelation[@xlink:show]")
+      expect(@eac).to have_tag("relations/resourceRelation[@xlink:title]")
+      expect(@eac).to have_tag("relations/resourceRelation/relationEntry")
     end
 
 
@@ -650,14 +710,6 @@ describe 'EAC Export' do
       role = @digital_object.linked_agents[0]['role'] + "Of"
       expect(@eac).to have_tag("relations/resourceRelation[@resourceRelationType='#{role}']/relationEntry" => @digital_object.title)
       expect(@eac).to have_tag("relations/resourceRelation/relationEntry" => @digital_object_component.title)
-    end
-
-
-    it "maps external documents to resourceRelation" do
-      pending "implementation"
-      expect(@eac).to have_tag("relations/resourceRelation[@resourceRelationType='other'][1]")
-      # bad locations don't get exported
-      expect(@eac).not_to have_tag("relations/resourceRelation[@resourceRelationType='other'][2]")
     end
   end
 end
