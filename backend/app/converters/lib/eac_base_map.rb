@@ -641,8 +641,8 @@ module EACBaseMap
 
           type = "range"
 
-          begin_node = node.search("//fromDate")
-          end_node = node.search("//toDate")
+          begin_node = node.search("./fromDate")
+          end_node = node.search("./toDate")
 
           begin_exp = begin_node.inner_text
           end_exp = end_node.inner_text
