@@ -11,6 +11,28 @@ class EACSerializer < ASpaceExport::Serializer
   end
   
   private
+
+  # wrapper around nokogiri that creates a node without empty attrs and nodes
+  def create_node(xml, node_name, attrs, text)
+    unless text.nil? || text.empty?
+      attrs = attrs.reject {|k, v| v.nil? }
+      xml.send(node_name, attrs) {
+        xml.text text
+      }
+    end
+  end
+
+  def filled_out?(values, mode = :some)
+    if mode == :all
+      values.inject {|memo, v| memo && (!v.nil? && !v.empty?) }
+    else mode == :some
+      values.inject {|memo, v| memo || (!v.nil? && !v.empty?) }
+    end
+  end
+
+  def clean_attrs(attrs)
+    attrs.reject {|k, v| v.nil? }
+  end
   
   def _eac(obj, xml)  
     json = obj.json
@@ -33,9 +55,8 @@ class EACSerializer < ASpaceExport::Serializer
           if ari["primary_identifier"] == true
             xml.recordId ari["record_identifier"]
           else
-            xml.otherRecordId(:localType => ari["identifier_type_enum"]) {
-              xml.text(ari["record_identifier"])
-            }
+            attrs = {:localType => ari["identifier_type_enum"]}
+            create_node(xml, "otherRecordId", attrs, ari["record_identifier"])
           end
         end
       end
@@ -44,59 +65,48 @@ class EACSerializer < ASpaceExport::Serializer
       if json['agent_record_controls'] && json['agent_record_controls'].any?
         arc = json['agent_record_controls'].first
   
-        xml.maintenanceStatus {
-          xml.text arc['maintenance_status_enum']
-        } 
+        create_node(xml, "maintenanceStatus", {}, arc['maintenance_status_enum'])
+        create_node(xml, "publicationStatus", {}, arc['publication_status_enum'])
   
-        xml.publicationStatus {
-          xml.text arc['publication_status_enum']
-        } 
-  
-        xml.maintenanceAgency {
-          xml.agencyCode {
-            xml.text arc["maintenance_agency"]
+        if filled_out?([arc["maintenance_agency"], arc["agency_name"], arc["maintenance_agency_note"]])
+
+          xml.maintenanceAgency {
+            create_node(xml, "agencyCode", {}, arc["maintenance_agency"])
+            create_node(xml, "agencyName", {}, arc["agency_name"])
+            create_node(xml, "descriptiveNote", {}, arc["maintenance_agency_note"])
           }
-  
-          xml.agencyName {
-            xml.text arc["agency_name"]
+        end
+
+        if filled_out?([arc["language"], arc["language_note"]])
+          xml.languageDeclaration {
+            language_attrs = {:languageCode => arc["language"], :scriptCode => arc["script"]}
+            create_node(xml, "language", language_attrs, arc["language"])
+            create_node(xml, "descriptiveNote", {}, arc["language_note"])
           }
-  
-          xml.descriptiveNote {
-            xml.text arc["maintenance_agency_note"]
-          }
-        }
-  
-        xml.languageDeclaration {
-          xml.language(:languageCode => arc["language"], :scriptCode => arc["script"]) {
-            xml.text arc["language"]
-          }
-  
-          xml.descriptiveNote {
-            xml.text arc["language_note"]
-          }
-        }
+        end
       end
 
       # AGENT_CONVENTIONS_DECLARATIONS
       if json['agent_conventions_declarations']
         json['agent_conventions_declarations'].each do |cd|
-          xml.conventionDeclaration {
-            xml.abbreviation {
-              xml.text cd["name_rule"]
+
+          if filled_out?([cd["name_rule"], cd['citation'], cd['descriptive_note']])
+            xml.conventionDeclaration {
+              xlink_attrs = {
+                "xlink:href" => cd['file_uri'],
+                "xlink:actuate" => cd['file_version_xlink_actuate_attribute'],
+                "xlink:show" => cd['file_version_xlink_show_attribute'],
+                "xlink:title" => cd['xlink_title_attribute'],
+                "xlink:role" => cd['xlink_role_attribute'],
+                "xlink:arcrole" => cd['xlink_arcrole_attribute'],
+                "lastDateTimeVerified" => cd['last_verified_date'] 
+              }
+
+              create_node(xml, "abbreviation", {}, cd["name_rule"])
+              create_node(xml, "citation", xlink_attrs, cd["citation"])
+              create_node(xml, "descriptiveNote", {}, cd["descriptive_note"])
             }
-            xml.citation("xlink:href" => cd['file_uri'],
-                         "xlink:actuate" => cd['file_version_xlink_actuate_attribute'],
-                         "xlink:show" => cd['file_version_xlink_show_attribute'],
-                         "xlink:title" => cd['xlink_title_attribute'],
-                         "xlink:role" => cd['xlink_role_attribute'],
-                         "xlink:arcrole" => cd['xlink_arcrole_attribute'],
-                         "lastDateTimeVerified" => cd['last_verified_date']) {
-              xml.text cd['citation']
-            }
-            xml.descriptiveNote {
-              xml.text cd['descriptive_note']
-            }
-          }
+          end
         end
       end
 
@@ -104,25 +114,20 @@ class EACSerializer < ASpaceExport::Serializer
       if json['agent_maintenance_histories']
         xml.maintenanceHistory {
           json['agent_maintenance_histories'].each do |mh|
-            xml.maintenanceEvent {
-                xml.eventType {
-                  xml.text mh['maintenance_event_type_enum']
-                }
 
-                xml.eventDateTime(:standardDateTime => mh['event_date'])
+            if filled_out?([mh['maintenance_event_type_enum'], mh['event_date'], mh['maintenance_agent_type_enum'], mh['agent'], mh['descriptive_note']])
 
-                xml.agentType {
-                  xml.text mh['maintenance_agent_type_enum']
-                }
+              xml.maintenanceEvent {
+                create_node(xml, "eventType", {}, mh['maintenance_event_type_enum'])
 
-                xml.agent {
-                  xml.text mh['agent']
-                }
+                xml.eventDateTime(:standardDateTime => mh['event_date']) if filled_out?([mh['event_date']], :all)
 
-                xml.eventDescription {
-                  xml.text mh['descriptive_note']
-                }
-            }
+                create_node(xml, "agentType", {}, mh['maintenance_agent_type_enum'])
+
+                create_node(xml, "agent", {}, mh['agent'])
+                create_node(xml, "eventDescription", {}, mh['descriptive_note'])
+              }
+            end
           end  
         }
       end
@@ -131,23 +136,22 @@ class EACSerializer < ASpaceExport::Serializer
       if json['agent_sources'] && json['agent_sources'].any?
         xml.sources {
           json['agent_sources'].each do |as|
-            xml.source("xlink:href" => as['file_uri'],
-                       "xlink:actuate" => as['file_version_xlink_actuate_attribute'],
-                       "xlink:show" => as['file_version_xlink_show_attribute'],
-                       "xlink:title" => as['xlink_title_attribute'],
-                       "xlink:role" => as['xlink_role_attribute'],
-                       "xlink:arcrole" => as['xlink_arcrole_attribute'],
-                       "lastDateTimeVerified" => as['last_verified_date']) {
-
-              xml.sourceEntry {
-                xml.text as['source_entry']
-              }
-
-              xml.descriptiveNote {
-                xml.text as['descriptive_note']
-              }
+            xlink_attrs = {
+              "xlink:href" => as['file_uri'],
+              "xlink:actuate" => as['file_version_xlink_actuate_attribute'],
+              "xlink:show" => as['file_version_xlink_show_attribute'],
+              "xlink:title" => as['xlink_title_attribute'],
+              "xlink:role" => as['xlink_role_attribute'],
+              "xlink:arcrole" => as['xlink_arcrole_attribute'],
+              "lastDateTimeVerified" => as['last_verified_date']
             }
 
+            if filled_out?([as['source_entry'], as['descriptive_note']])
+              xml.source(clean_attrs(xlink_attrs)) {
+                create_node(xml, "sourceEntry", {}, as['source_entry'])
+                create_node(xml, "descriptiveNote", {}, as['descriptive_note'])
+              }
+            end
           end
         }
       end
@@ -162,9 +166,9 @@ class EACSerializer < ASpaceExport::Serializer
         # AGENT_IDENTIFIERS
         if json['agent_identifiers'].any?
           json['agent_identifiers'].each do |ad|
-            xml.entityId(:localType => ad['identifier_type_enum']) {
-              xml.text ad['entity_identifier']
-            }
+            attrs = {:localType => ad['identifier_type_enum']}
+
+            create_node(xml, "entityId", attrs, ad['entity_identifier'])
           end
         end
 
@@ -176,7 +180,7 @@ class EACSerializer < ASpaceExport::Serializer
         # NAMES
         json['names'].each do |name|
           # NAMES WITH PARALLEL
-          if name['parallel_names']
+          if name['parallel_names'] && name['parallel_names'].any?
             xml.nameEntryParallel {
               _build_name_entry(name, xml, json, obj)
 
@@ -196,22 +200,22 @@ class EACSerializer < ASpaceExport::Serializer
       if json['agent_alternate_sets'] && json['agent_alternate_sets'].any?
         xml.alternativeSet {
           json['agent_alternate_sets'].each do |aas|
-            xml.setComponent("xlink:href" => aas['file_uri'],
-                         "xlink:actuate" => aas['file_version_xlink_actuate_attribute'],
-                         "xlink:show" => aas['file_version_xlink_show_attribute'],
-                         "xlink:title" => aas['xlink_title_attribute'],
-                         "xlink:role" => aas['xlink_role_attribute'],
-                         "xlink:arcrole" => aas['xlink_arcrole_attribute'],
-                         "lastDateTimeVerified" => aas['last_verified_date']) {
-              xml.componentEntry {
-                xml.text aas['set_component']
-              }
-
-              xml.descriptiveNote {
-                xml.text aas['descriptive_note']
-              }
+            xlink_attrs = {
+              "xlink:href" => aas['file_uri'],
+              "xlink:actuate" => aas['file_version_xlink_actuate_attribute'],
+              "xlink:show" => aas['file_version_xlink_show_attribute'],
+              "xlink:title" => aas['xlink_title_attribute'],
+              "xlink:role" => aas['xlink_role_attribute'],
+              "xlink:arcrole" => aas['xlink_arcrole_attribute'],
+              "lastDateTimeVerified" => aas['last_verified_date']
             }
 
+            if filled_out?([aas['set_component'], aas['descriptive_note']])
+              xml.setComponent(clean_attrs(xlink_attrs)) {
+                create_node(xml, "componentEntry", {}, aas['set_component'])
+                create_node(xml, "descriptiveNote", {}, aas['descriptive_note'])
+              }
+            end
           end
         }
       end
@@ -235,20 +239,23 @@ class EACSerializer < ASpaceExport::Serializer
         if json['used_languages'] && json['used_languages'].any?
           xml.languagesUsed {
             json['used_languages'].each do |lang|
-              xml.languageUsed {
-                xml.language("languageCode" => lang['language']) {
-                  xml.text I18n.t("enumerations.language_iso639_2.#{lang['language']}")
+
+              if filled_out?([lang['language'], lang['script']])
+                language = I18n.t("enumerations.language_iso639_2.#{lang['language']}")
+                script = I18n.t("enumerations.script_iso15924.#{lang['script']}") 
+                lang_attrs = {"languageCode" => lang['language']}
+                script_attrs = {"scriptCode" => lang['script']}
+
+
+                xml.languageUsed {
+                  create_node(xml, "language", lang_attrs, language)
+                  create_node(xml, "script", script_attrs, script)
                 }
 
-                xml.script("scriptCode" => lang['script']) {
-                  xml.text I18n.t("enumerations.script_iso15924.#{lang['script']}")
-                }
-              }
-         
+              end
+             
               lang['notes'].each do |n|
-                xml.descriptiveNote {
-                  xml.text n['content']
-                }
+                create_node(xml, "descriptiveNote", {}, n['content'])
               end
             end
           }
@@ -259,29 +266,26 @@ class EACSerializer < ASpaceExport::Serializer
           xml.places {
             json['agent_places'].each do |place|
               subject = place['subjects'].first['_resolved']
-              xml.place {
-                xml.placeRole {
-                  xml.text place['place_role_enum']
-                }
-                xml.placeEntry(:vocabularySource => subject['source']) {
-                  xml.text subject['terms'].first['term']
-                }
-              place['dates'].each do |date|
-                if date['date_type_enum'] == 'single'
-                  _build_date_single(date, xml)
-                else
-                  _build_date_range(date, xml)
-                end
-              end
+              entry_attrs = {:vocabularySource => subject['source']}
 
-              place['notes'].each do |n|
-                xml.descriptiveNote {
-                  xml.text n['content']
-                }
-              end
-              }
+              if filled_out?([place['place_role_enum'], subject['terms'].first['term']])
+                xml.place {
+                  create_node(xml, "placeRole", {}, place['place_role_enum'])
+                  create_node(xml, "placeEntry", entry_attrs, subject['terms'].first['term'])
 
-             
+                  place['dates'].each do |date|
+                    if date['date_type_enum'] == 'single'
+                      _build_date_single(date, xml)
+                    else
+                      _build_date_range(date, xml)
+                    end
+                  end
+
+                  place['notes'].each do |n|
+                    create_node(xml, "descriptiveNote", {}, n['content'])
+                  end
+                } 
+              end
             end
           }
         end
@@ -291,25 +295,25 @@ class EACSerializer < ASpaceExport::Serializer
           xml.occupations {
             json['agent_occupations'].each do |occupation|
               subject = occupation['subjects'].first['_resolved']
-              xml.occupation {
-                xml.term {
-                  xml.text subject['terms'].first['term']
-                }
 
-              occupation['dates'].each do |date|
-                if date['date_type_enum'] == 'single'
-                  _build_date_single(date, xml)
-                else
-                  _build_date_range(date, xml)
-                end
-              end
+              if filled_out?([subject['terms'].first['term']])
 
-              occupation['notes'].each do |n|
-                xml.descriptiveNote {
-                  xml.text n['content']
+                xml.occupation {
+                  create_node(xml, "term", {}, subject['terms'].first['term'])
+
+                  occupation['dates'].each do |date|
+                    if date['date_type_enum'] == 'single'
+                      _build_date_single(date, xml)
+                    else
+                      _build_date_range(date, xml)
+                    end
+                  end
+
+                  occupation['notes'].each do |n|
+                    create_node(xml, "descriptiveNote", {}, n['content'])
+                  end
                 }
               end
-              }
             end
           }
         end
@@ -318,87 +322,88 @@ class EACSerializer < ASpaceExport::Serializer
         if json['agent_functions'] && json['agent_functions'].any?
           xml.functions {
             json['agent_functions'].each do |function|
-
               subject = function['subjects'].first['_resolved']
 
-              xml.function {
-                xml.term {
-                  xml.text subject['terms'].first['term']
-                }
+              if filled_out?([subject['terms'].first['term']])
 
-              function['dates'].each do |date|
-                if date['date_type_enum'] == 'single'
-                  _build_date_single(date, xml)
-                else
-                  _build_date_range(date, xml)
-                end
-              end
+                xml.function {
+                  create_node(xml, "term", {}, subject['terms'].first['term'])
 
-              function['notes'].each do |n|
-                xml.descriptiveNote {
-                  xml.text n['content']
+                  function['dates'].each do |date|
+                    if date['date_type_enum'] == 'single'
+                      _build_date_single(date, xml)
+                    else
+                      _build_date_range(date, xml)
+                    end
+                  end
+
+                  function['notes'].each do |n|
+                    create_node(xml, "descriptiveNote", {}, n['content'])
+                  end
                 }
               end
-              }
             end
           }
         end
+   
+        if (json['agent_topics'] && json['agent_topics'].any?) ||
+           (json['agent_genders'] && json['agent_genders'].any?)
 
-        xml.localDescriptions {
+          xml.localDescriptions {
 
-          # TOPICS
-           if json['agent_topics']
-             json['agent_topics'].each do |topic|
+            # TOPICS
+            if json['agent_topics']
+               json['agent_topics'].each do |topic|
+                 subject = topic['subjects'].first['_resolved']
 
-               subject = topic['subjects'].first['_resolved']
+                 if filled_out?([subject['terms'].first['term']])
 
-               xml.localDescription(:localType => "associatedSubject") {
-                 xml.term {
-                   xml.text subject['terms'].first['term']
-                 }
+                   xml.localDescription(:localType => "associatedSubject") {
+                     create_node(xml, "term", {}, subject['terms'].first['term'])  
+                     topic['dates'].each do |date|
+                       if date['date_type_enum'] == 'single'
+                         _build_date_single(date, xml)
+                       else
+                         _build_date_range(date, xml)
+                       end
+                     end
 
-               topic['dates'].each do |date|
-                 if date['date_type_enum'] == 'single'
-                   _build_date_single(date, xml)
-                 else
-                   _build_date_range(date, xml)
+                     topic['notes'].each do |n|
+                       create_node(xml, "descriptiveNote", {}, n['content'])
+                     end
+                   }
                  end
+
                end
-
-               topic['notes'].each do |n|
-                 xml.descriptiveNote {
-                   xml.text n['content']
-                 }
-               end
-               }
-             end
-          end
-
-          # GENDERS
-          if json['agent_genders']
-            json['agent_genders'].each do |gender|
-              xml.localDescription(:localType => "gender") {
-                xml.term {
-                  xml.text gender['gender_enum']
-                }
-
-                gender['dates'].each do |date|
-                  if date['date_type_enum'] == 'single'
-                    _build_date_single(date, xml)
-                  else
-                    _build_date_range(date, xml)
-                  end
-                end
-
-                gender['notes'].each do |n|
-                  xml.descriptiveNote {
-                    xml.text n['content']
-                  }
-                end
-              }
             end
-          end
-        }
+
+           # GENDERS
+            if json['agent_genders']
+              json['agent_genders'].each do |gender|
+
+                if filled_out?([gender['gender_enum']])
+                  xml.localDescription(:localType => "gender") {
+                    create_node(xml, "term", {}, gender['gender_enum'])
+
+                    gender['dates'].each do |date|
+                      if date['date_type_enum'] == 'single'
+                        _build_date_single(date, xml)
+                      else
+                        _build_date_range(date, xml)
+                      end
+                    end
+
+                    gender['notes'].each do |n|
+                      create_node(xml, "descriptiveNote", {}, n['content'])
+                    end
+                  }
+
+                end
+              end
+            end
+          } # close of xml.localDescriptions
+        end # of if
+
         
         # NOTES      
         if json['notes']
@@ -476,57 +481,65 @@ class EACSerializer < ASpaceExport::Serializer
       xml.relations {
         if json['agent_resources']
           json['agent_resources'].each do |ar|
-            xml.resourceRelation("resourceRelationType" => "Resource Relation",
-                         "xlink:href" => ar['file_uri'],
-                         "xlink:actuate" => ar['file_version_xlink_actuate_attribute'],
-                         "xlink:show" => ar['file_version_xlink_show_attribute'],
-                         "xlink:title" => ar['xlink_title_attribute'],
-                         "xlink:role" => ar['xlink_role_attribute'],
-                         "xlink:arcrole" => ar['xlink_arcrole_attribute'],
-                         "lastDateTimeVerified" => ar['last_verified_date']) {             
-              xml.relationEntry {
-                xml.text ar['linked_resource']
-              }
-              if ar['places'] && ar['places'].any?
-                xml.places {
-                  ar['places'].each do |place|
-                    subject = place['_resolved']
-                    xml.place {
-                      xml.placeEntry(:vocabularySource => subject['source']) {
-                       xml.text subject['terms'].first['term']
-                      }
-                    }
-                   end
-                }
-              end
 
-              ar['dates'].each do |date|
-                if date['date_type_enum'] == 'single'
-                  _build_date_single(date, xml)
-                else
-                  _build_date_range(date, xml)
+            if filled_out?([ar['linked_resource']])
+              xlink_attrs = {
+                "resourceRelationType" => "Resource Relation",
+                "xlink:href" => ar['file_uri'],
+                "xlink:actuate" => ar['file_version_xlink_actuate_attribute'],
+                "xlink:show" => ar['file_version_xlink_show_attribute'],
+                "xlink:title" => ar['xlink_title_attribute'],
+                "xlink:role" => ar['xlink_role_attribute'],
+                "xlink:arcrole" => ar['xlink_arcrole_attribute'],
+                "lastDateTimeVerified" => ar['last_verified_date']
+              }
+
+              xml.resourceRelation(clean_attrs(xlink_attrs)) {             
+                create_node(xml, "relationEntry", {}, ar['linked_resource'])  
+
+                if ar['places'] && ar['places'].any?
+                  xml.places {
+                    ar['places'].each do |place|
+                      subject = place['_resolved']
+                      xml.place {
+                        xml.placeEntry(:vocabularySource => subject['source']) {
+                         xml.text subject['terms'].first['term']
+                        }
+                      }
+                     end
+                  }
                 end
-              end
-            }
+
+                ar['dates'].each do |date|
+                  if date['date_type_enum'] == 'single'
+                    _build_date_single(date, xml)
+                  else
+                    _build_date_range(date, xml)
+                  end
+                end
+              }
+            end
           end
         end
 
-
         if json['related_agents']
           json['related_agents'].each do |ra|
-              resolved = ra['_resolved']
-              relator = ra['relator']
+            resolved = ra['_resolved']
+            relator = ra['relator']
 
-              name = case resolved['jsonmodel_type']
-                     when 'agent_software'
-                       resolved['display_name']['software_name']
-                     when 'agent_family'
-                       resolved['display_name']['family_name']
-                     else
-                       resolved['display_name']['primary_name']
-                     end
+            name = case resolved['jsonmodel_type']
+                   when 'agent_software'
+                     resolved['display_name']['software_name']
+                   when 'agent_family'
+                     resolved['display_name']['family_name']
+                   else
+                     resolved['display_name']['primary_name']
+                   end
 
-              xml.cpfRelation(:cpfRelationType => relator, 'xlink:type' => 'simple', 'xlink:href' => resolved['uri']) {
+            if filled_out?([name])
+              attrs = {:cpfRelationType => relator, 'xlink:type' => 'simple', 'xlink:href' => resolved['uri']}
+
+              xml.cpfRelation(clean_attrs(attrs)) {
                 xml.relationEntry name
 
                 if ra['dates']
@@ -537,6 +550,7 @@ class EACSerializer < ASpaceExport::Serializer
                   end
                 end
               }
+            end
           end
         end
 
@@ -567,24 +581,25 @@ class EACSerializer < ASpaceExport::Serializer
 
 
   def _build_date_single(date, xml)
-    xml.date(:standardDate => date['structured_date_single']['date_standardized'], :localType => date['date_label']) {
-      xml.text date['structured_date_single']['date_expression']
-    }
+    attrs = {:standardDate => date['structured_date_single']['date_standardized'], :localType => date['date_label']}
+
+    create_node(xml, "date", attrs, date['structured_date_single']['date_expression'])
   end
 
   def _build_date_range(date, xml)
     xml.dateRange(:localType => date['date_label']) {
-      xml.fromDate(:standardDate => date['structured_date_range']['begin_date_standardized']) {
-        xml.text date['structured_date_range']['begin_date_expression']
-      }
-      xml.toDate(:standardDate => date['structured_date_range']['end_date_standardized']) {
-        xml.text date['structured_date_range']['end_date_expression']
-      }
+      begin_attrs = {:standardDate => date['structured_date_range']['begin_date_standardized']}
+      end_attrs = {:standardDate => date['structured_date_range']['end_date_standardized']}
+
+      create_node(xml, "fromDate", begin_attrs, date['structured_date_range']['begin_date_expression'])
+
+      create_node(xml, "toDate", end_attrs, date['structured_date_range']['end_date_expression'])
     }
   end
 
   def _build_name_entry(name, xml, json, obj)
-    xml.nameEntry("xml:lang" => name['language'], "scriptCode" => name['script'], "transliteration" => name['romanization_enum']) {
+    attrs = {"xml:lang" => name['language'], "scriptCode" => name['script'], "transliteration" => name['romanization_enum']}
+    xml.nameEntry(clean_attrs(attrs)) {
       if name['authorized']
         xml.authorizedForm name['source'] unless name['source'] && name['source'].empty?
       else
@@ -594,9 +609,9 @@ class EACSerializer < ASpaceExport::Serializer
       obj.name_part_fields.each do |field, localType|
         localType = localType.nil? ? field : localType
         next unless name[field]
-        xml.part(:localType => localType) {
-          xml.text name[field]
-        }
+
+        part_attrs = {:localType => localType}
+        create_node(xml, "part", part_attrs, name[field])
       end
 
       xml.useDates {
