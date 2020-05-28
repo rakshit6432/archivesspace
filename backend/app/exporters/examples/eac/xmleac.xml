@@ -295,6 +295,13 @@
                <item>Kind einer deutsch-jüdischen Bürgerfamilie; Studium der Altphilosophie, Theologie und Griechisch in Marburg, Heidelberg und Freiburg im Breisgau; Schülerin Martin Heideggers in Marburg; Promotion 1928 bei Karl Jaspers in Heidelberg</item>
             </list>
          </biogHist>
+         <generalContext>
+            <list>
+               <item>one</item>
+               <item>two</item>
+               <item>three</item>
+            </list>
+         </generalContext>
       </description>
       <relations>
          <resourceRelation xlink:href="http://www.google.com" xlink:actuate="onRequest" xlink:show="new" xlink:title="xlink title" xlink:role="xlink role" xlink:arcrole="xlink arcrole" lastDateTimeVerified="2000-07-01"resourceRelationType="creatorOf" id="UA013">

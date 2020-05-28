@@ -64,6 +64,19 @@ describe 'EAC converter' do
       expect(note["content"]).to match(/Richard H. Lufkin was a shoe machine engineer/)
     end
 
+    it "imports general context notes" do
+      record = convert(person_agent_3).select {|r| r['jsonmodel_type'] == "agent_person"}.first
+
+      note = record["notes"][1]["subnotes"].first
+
+      expect(record).not_to be_nil
+      expect(note).not_to be_nil
+
+      expect(note["content"]).to match(/one/)
+      expect(note["content"]).to match(/two/)
+      expect(note["content"]).to match(/three/)
+    end
+
     it "imports recordId as primary agent_record_identifier" do
       record = convert(person_agent_2).select {|r| r['jsonmodel_type'] == "agent_person"}.first
 
@@ -398,6 +411,37 @@ describe 'EAC converter' do
       expect(record['names'][1]['source']).to eq("local")
     end
 
+    it "imports legal status notes" do
+      record = convert(corp_agent_1).select {|r| r['jsonmodel_type'] == "agent_corporate_entity"}.first
+
+      legal_notes = record["notes"].select{|n| n['jsonmodel_type'] == "note_legal_status"}
+
+      expect(legal_notes.length).to eq(1)
+      expect(legal_notes.first["subnotes"][0]['content'].first).to eq("citation")
+      expect(legal_notes.first["subnotes"][1]['content']).to eq("dnote")
+    end
+
+    it "imports mandate notes" do
+      record = convert(corp_agent_1).select {|r| r['jsonmodel_type'] == "agent_corporate_entity"}.first
+
+      mandate_notes = record["notes"].select{|n| n['jsonmodel_type'] == "note_mandate"}
+
+      expect(mandate_notes.length).to eq(1)
+      expect(mandate_notes.first["subnotes"][0]['content'].first).to eq("citation")
+      expect(mandate_notes.first["subnotes"][1]['content']).to eq("dnote")
+    end
+
+    it "imports structure notes" do
+      record = convert(corp_agent_1).select {|r| r['jsonmodel_type'] == "agent_corporate_entity"}.first
+
+      sog_notes = record["notes"].select{|n| n['jsonmodel_type'] == "note_structure_or_genealogy"}
+
+      expect(sog_notes.length).to eq(1)
+      expect(sog_notes.first["subnotes"][0]['content']).to match(/citation/)
+      expect(sog_notes.first["subnotes"][0]['content']).to match(/one/)
+      expect(sog_notes.first["subnotes"][0]['content']).to match(/two/)
+      expect(sog_notes.first["subnotes"][0]['content']).to match(/three/)
+    end
   end
 
   describe "family agents" do
@@ -430,6 +474,18 @@ describe 'EAC converter' do
       expect(record).not_to be_nil
       expect(record['names'][1]['authorized']).to eq(false)
       expect(record['names'][1]['source']).to eq("lcnaf")
+    end
+
+    it "imports structure notes" do
+      record = convert(family_agent_2).select {|r| r['jsonmodel_type'] == "agent_family"}.first
+
+      sog_notes = record["notes"].select{|n| n['jsonmodel_type'] == "note_structure_or_genealogy"}
+
+      expect(sog_notes.length).to eq(2)
+      expect(sog_notes.first["subnotes"][0]['content']).to match(/citation/)
+      expect(sog_notes.first["subnotes"][0]['content']).to match(/one/)
+      expect(sog_notes.first["subnotes"][0]['content']).to match(/two/)
+      expect(sog_notes.first["subnotes"][0]['content']).to match(/three/)
     end
   end
 end
