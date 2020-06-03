@@ -93,7 +93,7 @@
                <date standardDate="1802-12-27">1802 December 27</date>
                <dateSet>
                  <dateRange localType="123">
-                   <fromDate standardDate="1742-11-12">1742 November 12</fromDate>
+                   <fromDate standardDate="1742-11-12">1745 November 12</fromDate>
                    <toDate standardDate="1802-12-27">1802 December 27</toDate>
                  </dateRange>
                </dateSet>
@@ -105,7 +105,7 @@
             <alternativeForm>VIAF</alternativeForm>
             <useDates>
                <dateRange localType="123">
-                 <fromDate standardDate="1742-11-12">1742 November 12</fromDate>
+                 <fromDate standardDate="1742-11-12">1746 November 12</fromDate>
                  <toDate standardDate="1802-12-27">1802 December 27</toDate>
              </dateRange>
             </useDates>
@@ -247,7 +247,7 @@
                <placeRole>place_of_birth</placeRole>
                <placeEntry vocabularySource="GND" localType="DE-588-4031541-1">Königsbergs</placeEntry>
                <dateRange localType="DE-588-4031541-1">
-                 <fromDate standardDate="1742-11-12">1742 November 12</fromDate>
+                 <fromDate standardDate="1742-11-12">1743 November 12</fromDate>
                  <toDate standardDate="1802-12-27">1802 December 27</toDate>
              </dateRange>
              <citation>citation</citation>
@@ -309,7 +309,7 @@
             <descriptiveNote>note!</descriptiveNote>
             <dateSet>
                  <dateRange localType="123">
-                   <fromDate standardDate="1742-11-12">1742 November 12</fromDate>
+                   <fromDate standardDate="1742-11-12">1744 November 12</fromDate>
                    <toDate standardDate="1802-12-27">1802 December 27</toDate>
                  </dateRange>
                </dateSet>
