@@ -3,7 +3,7 @@
 	    <marcxml:controlfield tag="001">n88218900</marcxml:controlfield>
 	    <marcxml:controlfield tag="003">DLC</marcxml:controlfield>
 	    <marcxml:controlfield tag="005">19890222071833.5</marcxml:controlfield>
-	    <marcxml:controlfield tag="008">890119n| acannaab           |a aaa      </marcxml:controlfield>
+	    <marcxml:controlfield tag="008">890119nnfacannaab           |a aaa    ##</marcxml:controlfield>
 	    <marcxml:datafield tag="010" ind1=" " ind2=" ">
     <marcxml:subfield code="a">n  88218900 </marcxml:subfield>
   </marcxml:datafield>
