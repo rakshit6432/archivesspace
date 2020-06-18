@@ -22,22 +22,27 @@ module MarcXMLAuthAgentBaseMap
 
   def agent_person_base
     {
-      "//record/leader" => agent_record_control_map,
       "self::datafield" => agent_person_name_with_parallel_map(:name_person, :names)
-    }
+    }.merge(shared_subrecord_map)
   end
 
   def agent_corporate_entity_base
     {
-      "//leader" => agent_record_control_map,
       "self::datafield" => agent_corporate_entity_name_map(:name_corporate_entity, :names)
-    }
+    }.merge(shared_subrecord_map)
   end
 
   def agent_family_base
     {
-      "//leader" => agent_record_control_map,
       "self::datafield" => agent_family_name_map(:name_family, :names)
+    }.merge(shared_subrecord_map)
+  end
+
+  def shared_subrecord_map
+    {
+      "//record/leader" => agent_record_control_map,
+      "//record/controlfield[@tag='001']" => agent_record_identifiers_map,
+      "//record/controlfield[@tag='005']" => maintenance_history_map,
     }
   end
 
@@ -321,6 +326,111 @@ module MarcXMLAuthAgentBaseMap
         arc['maintenance_agency'] = val
       }
     }
+  }
+  end
+
+  def agent_record_identifiers_map
+  {
+    :obj => :agent_record_identifier,
+    :rel => :agent_record_identifiers,
+    :map => {
+      "self::controlfield" => Proc.new {|ari, node|
+        val = node.inner_text
+        ari['record_identifier'] = val
+      },
+      "//record/datafield[@tag=010]/subfield[@code='a']" => Proc.new {|ari, node|
+        val = node.inner_text
+        ari['record_identifier'] = val
+      },
+      "//record/datafield[@tag=016]/subfield[@code='a']" => Proc.new {|ari, node|
+        val = node.inner_text
+        ari['record_identifier'] = val
+        ari['primary_identifier'] = true
+
+        if node.parent.attr("ind1") == "7"
+          ari['identifier_type_enum'] == "local"
+        else
+          ari['identifier_type_enum'] == "lac"
+        end
+      },
+      "//record/datafield[@tag=016]/subfield[@code='2']" => Proc.new {|ari, node|
+        val = node.inner_text
+        ari['source_enum'] = val
+        ari['primary_identifier'] = true
+
+        if node.parent.attr("ind1") == "7"
+          ari['identifier_type_enum'] == "local"
+        else
+          ari['identifier_type_enum'] == "lac"
+        end
+      },
+      "//record/datafield[@tag=024]/subfield[@code='a']" => Proc.new {|ari, node|
+        val = node.inner_text
+        ari['record_identifier'] = val
+        ari['primary_identifier'] = true
+
+        if node.parent.attr("ind1") == "7"
+          ari['identifier_type_enum'] == "local"
+        end
+      },
+      "//record/datafield[@tag=024]/subfield[@code='2']" => Proc.new {|ari, node|
+        val = node.inner_text
+        ari['source_enum'] = val
+        ari['primary_identifier'] = true
+
+        if node.parent.attr("ind1") == "7"
+          ari['identifier_type_enum'] == "local"
+        end
+      },
+      "//record/datafield[@tag=035]/subfield[@code='a']" => Proc.new {|ari, node|
+        val = node.inner_text
+        ari['record_identifier'] = val
+        ari['primary_identifier'] = true
+
+        if node.parent.attr("ind1") == "7"
+          ari['identifier_type_enum'] = "local"
+        end
+      },
+      "//record/datafield[@tag=035]/subfield[@code='2']" => Proc.new {|ari, node|
+        val = node.inner_text
+        ari['source_enum'] = val
+        ari['primary_identifier'] = true
+
+        if node.parent.attr("ind1") == "7"
+          ari['identifier_type_enum'] = "local"
+        end
+      },
+    }
+  }
+  end
+
+  def maintenance_history_map
+  {
+    :obj => :agent_maintenance_history,
+    :rel => :agent_maintenance_histories,
+    :map => {
+        "self::controlfield" => Proc.new {|amh, node|
+        tag5_content = node.inner_text
+
+        amh['event_date'] = tag5_content[0..7]
+        amh['maintenance_event_type_enum'] = "created"
+        amh['maintenance_agent_type_enum'] = "machine"
+      },
+      "//record/controlfield[@tag='008']" => Proc.new{|amh, node|
+        tag8_content = node.inner_text
+
+        amh['event_date'] = "19" + tag8_content[0..5]
+        amh['maintenance_event_type_enum'] = "created"
+        amh['maintenance_agent_type_enum'] = "machine"
+      },
+      "//record/datafield[@tag='040']/subfield[@code='d']" => Proc.new{|amh, node|
+        val = node.inner_text
+        amh['agent'] = val
+      }
+    },
+    :defaults => {
+      :agent => "Missing in File"
+    }  
   }
   end
 end

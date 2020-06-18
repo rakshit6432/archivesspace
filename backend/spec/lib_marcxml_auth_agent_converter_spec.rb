@@ -41,5 +41,24 @@ describe 'MARCXML Auth Agent converter' do
       expect(record['agent_record_controls'][0]['modified_record_enum']).to eq("not_modified")
       expect(record['agent_record_controls'][0]['cataloging_source_enum']).to eq("nat_bib_agency")
     end
+
+    it "imports agent_record_identifier" do
+      record = convert(person_agent_1).select {|r| r['jsonmodel_type'] == "agent_person"}.first
+
+      expect(record['agent_record_identifiers'][0]['record_identifier']).to eq("n  88218900")
+      expect(record['agent_record_identifiers'][0]['identifier_type_enum']).to eq("local")
+      expect(record['agent_record_identifiers'][0]['source_enum']).to eq("DLC")
+      expect(record['agent_record_identifiers'][0]['primary_identifier']).to eq(true)
+    end
+
+    it "imports agent_maintenance_histories" do
+      record = convert(person_agent_1).select {|r| r['jsonmodel_type'] == "agent_person"}.first
+
+
+      expect(record['agent_maintenance_histories'][0]['event_date']).to eq("19890119")
+      expect(record['agent_maintenance_histories'][0]['maintenance_event_type_enum']).to eq("created")
+      expect(record['agent_maintenance_histories'][0]['maintenance_agent_type_enum']).to eq("machine")
+      expect(record['agent_maintenance_histories'][0]['agent']).to eq("DLC")
+    end
   end
 end
