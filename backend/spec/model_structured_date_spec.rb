@@ -120,17 +120,6 @@ describe 'Structured Date model' do
     expect(errs.length > 0).to eq(true)
   end
 
-  it "range dates are invalid if begin standardized date present with no end" do
-    sdr = build(:json_structured_date_range, 
-        :begin_date_expression => nil, 
-        :begin_date_standardized => "2001-01-01", 
-        :end_date_expression => nil, 
-        :end_date_standardized => nil)
-  
-    errs = JSONModel::Validations.check_structured_date_range(sdr)
-    expect(errs.length > 0).to eq(true)
-  end
-
   it "range dates are invalid end date is after begin" do
     sdr = build(:json_structured_date_range, 
         :begin_date_expression => nil, 

@@ -22,19 +22,22 @@ module MarcXMLAuthAgentBaseMap
 
   def agent_person_base
     {
-      "self::datafield" => agent_person_name_with_parallel_map(:name_person, :names)
+      "self::datafield" => agent_person_name_with_parallel_map(:name_person, :names),
+      "//record/datafield[@tag='046']" => agent_person_dates_of_existence_map
     }.merge(shared_subrecord_map)
   end
 
   def agent_corporate_entity_base
     {
-      "self::datafield" => agent_corporate_entity_name_map(:name_corporate_entity, :names)
+      "self::datafield" => agent_corporate_entity_name_map(:name_corporate_entity, :names),
+      "//record/datafield[@tag='046']" => agent_corporate_entity_dates_of_existence_map
     }.merge(shared_subrecord_map)
   end
 
   def agent_family_base
     {
-      "self::datafield" => agent_family_name_map(:name_family, :names)
+      "self::datafield" => agent_family_name_map(:name_family, :names),
+      "//record/datafield[@tag='046']" => agent_family_dates_of_existence_map
     }.merge(shared_subrecord_map)
   end
 
@@ -444,6 +447,90 @@ module MarcXMLAuthAgentBaseMap
         val = node.inner_text
         acd['name_rule'] = val
         acd['citation'] = "none"
+      }
+    }
+  }
+  end
+
+  def agent_person_dates_of_existence_map
+  {
+    :obj => :structured_date_label,
+    :rel => :dates_of_existence,
+    :map => {
+      "self::datafield" => Proc.new {|sdl, node|
+        label = "existence"
+        type = "range"
+
+        begin_node = node.search("./subfield[@code='f']")
+        end_node = node.search("./subfield[@code='g']")
+
+        begin_std = begin_node.inner_text if begin_node
+        end_std = end_node.inner_text if end_node
+
+        sdr = ASpaceImport::JSONModel(:structured_date_range).new({
+          :begin_date_standardized => begin_std,
+          :end_date_standardized => end_std,
+        })
+
+        sdl[:date_label] = label
+        sdl[:date_type_enum] = type
+        sdl[:structured_date_range] = sdr
+      }
+    }
+  }
+  end
+
+  def agent_corporate_entity_dates_of_existence_map
+  {
+    :obj => :structured_date_label,
+    :rel => :dates_of_existence,
+    :map => {
+      "self::datafield" => Proc.new {|sdl, node|
+        label = "existence"
+        type = "range"
+
+        begin_node = node.search("./subfield[@code='s']")
+        end_node = node.search("./subfield[@code='t']")
+
+        begin_std = begin_node.inner_text if begin_node
+        end_std = end_node.inner_text if end_node
+
+        sdr = ASpaceImport::JSONModel(:structured_date_range).new({
+          :begin_date_standardized => begin_std,
+          :end_date_standardized => end_std,
+        })
+
+        sdl[:date_label] = label
+        sdl[:date_type_enum] = type
+        sdl[:structured_date_range] = sdr
+      }
+    }
+  }
+  end
+
+  def agent_family_dates_of_existence_map
+  {
+    :obj => :structured_date_label,
+    :rel => :dates_of_existence,
+    :map => {
+      "self::datafield" => Proc.new {|sdl, node|
+        label = "existence"
+        type = "range"
+
+        begin_node = node.search("./subfield[@code='s']")
+        end_node = node.search("./subfield[@code='t']")
+
+        begin_std = begin_node.inner_text if begin_node
+        end_std = end_node.inner_text if end_node
+
+        sdr = ASpaceImport::JSONModel(:structured_date_range).new({
+          :begin_date_standardized => begin_std,
+          :end_date_standardized => end_std,
+        })
+
+        sdl[:date_label] = label
+        sdl[:date_type_enum] = type
+        sdl[:structured_date_range] = sdr
       }
     }
   }

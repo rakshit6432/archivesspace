@@ -266,8 +266,6 @@ module JSONModel::Validations
 
     errors << ["end_date_expression", "requires begin date expression to be defined"] if !has_begin_expr_date && has_end_expr_date
 
-    errors << ["begin_date_standardized", "requires end_date_standardized to be defined"] if (has_begin_std_date && !has_end_std_date)
-
     errors << ["end_date_standardized", "requires begin_date_standardized to be defined"] if (!has_begin_std_date && has_end_std_date)
 
     if has_begin_std_date

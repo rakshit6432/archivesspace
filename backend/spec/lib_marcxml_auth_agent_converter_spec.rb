@@ -24,7 +24,38 @@ describe 'MARCXML Auth Agent converter' do
 
       expect(record['names'][0]['primary_name']).to eq("Davis")
     end
+
+    it "imports dates of existence" do
+      record = convert(person_agent_1).select {|r| r['jsonmodel_type'] == "agent_person"}.first
+
+      expect(record['dates_of_existence'][0]['structured_date_range']['begin_date_standardized']).to eq("18990101")
+      expect(record['dates_of_existence'][0]['structured_date_range']['end_date_standardized']).to eq("19611201")
+
+      puts record.inspect
+    end
   end
+
+  describe "agent family" do
+    xit "imports name" do
+      pending "sample files"
+    end
+
+    xit "imports dates of existence" do
+      pending "sample files"
+    end
+  end
+
+  describe "agent_corporate_entity" do
+    xit "imports name" do
+      pending "sample files"
+    end
+
+    xit "imports dates of existence" do
+      pending "sample files"
+    end
+  end
+
+
 
   describe "common subrecords" do
     it "imports agent_record_control" do
