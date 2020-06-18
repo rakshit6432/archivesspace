@@ -17,10 +17,47 @@
     <marcxml:subfield code="d">DLC</marcxml:subfield>
     <marcxml:subfield code="e">AACR2</marcxml:subfield>
   </marcxml:datafield>
-			<marcxml:datafield tag="046" ind1=" " ind2=" ">
+	<marcxml:datafield tag="046" ind1=" " ind2=" ">
 		<marcxml:subfield code="f">18990101</marcxml:subfield>
 		<marcxml:subfield code="g">19611201</marcxml:subfield>
 	</marcxml:datafield>
+  <marcxml:datafield tag="370" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Montana</marcxml:subfield>
+    <marcxml:subfield code="b">Wyoming</marcxml:subfield>
+    <marcxml:subfield code="c">USA</marcxml:subfield>
+    <marcxml:subfield code="e">Oregon</marcxml:subfield>
+    <marcxml:subfield code="f">California</marcxml:subfield>
+    <marcxml:subfield code="s">18990101</marcxml:subfield>
+    <marcxml:subfield code="t">19611201</marcxml:subfield>
+    <marcxml:subfield code="2">DLC</marcxml:subfield>
+    <marcxml:subfield code="u">http://dlc.source</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="372" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Art</marcxml:subfield>
+    <marcxml:subfield code="s">18990101</marcxml:subfield>
+    <marcxml:subfield code="t">19611201</marcxml:subfield>
+    <marcxml:subfield code="2">DLC</marcxml:subfield>
+    <marcxml:subfield code="u">http://dlc.source</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="374" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Painter</marcxml:subfield>
+    <marcxml:subfield code="s">18990101</marcxml:subfield>
+    <marcxml:subfield code="t">19611201</marcxml:subfield>
+    <marcxml:subfield code="2">DLC</marcxml:subfield>
+    <marcxml:subfield code="u">http://dlc.source</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="375" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Male</marcxml:subfield>
+    <marcxml:subfield code="s">18990101</marcxml:subfield>
+    <marcxml:subfield code="t">19611201</marcxml:subfield>
+    <marcxml:subfield code="2">DLC</marcxml:subfield>
+    <marcxml:subfield code="u">http://dlc.source</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="377" ind1=" " ind2="7">
+    <marcxml:subfield code="a">eng</marcxml:subfield>
+    <marcxml:subfield code="2">DLC</marcxml:subfield>
+    <marcxml:subfield code="0">http://dlc.source</marcxml:subfield>
+  </marcxml:datafield>
 	    <marcxml:datafield tag="100" ind1="1" ind2="0">
     <marcxml:subfield code="a">Davis, John W.</marcxml:subfield>
     <marcxml:subfield code="q">(John William),</marcxml:subfield>

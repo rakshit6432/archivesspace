@@ -30,8 +30,9 @@ describe 'MARCXML Auth Agent converter' do
 
       expect(record['dates_of_existence'][0]['structured_date_range']['begin_date_standardized']).to eq("18990101")
       expect(record['dates_of_existence'][0]['structured_date_range']['end_date_standardized']).to eq("19611201")
+    end
 
-      puts record.inspect
+    xit "imports agent gender" do
     end
   end
 
@@ -95,6 +96,53 @@ describe 'MARCXML Auth Agent converter' do
       record = convert(person_agent_1).select {|r| r['jsonmodel_type'] == "agent_person"}.first
 
       expect(record['agent_conventions_declarations'][0]['name_rule']).to eq("AACR2")
+    end
+
+    xit "imports places of birth" do
+      raw = convert(person_agent_1)
+
+      record = raw.select {|r| r['jsonmodel_type'] == "agent_person"}.first
+      subjects = raw.select {|r| r['jsonmodel_type'] == "subject"}
+
+      puts record.inspect
+      puts subjects.inspect
+
+      expect(record['agent_places'][0]['subjects'][0]['ref']).to eq(subjects[0]['uri'])
+
+    end
+
+    xit "imports places of death" do
+    end
+
+    xit "imports places of associated country" do
+    end
+
+    xit "imports places of residence" do
+    end
+
+    xit "imports places of other associated" do
+    end
+
+    it "imports occupation" do
+      raw = convert(person_agent_1)
+
+      record = raw.select {|r| r['jsonmodel_type'] == "agent_person"}.first
+      subjects = raw.select {|r| r['jsonmodel_type'] == "subject"}
+
+      puts record.inspect
+      puts subjects.inspect
+    end
+
+    xit "imports functions" do
+    end
+
+    xit "imports topics" do
+    end
+
+    xit "imports used language from $a" do
+    end
+
+    xit "imports used language from value in $l" do
     end
   end
 end

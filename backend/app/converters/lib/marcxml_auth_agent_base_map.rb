@@ -23,21 +23,25 @@ module MarcXMLAuthAgentBaseMap
   def agent_person_base
     {
       "self::datafield" => agent_person_name_with_parallel_map(:name_person, :names),
-      "//record/datafield[@tag='046']" => agent_person_dates_of_existence_map
+      "//record/datafield[@tag='046']" => agent_person_dates_of_existence_map,
+      "//record/datafield[@tag='372']/subfield[@code='a']" => agent_topic_map,
+      "//record/datafield[@tag='375']/subfield[@code='a']" => agent_gender_map,
     }.merge(shared_subrecord_map)
   end
 
   def agent_corporate_entity_base
     {
       "self::datafield" => agent_corporate_entity_name_map(:name_corporate_entity, :names),
-      "//record/datafield[@tag='046']" => agent_corporate_entity_dates_of_existence_map
+      "//record/datafield[@tag='046']" => agent_corporate_entity_dates_of_existence_map,
+      "//record/datafield[@tag='372']/subfield[@code='a']" => agent_function_map,
     }.merge(shared_subrecord_map)
   end
 
   def agent_family_base
     {
       "self::datafield" => agent_family_name_map(:name_family, :names),
-      "//record/datafield[@tag='046']" => agent_family_dates_of_existence_map
+      "//record/datafield[@tag='046']" => agent_family_dates_of_existence_map,
+      "//record/datafield[@tag='372']/subfield[@code='a']" => agent_function_map,
     }.merge(shared_subrecord_map)
   end
 
@@ -47,6 +51,13 @@ module MarcXMLAuthAgentBaseMap
       "//record/controlfield[@tag='001']" => agent_record_identifiers_map,
       "//record/controlfield[@tag='005']" => maintenance_history_map,
       "//record/datafield[@tag='040']/subfield[@code='e']" => convention_declaration_map,
+      "//record/datafield[@tag='370']/subfield[@code='a']" => place_of_birth_map,
+      "//record/datafield[@tag='370']/subfield[@code='b']" => place_of_death_map,
+      "//record/datafield[@tag='370']/subfield[@code='c']" => associated_country_map,
+      "//record/datafield[@tag='370']/subfield[@code='e']" => place_of_residence_map,
+      "//record/datafield[@tag='370']/subfield[@code='f']" => other_associated_place_map,
+      "//record/datafield[@tag='374']/subfield[@code='a']" => agent_occupation_map,
+      "//record/datafield[@tag='377']/subfield[@code='a']" => used_language_map,
     }
   end
 
@@ -535,4 +546,214 @@ module MarcXMLAuthAgentBaseMap
     }
   }
   end
+
+  def date_range_map(rel = :dates, begin_subfield = 's', end_subfield = 't')
+  {
+    :obj => :structured_date_label,
+    :rel => rel,
+    :map => {
+      "self::datafield" => Proc.new {|sdl, node|
+        label = "existence"
+        type = "range"
+
+        begin_node = node.search("./subfield[@code='#{begin_subfield}']")
+        end_node = node.search("./subfield[@code='#{end_subfield}']")
+
+        begin_std = begin_node.inner_text if begin_node
+        end_std = end_node.inner_text if end_node
+
+        sdr = ASpaceImport::JSONModel(:structured_date_range).new({
+          :begin_date_standardized => begin_std,
+          :end_date_standardized => end_std,
+        })
+
+        sdl[:date_label] = label
+        sdl[:date_type_enum] = type
+        sdl[:structured_date_range] = sdr
+      }
+    }
+  }
+  end
+
+  def place_of_birth_map
+  {
+    :obj => :agent_place,
+    :rel => :agent_places,
+    :map => {
+      "self::subfield" => subject_map("self::subfield",
+                                      subject_terms_map("geographic"),
+                                      subject_source_map),
+      "parent::datafield" => date_range_map
+    },
+    :defaults => {
+      :place_role_enum => "place_of_birth"
+    }
+  }
+  end
+
+  def place_of_death_map
+  {
+    :obj => :agent_place,
+    :rel => :agent_places,
+    :map => {
+      "self::subfield" => subject_map("self::subfield",
+                                      subject_terms_map("geographic"),
+                                      subject_source_map),
+      "parent::datafield" => date_range_map
+    },
+    :defaults => {
+      :place_role_enum => "place_of_death"
+    }
+  }
+  end
+
+  def associated_country_map
+  {
+    :obj => :agent_place,
+    :rel => :agent_places,
+    :map => {
+      "self::subfield" => subject_map("self::subfield",
+                                      subject_terms_map("geographic"),
+                                      subject_source_map),
+      "parent::datafield" => date_range_map
+    },
+    :defaults => {
+      :place_role_enum => "assoc_country"
+    }
+  }
+  end
+
+  def place_of_residence_map
+  {
+    :obj => :agent_place,
+    :rel => :agent_places,
+    :map => {
+      "self::subfield" => subject_map("self::subfield",
+                                      subject_terms_map("geographic"),
+                                      subject_source_map),
+      "parent::datafield" => date_range_map
+    },
+    :defaults => {
+      :place_role_enum => "residence"
+    }
+  }
+  end
+
+  def other_associated_place_map
+  {
+    :obj => :agent_place,
+    :rel => :agent_places,
+    :map => {
+      "self::subfield" => subject_map("self::subfield",
+                                      subject_terms_map("geographic"),
+                                      subject_source_map),
+      "parent::datafield" => date_range_map
+    },
+    :defaults => {
+      :place_role_enum => "other_assoc"
+    }
+  }
+  end
+
+  def agent_occupation_map
+  {
+    :obj => :agent_occupation,
+    :rel => :agent_occupations,
+    :map => {
+      "self::subfield" => subject_map("self::subfield",
+                                      subject_terms_map("occupation"),
+                                      subject_source_map),
+      "parent::datafield" => date_range_map
+    }
+  }
+  end
+
+  def agent_topic_map
+  {
+    :obj => :agent_topic,
+    :rel => :agent_topics,
+    :map => {
+      "self::subfield" => subject_map("self::subfield",
+                                      subject_terms_map("topical"),
+                                      subject_source_map),
+      "parent::datafield" => date_range_map
+    }
+  }
+  end
+
+  def agent_function_map
+  {
+    :obj => :agent_function,
+    :rel => :agent_functions,
+    :map => {
+      "self::subfield" => subject_map("self::subfield",
+                                      subject_terms_map("function"),
+                                      subject_source_map),
+      "parent::datafield" => date_range_map
+    }
+  }
+  end
+
+  def agent_gender_map
+  {
+    :obj => :agent_gender,
+    :rel => :agent_genders,
+    :map => {
+      "self::subfield" => Proc.new {|gender, node| 
+        val = node.inner_text
+        gender['gender_enum'] = val
+      },
+
+      "parent::datafield" => date_range_map
+    }
+  }
+  end
+
+  def used_language_map
+  {
+    :obj => :used_language,
+    :rel => :used_languages,
+    :map => {
+      "self::subfield" => Proc.new {|lang, node| 
+        val = node.inner_text
+        lang['language'] = val
+      }
+    }
+  }
+  end
+
+  def subject_terms_map(term_type)
+    Proc.new {|node|
+      [{:term_type => term_type, 
+       :term => node.inner_text, 
+       :vocabulary => '/vocabularies/1'}]
+    }
+  end
+
+  def subject_source_map
+    Proc.new {|node|
+      source = node.attr("vocabularySource") 
+    }
+  end
+
+  # usually, rel will be :subjects, but in some cases it will be :places
+  def subject_map(xpath, terms, source, rel = :subjects)
+    {
+      :obj => :subject,
+      :rel => rel,
+      :map => {
+        xpath => Proc.new{|subject, node|
+          subject.publish = true
+          subject.authority_id = node.attr("vocabularySource")
+          subject.terms = terms.call(node)
+          subject.source = source.call(node)
+          subject.vocabulary = '/vocabularies/1'
+        }
+      },
+      :defaults => {
+        :source => "Source not specified"
+      }
+    }
+  end
+
 end
