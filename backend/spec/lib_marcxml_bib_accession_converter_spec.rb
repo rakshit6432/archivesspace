@@ -3,7 +3,7 @@ require 'converter_spec_helper'
 
 require_relative '../app/converters/marcxml_bib_accession_converter'
 
-describe 'MARCXML Accession converter' do
+describe 'MARCXML Bib Accession converter' do
 
   def my_converter
     MarcXMLBibAccessionConverter
