@@ -43,6 +43,7 @@ module MarcXMLAuthAgentBaseMap
       "//record/leader" => agent_record_control_map,
       "//record/controlfield[@tag='001']" => agent_record_identifiers_map,
       "//record/controlfield[@tag='005']" => maintenance_history_map,
+      "//record/datafield[@tag='040']/subfield[@code='e']" => convention_declaration_map,
     }
   end
 
@@ -431,6 +432,20 @@ module MarcXMLAuthAgentBaseMap
     :defaults => {
       :agent => "Missing in File"
     }  
+  }
+  end
+
+  def convention_declaration_map
+  {
+    :obj => :agent_conventions_declaration,
+    :rel => :agent_conventions_declarations,
+    :map => {
+      "self::subfield" => Proc.new {|acd, node|
+        val = node.inner_text
+        acd['name_rule'] = val
+        acd['citation'] = "none"
+      }
+    }
   }
   end
 end

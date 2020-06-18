@@ -54,11 +54,16 @@ describe 'MARCXML Auth Agent converter' do
     it "imports agent_maintenance_histories" do
       record = convert(person_agent_1).select {|r| r['jsonmodel_type'] == "agent_person"}.first
 
-
       expect(record['agent_maintenance_histories'][0]['event_date']).to eq("19890119")
       expect(record['agent_maintenance_histories'][0]['maintenance_event_type_enum']).to eq("created")
       expect(record['agent_maintenance_histories'][0]['maintenance_agent_type_enum']).to eq("machine")
       expect(record['agent_maintenance_histories'][0]['agent']).to eq("DLC")
+    end
+
+    it "imports agent_conventions_declarations" do
+      record = convert(person_agent_1).select {|r| r['jsonmodel_type'] == "agent_person"}.first
+
+      expect(record['agent_conventions_declarations'][0]['name_rule']).to eq("AACR2")
     end
   end
 end
