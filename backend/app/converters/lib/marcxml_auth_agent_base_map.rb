@@ -874,7 +874,7 @@ module MarcXMLAuthAgentBaseMap
     :map => {
       "descendant::subfield[@code='b']" => Proc.new {|as, node| 
         val = node.inner_text
-        as['descriptive_note'] = val
+        as['descriptive_note'] = val[0..254]
       },
       "descendant::subfield[@code='a']" => Proc.new {|as, node| 
         val = node.inner_text
