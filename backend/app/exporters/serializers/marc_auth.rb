@@ -49,6 +49,20 @@ class MARCAuthSerializer < ASpaceExport::Serializer
       names(json, xml)
       record_control(json, xml)
       dates_of_existence(json, xml)
+      places(json, xml)
+      occupations(json, xml)
+      used_languages(json, xml)
+      sources(json, xml)
+      notes(json, xml)
+
+      if agent_type(json) == :person
+        gender(json, xml)
+        topics(json, xml)
+      elsif agent_type(json) == :family || agent_type(json) == :corp
+        functions(json, xml)
+      end
+
+
     }
   end
 
@@ -564,13 +578,6 @@ class MARCAuthSerializer < ASpaceExport::Serializer
   def dates_of_existence(json, xml)
     if (json['dates_of_existence'] && json['dates_of_existence'].any?) 
       json['dates_of_existence'].each do |doe|
-        if doe['date_type_enum'] == "single"
-          begin_date = doe['structured_date_single']['date_expression']
-        elsif doe['date_type_enum'] == "range"
-          begin_date = doe['structured_date_range']['begin_date_expression']
-          end_date = doe['structured_date_range']['end_date_expression']
-        end
-
         if agent_type(json) == :person
           begin_code = "f"
           end_code = "g"
@@ -580,13 +587,215 @@ class MARCAuthSerializer < ASpaceExport::Serializer
         end
 
         xml.datafield(:tag => "046") {
-          xml.subfield(:code => begin_code) {
-            xml.text begin_date
+          dates(doe, begin_code, end_code, xml)
+        }
+      end
+    end
+  end
+
+  def dates(structured_date, begin_code, end_code, xml)
+    if structured_date['date_type_enum'] == "single"
+      begin_date = structured_date['structured_date_single']['date_expression'] ? structured_date['structured_date_single']['date_expression'] : structured_date['structured_date_single']['date_standardized']
+    elsif structured_date['date_type_enum'] == "range"
+      begin_date = structured_date['structured_date_range']['begin_date_expression'] ? structured_date['structured_date_range']['begin_date_expression'] : structured_date['structured_date_range']['begin_date_standardized']
+      end_date = structured_date['structured_date_range']['end_date_expression'] ? structured_date['structured_date_range']['end_date_expression'] : structured_date['structured_date_range']['end_date_standardized']
+    end
+
+    xml.subfield(:code => begin_code) {
+      xml.text begin_date
+    }
+
+    if end_date 
+      xml.subfield(:code => end_code) {
+        xml.text end_date
+      }
+    end
+  end
+
+  def places(json, xml)
+    if json['agent_places'].any?
+      json['agent_places'].each do |place|
+        xml.datafield(:tag => "370" ) {
+          case place['place_role_enum']
+          when "place_of_birth"
+            subfield_code = "a"
+          when "place_of_death"
+            subfield_code = "b"
+          when "assoc_country"
+            subfield_code = "a"
+          when "residence"
+            subfield_code = "d"
+          when "other_assoc"
+            subfield_code = "f"
+          end
+
+          xml.subfield(:code => subfield_code) {
+            xml.text place["subjects"].first['_resolved']['title']
           }
 
-          if end_date 
-            xml.subfield(:code => end_code) {
-              xml.text end_date
+          if place['dates'].any?
+            dates(place['dates'].first, "s", "t", xml)
+          end
+
+          if place['subjects'].first['_resolved']['authority_id']
+            xml.subfield(:code => '2') {
+              xml.text place['subjects'].first['_resolved']['authority_id'] 
+            }
+          end
+        }
+      end
+    end
+  end
+
+  def occupations(json, xml)
+    if json['agent_occupations'].any?
+      json['agent_occupations'].each do |occupation|
+        xml.datafield(:tag => "374" ) {
+          xml.subfield(:code => 'a') {
+            xml.text occupation["subjects"].first['_resolved']['title']
+          }
+
+          if occupation['dates'].any?
+            dates(occupation['dates'].first, "s", "t", xml)
+          end
+
+          if occupation['subjects'].first['_resolved']['authority_id']
+            xml.subfield(:code => '2') {
+              xml.text occupation['subjects'].first['_resolved']['authority_id'] 
+            }
+          end
+        }
+      end
+    end
+  end
+
+  def topics(json, xml)
+    if json['agent_topics'].any?
+      json['agent_topics'].each do |topic|
+        xml.datafield(:tag => "372" ) {
+          xml.subfield(:code => 'a') {
+            xml.text topic["subjects"].first['_resolved']['title']
+          }
+
+          if topic['dates'].any?
+            dates(topic['dates'].first, "s", "t", xml)
+          end
+
+          if topic['subjects'].first['_resolved']['authority_id']
+            xml.subfield(:code => '2') {
+              xml.text topic['subjects'].first['_resolved']['authority_id'] 
+            }
+          end
+        }
+      end
+    end
+  end
+
+  def functions(json, xml)
+    if json['agent_functions'].any?
+      json['agent_functions'].each do |function|
+        xml.datafield(:tag => "372" ) {
+          xml.subfield(:code => 'a') {
+            xml.text function["subjects"].first['_resolved']['title']
+          }
+
+          if function['dates'].any?
+            dates(function['dates'].first, "s", "t", xml)
+          end
+
+          if function['subjects'].first['_resolved']['authority_id']
+            xml.subfield(:code => '2') {
+              xml.text function['subjects'].first['_resolved']['authority_id'] 
+            }
+          end
+        }
+      end
+    end
+  end
+
+  def gender(json, xml)
+    if json['agent_genders'].any?
+      json['agent_genders'].each do |gender|
+        xml.datafield(:tag => "375" ) {
+          xml.subfield(:code => 'a') {
+            xml.text gender["gender_enum"]
+          }
+
+          if gender['dates'].any?
+            dates(gender['dates'].first, "s", "t", xml)
+          end
+
+          xml.subfield(:code => '2') {
+            xml.text "aat"
+          }
+        }
+      end
+    end
+  end
+
+  def used_languages(json, xml)
+    if json['used_languages'].any?
+      json['used_languages'].each do |lang|
+        xml.datafield(:tag => "377" ) {
+          xml.subfield(:code => 'a') {
+            xml.text lang["language"]
+          }
+
+          xml.subfield(:code => '2') {
+            xml.text "iso639-2b"
+          }
+        }
+      end
+    end
+  end
+
+  def sources(json, xml)
+    if json['agent_sources'].any?
+      json['agent_sources'].each do |source|
+        xml.datafield(:tag => "670" ) {
+          xml.subfield(:code => 'a') {
+            xml.text source["source_entry"]
+          }
+
+          xml.subfield(:code => 'b') {
+            xml.text source["descriptive_note"]
+          }
+
+          xml.subfield(:code => 'u') {
+            xml.text source["file_uri"]
+          }
+        }
+      end
+    end
+  end
+
+  def notes(json, xml)
+    puts json['notes'].inspect
+
+    if json['notes'].any?
+      bioghist_notes = json['notes'].select {|n| n['jsonmodel_type'] == "note_bioghist"}
+
+      bioghist_notes.each do |note|
+        abstract = note['subnotes'].select {|n| n['jsonmodel_type'] == "note_abstract"}
+        text = note['subnotes'].select {|n| n['jsonmodel_type'] == "note_text"}
+          
+        if agent_type(json) == :person || agent_type(json) == :family_name
+          ind1 = "0"
+        else
+          ind1 = "1"
+        end
+
+        xml.datafield(:tag => "678", :ind1 => ind1, :ind2 => " ") {
+
+          if abstract.any?
+            xml.subfield(:code => 'a') {
+              xml.text abstract.first['content'].first
+            }
+          end
+
+          if text.any?
+            xml.subfield(:code => 'b') {
+              xml.text text.first['content']
             }
           end
         }
