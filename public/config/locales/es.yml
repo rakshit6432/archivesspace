@@ -121,8 +121,6 @@ es:
     created: Created
     text_placeholder: Filter by text
     clear_all: Clear All
-    created: Created
-    modified: Modified
     component_switch: Include Components
     more_facets: more
     fewer_facets: less
@@ -170,6 +168,7 @@ es:
       type_enum_s: Type
       published_series_title_u_sstr: Series
       instance_type_enum_s: Instance type
+      langcode: Idioma
 
   search_sorting:
     sort_by: "Sort by:"

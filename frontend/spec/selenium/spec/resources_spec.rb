@@ -12,7 +12,9 @@ describe 'Resources and archival objects' do
 
     @resource = create(:resource)
 
-    @archival_object = create(:archival_object, resource: { 'ref' => @resource.uri })
+    @archival_object = create(:archival_object,
+                              component_id: 'component-id',
+                              resource: { 'ref' => @resource.uri })
 
     @user = create_user(@repo => ['repository-managers'])
     @driver = Driver.get.login_to_repo(@user, @repo)
@@ -436,7 +438,7 @@ describe 'Resources and archival objects' do
     assert(5) { expect(@driver.find_element(:css, 'h2').text).to eq('save this please Archival Object') }
     assert(5) { expect(@driver.find_element(css: 'div.alert.alert-success').text).to eq('Archival Object save this please updated') }
     @driver.clear_and_send_keys([:id, 'archival_object_title_'], @archival_object.title)
-    @driver.click_and_wait_until_gone(css: "form .record-pane button[type='submit']")
+    @driver.click_and_wait_until_gone(css: "form .save-changes button[type='submit']")
   end
 
   it 'can add a assign, remove, and reassign a Subject to an archival object' do
@@ -500,6 +502,32 @@ describe 'Resources and archival objects' do
     expect do
       @driver.find_element_with_text(:link, /Print Resource to PDF/)
     end
+  end
+
+  it 'shows component id in browse view for archival objects' do
+    @driver.find_element(:link, 'Browse').click
+    @driver.wait_for_dropdown
+    @driver.click_and_wait_until_gone(:link, 'Resources')
+    @driver.find_element(:link, 'Show Components').click
+    expect do
+      @driver.find_element_with_text('//td', /#{@archival_object.component_id}/)
+      @driver.find_element_with_text('//th', /Identifier/)
+    end.not_to raise_error
+    expect do
+      @driver.find_element_with_text('//th', /Componend ID/, false, true)
+    end.to raise_error(Selenium::WebDriver::Error::NoSuchElementError)
+  end
+
+  it 'shows component id for search and filter to archival objects' do
+    @driver.find_element(:id, 'global-search-button').click
+    @driver.find_element(:link, 'Archival Object').click
+    expect do
+      @driver.find_element_with_text('//td', /#{@archival_object.component_id}/)
+      @driver.find_element_with_text('//th', /Component ID/)
+    end.not_to raise_error
+    expect do
+      @driver.find_element_with_text('//th', /Identifier/, false, true)
+    end.to raise_error(Selenium::WebDriver::Error::NoSuchElementError)
   end
 
 end

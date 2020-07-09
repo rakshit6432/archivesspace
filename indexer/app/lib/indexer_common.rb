@@ -158,6 +158,18 @@ class IndexerCommon
     fullrecord
   end
 
+  # There's a problem with how translation paths get loaded when selenium tests are run
+  # Call this instead of I18n.t so that it won't cause an error when selenium tests are run
+  @@selenium = Dir.getwd.end_with? 'selenium'
+  def t(*args)
+    if @@selenium
+      args[0]
+    else
+      args << {} unless args.last.is_a?(Hash)
+      args[1][:default] ||= args[0].split('.').last
+      I18n.t(*args)
+    end
+  end
 
   def add_agents(doc, record)
     if record['record']['linked_agents']
@@ -188,7 +200,7 @@ class IndexerCommon
         elsif seen[link['ref']] == 'subject' && link['role'] != 'creator'
           # do nothing
         else
-          relator_label = link['relator'] ? I18n.t("enumerations.linked_agent_archival_record_relators.#{link['relator']}") : ''
+          relator_label = link['relator'] ? t("enumerations.linked_agent_archival_record_relators.#{link['relator']}") : ''
 
           doc["#{link['ref'].gsub(/\//, '_')}_relator_sort"] = "#{link['role']} #{relator_label}"
           seen[link['ref']] = link['role']
@@ -229,6 +241,19 @@ class IndexerCommon
         doc['years'] = doc['years'].sort.uniq
         doc['year_sort'] = doc['years'].first.rjust(4, '0') + doc['years'].last.rjust(4, '0')
       end
+      dates = record['record']['dates']
+      display_dates = dates.select {|date| date['date_type'] == 'inclusive'}
+      display_dates = dates if display_dates.empty?
+      doc['dates'] = []
+      display_dates.each do |date|
+        if date['expression']
+          doc['dates'] << date['expression']
+        elsif date['date_type'] === "single"
+          doc['dates'] << date['begin']
+        elsif date['date_type']
+          doc['dates'] << "#{date['begin']} - #{date['end']}"
+        end
+      end
     end
   end
 
@@ -251,6 +276,18 @@ class IndexerCommon
         if scopecontent && scopecontent.has_key?('subnotes')
           doc['summary'] = scopecontent['subnotes'].map {|sn| sn['content']}.join("\n")
         end
+      end
+    end
+  end
+
+  def add_extents(doc, record)
+    if record['record']['extents']
+      extents = record['record']['extents']
+      display_extents = extents.select {|extent| extent['portion'] == 'whole'}
+      display_extents = extents if display_extents.empty?
+      doc['extents'] = []
+      display_extents.each do |extent|
+        doc['extents'] << "#{extent['number']} --- #{extent['extent_type']}"
       end
     end
   end
@@ -306,13 +343,14 @@ class IndexerCommon
       add_years(doc, record)
       add_level(doc, record)
       add_summary(doc, record)
+      add_extents(doc, record)
     }
 
     add_document_prepare_hook {|doc, record|
       if doc['primary_type'] == 'accession'
         date = record['record']['accession_date']
         if date == '9999-12-31'
-          unknown = I18n.t('accession.accession_date_unknown')
+          unknown = t('accession.accession_date_unknown')
           doc['accession_date'] = unknown
           doc['fullrecord'] ||= ''
           doc['fullrecord'] << unknown + ' '
@@ -333,6 +371,10 @@ class IndexerCommon
                                           compact.uniq
         doc['slug'] = record['record']['slug']
         doc['is_slug_auto'] = record['record']['is_slug_auto']
+        if cm = record['record']['collection_management']
+          doc['processing_priority'] = cm['processing_priority']
+          doc['processors'] = cm['processors']
+        end
       end
     }
 
@@ -400,6 +442,10 @@ class IndexerCommon
                                            compact.uniq
         doc['slug'] = record['record']['slug']
         doc['is_slug_auto'] = record['record']['is_slug_auto']
+        if cm = record['record']['collection_management']
+          doc['processing_priority'] = cm['processing_priority']
+          doc['processors'] = cm['processors']
+        end
       end
 
       if doc['primary_type'] == 'digital_object'
@@ -494,6 +540,40 @@ class IndexerCommon
       end
     }
 
+    add_document_prepare_hook {|doc, record|
+      if doc['primary_type'] == 'job'
+        report_type = record['record']['job']['report_type']
+        doc['title'] = (report_type ? t("reports.#{report_type}.title", :default => report_type) :
+          t("job.types.#{record['record']['job_type']}"))
+        doc['types'] << record['record']['job_type']
+        doc['types'] << report_type
+        doc['job_type'] = record['record']['job_type']
+        doc['report_type'] = report_type
+        doc['job_report_type'] = report_type || doc['job_type']
+        doc['status'] = record['record']['status']
+        doc['owner'] = record['record']['owner']
+        doc['time_submitted'] = Time.parse(record['record']['time_submitted']).getlocal if record['record']['time_submitted']
+        doc['time_started'] = Time.parse(record['record']['time_started']).getlocal if record['record']['time_started']
+        doc['time_finished'] = Time.parse(record['record']['time_finished']).getlocal if record['record']['time_finished']
+
+        filenames = record['record']['job']['filenames'] || []
+        doc['files'] = []
+        doc['job_data'] = []
+        files = JSONModel::HTTP::get_json("#{record['record']['uri']}/output_files")
+        files.each do |file|
+          job_id = record['record']['uri'].split('/').last
+          link = "/jobs/#{job_id}/file/#{file}"
+          doc['files'] << link
+          filename = filenames.shift
+          doc['job_data'] << (filename ? "input_file --- #{filename}" : "output_file --- #{link}")
+        end
+        record['record']['job'].reject { |k, _v| ['jsonmodel_type', 'filenames', 'report_type'].include? k }.each do |k, v|
+          doc['job_data'] << "#{k} --- #{v}"
+        end
+        doc['queue_position'] = record['record']['queue_position']
+      end
+    }
+
 
     add_document_prepare_hook {|doc, record|
       records_with_classifications = ['resource', 'accession']
@@ -533,6 +613,7 @@ class IndexerCommon
       if record['record']['jsonmodel_type'] == 'top_container'
         doc['title'] = record['record']['long_display_string']
         doc['display_string'] = record['record']['display_string']
+        doc['type_u_ssort'] = record['record']['type']
 
         if record['record']['series']
           doc['series_uri_u_sstr'] = record['record']['series'].map {|series| series['ref']}
@@ -566,20 +647,33 @@ class IndexerCommon
         end
 
         if record['record']['container_locations'].length > 0
+          doc['has_location_u_sbool'] = true
+          doc['location_uri_u_sstr'] = []
+          doc['location_uris'] = []
+          doc['location_display_string_u_sstr'] = []
           record['record']['container_locations'].each do |container_location|
             if container_location['status'] == 'current'
-              doc['location_uri_u_sstr'] = container_location['ref']
-              doc['location_uris'] = container_location['ref']
-              doc['location_display_string_u_sstr'] = container_location['_resolved']['title']
+              doc['location_uri_u_sstr'] << container_location['ref']
+              doc['location_uris'] << container_location['ref']
+              doc['location_display_string_u_sstr'] << container_location['_resolved']['title']
             end
           end
+        else
+          doc['has_location_u_sbool'] = false
         end
         doc['exported_u_sbool'] = record['record'].has_key?('exported_to_ils')
         doc['empty_u_sbool'] = record['record']['collection'].empty?
 
-        doc['typeahead_sort_key_u_sort'] = record['record']['indicator'].to_s.rjust(255, '#')
-        doc['barcode_u_sstr'] = record['record']['barcode']
+        if record['record']['indicator']
+          doc['indicator_u_icusort'] = record['record']['indicator']
+        end
 
+        doc['top_container_u_typeahead_utext'] = record['record']['display_string'].gsub(/[^0-9A-Za-z]/, '').downcase
+        doc['top_container_u_icusort'] = record['record']['display_string']
+        doc['barcode_u_sstr'] = record['record']['barcode']
+        doc['barcode_u_icusort'] = record['record']['barcode']
+
+        doc['subcontainer_barcodes_u_sstr'] = record["record"]["subcontainer_barcodes"]
         doc['created_for_collection_u_sstr'] = record['record']['created_for_collection']
       end
     }
@@ -597,11 +691,11 @@ class IndexerCommon
             doc['top_container_uri_u_sstr'] << instance['sub_container']['top_container']['ref']
             if instance['sub_container']['type_2']
               doc['child_container_u_sstr'] ||= []
-              doc['child_container_u_sstr'] << "#{instance['sub_container']['type_2']} #{instance['sub_container']['indicator_2']}"
+              doc['child_container_u_sstr'] << "#{instance['sub_container']['type_2']} #{instance['sub_container']['indicator_2']} #{instance['sub_container']['barcode_2']}"
             end
             if instance['sub_container']['type_3']
               doc['grand_child_container_u_sstr'] ||= []
-              doc['grand_child_container_u_sstr'] << "#{instance['sub_container']['type_3']} #{instance['sub_container']['indicator_2']}"
+              doc['grand_child_container_u_sstr'] << "#{instance['sub_container']['type_3']} #{instance['sub_container']['indicator_3']}"
             end
           end
         }
@@ -675,6 +769,7 @@ class IndexerCommon
         parent_type = JSONModel.parse_reference(record['uri'])[:type]
         docs << {
           'id' => cm['uri'],
+          'uri' => cm['uri'],
           'parent_id' => record['uri'],
           'parent_title' => record['record']['title'] || record['record']['display_string'],
           'parent_type' => parent_type,
@@ -682,7 +777,6 @@ class IndexerCommon
           'types' => ['collection_management'],
           'primary_type' => 'collection_management',
           'json' => cm.to_json(:max_nesting => false),
-          'cm_uri' => cm['uri'],
           'processing_priority' => cm['processing_priority'],
           'processing_status' => cm['processing_status'],
           'processing_hours_total' => cm['processing_hours_total'],
@@ -914,7 +1008,31 @@ class IndexerCommon
     out = value.gsub(/<[^>]+>/, '')
     out.gsub!(/-/, ' ')
     out.gsub!(/[^\w\s]/, '')
+    out.gsub!(/\s+/, ' ')
     out.strip
+  end
+
+  # ANW-1065
+  # iterate through the do_not_index list and scrub out that part of the JSON tree 
+  def sanitize_json(json)
+    IndexerCommonConfig::do_not_index.each do |k, v|
+      if json["jsonmodel_type"] == k
+        # subrec is a reference used to navigate inside of the JSON as specified by the v[:location] to find the part of the tree to sanitize
+        subrec = json
+
+        v[:location].each do |l|
+          unless subrec.nil?
+            subrec = subrec[l]
+          end
+        end
+
+        unless subrec.nil?
+          subrec[v[:to_clean]] = []
+        end
+      end
+    end
+
+    return json
   end
 
   def index_records(records, timing = IndexerTiming.new)
@@ -947,7 +1065,7 @@ class IndexerCommon
 
         doc['primary_type'] = record_type
         doc['types'] = [record_type]
-        doc['json'] = ASUtils.to_json(values)
+        doc['json'] = ASUtils.to_json(sanitize_json(values))
         doc['suppressed'] = values.has_key?('suppressed') && values['suppressed']
         if doc['suppressed']
           doc['publish'] = false

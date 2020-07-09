@@ -76,7 +76,7 @@ AppConfig[:mysql_binlog] = false
 AppConfig[:solr_backup_schedule] = "0 0 * * *"
 AppConfig[:solr_backup_number_to_keep] = 1
 AppConfig[:solr_backup_directory] = proc { File.join(AppConfig[:data_directory], "solr_backups") }
-# add default solr params, i.e. use AND for search: AppConfig[:solr_params] = { "q.op" => "AND" }
+# add default solr params, i.e. use AND for search: AppConfig[:solr_params] = { 'mm' => '100%' }
 # Another example below sets the boost query value (bq) to boost the relevancy for the query string in the title,
 # sets the phrase fields parameter (pf) to boost the relevancy for the title when the query terms are in close proximity to
 # each other, and sets the phrase slop (ps) parameter for the pf parameter to indicate how close the proximity should be
@@ -88,7 +88,7 @@ AppConfig[:solr_backup_directory] = proc { File.join(AppConfig[:data_directory],
 # For more information about solr parameters, please consult the solr documentation
 # here: https://lucene.apache.org/solr/
 # Configuring search operator to be AND by default - ANW-427
-AppConfig[:solr_params] = { "q.op" => "AND" }
+AppConfig[:solr_params] = { 'mm' => '100%' }
 
 # Set the application's language (see the .yml files in
 # https://github.com/archivesspace/archivesspace/tree/master/common/locales for
@@ -622,8 +622,6 @@ AppConfig[:pui_page_custom_actions] = []
 #   'erb_partial' => 'shared/my_special_action',
 # }
 
-# For Accessions browse set if accession date year filter values should be sorted ascending rather than descending (default)
-AppConfig[:sort_accession_date_filter_asc] = false
 
 # Human-Readable URLs options
 # use_human_readable_urls: determines whether fields and options related to human-readable URLs appear in the staff interface
@@ -647,6 +645,8 @@ AppConfig[:generate_resource_slugs_with_eadid] = false
 # For archival objects: if this option and auto_generate_slugs_with_id are both enabled, then slugs for archival resources will be generated with Component Unique Identifier instead of the identifier.
 AppConfig[:generate_archival_object_slugs_with_cuid] = false
 
+# For Accessions browse set if accession date year filter values should be sorted ascending rather than descending (default)
+AppConfig[:sort_accession_date_filter_asc] = false
 # Determines if the subject source is shown along with the subject heading in records' subject listings
 # This can help differentiate between subjects with the same heading
 AppConfig[:show_source_in_subject_listing] = false
@@ -668,3 +668,14 @@ AppConfig[:limit_csv_fields] = true
 
 #Use Agents Full
 AppConfig[:agents_display_full] = false
+
+# Use to specify the maximum number of columns to display when searching or browsing
+AppConfig[:max_search_columns] = 7
+
+# For Bulk Import:
+# specifies whether the "Load Digital Objects" button is available at the Resource Level
+AppConfig[:hide_do_load] = false
+# upper row limit for an excel spreadsheet
+AppConfig[:bulk_import_rows] = 1000
+# maximum size (in KiloBytes) for an excel spreadsheet
+AppConfig[:bulk_import_size] = 256
