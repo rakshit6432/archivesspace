@@ -46,23 +46,23 @@ class MARCAuthSerializer < ASpaceExport::Serializer
       _leader(json, xml)
       _controlfields(json, xml)
       ids(json, xml)
-      names(json, xml)
       record_control(json, xml)
       dates_of_existence(json, xml)
+      names(json, xml)
       places(json, xml)
       occupations(json, xml)
-      used_languages(json, xml)
-      sources(json, xml)
-      notes(json, xml)
 
       if agent_type(json) == :person
-        gender(json, xml)
         topics(json, xml)
+        gender(json, xml)
       elsif agent_type(json) == :family || agent_type(json) == :corp
         functions(json, xml)
       end
 
-
+      used_languages(json, xml)
+      relationships(json, xml)
+      sources(json, xml)
+      notes(json, xml)
     }
   end
 
@@ -291,7 +291,7 @@ class MARCAuthSerializer < ASpaceExport::Serializer
       end
 
       if lac_ids.any?
-        xml.datafield(:tag => "016", :ind1 => " ", :ind2 => " ") {
+        xml.datafield(:tag => "016", :ind1 => "7", :ind2 => " ") {
           xml.subfield(:code => "a") {
             xml.text lac_ids.first["record_identifier"]
           }
@@ -342,7 +342,7 @@ class MARCAuthSerializer < ASpaceExport::Serializer
     end
 
     if a_value || b_value || e_value
-      xml.datafield(:tag => "040") {
+      xml.datafield(:tag => "040", :ind1 => " ", :ind2 => " ") {
         if a_value
           xml.subfield(:code => "a") {
             xml.text a_value
@@ -385,20 +385,23 @@ class MARCAuthSerializer < ASpaceExport::Serializer
   def names_person(primary, not_primary, parallel, xml)
     # the primary name gets the 100 tag
     if primary
-      xml.datafield(:tag => "100") {
+      ind1 = primary['name_order'] == 'indirect' ? '1' : '0'
+      xml.datafield(:tag => "100", :ind1 => ind1, :ind2 => " ") {
         person_name_subtags(primary, xml) 
       }
     end
 
     # all other names and parallel names are put in 400 tags
     not_primary.each do |n|
-      xml.datafield(:tag => "400") {
+      ind1 = n['name_order'] == 'indirect' ? '1' : '0'
+      xml.datafield(:tag => "400", :ind1 => ind1, :ind2 => " ") {
         person_name_subtags(n, xml) 
       }
     end
 
     parallel.each do |n|
-      xml.datafield(:tag => "400") {
+      ind1 = n['name_order'] == 'indirect' ? '1' : '0'
+      xml.datafield(:tag => "400", :ind1 => ind1, :ind2 => " ") {
         person_name_subtags(n, xml) 
       }
     end
@@ -449,20 +452,20 @@ class MARCAuthSerializer < ASpaceExport::Serializer
   def names_family(primary, not_primary, parallel, xml)
     # the primary name gets the 100 tag
     if primary
-      xml.datafield(:tag => "100") {
+      xml.datafield(:tag => "100", :ind1 => "3", :ind2 => " ") {
         family_name_subtags(primary, xml) 
       }
     end
 
     # all other names and parallel names are put in 400 tags
     not_primary.each do |n|
-      xml.datafield(:tag => "400") {
+      xml.datafield(:tag => "400", :ind1 => "3", :ind2 => " ") {
         family_name_subtags(n, xml) 
       }
     end
 
     parallel.each do |n|
-      xml.datafield(:tag => "400") {
+      xml.datafield(:tag => "400", :ind1 => "3", :ind2 => " ") {
         family_name_subtags(n, xml) 
       }
     end
@@ -497,11 +500,11 @@ class MARCAuthSerializer < ASpaceExport::Serializer
   def names_corporate_entity(primary, not_primary, parallel, xml)
     if primary
       if primary['conference_meeting'] == true
-        xml.datafield(:tag => "111") {
+        xml.datafield(:tag => "111", :ind1 => "2", :ind2 => " ") {
           corporate_name_subtags(primary, xml) 
         }
       else
-        xml.datafield(:tag => "100") {
+        xml.datafield(:tag => "100", :ind1 => "2", :ind2 => " ") {
           corporate_name_subtags(primary, xml) 
         }
       end
@@ -510,11 +513,11 @@ class MARCAuthSerializer < ASpaceExport::Serializer
     # all other names and parallel names are put in 400 tags
     not_primary.each do |n|
       if n['conference_meeting'] == true
-        xml.datafield(:tag => "411") {
+        xml.datafield(:tag => "411", :ind1 => "2", :ind2 => " ") {
           corporate_name_subtags(n, xml) 
         }
       else
-        xml.datafield(:tag => "410") {
+        xml.datafield(:tag => "410", :ind1 => "2", :ind2 => " ") {
           corporate_name_subtags(n, xml) 
         }
       end
@@ -522,11 +525,11 @@ class MARCAuthSerializer < ASpaceExport::Serializer
 
     parallel.each do |n|
       if n['conference_meeting'] == true
-        xml.datafield(:tag => "411") {
+        xml.datafield(:tag => "411", :ind1 => "2", :ind2 => " ") {
           corporate_name_subtags(n, xml) 
         }
       else
-        xml.datafield(:tag => "410") {
+        xml.datafield(:tag => "410", :ind1 => "2", :ind2 => " ") {
           corporate_name_subtags(n, xml) 
         }
       end
@@ -586,7 +589,7 @@ class MARCAuthSerializer < ASpaceExport::Serializer
           end_code = "t"
         end
 
-        xml.datafield(:tag => "046") {
+        xml.datafield(:tag => "046", :ind1 => " ", :ind2 => " ") {
           dates(doe, begin_code, end_code, xml)
         }
       end
@@ -615,7 +618,7 @@ class MARCAuthSerializer < ASpaceExport::Serializer
   def places(json, xml)
     if json['agent_places'].any?
       json['agent_places'].each do |place|
-        xml.datafield(:tag => "370" ) {
+        xml.datafield(:tag => "370", :ind1 => " ", :ind2 => " " ) {
           case place['place_role_enum']
           when "place_of_birth"
             subfield_code = "a"
@@ -650,7 +653,7 @@ class MARCAuthSerializer < ASpaceExport::Serializer
   def occupations(json, xml)
     if json['agent_occupations'].any?
       json['agent_occupations'].each do |occupation|
-        xml.datafield(:tag => "374" ) {
+        xml.datafield(:tag => "374", :ind1 => " ", :ind2 => " ") {
           xml.subfield(:code => 'a') {
             xml.text occupation["subjects"].first['_resolved']['title']
           }
@@ -672,7 +675,7 @@ class MARCAuthSerializer < ASpaceExport::Serializer
   def topics(json, xml)
     if json['agent_topics'].any?
       json['agent_topics'].each do |topic|
-        xml.datafield(:tag => "372" ) {
+        xml.datafield(:tag => "372", :ind1 => " ", :ind2 => " ") {
           xml.subfield(:code => 'a') {
             xml.text topic["subjects"].first['_resolved']['title']
           }
@@ -694,7 +697,7 @@ class MARCAuthSerializer < ASpaceExport::Serializer
   def functions(json, xml)
     if json['agent_functions'].any?
       json['agent_functions'].each do |function|
-        xml.datafield(:tag => "372" ) {
+        xml.datafield(:tag => "372", :ind1 => " ", :ind2 => " ") {
           xml.subfield(:code => 'a') {
             xml.text function["subjects"].first['_resolved']['title']
           }
@@ -716,7 +719,7 @@ class MARCAuthSerializer < ASpaceExport::Serializer
   def gender(json, xml)
     if json['agent_genders'].any?
       json['agent_genders'].each do |gender|
-        xml.datafield(:tag => "375" ) {
+        xml.datafield(:tag => "375", :ind1 => " ", :ind2 => " ") {
           xml.subfield(:code => 'a') {
             xml.text gender["gender_enum"]
           }
@@ -736,7 +739,7 @@ class MARCAuthSerializer < ASpaceExport::Serializer
   def used_languages(json, xml)
     if json['used_languages'].any?
       json['used_languages'].each do |lang|
-        xml.datafield(:tag => "377" ) {
+        xml.datafield(:tag => "377", :ind1 => " ", :ind2 => "7") {
           xml.subfield(:code => 'a') {
             xml.text lang["language"]
           }
@@ -752,7 +755,7 @@ class MARCAuthSerializer < ASpaceExport::Serializer
   def sources(json, xml)
     if json['agent_sources'].any?
       json['agent_sources'].each do |source|
-        xml.datafield(:tag => "670" ) {
+        xml.datafield(:tag => "670", :ind1 => " ", :ind2 => " ") {
           xml.subfield(:code => 'a') {
             xml.text source["source_entry"]
           }
@@ -799,6 +802,44 @@ class MARCAuthSerializer < ASpaceExport::Serializer
             }
           end
         }
+      end
+    end
+  end
+
+  def relationships(json, xml)
+    if json['related_agents'] && json['related_agents'].any?
+      json['related_agents'].each do |ra|
+        agent = ra['_resolved']
+
+        case agent['jsonmodel_type']
+        when "agent_person"
+          primary = agent['names'].select {|n| n['authorized'] == true}.first
+          ind1 = primary['name_order'] == 'indirect' ? '1' : '0'
+          xml.datafield(:tag => "500", :ind1 => ind1, :ind2 => " ") {
+            person_name_subtags(primary, xml) 
+          }
+
+        when "agent_family"
+          primary = agent['names'].select {|n| n['authorized'] == true}.first
+
+          xml.datafield(:tag => "500", :ind1 => "3", :ind2 => " ") {
+            family_name_subtags(primary, xml) 
+          }
+
+        when "agent_corporate_entity"
+          primary = agent['names'].select {|n| n['authorized'] == true}.first
+
+          if primary['conference_meeting'] == true
+            xml.datafield(:tag => "511", :ind1 => "2", :ind2 => " ") {
+              corporate_name_subtags(primary, xml) 
+            }
+          else
+            xml.datafield(:tag => "510", :ind1 => "2", :ind2 => " ") {
+              corporate_name_subtags(primary, xml) 
+            }
+          end 
+        end
+
       end
     end
   end
