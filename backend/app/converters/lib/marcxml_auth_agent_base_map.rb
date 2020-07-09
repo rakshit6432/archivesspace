@@ -58,7 +58,6 @@ module MarcXMLAuthAgentBaseMap
       "//record/datafield[@tag='370']/subfield[@code='f']" => other_associated_place_map,
       "//record/datafield[@tag='374']/subfield[@code='a']" => agent_occupation_map,
       "//record/datafield[@tag='377']" => used_language_map,
-      "//record/datafield[@tag='377']" => used_language_map,
       "//record/datafield[@tag='670']" => agent_sources_map,
       "//record/datafield[@tag='678']" => bioghist_note_map,
     }
