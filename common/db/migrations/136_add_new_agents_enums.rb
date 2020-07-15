@@ -15,7 +15,7 @@ Sequel.migration do
 		create_enum("modified_record_enum", ["not_modified", "shortened", "missing_characters", "natc"])
 		create_enum("cataloging_source_enum", ["nat_bib_agency", "ccp", "other", "unknown", "natc"])
 		create_enum("source_enum", ["naf", "snac", "local"], nil, true)
-		create_enum("identifier_type_enum", ["loc", "lac", "local"], nil, true)
+		create_enum("identifier_type_enum", ["loc", "lac", "local", "other_unmapped"], nil, true)
 		create_enum("agency_code_type_enum", ["oclc", "local"], nil, true)
 		create_enum("maintenance_event_type_enum", ["created", "cancelled", "deleted", "derived", "revised", "updated"])
 		create_enum("maintenance_agent_type_enum", ["human", "machine"], "human")

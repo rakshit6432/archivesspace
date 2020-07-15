@@ -218,10 +218,10 @@ describe 'EAC converter' do
       expect(record["names"][0]["use_dates"][0]["date_label"]).to eq("usage")
       expect(record["names"][0]["use_dates"][0]["structured_date_single"]["date_expression"]).to match(/1802 December 27/)
       expect(record["names"][0]["use_dates"][1]["date_label"]).to eq("usage")
-      expect(record["names"][0]["use_dates"][1]["structured_date_range"]["begin_date_expression"]).to match(/1742 November 12/)
+      expect(record["names"][0]["use_dates"][1]["structured_date_range"]["begin_date_expression"]).to match(/1745 November 12/)
 
       expect(record["names"][1]["use_dates"][0]["date_label"]).to eq("usage")
-      expect(record["names"][1]["use_dates"][0]["structured_date_range"]["begin_date_expression"]).to match(/1742 November 12/)
+      expect(record["names"][1]["use_dates"][0]["structured_date_range"]["begin_date_expression"]).to match(/1746 November 12/)
 
     end
 
@@ -263,7 +263,7 @@ describe 'EAC converter' do
       expect(agent_record["agent_places"][0]["notes"][0]["content"]).to match(/text note/)
 
       expect(agent_record["agent_places"][1]["dates"][0]["date_label"]).to eq("DE-588-4031541-1")
-      expect(agent_record["agent_places"][1]["dates"][0]["structured_date_range"]["begin_date_expression"]).to match(/1742 November 12/)
+      expect(agent_record["agent_places"][1]["dates"][0]["structured_date_range"]["begin_date_expression"]).to match(/1743 November 12/)
       expect(agent_record["agent_places"][1]["notes"][0]["content"].first).to match(/citation/)
 
     end
@@ -372,7 +372,7 @@ describe 'EAC converter' do
       expect(ar["linked_resource"]).to eq("Department of Romance Languages records")
       expect(ar["linked_resource_description"]).to eq("note!")
 
-      expect(ar["dates"][0]["structured_date_range"]["begin_date_expression"]).to match(/1742 November 12/)
+      expect(ar["dates"][0]["structured_date_range"]["begin_date_expression"]).to match(/1744 November 12/)
     end
 
   end

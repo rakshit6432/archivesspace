@@ -124,8 +124,6 @@ class MARCAuthSerializer < ASpaceExport::Serializer
 
       most_recent = json['agent_maintenance_histories'].sort {|a, b| b['event_date'] <=> a['event_date']}.first
 
-      puts most_recent['event_date']
-
       xml.controlfield(:tag => "005") {
         xml.text most_recent['event_date'].strftime("%Y%m%d%H%M%S.f")
       }
@@ -504,7 +502,7 @@ class MARCAuthSerializer < ASpaceExport::Serializer
           corporate_name_subtags(primary, xml) 
         }
       else
-        xml.datafield(:tag => "100", :ind1 => "2", :ind2 => " ") {
+        xml.datafield(:tag => "110", :ind1 => "2", :ind2 => " ") {
           corporate_name_subtags(primary, xml) 
         }
       end
@@ -773,8 +771,6 @@ class MARCAuthSerializer < ASpaceExport::Serializer
   end
 
   def notes(json, xml)
-    puts json['notes'].inspect
-
     if json['notes'].any?
       bioghist_notes = json['notes'].select {|n| n['jsonmodel_type'] == "note_bioghist"}
 
