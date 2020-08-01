@@ -5,7 +5,6 @@ class ImportArchivalObjects < BulkImportParser
 
   def initialize(input_file, content_type, current_user, opts, log_method = nil)
     super(input_file, content_type, current_user, opts, log_method)
-    @created_ao_refs = []
     @first_level_aos = []
     @archival_levels = CvList.new("archival_record_level", @current_user)
     @container_types = CvList.new("container_type", @current_user)
@@ -127,11 +126,11 @@ class ImportArchivalObjects < BulkImportParser
     end
 
     @parents.set_uri(@hier, ao.uri)
-    @created_ao_refs.push ao.uri
+    @created_refs << ao.uri if ao.uri && !@validate_only
     if @hier == 1
       @first_level_aos.push ao.uri
       if @first_one && @start_position
-        @need_to_move = (ao.position - @start_position) > 1
+        @need_to_move = (ao.position - @start_position) > 1 if !@validate_only
         @first_one = false
       end
     end

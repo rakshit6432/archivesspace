@@ -41,6 +41,7 @@ class ImportDigitalObjects < BulkImportParser
       errs << e.message
     end
     errs << check_row
+    errs.reject!(&:empty?)
     if !@validate_only && !errs.empty?
       err = errs.join("; ")
       raise BulkImportException.new(I18n.t("bulk_import.row_error", :row => @counter, :errs => err))
@@ -58,6 +59,9 @@ class ImportDigitalObjects < BulkImportParser
       err = errs.join("; ")
       @report.add_errors(I18n.t("bulk_import.error.dig_unassoc", :msg => err))
     end
+    @created_refs.concat(
+      [ao.uri, digital_instance.digital_object['ref']]
+    ) if ao && digital_instance && !@validate_only
     digital_instance
   end
 

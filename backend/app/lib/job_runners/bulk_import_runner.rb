@@ -1,42 +1,21 @@
 # runs the bulk_importer
 
 require_relative "../streaming_import"
+require_relative '../ticker'
+
 require_relative "../bulk_import/import_archival_objects"
 require_relative "../bulk_import/import_digital_objects"
 require "csv"
 
-class Ticker
-  def initialize(job)
-    @job = job
-  end
-
-  def tick
-  end
-
-  def status_update(status_code, status)
-    @job.write_output("#{status[:id]}. #{status_code.upcase}: #{status[:label]}")
-  end
-
-  def log(s)
-    @job.write_output(s)
-  end
-
-  def tick_estimate=(n)
-  end
-end
-
 class BulkImportRunner < JobRunner
   register_for_job_type("bulk_import_job", :create_permissions => :import_records,
-                                           :cancel_permissions => :cancel_importer_job)
+                                           :cancel_permissions => :cancel_importer_job,
+                                           :allow_reregister => true)
 
   def run
     ticker = Ticker.new(@job)
-    ticker.log("Start new bulk_import ")
+    ticker.log("Start new bulk_import for job: #{@job.id}")
     last_error = nil
-    batch = nil
-    success = false
-    jobfiles = @job.job_files || []
-    filenames = [@json.job["file_name"]]
     # Wrap the import in a transaction if the DB supports MVCC
     begin
       DB.open(DB.supports_mvcc?,
@@ -75,6 +54,7 @@ class BulkImportRunner < JobRunner
               file.rewind
               @job.write_output(I18n.t("bulk_import.log_results"))
               @job.add_file(file)
+              @job.record_created_uris(importer.record_uris) unless @validate_only
             end
           end
         rescue JSONModel::ValidationException, BulkImportException => e
@@ -134,6 +114,7 @@ class BulkImportRunner < JobRunner
               csvrow << ""
               csvrow << ""
             else
+              csvrow << ""
               csvrow << "#{row.archival_object_display}"
               csvrow << row.archival_object_id
               csvrow << "#{row.ref_id}"
@@ -169,38 +150,6 @@ class BulkImportRunner < JobRunner
       importer = ImportArchivalObjects.new(@input_file, content_type, @current_user, params, log_method)
     end
     importer
-  end
-
-  def process_report(report)
-    output = ""
-    report.rows.each do |row|
-      output += row.row
-      if row.archival_object_id.nil?
-        output += " " + I18n.t("bulk_import.no_ao") if !@dig_o
-      else
-        if @dig_o
-          output += I18n.t("bulk_import.clip_what", :what => I18n.t("bulk_import.ao"), :id => row.archival_object_id,
-                                                    :nm => "'#{row.archival_object_display}'",
-                                                    :ref_id => "#{row.ref_id}")
-        else
-          output += I18n.t("bulk_import.clip_created", :what => I18n.t("bulk_import.ao"), :id => row.archival_object_id,
-                                                       :nm => "'#{row.archival_object_display}'",
-                                                       :ref_id => "#{row.ref_id}")
-        end
-      end
-      output += "\n"
-      unless row.info.empty?
-        row.info.each do |info|
-          output += I18n.t("bulk_import.clip_info", :what => info) + "\n"
-        end
-      end
-      unless row.errors.empty?
-        row.errors.each do |err|
-          output += I18n.t("bulk_import.clip_err", :err => err) + "\n"
-        end
-      end
-    end
-    output
   end
 
   def symbol_keys(hash)

@@ -2356,15 +2356,15 @@ en:
     clip_what: "\t%{what} : \t%{nm}\t%{id}\t%{ref_id}"
     clip_info: "\t\t\t\t\t%{what}\n"
     clip_err: "\t\t\t\t\tERROR: %{err}\n"
-    clip_header: "Row\tStatus\tTitle\tURI\tRef ID\tInfo or Error"    
+    clip_header: "Row\tStatus\tTitle\tURI\tRef ID\tInfo or Error"
     log_complete: "Completed import of %{file}"
     log_validation: "Completed validate of %{file}"
     log_created: "%{row}: Created %{what}"
     log_created_be: "%{row}: %{what} would be created"
     log_info: "%{row}:\t%{what}"
     log_error: "%{row}:\tERROR %{what}"
-    log_obj: "%{what} '%{nm}' %{id} %{ref_id}"    
-    log_obj_be: "%{what} '%{nm}' " 
+    log_obj: "%{what} '%{nm}' %{id} %{ref_id}"
+    log_obj_be: "%{what} '%{nm}' "
     log_results: Compiling results CSV file
     ao: Archival Object
     tc: Top Container
@@ -2412,7 +2412,7 @@ en:
       hier_zero: Hierarchy must be greater than 0
       hier_wrong: Hierarchy cannot not be more than one level deeper than the previous row
       hier_wrong_resource:  did you mean to start processing with an archival object selected?
-      hier_wrong_resource_validation:  "WARNING: nothing below this row would have been processed" 
+      hier_wrong_resource_validation:  "WARNING: nothing below this row would have been processed"
       hier_below_error_level: The parent archival object was not created
       level: Missing valid Description Level
       date: "Date must have at least one of: Date begin; Date end; or Date expression"

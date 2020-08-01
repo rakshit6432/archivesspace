@@ -30,6 +30,7 @@ class BulkImportParser
 =end
 
   def initialize(input_file, content_type, current_user, opts, log_method)
+    @created_refs = []
     @input_file = input_file
     @file_content_type = content_type
     @opts = opts
@@ -42,6 +43,10 @@ class BulkImportParser
     @is_xslx = @file_content_type == "xlsx"
     @is_csv = @file_content_type == "csv"
     @validate_only = opts[:validate]
+  end
+
+  def record_uris
+    @created_refs
   end
 
   def run

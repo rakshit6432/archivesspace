@@ -26,4 +26,11 @@ module JobsHelper
       ""
     end
   end
+
+  def link_for_resource(uri)
+    id = JSONModel(:resource).id_for(uri)
+    URI.join(
+      AppConfig[:frontend_proxy_url], File.join('resources', id.to_s, "edit#tree::resource_#{id}")
+    ).to_s
+  end
 end

@@ -21,8 +21,9 @@
 <% end %>
 
 <% define_template("bulk_import_job", jsonmodel_definition(:bulk_import_job)) do |form| %>
-  <div class="alert alert-danger"><%= I18n.t("bulk_import_job.not_direct") %> </div>
-  <% end %>
+  <div class="alert alert-danger"><%= I18n.t("bulk_import_job.not_direct") %></div>
+<% end %>
+
 <% define_template("print_to_pdf_job", jsonmodel_definition(:print_to_pdf_job)) do |form| %>
 
   <%= form.hidden_input :source, :class => 'translation-placeholder' %>
