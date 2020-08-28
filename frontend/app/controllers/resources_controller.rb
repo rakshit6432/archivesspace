@@ -156,7 +156,7 @@ class ResourcesController < ApplicationController
     # check for active batch import job and redirect if there is one
     active_job = find_active_bulk_import_job
     if active_job
-      flash[:warning] = I18n.t(
+      flash[:active_bulk_import_job] = I18n.t(
         'bulk_import_job.active',
         url: "#{AppConfig[:frontend_proxy_url]}/resolve/readonly?uri=#{active_job['uri']}",
         uri: active_job['uri']
