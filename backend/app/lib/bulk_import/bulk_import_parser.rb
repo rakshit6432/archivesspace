@@ -80,7 +80,8 @@ class BulkImportParser
         # we just want to catch this without processing further
       end
       if @rows_processed == 0
-        raise BulkImportException.new(I18n.t("bulk_import.error.no_data"))
+        # put the actual error message into the exception so it more closely matches the csv report
+        raise BulkImportException.new(@report.current_row.errors.first.match(/\[(.*)\]/)[1])
       end
     rescue Exception => e
       if e.is_a?(BulkImportException) || e.is_a?(StopBulkImportException)

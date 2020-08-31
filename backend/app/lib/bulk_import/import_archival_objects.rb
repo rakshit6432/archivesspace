@@ -145,15 +145,15 @@ class ImportArchivalObjects < BulkImportParser
     else
       log_obj = I18n.t(obj_key, :what => I18n.t("bulk_import.ao"), :nm => row.archival_object_display, :id => row.archival_object_id, :ref_id => row.ref_id)
       @log_method.call(I18n.t(create_key, :row => row.row, :what => log_obj))
-      unless row.info.empty?
-        row.info.each do |info|
-          @log_method.call(I18n.t("bulk_import.log_info", :row => row.row, :what => info))
-        end
+    end
+    unless row.info.empty?
+      row.info.each do |info|
+        @log_method.call(I18n.t("bulk_import.log_info", :row => row.row, :what => info))
       end
-      unless row.errors.empty?
-        row.errors.each do |err|
-          @log_method.call(I18n.t("bulk_import.log_error", :row => row.row, :what => err))
-        end
+    end
+    unless row.errors.empty?
+      row.errors.each do |err|
+        @log_method.call(I18n.t("bulk_import.log_error", :row => row.row, :what => err))
       end
     end
   end
