@@ -3,8 +3,10 @@
     "$schema" => "http://www.archivesspace.org/archivesspace.json",
     "version" => 1,
     "type" => "object",
+    "uri" => "agent_topics",
 
     "properties" => {
+      "uri"          => {"type" => "string", "required" => false},
       "dates" => {
         "type" => "array",
         "items" => {"type" => "JSONModel(:structured_date_label) object"}
@@ -33,7 +35,6 @@
           }
         }
       },
-      "id"                        => {"type" => "integer", "required" => false},
       "places" => {
         "type" => "array",
         "items" => {

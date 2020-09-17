@@ -3,8 +3,10 @@
     "$schema" => "http://www.archivesspace.org/archivesspace.json",
     "version" => 1,
     "type" => "object",
+    "uri" => "agent_contacts",
 
     "properties" => {
+      "uri"          => {"type" => "string", "required" => false},
       "name" => {"type" => "string", "maxLength" => 65000, "ifmissing" => "error"},
       "salutation" => {"type" => "string", "dynamic_enum" => "agent_contact_salutation"},
       "address_1" => {"type" => "string", "maxLength" => 65000},
@@ -18,7 +20,6 @@
         "type" => "array",
         "items" => {"type" => "JSONModel(:telephone) object"}
       },
-      "id" => {"type" => "integer", "required" => false},
       "fax" => {"type" => "string", "maxLength" => 65000},
       "email" => {"type" => "string", "maxLength" => 65000},
       "email_signature" => {"type" => "string", "maxLength" => 65000},

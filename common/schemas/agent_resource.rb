@@ -3,9 +3,10 @@
     "$schema" => "http://www.archivesspace.org/archivesspace.json",
     "version" => 1,
     "type" => "object",
+    "uri" => "agent_resources",
 
     "properties" => {
-      "id" => {"type" => "integer", "required" => false},
+      "uri"          => {"type" => "string", "required" => false},
 
       "linked_agent_role" => {"type" => "string", "dynamic_enum" => "linked_agent_role", "ifmissing" => "error", "required" => true},
 

@@ -4,8 +4,10 @@
     "version" => 1,
     "parent" => "abstract_name",
     "type" => "object",
+    "uri" => "name_corporate_entities",
 
     "properties" => {
+      "uri"          => {"type" => "string", "required" => false},
       "primary_name" => {"type" => "string", "maxLength" => 65000, "ifmissing" => "error"},
       "subordinate_name_1" => {"type" => "string", "maxLength" => 65000},
       "subordinate_name_2" => {"type" => "string", "maxLength" => 65000},

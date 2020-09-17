@@ -4,8 +4,10 @@
     "version" => 1,
     "parent" => "abstract_name",
     "type" => "object",
+    "uri" => "name_persons",
 
     "properties" => {
+      "uri"          => {"type" => "string", "required" => false},
       "primary_name" => {"type" => "string", "maxLength" => 255, "ifmissing" => "error"},
       "title" => {"type" => "string", "maxLength" => 16384},
       "name_order" => {"type" => "string", "ifmissing" => "error", "dynamic_enum" => "name_person_name_order"},

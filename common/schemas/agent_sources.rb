@@ -3,8 +3,10 @@
     "$schema" => "http://www.archivesspace.org/archivesspace.json",
     "version" => 1,
     "type" => "object",
+    "uri" => "agent_sources",
 
     "properties" => {
+      "uri"          => {"type" => "string", "required" => false},
       "source_entry" => {"type" => "string", "maxLength" => 65000},
       "descriptive_note" => {"type" => "string", "maxLength" => 65000},
       "file_uri" => {"type" => "string", "maxLength" => 65000},
@@ -19,7 +21,6 @@
         "dynamic_enum" => "file_version_xlink_show_attribute",
         "required" => false
       },      
-      "id"                        => {"type" => "integer", "required" => false},
       "xlink_title_attribute" => {"type" => "string", "maxLength" => 65000},
       "xlink_role_attribute" => {"type" => "string", "maxLength" => 65000},
       "xlink_arcrole_attribute" => {"type" => "string", "maxLength" => 65000},
