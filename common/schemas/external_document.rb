@@ -3,8 +3,9 @@
     "$schema" => "http://www.archivesspace.org/archivesspace.json",
     "version" => 1,
     "type" => "object",
+    "uri" => "external_documents",
     "properties" => {
-      "id" => {"type" => "integer", "required" => false},
+      "uri"          => {"type" => "string", "required" => false},
       "title" => {"type" => "string", "maxLength" => 16384, "ifmissing" => "error", "minLength" => 1},
       "location" => {"type" => "string", "maxLength" => 16384, "ifmissing" => "error", "default" => ""},
       "publish" => {"type" => "boolean"},

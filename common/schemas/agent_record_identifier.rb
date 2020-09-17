@@ -3,8 +3,10 @@
     "$schema" => "http://www.archivesspace.org/archivesspace.json",
     "version" => 1,
     "type" => "object",
+    "uri" => "agent_record_identifiers",
 
     "properties" => {
+      "uri"          => {"type" => "string", "required" => false},
       "primary_identifier" => {"type" => "boolean", "ifmissing" => "error"},
       "record_identifier" => {
         "type" => "string", 
@@ -21,7 +23,6 @@
         "dynamic_enum" => "identifier_type_enum",
         "required" => false
       },
-      "id"                        => {"type" => "integer", "required" => false},
       "agent_person_id"           => {"type" => "integer", "required" => false},
       "agent_family_id"           => {"type" => "integer", "required" => false},
       "agent_corporate_entity_id" => {"type" => "integer", "required" => false},

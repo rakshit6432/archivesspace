@@ -3,8 +3,10 @@
     "$schema" => "http://www.archivesspace.org/archivesspace.json",
     "version" => 1,
     "type" => "object",
+    "uri" => "agent_record_controls",
 
     "properties" => {
+      "uri"          => {"type" => "string", "required" => false},
       "maintenance_status_enum" => {
         "type" => "string",
         "dynamic_enum" => "maintenance_status_enum",
@@ -65,7 +67,6 @@
       "maintenance_agency" => {"type" => "string", "maxLength" => 65000},
       "agency_name" => {"type" => "string", "maxLength" => 65000},
       "maintenance_agency_note" => {"type" => "string", "maxLength" => 65000},
-      "id"                        => {"type" => "integer", "required" => false},
       "agent_person_id"           => {"type" => "integer", "required" => false},
       "agent_family_id"           => {"type" => "integer", "required" => false},
       "agent_corporate_entity_id" => {"type" => "integer", "required" => false},

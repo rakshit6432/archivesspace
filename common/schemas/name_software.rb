@@ -4,8 +4,10 @@
     "version" => 1,
     "parent" => "abstract_name",
     "type" => "object",
+    "uri" => "name_softwares",
 
     "properties" => {
+      "uri"          => {"type" => "string", "required" => false},
       "software_name" => {"type" => "string", "maxLength" => 65000, "ifmissing" => "error"},
       "version" => {"type" => "string", "maxLength" => 65000},
       "manufacturer" => {"type" => "string", "maxLength" => 65000},

@@ -3,8 +3,10 @@
     "$schema" => "http://www.archivesspace.org/archivesspace.json",
     "version" => 1,
     "type" => "object",
+    "uri" => "agent_places",
 
     "properties" => {
+      "uri"          => {"type" => "string", "required" => false},
       "place_role_enum" => {"type" => "string", "dynamic_enum" => "place_role_enum"},
 
       "dates" => {
@@ -18,7 +20,6 @@
                                {"type" => "JSONModel(:note_citation) object"}]},
       },
 
-      "id"                        => {"type" => "integer", "required" => false},
       "subjects" => {
         "type" => "array",
         "items" => {
