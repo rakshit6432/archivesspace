@@ -335,11 +335,22 @@ describe 'MARC Auth Export' do
                                             build(:json_structured_date_label_range),
                                             ]
                     )
+
+      sdl = build(:json_structured_date_label)
+      sdl["structured_date_single"]["date_standardized"] = nil
+
+      @rec2 = create(:json_agent_person_full_subrec, :dates_of_existence => [sdl])
+
       @marc = get_marc_auth(@rec)
+      @marc2 = get_marc_auth(@rec2)
     end
 
     it "creates a 046 tag for march date of existence" do
       expect(@marc.xpath("//datafield[@tag=046]").to_s).to_not be_nil
+    end
+
+    it "does not create a 046 tag if date of existence does not have a standardized date" do
+      expect(@marc2.xpath("//datafield[@tag=046]//subfield[@code=f]").to_s).to eq("")
     end
   end
 

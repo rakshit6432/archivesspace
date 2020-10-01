@@ -680,7 +680,8 @@ describe 'EAC Export' do
     end
 
     it "maps related agents to cpfRelation" do
-      expect(@eac).to have_tag("relations/cpfRelation[@cpfRelationType='is_parent_of'][@xlink:href='#{@linked_agent.uri}']/relationEntry" =>
+      uri = AppConfig[:public_proxy_url] + @linked_agent.uri
+      expect(@eac).to have_tag("relations/cpfRelation[@cpfRelationType='is_parent_of'][@xlink:href='#{uri}']/relationEntry" =>
 @linked_agent.names[0]['primary_name'])
     end
 
