@@ -1,12 +1,43 @@
 # frozen_string_literal: true
 
 require_relative '../spec_helper'
+require 'net/http'
+
+def reload_config(session_key)
+
+  config_test_file = Tempfile.new('test_config')
+  ENV['ASPACE_CONFIG'] = config_test_file.path
+
+  config_test_file << "AppConfig[:agents_display_full] = true"
+  config_test_file.flush
+  config_test_file.close
+
+  uri = URI($frontend + "/system_info/config")
+  headers = {'X-ArchivesSpace-Session' => session_key, 'Content-Type' => 'application/json'}
+  req = Net::HTTP::Post.new(uri, headers)
+
+  res = Net::HTTP.start(uri.hostname, uri.port) do |http|
+    http.request(req)
+  end
+
+  puts "++++++++++++++++++++++++++++++"
+  puts "post to #{uri} response: " + res.inspect
+  puts res.body
+end
 
 describe 'Agents' do
   before(:all) do
     @repo = create(:repo, repo_code: "agents_test_#{Time.now.to_i}")
-    user = create_user(@repo => ['repository-archivists'])
-    @driver = Driver.get.login_to_repo(user, @repo)
+
+    @driver = Driver.get
+    @driver.login_to_repo($admin, @repo)
+
+    session = @driver.manage.cookie_named("archivesspace_session")[:value]
+    puts "++++++++++++++++++++++++++++++"
+    puts "session key"
+    puts session
+
+    reload_config(session)
 
     @hendrix = "Hendrix von #{Time.now.to_i}"
 
