@@ -588,7 +588,7 @@ class MARCAuthSerializer < ASpaceExport::Serializer
         end
 
         xml.datafield(:tag => "046", :ind1 => " ", :ind2 => " ") {
-          dates(doe, begin_code, end_code, xml)
+          dates_standardized(doe, begin_code, end_code, xml)
         }
       end
     end
@@ -605,6 +605,28 @@ class MARCAuthSerializer < ASpaceExport::Serializer
     xml.subfield(:code => begin_code) {
       xml.text begin_date
     }
+
+    if end_date 
+      xml.subfield(:code => end_code) {
+        xml.text end_date
+      }
+    end
+  end
+
+  # similar to above method, but only outputs standardized dates
+  def dates_standardized(structured_date, begin_code, end_code, xml)
+    if structured_date['date_type_enum'] == "single"
+      begin_date = structured_date['structured_date_single']['date_standardized']
+    elsif structured_date['date_type_enum'] == "range"
+      begin_date = structured_date['structured_date_range']['begin_date_standardized']
+      end_date =  structured_date['structured_date_range']['end_date_standardized']
+    end
+
+    if begin_date
+      xml.subfield(:code => begin_code) {
+        xml.text begin_date
+      }
+    end
 
     if end_date 
       xml.subfield(:code => end_code) {
@@ -725,10 +747,6 @@ class MARCAuthSerializer < ASpaceExport::Serializer
           if gender['dates'].any?
             dates(gender['dates'].first, "s", "t", xml)
           end
-
-          xml.subfield(:code => '2') {
-            xml.text "aat"
-          }
         }
       end
     end
@@ -754,17 +772,23 @@ class MARCAuthSerializer < ASpaceExport::Serializer
     if json['agent_sources'].any?
       json['agent_sources'].each do |source|
         xml.datafield(:tag => "670", :ind1 => " ", :ind2 => " ") {
-          xml.subfield(:code => 'a') {
-            xml.text source["source_entry"]
-          }
+          if source["source_entry"]
+            xml.subfield(:code => 'a') {
+              xml.text source["source_entry"]
+            }
+          end
 
-          xml.subfield(:code => 'b') {
-            xml.text source["descriptive_note"]
-          }
+          if source["descriptive_note"]
+            xml.subfield(:code => 'b') {
+              xml.text source["descriptive_note"]
+            }
+          end
 
-          xml.subfield(:code => 'u') {
-            xml.text source["file_uri"]
-          }
+          if source["file_uri"]
+            xml.subfield(:code => 'u') {
+              xml.text source["file_uri"]
+            }
+          end
         }
       end
     end
@@ -788,18 +812,28 @@ class MARCAuthSerializer < ASpaceExport::Serializer
 
           if abstract.any?
             xml.subfield(:code => 'a') {
-              xml.text abstract.first['content'].first
+              content = clean_text(abstract.first['content'].first)
+              xml.text content
             }
           end
 
           if text.any?
             xml.subfield(:code => 'b') {
-              xml.text text.first['content']
+              content = clean_text(text.first['content'])
+              xml.text content
             }
           end
         }
       end
     end
+  end
+
+  # strips out carriage returns (...and maybe other things)
+  def clean_text(text)
+    text.gsub!(/\r\n/, "")
+    text.gsub!(/\r/, "")
+
+    return text
   end
 
   def relationships(json, xml)

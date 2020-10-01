@@ -79,8 +79,10 @@ class EACSerializer < ASpaceExport::Serializer
 
         if filled_out?([arc["language"], arc["language_note"]])
           xml.languageDeclaration {
-            language_attrs = {:languageCode => arc["language"], :scriptCode => arc["script"]}
+            language_attrs = {:languageCode => arc["language"]}
+            script_attrs = {:scriptCode => arc["script"]}
             create_node(xml, "language", language_attrs, arc["language"])
+            create_node(xml, "script", script_attrs, arc["script"])
             create_node(xml, "descriptiveNote", {}, arc["language_note"])
           }
         end
@@ -194,31 +196,7 @@ class EACSerializer < ASpaceExport::Serializer
             _build_name_entry(name, xml, json, obj)
           end
         end
-      }
-
-      # ALTERNATIVE SET
-      if json['agent_alternate_sets'] && json['agent_alternate_sets'].any?
-        xml.alternativeSet {
-          json['agent_alternate_sets'].each do |aas|
-            xlink_attrs = {
-              "xlink:href" => aas['file_uri'],
-              "xlink:actuate" => aas['file_version_xlink_actuate_attribute'],
-              "xlink:show" => aas['file_version_xlink_show_attribute'],
-              "xlink:title" => aas['xlink_title_attribute'],
-              "xlink:role" => aas['xlink_role_attribute'],
-              "xlink:arcrole" => aas['xlink_arcrole_attribute'],
-              "lastDateTimeVerified" => aas['last_verified_date']
-            }
-
-            if filled_out?([aas['set_component'], aas['descriptive_note']])
-              xml.setComponent(clean_attrs(xlink_attrs)) {
-                create_node(xml, "componentEntry", {}, aas['set_component'])
-                create_node(xml, "descriptiveNote", {}, aas['descriptive_note'])
-              }
-            end
-          end
-        }
-      end
+      } # end of xml.identity
 
 
       xml.description {
@@ -476,15 +454,25 @@ class EACSerializer < ASpaceExport::Serializer
             }
           end
         end
-      }
+      } # end of xml.description
       
       xml.relations {
         if json['agent_resources']
           json['agent_resources'].each do |ar|
 
             if filled_out?([ar['linked_resource']])
+
+              if ar['linked_agent_role'] == "creator" 
+                role = "creatorOf"
+              elsif ar['linked_agent_role'] == "subject"
+                role = "subjectOf"
+              else 
+                role = "other"
+              end
+                
+
               xlink_attrs = {
-                "resourceRelationType" => "Resource Relation",
+                "resourceRelationType" => role,
                 "xlink:href" => ar['file_uri'],
                 "xlink:actuate" => ar['file_version_xlink_actuate_attribute'],
                 "xlink:show" => ar['file_version_xlink_show_attribute'],
@@ -537,7 +525,7 @@ class EACSerializer < ASpaceExport::Serializer
                    end
 
             if filled_out?([name])
-              attrs = {:cpfRelationType => relator, 'xlink:type' => 'simple', 'xlink:href' => resolved['uri']}
+              attrs = {:cpfRelationType => relator, 'xlink:type' => 'simple', 'xlink:href' => AppConfig[:public_proxy_url] + resolved['uri']}
 
               xml.cpfRelation(clean_attrs(attrs)) {
                 xml.relationEntry name
@@ -562,8 +550,33 @@ class EACSerializer < ASpaceExport::Serializer
             xml.relationEntry record['title']
           }
         end
-      }
-    }
+      } # end of xml.relations
+
+      # ALTERNATIVE SET
+      if json['agent_alternate_sets'] && json['agent_alternate_sets'].any?
+        xml.alternativeSet {
+          json['agent_alternate_sets'].each do |aas|
+            xlink_attrs = {
+              "xlink:href" => aas['file_uri'],
+              "xlink:actuate" => aas['file_version_xlink_actuate_attribute'],
+              "xlink:show" => aas['file_version_xlink_show_attribute'],
+              "xlink:title" => aas['xlink_title_attribute'],
+              "xlink:role" => aas['xlink_role_attribute'],
+              "xlink:arcrole" => aas['xlink_arcrole_attribute'],
+              "lastDateTimeVerified" => aas['last_verified_date']
+            }
+
+            if filled_out?([aas['set_component'], aas['descriptive_note']])
+              xml.setComponent(clean_attrs(xlink_attrs)) {
+                create_node(xml, "componentEntry", {}, aas['set_component'])
+                create_node(xml, "descriptiveNote", {}, aas['descriptive_note'])
+              }
+            end
+          end
+        } # end of xml.alternativeSet
+      end
+
+    } # end of xml.cpfDescription
   end
 
 
@@ -600,11 +613,6 @@ class EACSerializer < ASpaceExport::Serializer
   def _build_name_entry(name, xml, json, obj)
     attrs = {"xml:lang" => name['language'], "scriptCode" => name['script'], "transliteration" => name['romanization_enum']}
     xml.nameEntry(clean_attrs(attrs)) {
-      if name['authorized']
-        xml.authorizedForm name['source'] unless name['source'] && name['source'].empty?
-      else
-        xml.alternativeForm name['source'] unless name['source'] && name['source'].empty?
-      end
 
       obj.name_part_fields.each do |field, localType|
         localType = localType.nil? ? field : localType
@@ -623,6 +631,12 @@ class EACSerializer < ASpaceExport::Serializer
             end
         end
       }
+
+      if name['authorized']
+        xml.authorizedForm name['source'] unless name['source'] && name['source'].empty?
+      else
+        xml.alternativeForm name['source'] unless name['source'] && name['source'].empty?
+      end
     }
   end
 end
