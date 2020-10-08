@@ -12,6 +12,12 @@ $solr_port = TestUtils.free_port_from(2989)
 $backend = "http://localhost:#{$backend_port}"
 $frontend = "http://localhost:#{$frontend_port}"
 $expire = 30_000
+$config_location = File.join(File.dirname(__FILE__), "..", "..", "..", "common", "config", "config.rb")
+if File.exists?($config_location)
+  $config_file = File.open($config_location, "a")
+else
+  $config_file = File.new($config_location, "w")
+end
 
 $backend_start_fn = proc {
   # for the indexers
@@ -61,6 +67,7 @@ RSpec.configure do |config|
   end
 
   config.after(:suite) do
+    $config_file.close
     report_sleep
     cleanup
   end
