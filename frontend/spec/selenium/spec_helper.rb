@@ -12,6 +12,8 @@ $solr_port = TestUtils.free_port_from(2989)
 $backend = "http://localhost:#{$backend_port}"
 $frontend = "http://localhost:#{$frontend_port}"
 $expire = 30_000
+
+# create file handle for config file in case it needs to be updated to support a test
 $config_location = File.join(File.dirname(__FILE__), "..", "..", "..", "common", "config", "config.rb")
 if File.exists?($config_location)
   $config_file = File.open($config_location, "a")

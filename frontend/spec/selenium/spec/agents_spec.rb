@@ -4,6 +4,7 @@ require_relative '../spec_helper'
 require 'net/http'
 
 def enable_full_display_mode
+  $config_file.write "\n# Directive below added by agents_spec.rb selenium test\n"
   $config_file.write "\nAppConfig[:agents_display_full] = true\n"
   $config_file.flush
 
@@ -14,6 +15,7 @@ def enable_full_display_mode
 end
 
 def disable_full_display_mode
+  $config_file.write "\n# Directive below added by agents_spec.rb selenium test\n"
   $config_file.write "\nAppConfig[:agents_display_full] = false\n"
   $config_file.flush
 
@@ -1043,11 +1045,93 @@ describe "Agents" do
 
       @driver.navigate.to($frontend + "/agents/agent_person/new")
     end
+
+    it 'displays agent_record_identifiers in form' do
+      expect(@driver.is_visible?(:css, "#agent_person_agent_record_identifier")).to eq(true)
+    end
   
-    it 'hides agent record control from form' do
-      expect {
-        @driver.find_element(:css, '#agent_person_agent_record_control')
-      }.to raise(Selenium::WebDriver::Error::NoSuchElementError)
+    it 'hides agent_record_control from form' do
+      expect(@driver.is_visible?(:css, "#agent_person_agent_record_control")).to eq(false)
+    end
+
+    it 'hides agent_other_agency_codes from form' do
+      expect(@driver.is_visible?(:css, "#agent_person_agent_other_agency_codes")).to eq(false)
+    end
+
+    it 'hides agent_conventions_declarations from form' do
+      expect(@driver.is_visible?(:css, "#agent_person_agent_conventions_declaration")).to eq(false)
+    end
+
+    it 'hides agent_maintenance_histories from form' do
+      expect(@driver.is_visible?(:css, "#agent_person_agent_maintenance_history")).to eq(false)
+    end
+
+    it 'hides agent_other_agency_codes from form' do
+      expect(@driver.is_visible?(:css, "#agent_person_agent_sources")).to eq(false)
+    end
+
+    it 'hides agent_sources from form' do
+      expect(@driver.is_visible?(:css, "#agent_person_agent_sources")).to eq(false)
+    end
+
+    it 'hides agent_alternate_sets from form' do
+      expect(@driver.is_visible?(:css, "#agent_person_agent_alternate_set")).to eq(false)
+    end
+
+    it 'displays agent_identifiers in form' do
+      expect(@driver.is_visible?(:css, "#agent_person_agent_identifier")).to eq(true)
+    end
+
+    it 'displays agent_names in form' do
+      expect(@driver.is_visible?(:css, "#agent_person_names")).to eq(true)
+    end
+
+    it 'displays dates of existence in form' do
+      expect(@driver.is_visible?(:css, "#agent_person_dates_of_existence")).to eq(true)
+    end
+
+    it 'hides agent_genders from form' do
+      expect(@driver.is_visible?(:css, "#agent_person_agent_gender")).to eq(false)
+    end
+
+    it 'hides agent_places from form' do
+      expect(@driver.is_visible?(:css, "#agent_person_agent_place")).to eq(false)
+    end
+
+    it 'hides agent_occupations from form' do
+      expect(@driver.is_visible?(:css, "#agent_person_agent_occupation")).to eq(false)
+    end
+
+    it 'hides agent_functions from form' do
+      expect(@driver.is_visible?(:css, "#agent_person_agent_function")).to eq(false)
+    end
+
+    it 'hides agent_topic from form' do
+      expect(@driver.is_visible?(:css, "#agent_person_agent_topic")).to eq(false)
+    end
+
+    it 'hides used_languages from form' do
+      expect(@driver.is_visible?(:css, "#agent_person_agent_used_language")).to eq(false)
+    end
+
+    it 'displays agent_contacts in form' do
+      expect(@driver.is_visible?(:css, "#agent_person_contact_details")).to eq(true)
+    end
+
+    it 'displays agent_notes in form' do
+      expect(@driver.is_visible?(:css, "#agent_person_notes")).to eq(true)
+    end
+
+    it 'displays agent_external_documents in form' do
+      expect(@driver.is_visible?(:css, "#agent_person_external_documents")).to eq(true)
+    end
+
+    it 'hides agent_resources from form' do
+      expect(@driver.is_visible?(:css, "#agent_person_agent_resource")).to eq(false)
+    end
+
+    it 'displays related_agents in form' do
+      expect(@driver.is_visible?(:css, "#related_agents")).to eq(true)
     end
   end
 end
