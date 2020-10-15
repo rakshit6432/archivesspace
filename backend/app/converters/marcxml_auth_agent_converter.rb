@@ -17,6 +17,14 @@ class MarcXMLAuthAgentConverter < Converter
     end
   end
 
+  def set_import_events
+    config.init_map(MarcXMLAuthAgentConverter.BASE_RECORD_MAP(true))
+  end
+
+  def unset_import_events
+    config.init_map(MarcXMLAuthAgentConverter.BASE_RECORD_MAP(false))
+  end
+
   def self.import_types(show_hidden = false)
     [
      {

@@ -1,55 +1,54 @@
 module MarcXMLAuthAgentBaseMap
 
-  def BASE_RECORD_MAP
+  def BASE_RECORD_MAP(import_events = false)
     {
       # AGENT PERSON
       "//datafield[@tag='100' and (@ind1='1' or @ind1='0')]" => {
         :obj => :agent_person,
-        :map => agent_person_base      
+        :map => agent_person_base(import_events)
       },
       # AGENT CORPORATE ENTITY
       "//datafield[@tag='110' or @tag='111']" => {
         :obj => :agent_corporate_entity,
-        :map => agent_corporate_entity_base
+        :map => agent_corporate_entity_base(import_events)
       },
       # AGENT FAMILY
       "//datafield[@tag='100' and @ind1='3']" => {
         :obj => :agent_family,
-        :map => agent_family_base
+        :map => agent_family_base(import_events)
       }
     }
   end
 
-  def agent_person_base
+  def agent_person_base(import_events)
     {
       "self::datafield" => agent_person_name_with_parallel_map(:name_person, :names),
       "//record/datafield[@tag='046']" => agent_person_dates_of_existence_map,
       "//record/datafield[@tag='372']/subfield[@code='a']" => agent_topic_map,
       "//record/datafield[@tag='375']/subfield[@code='a']" => agent_gender_map,
-    }.merge(shared_subrecord_map)
+    }.merge(shared_subrecord_map(import_events))
   end
 
-  def agent_corporate_entity_base
+  def agent_corporate_entity_base(import_events)
     {
       "self::datafield" => agent_corporate_entity_name_with_parallel_map(:name_corporate_entity, :names),
       "//record/datafield[@tag='046']" => agent_corporate_entity_dates_of_existence_map,
       "//record/datafield[@tag='372']/subfield[@code='a']" => agent_function_map,
-    }.merge(shared_subrecord_map)
+    }.merge(shared_subrecord_map(import_events))
   end
 
-  def agent_family_base
+  def agent_family_base(import_events)
     {
       "self::datafield" => agent_family_name_with_parallel_map(:name_family, :names),
       "//record/datafield[@tag='046']" => agent_family_dates_of_existence_map,
       "//record/datafield[@tag='372']/subfield[@code='a']" => agent_function_map,
-    }.merge(shared_subrecord_map)
+    }.merge(shared_subrecord_map(import_events))
   end
 
-  def shared_subrecord_map
-    {
+  def shared_subrecord_map(import_events)
+    h = {
       "//record/leader" => agent_record_control_map,
       "//record/controlfield[@tag='001']" => agent_record_identifiers_map,
-      "//record/controlfield[@tag='005']" => maintenance_history_map,
       "//record/datafield[@tag='040']/subfield[@code='e']" => convention_declaration_map,
       "//record/datafield[@tag='370']/subfield[@code='a']" => place_of_birth_map,
       "//record/datafield[@tag='370']/subfield[@code='b']" => place_of_death_map,
@@ -61,6 +60,14 @@ module MarcXMLAuthAgentBaseMap
       "//record/datafield[@tag='670']" => agent_sources_map,
       "//record/datafield[@tag='678']" => bioghist_note_map,
     }
+
+    if import_events
+      h.merge!({
+        "//record/controlfield[@tag='005']" => maintenance_history_map,
+      })
+    end
+
+    return h
   end
 
   def agent_person_name_with_parallel_map(obj, rel)
@@ -564,7 +571,7 @@ module MarcXMLAuthAgentBaseMap
     :obj => :agent_maintenance_history,
     :rel => :agent_maintenance_histories,
     :map => {
-        "self::controlfield" => Proc.new {|amh, node|
+      "self::controlfield" => Proc.new {|amh, node|
         tag5_content = node.inner_text
 
         amh['event_date'] = tag5_content[0..7]
@@ -580,6 +587,7 @@ module MarcXMLAuthAgentBaseMap
       },
       "//record/datafield[@tag='040']/subfield[@code='d']" => Proc.new{|amh, node|
         val = node.inner_text
+        val.empty? ? "Missing in File" : val
         amh['agent'] = val
       }
     },

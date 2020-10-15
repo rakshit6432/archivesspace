@@ -1,63 +1,62 @@
 module EACBaseMap
 
-  def EAC_BASE_MAP
+  def EAC_BASE_MAP(import_events = false)
     {
       # AGENT PERSON
       "//eac-cpf//cpfDescription[child::identity/child::entityType='person']" => {
         :obj => :agent_person,
-        :map => agent_person_base      
+        :map => agent_person_base(import_events)
       },
       # AGENT CORPORATE ENTITY
       "//eac-cpf//cpfDescription[child::identity/child::entityType='corporateBody']" => {
         :obj => :agent_corporate_entity,
-        :map => agent_corporate_entity_base
+        :map => agent_corporate_entity_base(import_events)
       },
       # AGENT FAMILY
       "//eac-cpf//cpfDescription[child::identity/child::entityType='family']" => {
         :obj => :agent_family,
-        :map => agent_family_base
+        :map => agent_family_base(import_events)
       }
     }
   end
 
   # agent person name attrs, followed by agent subrecs common to all types
-  def agent_person_base
+  def agent_person_base(import_events)
     {
       "//identity/nameEntry" => agent_person_name_map(:name_person, :names),
       "//identity/nameEntryParallel/nameEntry[1]" => agent_person_name_with_parallel_map(:name_person, :names),
       "//localDescriptions/localDescription[@localType='gender']" => agent_person_gender_map,
       #"//relations/cpfRelation" => related_agent_map,
-    }.merge(base_map_subfields)
+    }.merge(base_map_subfields(import_events))
   end
 
   # agent corporate name attrs, followed by agent subrecs common to all types
-  def agent_corporate_entity_base
+  def agent_corporate_entity_base(import_events)
     {
       "//identity/nameEntry" => agent_corporate_entity_name_map(:name_corporate_entity, :names),
       "//identity/nameEntryParallel/nameEntry[1]" => agent_corporate_entity_name_with_parallel_map(:name_corporate_entity, :names),
       "//eac-cpf//mandates/mandate" => agent_mandate_note_map,
       "//eac-cpf//legalStatuses/legalStatus" => agent_legal_status_note_map,
       "//eac-cpf//structureOrGenealogy" => agent_structure_note_map,
-    }.merge(base_map_subfields)
+    }.merge(base_map_subfields(import_events))
   end
 
   # agent family name attrs, followed by agent subrecs common to all types
-  def agent_family_base
+  def agent_family_base(import_events)
     {
       "//identity/nameEntry" => agent_family_name_map(:name_family, :names),
       "//identity/nameEntryParallel/nameEntry[1]" => agent_family_name_with_parallel_map(:name_family, :names),
       "//eac-cpf//structureOrGenealogy" => agent_structure_note_map,
-    }.merge(base_map_subfields)
+    }.merge(base_map_subfields(import_events))
   end
 
   # These fields are common to all agent types and imported the same way
-  def base_map_subfields 
-    {
+  def base_map_subfields(import_events)
+    h = {
       "//eac-cpf//control/recordId" => agent_record_identifiers_map,
       "//eac-cpf//control/otherRecordId" => agent_other_record_identifiers_map,
       "//eac-cpf//control" => agent_record_control_map,
       "//eac-cpf/control/conventionDeclaration" => agent_conventions_declaration_map,
-      "//eac-cpf/control/maintenanceHistory/maintenanceEvent" => agent_maintenance_history_map,
       "//eac-cpf/control/sources/source" => agent_sources_map,
       "//eac-cpf/cpfDescription/identity/entityId" => agent_identifier_map,
       "//eac-cpf/cpfDescription/description/existDates//date" => agent_date_single_map("existence", :dates_of_existence),
@@ -72,6 +71,14 @@ module EACBaseMap
       "//languagesUsed/languageUsed" => agent_languages_map,
       "//relations/resourceRelation" => related_resource_map
     }
+
+    if import_events
+      h.merge!({
+        "//eac-cpf/control/maintenanceHistory/maintenanceEvent" => agent_maintenance_history_map,
+      })
+    end
+
+    return h
   end
 
   def agent_person_name_map(obj, rel)
@@ -469,12 +476,14 @@ module EACBaseMap
         },
         "descendant::descriptiveNote" => Proc.new {|dec, node|
           val = node.inner_text
+          val = val.empty? ? "No descriptive note specified" : val
           dec[:descriptive_note] = val
         },
       },
       :defaults => {
         :citation => "citation",
-        :name_rule => "local"
+        :name_rule => "local",
+        :descriptive_note => "No descriptive note specified"
       }
     }
   end
@@ -495,6 +504,7 @@ module EACBaseMap
         },
         "descendant::descriptiveNote" => Proc.new {|as, node|
           val = node.inner_text
+          val = val.empty? ? "No descriptive note specified" : val
           as[:descriptive_note] = val
         },
         "descendant::componentEntry" => Proc.new {|as, node|
@@ -503,6 +513,7 @@ module EACBaseMap
         },
       },
       :defaults => {
+        :descriptive_note => "No descriptive note specified"
       }
     }
   end
@@ -533,10 +544,12 @@ module EACBaseMap
         },
         "descendant::eventDescription" => Proc.new {|me, node|
           val = node.inner_text
+          val = val.empty? ? "No descriptive note specified" : val
           me[:descriptive_note] =  val
         },
       },
       :defaults => {
+        :descriptive_note => "No descriptive note specified"
       }
     }
   end
@@ -561,10 +574,12 @@ module EACBaseMap
         },
         "descendant::descriptiveNote" => Proc.new {|s, node|
           val = node.inner_text
+          val = val.empty? ? "No descriptive note specified" : val
           s[:descriptive_note] = val
         },
       },
       :defaults => {
+        :descriptive_note => "No descriptive note specified"
       }
     }
   end
